@@ -1,0 +1,87 @@
+@import "reset.scss";
+@import "spinner.scss";
+@import "icon.scss";
+
+.iconfont{
+    font-family:"iconfont" !important;
+    font-size:16px;font-style:normal;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-stroke-width: 0.2px;
+    -moz-osx-font-smoothing: grayscale;
+}
+.clear-fix:before,.clear-fix:after {
+    content: "";
+    display: block;
+}
+.clear-fix:after {
+    clear: both;
+}
+.page{
+    margin-left: 30px;
+    margin-right: 30px;
+}
+.video-js .vjs-big-play-button{
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%);
+}
+.vjs-error .vjs-error-display:before{
+    content: '暂无法播放...' !important;
+    font-size: 18px !important;
+    letter-spacing: 5px;
+}
+.vjs-error .vjs-error-display .vjs-modal-dialog-content{
+    display: none;
+}
+.plane{
+    position: relative;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    >canvas{
+        position: absolute;
+        z-index: -1;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}
+.plane-title{
+    position: relative;
+    font-size: 18px;
+    color: #d0d0d0;
+    line-height: 2;
+    font-weight: normal;
+    letter-spacing: 3px;
+    padding-left: 20px;
+    // border: 1px solid #f00;
+    &:before, &:after{
+        content: "";
+        position: absolute;
+        width: 2px;
+    }
+    &:before{
+        height: 8px;
+        background: rgba(53, 121, 255, 0.18);
+        top: 14px;
+        left: 0;
+    }
+    &:after{
+        height: 13px;
+        background: rgba(53, 121, 255, 0.28);
+        top: 11px;
+        left: 5px;
+    }
+    >i{
+        position: absolute;
+        display: block;
+        width: 2px;
+        height: 18px;
+        background: rgba(53, 121, 255, 0.39);
+        top: 9px;
+        left: 10px;
+    }
+}
+.plane-content{
+    height: calc(100% - 42px);
+}
