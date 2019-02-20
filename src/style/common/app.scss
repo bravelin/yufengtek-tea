@@ -167,3 +167,28 @@
         }
     }
 }
+
+.app-weather-info-wrap{
+    position: relative;
+    .curr-time{
+        position: absolute;
+        top: 9px;
+        right: 12px;
+        color: #d0d0d0;
+    }
+    .weather{
+        em{
+            position: relative;
+            font-size: 36px;
+            padding-right: 5px;
+            // font-weight: bold;
+            &:after{
+                content: "。";
+                font-size: 30px;
+                position: absolute;
+                top: 0;
+                right: 0;
+            }
+        }
+    }
+}
