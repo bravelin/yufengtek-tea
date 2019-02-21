@@ -77,10 +77,11 @@
                         textStyle: {
                             normal: {
                                 color: function () {
-                                    return 'rgb(' + [
-                                        Math.round(Math.random() * 160),
-                                        Math.round(Math.random() * 160),
-                                        Math.round(Math.random() * 160)
+                                    return 'hsla(' + [
+                                        207 + Math.round(Math.random() * 10),
+                                        (75 + Math.round(Math.random() * 12)) + '%',
+                                        (60 + Math.round(Math.random() * 10)) + '%',
+                                        0.2 + Math.random()
                                     ].join(',') + ')'
                                 }
                             },

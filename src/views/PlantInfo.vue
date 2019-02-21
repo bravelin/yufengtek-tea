@@ -12,11 +12,17 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+    const moduleNameSpace = ns.PLANT
+    const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
+    const chartDataProp = `$store.state.${moduleNameSpace}.infoData`
 
     export default {
         name: 'app-plant-info',
         components: {
             Plane, PlaneTitle
+        },
+        computed: {
+            ...thisMapState(['infoData'])
         },
         data () {
             return {
@@ -47,12 +53,12 @@
                                 }
                             },
                             roam: true,
-                            zlevel: 1,
-                            zoom: 1
+                            // zlevel: 1,
+                            zoom: 1.2
                         },
                         series: [{
                             coordinateSystem: 'geo',
-                            data: [],
+                            data: that.infoData,
                             hoverAnimation: true,
                             itemStyle: {
                                 normal: {

@@ -8,4 +8,5 @@ export default {
     OUTPUTVALUE: 'outputValue', // 产值预估
     ORIGIN: 'origin', // 溯源数据
     WEATHER: 'weather', // 天气
+    PLANT: 'plant', // 种植分布
 }

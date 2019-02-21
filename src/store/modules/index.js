@@ -7,6 +7,7 @@ import warehouseModule from './warehouseModule'
 import outputValueModule from './outputValueModule'
 import originModule from './originModule'
 import weatherModule from './weatherModule'
+import plantModule from './plantModule'
 
 export default {
     [ns.HOME]: homeModule,
@@ -16,5 +17,6 @@ export default {
     [ns.WAREHOUSE]: warehouseModule,
     [ns.OUTPUTVALUE]: outputValueModule,
     [ns.ORIGIN]: originModule,
-    [ns.WEATHER]: weatherModule
+    [ns.WEATHER]: weatherModule,
+    [ns.PLANT]: plantModule
 }
