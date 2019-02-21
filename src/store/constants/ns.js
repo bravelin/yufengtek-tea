@@ -7,4 +7,5 @@ export default {
     WAREHOUSE: 'warehouse', // 出库入库
     OUTPUTVALUE: 'outputValue', // 产值预估
     ORIGIN: 'origin', // 溯源数据
+    WEATHER: 'weather', // 天气
 }
