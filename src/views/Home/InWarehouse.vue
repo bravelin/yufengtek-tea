@@ -1,85 +1,65 @@
-<!--茶叶入库茶叶出库-->
+<!--入库信息-->
 <template>
-    <Plane class="app-warehouse-wrap">
-        <div class="wrap-title">
-            <PlaneTitle>茶叶入库</PlaneTitle>
-            <PlaneTitle>茶叶出库</PlaneTitle>
-        </div>
-        <div class="charts">
-            <div ref="in"></div>
-            <div ref="out"></div>
-        </div>
-        <FullScreenButton :link="{ name: 'warehouse' }" :full="screenFullState"></FullScreenButton>
+    <Plane class="in-warehouse-wrap">
+        <PlaneTitle>入库信息</PlaneTitle>
+        <div class="plane-content" ref="container"></div>
+        <FullScreenButton :link="{ name: 'farming' }" :full="screenFullState"></FullScreenButton>
     </Plane>
 </template>
 <script>
-    import { createNamespacedHelpers, mapState } from 'vuex'
+    import { createNamespacedHelpers } from 'vuex'
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
-    const moduleNameSpace = ns.WAREHOUSE
+    const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartInDatasProp = `$store.state.${moduleNameSpace}.inDatas`
-    const chartOutDatasProp = `$store.state.${moduleNameSpace}.outDatas`
+    const chartDataProp = `$store.state.${moduleNameSpace}.inWarehouseDatas`
 
     export default {
-        name: 'app-warehouse',
+        name: 'home-in-warehouse',
         computed: {
-            ...thisMapState(['inDatas', 'outDatas', 'unit']),
-            ...mapState(['screenFullState'])
+            ...thisMapState(['warehouseUnit'])
         },
         watch: {
-            [chartInDatasProp] () {
-                this.doInitOrRefreshChart('in')
-            },
-            [chartOutDatasProp] () {
-                this.doInitOrRefreshChart('out')
+            [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+                this.doInitOrRefreshChart()
             }
         },
         data () {
             return {
-                containerIn: null,
-                chartIn: null,
-                containerOut: null,
-                chartOut: null
+                container: null,
+                chart: null // 图表实例
             }
         },
         mounted () {
             const that = this
             that.$nextTick(() => {
-                that.containerIn = that.$refs.in
-                that.containerOut = that.$refs.out
-                const inDatas = that.$store.state[moduleNameSpace].inDatas
-                if (inDatas.length && !that.chartIn) {
-                    that.init(inDatas, 'in')
-                }
-                const outDatas = that.$store.state[moduleNameSpace].outDatas
-                if (outDatas.length && !that.chartOut) {
-                    that.init(outDatas, 'out')
+                that.container = that.$refs.container
+                const datas = that.$store.state[moduleNameSpace].inWarehouseDatas
+                if (datas.length && !that.chart) {
+                    that.init(datas)
                 }
             })
         },
         methods: {
-            doInitOrRefreshChart (type) {
+            doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace][`${type}Datas`]
-                const container = type == 'in' ? that.containerIn : that.containerOut
-                const chart = type == 'in' ? that.chartIn : that.chartOut
+                const datas = that.$store.state[moduleNameSpace].inWarehouseDatas
                 if (datas && datas.length) {
-                    if (container) {
-                        chart ? that.refresh(datas, type) : that.init(datas, type)
+                    if (that.container) {
+                        that.chart ? that.refresh(datas) : that.init(datas)
                     }
                 }
             },
             // 创建图表
-            init (datas, type) {
+            init (datas) {
                 const that = this
-                const container = type == 'in' ? that.containerIn : that.containerOut
+                const container = that.container
                 const { titles, values } = that.handleChartData(datas)
                 const options = {
                     tooltip: {
                         trigger: 'axis',
-                        formatter: '{b}：{c}' + that.unit,
+                        formatter: '{b}：{c}' + that.warehouseUnit,
                         backgroundColor: 'rgba(0, 159, 253, 0.5)',
                         axisPointer: {
                             lineStyle: {
@@ -104,7 +84,7 @@
                         axisLabel: { interval: 0, color: '#fff' },
                         splitLine: {
                             show: true,
-                            lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.1)', width: 0.5 }
+                            lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
                         }
                     },
                     series: [{
@@ -120,18 +100,13 @@
                         data: values
                     }]
                 }
-                if (type == 'in') {
-                    that.chartIn = echarts.init(container)
-                    that.chartIn.setOption(options)
-                } else {
-                    that.chartOut = echarts.init(container)
-                    that.chartOut.setOption(options)
-                }
+                that.chart = echarts.init(container)
+                that.chart.setOption(options)
             },
             // 刷新图表
-            refresh (datas, type) {
+            refresh (datas) {
                 const that = this
-                const chart = type == 'in' ? that.chartIn : that.chartOut
+                const chart = that.chart
                 const { titles, values } = that.handleChartData(datas)
                 const currOption = chart.getOption()
                 const series = currOption.series
@@ -150,6 +125,10 @@
                     values.push(item.data)
                 })
                 return { titles, values }
+            },
+            // full state change
+            doSwitchFullState () {
+                const that = this
             }
         }
     }

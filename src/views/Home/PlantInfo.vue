@@ -1,6 +1,6 @@
 <!--种植分布-->
 <template>
-    <Plane class="app-plant-info-wrap">
+    <Plane class="plant-distribute-wrap">
         <PlaneTitle>种植分布</PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <FullScreenButton :link="{ name: 'plant' }" :full="screenFullState"></FullScreenButton>
@@ -16,7 +16,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.infoData`
 
     export default {
-        name: 'app-plant-info',
+        name: 'home-plant-info',
         computed: {
             ...thisMapState(['infoData']),
             ...mapState(['screenFullState'])

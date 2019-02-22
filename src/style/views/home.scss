@@ -1,0 +1,135 @@
+.home-page{
+    display: flex;
+    // border: 1px solid #f00;
+    box-sizing: border-box;
+    flex-direction: row;
+    padding: 0;
+    >div{
+        &:nth-of-type(1){
+            width: calc(26% - 5px);
+            margin-right: 10px;
+        }
+        &:nth-of-type(2){
+            width: calc(48% - 10px);
+        }
+        &:nth-of-type(3){
+            width: calc(26% - 5px);
+            margin-left: 10px;
+        }
+        >div{
+            box-sizing: border-box;
+            // border: 1px solid #ff0;
+        }
+    }
+    .amount-rank-wrap, .origin-wrap{
+        height: calc(33.33% - 5px);
+    }
+    .farming-info-wrap, .iot-wrap{
+        height: calc(30.83% - 10px);
+        margin-top: 10px;
+    }
+    .in-warehouse-wrap, .out-warehouse-wrap{
+        height: calc(35.84% - 5px);
+        margin-top: 10px;
+    }
+    .plant-distribute-wrap{
+        height: calc(64.16% - 5px);
+    }
+    .tea-making-wrap{
+        height: calc(35.84% - 5px);
+        margin-top: 10px;
+        .wrap-title{
+            display: flex;
+            h2{
+                flex: 1;
+            }
+        }
+        .charts{
+            height: calc(100% - 42px);
+            display: flex;
+            >div{
+                flex: 1;
+                // border: 1px solid #f00;
+                &:first-child{
+                    margin-right: 10px;
+                }
+            }
+        }
+    }
+    .farming-info-wrap, .pick-info-wrap{
+        position: relative;
+        .chart-title{
+            position: absolute;
+            text-align: center;
+            left: -6%;
+            right: 0;
+            width: 100%;
+            top: 40%;
+            color: #f0f0f0;
+            >h4{
+                font-size: 14px;
+                line-height: 1.8;
+                letter-spacing: 1px;
+            }
+            >div{
+                font-size: 20px;
+                // font-weight: bold;
+            }
+        }
+    }
+    .farming-info-wrap{
+        .chart-title{
+            top: 50%;
+        }
+    }
+    .iot-wrap{
+        .plane-container{
+            padding: 10px;
+            height: calc(100% - 56px);
+            >div{
+                height: calc(50% - 4px);
+            }
+            >div:first-child{
+                margin-bottom: 8px;
+            }
+        }
+        .iot-item{
+            display: flex;
+            background: rgba(15, 71, 130, 0.2);
+            border-radius: 6px;
+            flex-direction: row;
+            padding: 8px;
+            box-sizing: border-box;
+            >div{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                &:nth-of-type(1){
+                    flex: 1;
+                    color: rgba(26, 116, 215, 1);
+                    >i{
+                        font-size: 28px;
+                    }
+                    >div{
+                        margin-top: 2px;
+                        letter-spacing: 1px;
+                    }
+                }
+                &:nth-of-type(2){
+                    flex: 1;
+                    font-size: 28px;
+                    letter-spacing: 2px;
+                    color: #d0d0d0;
+                    border-left: 1px dotted rgba(53, 121, 255, 0.25);
+                }
+            }
+        }
+    }
+    .pick-info-wrap{
+        div.chart-container{
+            width: 100%;
+            height: 100%;
+        }
+    }
+}

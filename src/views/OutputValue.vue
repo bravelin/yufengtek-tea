@@ -6,8 +6,6 @@
     </Plane>
 </template>
 <script>
-    import Plane from '@/components/Plane'
-    import PlaneTitle from '@/components/PlaneTitle'
     import { createNamespacedHelpers } from 'vuex'
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
@@ -18,9 +16,6 @@
 
     export default {
         name: 'app-output-value',
-        components: {
-            Plane, PlaneTitle
-        },
         computed: {
             ...thisMapState(['outputValue'])
         },
@@ -64,8 +59,8 @@
                     series: [{
                         name: '产值预估',
                         type: 'pie',
-                        radius: ['85%', '98%'],
-                        center: ['50%', '50%'],
+                        radius: ['60%', '72%'],
+                        center: ['25%', '50%'],
                         startAngle: 225,
                         color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#00a2ff' }, { offset: 1, color: '#70ffac' }]), 'transparent'],
                         labelLine: { normal: { show: false } },
@@ -84,7 +79,31 @@
                                 label: { normal: { formatter: '亿元', textStyle: { color: '#fff', fontSize: 15 } } }
                             }
                         ]
-                    }]
+                    }, {
+                        name: '产量预估',
+                        type: 'pie',
+                        radius: ['60%', '72%'],
+                        center: ['75%', '50%'],
+                        startAngle: 225,
+                        color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#00a2ff' }, { offset: 1, color: '#70ffac' }]), 'transparent'],
+                        labelLine: { normal: { show: false } },
+                        label: { normal: { position: 'center' } },
+                        data: [
+                            {
+                                value: 75,
+                                label: { normal: { padding: [0, 0, 10], formatter: '产量预估', textStyle: { color: '#fff', fontSize: 15 } } }
+                            },
+                            {
+                                value: 25,
+                                label: { normal: { formatter: `\n${datas + 152}`, textStyle: { color: '#007ac6', fontSize: 25, fontWeight: 'bold' } } }
+                            },
+                            {
+                                value: 0,
+                                label: { normal: { formatter: '吨', textStyle: { color: '#fff', fontSize: 15 } } }
+                            }
+                        ]
+                    }
+                    ]
                 }
                 that.chart = echarts.init(container)
                 that.chart.setOption(options)

@@ -1,27 +1,23 @@
-<!--溯源数据-->
+<!--农事信息-->
 <template>
-    <Plane class="app-origin-data-wrap">
-        <PlaneTitle>溯源数据</PlaneTitle>
+    <Plane class="farming-info-wrap">
+        <PlaneTitle>施肥信息</PlaneTitle>
         <div class="plane-content" ref="container"></div>
+        <div class="chart-title"><h4>农事活动比</h4></div>
+        <FullScreenButton :link="{ name: 'farming' }"></FullScreenButton>
     </Plane>
 </template>
 <script>
-    import Plane from '@/components/Plane'
-    import PlaneTitle from '@/components/PlaneTitle'
     import { createNamespacedHelpers } from 'vuex'
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
-    require('echarts-wordcloud')
-    const moduleNameSpace = ns.ORIGIN
+    const moduleNameSpace = ns.FARMING
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.cityDatas`
+    const chartDataProp = `$store.state.${moduleNameSpace}.farmingActdatas`
 
     export default {
-        name: 'app-origin-data',
-        components: {
-            Plane, PlaneTitle
-        },
+        name: 'app-farming-info',
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
                 this.doInitOrRefreshChart()
@@ -37,7 +33,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].cityDatas
+                const datas = that.$store.state[moduleNameSpace].farmingActdatas
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -57,37 +53,43 @@
             init (datas) {
                 const that = this
                 const container = that.container
+                const { seriesData, legendData } = that.handleChartData(datas)
                 const options = {
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}'
+                        formatter: '{b}：{d}%'
+                    },
+                    legend: {
+                        show: true,
+                        data: legendData,
+                        orient: 'vertical',
+                        right: '3%',
+                        top: 10,
+                        itemGap: 15,
+                        textStyle: {
+                            color: '#d0d0d0',
+                            fontSize: 14,
+                            padding: [2, 0, 0, 4]
+                        }
                     },
                     series: [{
-                        type: 'wordCloud',
-                        gridSize: 10,
-                        sizeRange: [14, 40],
-                        rotationRange: [0, 0],
-                        shape: 'circle',
-                        autoSize: {
-                            enable: true,
-                            minSize: 12
+                        type: 'pie',
+                        radius: ['51%', '89%'],
+                        center: ['44%', '50%'],
+                        label: {
+                            show: true,
+                            position: 'inside',
+                            formatter: '{d}%',
+                            fontSize: 14
                         },
-                        data: datas,
-                        textStyle: {
-                            normal: {
-                                color: function () {
-                                    return 'hsla(' + [
-                                        207 + Math.round(Math.random() * 10),
-                                        (75 + Math.round(Math.random() * 12)) + '%',
-                                        (60 + Math.round(Math.random() * 10)) + '%',
-                                        0.2 + Math.random()
-                                    ].join(',') + ')'
-                                }
-                            },
+                        color: ['#86D560', '#AF89D6', '#59ADF3'],
+                        data: seriesData,
+                        itemStyle: {
                             emphasis: {
                                 shadowBlur: 10,
-                                shadowColor: '#333'
+                                shadowOffsetX: 0,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
                             }
                         }
                     }]
@@ -107,6 +109,19 @@
                 legend.data = legendData
                 chart.setOption({ series, legend })
                 setTimeout(() => { chart.resize() }, 10)
+            },
+            // 数据加工
+            handleChartData (datas) {
+                const that = this
+                const legendData = []
+                const seriesData = []
+                let item = null
+                for (let i = 0; i < datas.length; i++) {
+                    item = datas[i]
+                    seriesData.push({ name: item.label, value: item.value })
+                    legendData.push(item.label)
+                }
+                return { legendData, seriesData }
             },
             // full state change
             doSwitchFullState () {

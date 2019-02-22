@@ -4,7 +4,7 @@ import mutations from '@/store/mutations/warehouseMutations'
 export default {
     namespaced: true,
     state: {
-        unit: 'kg',
+        unit: '吨',
         // 入库数据
         inDatas: [
             { date: '1月', data: 1380 },

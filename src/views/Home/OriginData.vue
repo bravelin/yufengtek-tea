@@ -1,10 +1,9 @@
-<!--制茶信息-->
+<!--溯源排行-->
 <template>
-    <Plane class="app-tea-making-info-wrap">
-        <PlaneTitle>制茶信息</PlaneTitle>
+    <Plane class="origin-wrap">
+        <PlaneTitle>溯源排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <div class="chart-title"><h4>茶叶总产量</h4><div>{{ totalAmount }}吨</div></div>
-        <FullScreenButton :link="{ name: 'making' }" :full="screenFullState"></FullScreenButton>
+        <FullScreenButton :link="{ name: 'origin' }" :full="screenFullState"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -12,13 +11,15 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
-    const moduleNameSpace = ns.TEAMAKING
+
+    require('echarts-wordcloud')
+    const moduleNameSpace = ns.ORIGIN
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.makingDatas`
+    const chartDataProp = `$store.state.${moduleNameSpace}.cityDatas`
+
     export default {
-        name: 'app-tea-making-info',
+        name: 'origin-data',
         computed: {
-            ...thisMapState(['totalAmount']),
             ...mapState(['screenFullState'])
         },
         watch: {
@@ -36,7 +37,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].makingDatas
+                const datas = that.$store.state[moduleNameSpace].cityDatas
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -56,43 +57,37 @@
             init (datas) {
                 const that = this
                 const container = that.container
-                const { seriesData, legendData } = that.handleChartData(datas)
                 const options = {
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}吨 ({d}%)'
-                    },
-                    legend: {
-                        show: true,
-                        data: legendData,
-                        orient: 'vertical',
-                        right: '3%',
-                        top: 10,
-                        itemGap: 15,
-                        textStyle: {
-                            color: '#d0d0d0',
-                            fontSize: 14,
-                            padding: [2, 0, 0, 4]
-                        }
+                        formatter: '{b}：{c}'
                     },
                     series: [{
-                        type: 'pie',
-                        radius: ['40%', '88%'],
-                        center: ['44%', '50%'],
-                        label: {
-                            show: true,
-                            position: 'inside',
-                            formatter: '{d}%',
-                            fontSize: 14
+                        type: 'wordCloud',
+                        gridSize: 10,
+                        sizeRange: [14, 40],
+                        rotationRange: [0, 0],
+                        shape: 'circle',
+                        autoSize: {
+                            enable: true,
+                            minSize: 12
                         },
-                        color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A'],
-                        data: seriesData,
-                        itemStyle: {
+                        data: datas,
+                        textStyle: {
+                            normal: {
+                                color: function () {
+                                    return 'hsla(' + [
+                                        207 + Math.round(Math.random() * 10),
+                                        (75 + Math.round(Math.random() * 12)) + '%',
+                                        (60 + Math.round(Math.random() * 10)) + '%',
+                                        0.2 + Math.random()
+                                    ].join(',') + ')'
+                                }
+                            },
                             emphasis: {
                                 shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                shadowColor: '#333'
                             }
                         }
                     }]
@@ -112,19 +107,6 @@
                 legend.data = legendData
                 chart.setOption({ series, legend })
                 setTimeout(() => { chart.resize() }, 10)
-            },
-            // 数据加工
-            handleChartData (datas) {
-                const that = this
-                const legendData = []
-                const seriesData = []
-                let item = null
-                for (let i = 0; i < datas.length; i++) {
-                    item = datas[i]
-                    seriesData.push({ name: item.label, value: item.value })
-                    legendData.push(item.label)
-                }
-                return { legendData, seriesData }
             },
             // full state change
             doSwitchFullState () {

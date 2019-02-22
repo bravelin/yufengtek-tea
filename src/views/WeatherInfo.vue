@@ -30,8 +30,6 @@
     </Plane>
 </template>
 <script>
-    import Plane from '@/components/Plane'
-    import PlaneTitle from '@/components/PlaneTitle'
     import { formatTime } from '@/lib/util'
     import { createNamespacedHelpers } from 'vuex'
     import Weather from '@/lib/weather'
@@ -43,9 +41,6 @@
 
     export default {
         name: 'app-weather-info',
-        components: {
-            Plane, PlaneTitle
-        },
         computed: {
             ...thisMapState(['temperature', 'currWeather', 'refreshTime', 'detail', 'list'])
         },

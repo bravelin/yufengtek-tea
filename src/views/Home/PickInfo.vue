@@ -1,26 +1,25 @@
-<!--农事信息-->
+<!--采摘信息-->
 <template>
-    <Plane class="app-farming-info-wrap">
-        <PlaneTitle>农事信息</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <div class="chart-title"><h4>农事活动比</h4></div>
-    </Plane>
+    <div class="pick-info-wrap">
+        <div ref="container" class="chart-container"></div>
+        <div class="chart-title"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}吨</div></div>
+    </div>
 </template>
 <script>
-    import Plane from '@/components/Plane'
-    import PlaneTitle from '@/components/PlaneTitle'
-    import { createNamespacedHelpers } from 'vuex'
+    import { createNamespacedHelpers, mapState } from 'vuex'
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
-    const moduleNameSpace = ns.FARMING
+
+    const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.farmingActdatas`
+    const chartDataProp = `$store.state.${moduleNameSpace}.pickDatas`
 
     export default {
-        name: 'app-farming-info',
-        components: {
-            Plane, PlaneTitle
+        name: 'home-pick-info',
+        computed: {
+            ...thisMapState(['teaTotalAmount']),
+            ...mapState(['screenFullState'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -37,7 +36,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].farmingActdatas
+                const datas = that.$store.state[moduleNameSpace].pickDatas
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -46,7 +45,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].farmingActdatas
+                const datas = that.$store.state[moduleNameSpace].pickDatas
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -62,7 +61,7 @@
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{d}%'
+                        formatter: '{b}：{c}吨 ({d}%)'
                     },
                     legend: {
                         show: true,
@@ -85,9 +84,9 @@
                             show: true,
                             position: 'inside',
                             formatter: '{d}%',
-                            fontSize: 14
+                            fontSize: 12
                         },
-                        color: ['#86D560', '#AF89D6', '#59ADF3'],
+                        color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
                         data: seriesData,
                         itemStyle: {
                             emphasis: {

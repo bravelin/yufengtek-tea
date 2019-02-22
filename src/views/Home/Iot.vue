@@ -1,6 +1,6 @@
 <!--物联监控-->
 <template>
-    <Plane class="app-iot-wrap">
+    <Plane class="iot-wrap">
         <PlaneTitle>物联监控</PlaneTitle>
         <div class="plane-container">
             <div class="iot-item">
@@ -12,22 +12,19 @@
                 <div>{{ monitorAmount }}</div>
             </div>
         </div>
+        <FullScreenButton :link="{ name: 'iot' }" :full="screenFullState"></FullScreenButton>
     </Plane>
 </template>
 <script>
-    import Plane from '@/components/Plane'
-    import PlaneTitle from '@/components/PlaneTitle'
-    import { createNamespacedHelpers } from 'vuex'
+    import { createNamespacedHelpers, mapState } from 'vuex'
     import ns from '@/store/constants/ns'
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     export default {
         name: 'app-iot',
         computed: {
-            ...thisMapState(['cameraAmount', 'monitorAmount'])
-        },
-        components: {
-            Plane, PlaneTitle
+            ...thisMapState(['cameraAmount', 'monitorAmount']),
+            ...mapState(['screenFullState'])
         }
     }
 </script>

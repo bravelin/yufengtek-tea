@@ -15,6 +15,36 @@ const router = new Router({
             component: () => import('./views/Home/Index.vue')
         },
         {
+            path: '/iot',
+            name: 'iot', // iot
+            component: () => import('./views/Iot/Index.vue')
+        },
+        {
+            path: '/farming',
+            name: 'farming', // 农事信息
+            component: () => import('./views/FarmingInfo/Index.vue')
+        },
+        {
+            path: '/making',
+            name: 'making', // 制茶信息
+            component: () => import('./views/TeaMaking/Index.vue')
+        },
+        {
+            path: '/plant',
+            name: 'plant', // 种植分布
+            component: () => import('./views/PlantInfo/Index.vue')
+        },
+        {
+            path: '/warehouse',
+            name: 'warehouse', // 出库入库
+            component: () => import('./views/Warehouse/Index.vue')
+        },
+        {
+            path: '/origin',
+            name: 'origin', // 溯源数据
+            component: () => import('./views/OriginData/Index.vue')
+        },
+        {
             path: '*',
             redirect: { name: 'home' }
         }
@@ -29,7 +59,7 @@ router.beforeEach((to, from, next) => {
         query: to.query,
         instance: router
     })
-    if (to.name !== from.name) {
+    if (to.name && to.name !== from.name) {
         store.commit(types.SWITCH_LOADING, true)
     }
     next(true)

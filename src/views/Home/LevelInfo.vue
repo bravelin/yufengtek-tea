@@ -1,24 +1,19 @@
-<!--制茶信息-->
+<!--制茶等级-->
 <template>
-    <Plane class="app-tea-making-info-wrap">
-        <PlaneTitle>制茶信息</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <div class="chart-title"><h4>茶叶总产量</h4><div>{{ totalAmount }}吨</div></div>
-        <FullScreenButton :link="{ name: 'making' }" :full="screenFullState"></FullScreenButton>
-    </Plane>
+    <div ref="container"></div>
 </template>
 <script>
     import { createNamespacedHelpers, mapState } from 'vuex'
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
-    const moduleNameSpace = ns.TEAMAKING
+    const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.makingDatas`
+    const chartDataProp = `$store.state.${moduleNameSpace}.levelDatas`
     export default {
-        name: 'app-tea-making-info',
+        name: 'home-level-info',
         computed: {
-            ...thisMapState(['totalAmount']),
+            ...thisMapState(['teaTotalAmount']),
             ...mapState(['screenFullState'])
         },
         watch: {
@@ -36,7 +31,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].makingDatas
+                const datas = that.$store.state[moduleNameSpace].levelDatas
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -45,7 +40,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].farmingActdatas
+                const datas = that.$store.state[moduleNameSpace].levelDatas
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -84,9 +79,9 @@
                             show: true,
                             position: 'inside',
                             formatter: '{d}%',
-                            fontSize: 14
+                            fontSize: 12
                         },
-                        color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A'],
+                        color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
                         data: seriesData,
                         itemStyle: {
                             emphasis: {

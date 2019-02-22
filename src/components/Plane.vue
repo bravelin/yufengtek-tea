@@ -6,7 +6,7 @@
 </template>
 <script>
     export default {
-        name: 'plane',
+        name: 'Plane',
         mounted () {
             const that = this
             that.$nextTick(() => {
@@ -28,7 +28,7 @@
                 canvas.height = h
                 const ctx = canvas.getContext('2d')
                 ctx.clearRect(0, 0, w, h)
-                const radius = 12
+                const radius = 4
                 const top = 0.5
                 ctx.strokeStyle = 'rgba(53, 121, 255, 0.15)'
                 ctx.fillStyle = 'rgba(18, 35, 87, 0.1)'

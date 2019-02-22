@@ -5,6 +5,9 @@ export default {
     [types.SWITCH_LOADING] (state, isShow) {
         state.loading = isShow
     },
+    [types.SWITCH_SCREEN_FULL] (state, fullState) {
+        state.screenFullState = fullState
+    },
     [types.GET_WINDOW_SIZE] (state) {
         state.winHeight = doc.documentElement.clientHeight || win.innerHeight
         state.winWidth = doc.documentElement.clientWidth || win.innerWidth
@@ -16,5 +19,9 @@ export default {
         currRouter.to = payload.to
         currRouter.query = payload.query
         currRouter.instance = payload.instance
+        if (!currRouter.to) {
+            state.loading = false
+            state.screenFullState = false
+        }
     }
 }
