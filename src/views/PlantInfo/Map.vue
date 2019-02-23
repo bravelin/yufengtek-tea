@@ -1,25 +1,23 @@
-<!--种植分布-->
+<!--武夷地图-->
 <template>
-    <Plane class="plant-distribute-wrap">
+    <Plane class="map-wrap">
         <PlaneTitle>种植分布</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :link="{ name: 'plant' }" :full="screenFullState"></FullScreenButton>
     </Plane>
 </template>
 <script>
-    import { createNamespacedHelpers, mapState } from 'vuex'
+    import { createNamespacedHelpers } from 'vuex'
     import ns from '@/store/constants/ns'
-    import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
-    const moduleNameSpace = ns.HOME
+    import echarts from '@/lib/echarts'
+    const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.plantInfoData`
 
     export default {
-        name: 'home-plant-info',
+        name: 'PlantMap',
         computed: {
-            ...thisMapState(['plantInfoData']),
-            ...mapState(['screenFullState'])
+            ...thisMapState(['plantInfoData'])
         },
         data () {
             return {

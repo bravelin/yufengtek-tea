@@ -1,0 +1,58 @@
+.plant-info-page{
+    display: flex;
+    flex-direction: row;
+    >div{
+        // border: 1px solid #0fffff;
+        &:nth-of-type(1){
+            width: calc(50% - 10px);
+            margin-right: 10px;
+        }
+        &:nth-of-type(2){
+            width: calc(26.5% - 5px);
+            margin-right: 10px;
+        }
+        &:nth-of-type(3){
+            width: calc(23.5% - 5px);
+        }
+        >div{
+            box-sizing: border-box;
+        }
+    }
+    .total-data-wrap{
+        height: calc(33% - 10px);
+        margin-bottom: 10px;
+    }
+    .tree-age-wrap{
+        height: calc(34% - 5px);
+        margin-bottom: 10px;
+    }
+    .tea-varieties-wrap, .tea-farm-wrap{
+        position: relative;
+        height: calc(33% - 5px);
+    }
+    .plant-rank-wrap{
+        height: calc(67% - 5px);
+        margin-bottom: 10px;
+    }
+    .chart-title{
+        position: absolute;
+        text-align: center;
+        left: -6%;
+        right: 0;
+        width: 100%;
+        top: 45%;
+        color: #f0f0f0;
+        >h4{
+            font-size: 14px;
+            line-height: 1.8;
+            letter-spacing: 1px;
+        }
+        >div{
+            font-size: 20px;
+            // font-weight: bold;
+            >span{
+                font-size: 15px;
+            }
+        }
+    }
+}

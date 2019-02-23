@@ -33,7 +33,8 @@ export default {
             { place: '岚谷乡', data: 890 },
             { place: '吴屯乡', data: 721 },
             { place: '崇安街道', data: 523 },
-            { place: '武夷街道', data: 211 },
+            { place: '武夷街道', data: 356 },
+            { place: '新丰街道', data: 200 }
         ],
         warehouseUnit: '吨',
         // 入库数据
