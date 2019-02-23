@@ -20,19 +20,14 @@ const router = new Router({
             component: () => import('./views/Iot/Index.vue')
         },
         {
-            path: '/farming',
-            name: 'farming', // 农事信息
-            component: () => import('./views/FarmingInfo/Index.vue')
-        },
-        {
-            path: '/making',
-            name: 'making', // 制茶信息
-            component: () => import('./views/TeaMaking/Index.vue')
-        },
-        {
             path: '/plant',
             name: 'plant', // 种植分布
             component: () => import('./views/PlantInfo/Index.vue')
+        },
+        {
+            path: '/farming',
+            name: 'farming', // 农事活动
+            component: () => import('./views/FarmingInfo/Index.vue')
         },
         {
             path: '/warehouse',

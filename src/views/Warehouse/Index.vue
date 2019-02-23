@@ -1,8 +1,5 @@
 <template>
-    <Plane class="full-screen">
-        <PlaneTitle>出库入库</PlaneTitle>
-        <FullScreenButton :full="screenFullState"></FullScreenButton>
-    </Plane>
+    <div class="page warehouse-page"></div>
 </template>
 <script>
     import types from '@/store/constants/types'

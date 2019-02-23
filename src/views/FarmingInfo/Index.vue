@@ -1,8 +1,5 @@
 <template>
-    <Plane class="full-screen">
-        <PlaneTitle>农事信息</PlaneTitle>
-        <FullScreenButton :full="screenFullState"></FullScreenButton>
-    </Plane>
+    <div class="page farming-info-page"></div>
 </template>
 <script>
     import types from '@/store/constants/types'

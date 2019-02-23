@@ -13,7 +13,7 @@
     import types from '@/store/constants/types'
 
     require('echarts-wordcloud')
-    const moduleNameSpace = ns.ORIGIN
+    const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.cityDatas`
 

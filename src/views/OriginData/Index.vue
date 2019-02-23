@@ -1,8 +1,5 @@
 <template>
-    <Plane class="full-screen">
-        <PlaneTitle>溯源数据</PlaneTitle>
-        <FullScreenButton :full="screenFullState"></FullScreenButton>
-    </Plane>
+    <div class="page origin-page"></div>
 </template>
 <script>
     import types from '@/store/constants/types'

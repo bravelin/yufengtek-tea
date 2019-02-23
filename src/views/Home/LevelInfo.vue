@@ -73,7 +73,7 @@
                     },
                     series: [{
                         type: 'pie',
-                        radius: ['40%', '88%'],
+                        radius: ['45%', '88%'],
                         center: ['44%', '50%'],
                         label: {
                             show: true,

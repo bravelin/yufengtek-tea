@@ -35,7 +35,7 @@ module.exports = {
         ]
     },
     globals: {
-        // AMap: true
+        AMap: true
     },
     parserOptions: {
         parser: 'babel-eslint'

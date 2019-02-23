@@ -11,14 +11,14 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
-    const moduleNameSpace = ns.PLANT
+    const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.infoData`
+    const chartDataProp = `$store.state.${moduleNameSpace}.plantInfoData`
 
     export default {
         name: 'home-plant-info',
         computed: {
-            ...thisMapState(['infoData']),
+            ...thisMapState(['plantInfoData']),
             ...mapState(['screenFullState'])
         },
         data () {

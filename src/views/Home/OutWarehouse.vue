@@ -3,7 +3,7 @@
     <Plane class="out-warehouse-wrap">
         <PlaneTitle>出库信息</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :link="{ name: 'farming' }" :full="screenFullState"></FullScreenButton>
+        <FullScreenButton :link="{ name: 'farming' }"></FullScreenButton>
     </Plane>
 </template>
 <script>

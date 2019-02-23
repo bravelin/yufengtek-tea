@@ -12,7 +12,7 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
-    const moduleNameSpace = ns.FARMING
+    const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.farmingActdatas`
 
