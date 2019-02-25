@@ -99,8 +99,6 @@
                     }],
                     series: that.getSeries(lineDatas)
                 }
-                console.log('that.getSeries(lineDatas)..', that.getSeries(lineDatas))
-                console.log('legends....', legends)
                 that.chart = echarts.init(container)
                 that.chart.setOption(options)
             },
@@ -125,8 +123,10 @@
                 const currOption = chart.getOption()
                 const series = that.getSeries(lineDatas)
                 const xAxis = currOption.xAxis
+                const legend = currOption.legend
                 xAxis[0].data = titles
-                chart.setOption({ series, xAxis })
+                legend.data = legends
+                chart.setOption({ series, xAxis, legend })
                 setTimeout(() => { chart.resize() }, 10)
             },
             // 数据加工
