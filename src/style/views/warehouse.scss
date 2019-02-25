@@ -1,0 +1,37 @@
+.warehouse-page{
+    display: flex;
+    flex-direction: row;
+    >div{
+        // border: 1px solid #f00;
+        &:nth-of-type(1){
+            width: calc(50% - 10px);
+            margin-right: 10px;
+        }
+        &:nth-of-type(2){
+            width: calc(25% - 5px);
+            margin-right: 10px;
+        }
+        &:nth-of-type(3){
+            width: calc(25% - 5px);
+        }
+    }
+    .in-circle-wrap, .out-circle-wrap{
+        height: calc(30% - 10px);
+        margin-bottom: 10px;
+    }
+    .in-line-wrap, .out-line-wrap{
+        height: calc(35% - 5px);
+        margin-bottom: 10px;
+    }
+    .in-constrast-wrap, .out-constrast-wrap{
+        height: calc(35% - 5px);
+        .plane-content{
+            // border: 1px solid #f00;
+            height: calc(100% - 10px);
+            margin-top: -30px;
+        }
+        .plane-title{
+            z-index: -1;
+        }
+    }
+}

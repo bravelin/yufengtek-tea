@@ -58,23 +58,33 @@
                 const { titles, values } = that.handleChartData(datas)
                 const options = {
                     grid: {
-                        top: 0, left: 60, right: 20, bottom: 15
+                        top: 10, left: 5, right: 10, bottom: 0, containLabel: true
                     },
-                    xAxis: {
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: '{b}：{c}' + '亩',
+                        backgroundColor: 'rgba(0, 159, 253, 0.5)',
+                        axisPointer: {
+                            lineStyle: {
+                                color: 'rgba(238,238,238,0.4)'
+                            }
+                        }
+                    },
+                    yAxis: [{
                         show: true,
                         splitLine: {
                             show: true,
                             lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
                         },
-                        axisLine: { lineStyle: { color: 'rgba(0,0,0,0)' } },
-                        axisLabel: { margin: 2, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
-                    },
-                    yAxis: [{
+                        axisLine: { lineStyle: { color: '#0c3b71' } },
+                        axisLabel: { margin: 8, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
+                    }],
+                    xAxis: {
                         show: true,
                         data: titles,
                         inverse: true,
                         axisLine: {
-                            show: false
+                            lineStyle: { color: '#0c3b71' }
                         },
                         splitLine: {
                             show: false
@@ -85,9 +95,12 @@
                         axisLabel: {
                             color: '#fff',
                             fontSize: 12,
-                            margin: 10
+                            margin: 5,
+                            formatter (params) {
+                                return params.split('').join('\n')
+                            }
                         }
-                    }],
+                    },
                     series: [{
                         type: 'bar',
                         yAxisIndex: 0,

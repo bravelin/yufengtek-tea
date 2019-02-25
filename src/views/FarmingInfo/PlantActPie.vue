@@ -48,11 +48,15 @@
                 const that = this
                 const container = that.container
                 const { seriesData, legendData } = that.handleChartData(datas)
+                console.log('legendData....', legendData)
                 const options = {
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}吨 ({d}%)'
+                        // formatter: '{b}：{c}吨 ({d}%)'
+                        formatter (params) {
+                            console.log('plantActPie...', params)
+                        }
                     },
                     legend: {
                         show: true,

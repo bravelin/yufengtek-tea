@@ -1,5 +1,9 @@
+<!--出库信息-->
 <template>
-    <div ref="container"></div>
+    <Plane class="out-line-wrap">
+        <PlaneTitle>今年出库信息</PlaneTitle>
+        <div class="plane-content" ref="container"></div>
+    </Plane>
 </template>
 <script>
     import { createNamespacedHelpers, mapState } from 'vuex'
@@ -7,11 +11,13 @@
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
 
-    const moduleNameSpace = ns.FARMING
+    const moduleNameSpace = ns.WAREHOUSE
+    const dataProp = 'thisYearOutDatas'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.plantActLineDatas`
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+
     export default {
-        name: 'farming-plant-act-line',
+        name: 'warehouse-out-line',
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
                 this.doInitOrRefreshChart()
@@ -27,7 +33,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].plantActLineDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -36,7 +42,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].plantActLineDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -49,7 +55,7 @@
                 const container = that.container
                 const { titles, lineDatas } = that.handleChartData(datas)
                 const options = {
-                    grid: { top: 10, left: 0, right: 0, bottom: 0, containLabel: true },
+                    grid: { top: 10, left: 0, right: 5, bottom: 0, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
                         formatter: '{b}：{c}' + '吨',
@@ -72,7 +78,7 @@
                         show: true,
                         splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.3)' } },
                         axisTick: { show: false },
-                        axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
+                        axisLine: { show: false, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
                         axisLabel: { show: true, color: '#fff' }
                     }],
                     color: ['#e54035'],

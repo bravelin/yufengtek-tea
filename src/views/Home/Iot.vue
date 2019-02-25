@@ -20,6 +20,7 @@
     import ns from '@/store/constants/ns'
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
+
     export default {
         name: 'app-iot',
         computed: {
