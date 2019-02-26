@@ -138,6 +138,11 @@
                                 borderWidth: 5,
                                 color: { colorStops: [{ offset: 0, color: '#821eff' }, { offset: 1, color: '#204fff' }] }
                             }
+                        },
+                        areaStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(130, 30, 255, 0.6)' }, { offset: 0.85, color: 'rgba(130, 30, 255, 0.3)' }], false)
+                            }
                         }
                     }]
                 }
@@ -155,7 +160,7 @@
                 series[0].data = lineDatas
                 xAxis[0].data = titles
                 tooltip.formatter = function (params) {
-                    return `时间：${params[0].name}<br/>${that.currFmName}：${params[0].data.value} ${that.chartUnit}`
+                    return `时间：${params[0].name}点<br/>${that.currFmName}：${params[0].data.value} ${that.chartUnit}`
                 }
                 chart.setOption({ series, xAxis, tooltip })
                 setTimeout(() => { chart.resize() }, 10)

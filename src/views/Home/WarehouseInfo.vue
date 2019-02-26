@@ -1,7 +1,7 @@
-<!--出库信息-->
+<!--入库出库-->
 <template>
-    <Plane class="out-warehouse-wrap">
-        <PlaneTitle>出库信息</PlaneTitle>
+    <Plane class="warehouse-info-wrap">
+        <PlaneTitle>入库出库</PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <FullScreenButton :link="{ name: 'farming' }"></FullScreenButton>
     </Plane>
@@ -13,10 +13,11 @@
     import types from '@/store/constants/types'
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.outWarehouseDatas`
+    const dataProp = 'warehouseDatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
 
     export default {
-        name: 'home-out-warehouse',
+        name: 'home-warehouse',
         computed: {
             ...thisMapState(['warehouseUnit'])
         },
@@ -35,7 +36,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].outWarehouseDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -44,7 +45,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].outWarehouseDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -59,7 +60,7 @@
                 const options = {
                     tooltip: {
                         trigger: 'axis',
-                        formatter: '{b}：{c}' + that.warehouseUnit,
+                        formatter: `{b0}<br/>{a0}: {c0}${that.warehouseUnit}<br/>{a1}: {c1}${that.warehouseUnit}`,
                         backgroundColor: 'rgba(0, 159, 253, 0.5)',
                         axisPointer: {
                             lineStyle: {
@@ -67,8 +68,20 @@
                             }
                         }
                     },
+                    legend: {
+                        show: true,
+                        data: ['入库', '出库'],
+                        right: 0,
+                        top: 18,
+                        itemGap: 15,
+                        textStyle: {
+                            color: '#d0d0d0',
+                            fontSize: 14,
+                            padding: [2, 0, 0, 2]
+                        }
+                    },
                     grid: {
-                        top: 15,
+                        top: 48,
                         bottom: 2,
                         left: 5,
                         right: 5,
@@ -87,17 +100,27 @@
                             lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
                         }
                     },
+                    color: ['#003366', '#2663bc'],
                     series: [{
-                        name: 'bar',
+                        name: '入库',
                         type: 'bar',
                         barWidth: 10,
                         itemStyle: {
                             normal: {
-                                barBorderRadius: 5,
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#00EFF8' }, { offset: 1, color: '#005DBE' }])
+                                barBorderRadius: 5
                             }
                         },
-                        data: values
+                        data: values[0]
+                    }, {
+                        name: '出库',
+                        type: 'bar',
+                        barWidth: 10,
+                        itemStyle: {
+                            normal: {
+                                barBorderRadius: 5
+                            }
+                        },
+                        data: values[1]
                     }]
                 }
                 that.chart = echarts.init(container)
@@ -112,17 +135,19 @@
                 const series = currOption.series
                 const xAxis = currOption.xAxis
                 xAxis[0].data = titles
-                series[0].data = values
+                series[0].data = values[0]
+                series[1].data = values[1]
                 chart.setOption({ series, xAxis })
                 setTimeout(() => { chart.resize() }, 10)
             },
             // 数据加工
             handleChartData (datas) {
                 const titles = []
-                const values = []
+                const values = [[], []]
                 datas.forEach(item => {
                     titles.push(item.date)
-                    values.push(item.data)
+                    values[0].push(item.in)
+                    values[1].push(item.out)
                 })
                 return { titles, values }
             },

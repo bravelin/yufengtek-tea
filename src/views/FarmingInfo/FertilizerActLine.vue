@@ -9,7 +9,8 @@
 
     const moduleNameSpace = ns.FARMING
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.fertilizerActLineDatas`
+    const dataProp = 'fertilizerActLineDatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     export default {
         name: 'farming-fertilizer-act-line',
         watch: {
@@ -27,7 +28,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].fertilizerActLineDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -36,7 +37,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].fertilizerActLineDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -83,7 +84,12 @@
                         symbolSize: 6,
                         showSymbol: true,
                         type: 'line',
-                        data: lineDatas
+                        data: lineDatas,
+                        areaStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(109, 252, 175, 0.6)' }, { offset: 0.85, color: 'rgba(109, 252, 175, 0.3)' }], false)
+                            }
+                        }
                     }]
                 }
                 that.chart = echarts.init(container)

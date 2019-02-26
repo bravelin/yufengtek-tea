@@ -81,7 +81,7 @@
                             },
                             itemStyle: {
                                 normal: {
-                                    color: 'rgba(109, 252, 175, 0.8)'
+                                    color: 'rgba(8, 175, 156, 0.75)'
                                 }
                             }
                         },
@@ -104,8 +104,8 @@
                             },
                             itemStyle: {
                                 normal: {
-                                    color: 'rgba(109, 252, 175, 0.9)',
-                                    shadowBlur: 10,
+                                    color: 'rgba(8, 175, 156, 0.75)',
+                                    shadowBlur: 5,
                                     shadowColor: '#333'
                                 }
                             },

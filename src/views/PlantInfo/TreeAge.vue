@@ -12,7 +12,8 @@
     import types from '@/store/constants/types'
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.treeAgeDistributeDatas`
+    const dataProp = 'treeAgeDistributeDatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
 
     export default {
         name: 'plant-tree-age',
@@ -34,7 +35,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].treeAgeDistributeDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -43,10 +44,10 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].treeAgeDistributeDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
-                        that.chart ? that.refreshChart(datas) : that.initChart(datas)
+                        that.chart ? that.refresh(datas) : that.init(datas)
                     }
                 }
             },
@@ -97,6 +98,18 @@
                                 barBorderRadius: 30,
                                 color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: '#00EFF8' }, { offset: 1, color: '#005DBE' }])
                             }
+                        },
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'insideRight',
+                                formatter (item) {
+                                    return `${item.value} 亩`
+                                },
+                                color: '#fff',
+                                fontSize: 14,
+                                offset: [0, 2]
+                            }
                         }
                     }]
                 }
@@ -121,7 +134,7 @@
                 const titles = []
                 const values = []
                 datas.forEach(item => {
-                    titles.push(item.place)
+                    titles.push(item.type)
                     values.push(item.data)
                 })
                 return { titles, values }

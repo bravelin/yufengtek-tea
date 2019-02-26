@@ -14,7 +14,8 @@
     import types from '@/store/constants/types'
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.farmingActdatas`
+    const dataProp = 'farmingActdatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
 
     export default {
         name: 'app-farming-info',
@@ -33,7 +34,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].farmingActdatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -42,7 +43,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].farmingActdatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -75,15 +76,15 @@
                     },
                     series: [{
                         type: 'pie',
-                        radius: ['51%', '89%'],
+                        radius: ['46%', '89%'],
                         center: ['44%', '50%'],
                         label: {
                             show: true,
                             position: 'inside',
                             formatter: '{d}%',
-                            fontSize: 14
+                            fontSize: 12
                         },
-                        color: ['#86D560', '#AF89D6', '#59ADF3'],
+                        color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
                         data: seriesData,
                         itemStyle: {
                             emphasis: {

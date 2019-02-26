@@ -46,7 +46,7 @@
                 const that = this
                 const data = that.$store.state[moduleNameSpace][dataProp]
                 if (that.container) {
-                    that.chart ? that.refreshChart(data) : that.initChart(data)
+                    that.chart ? that.refresh(data) : that.init(data)
                 }
             },
             // 创建图表
@@ -90,7 +90,8 @@
                 const chart = that.chart
                 const currOption = chart.getOption()
                 const series = currOption.series
-                series[0].data[1].label.normal.formatter = `\n${data}`
+                console.log('...series,,,', series)
+                series[0].data[1].label.formatter = `\n${data}`
                 chart.setOption({ series })
                 setTimeout(() => { chart.resize() }, 10)
             }

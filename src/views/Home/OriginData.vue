@@ -18,7 +18,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.cityDatas`
 
     export default {
-        name: 'origin-data',
+        name: 'home-origin-data',
         computed: {
             ...mapState(['screenFullState'])
         },
@@ -46,7 +46,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].farmingActdatas
+                const datas = that.$store.state[moduleNameSpace].cityDatas
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -99,10 +99,9 @@
             refresh (datas) {
                 const that = this
                 const chart = that.chart
-                const { seriesData } = that.handleChartData(datas)
                 const currOption = chart.getOption()
                 const series = currOption.series
-                series[0].data = seriesData
+                series[0].data = datas
                 chart.setOption({ series })
                 setTimeout(() => { chart.resize() }, 10)
             },

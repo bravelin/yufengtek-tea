@@ -1,9 +1,12 @@
 <!--采摘信息-->
 <template>
-    <div class="pick-info-wrap">
-        <div ref="container" class="chart-container"></div>
-        <div class="chart-title"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}吨</div></div>
-    </div>
+    <Plane class="pick-info-wrap">
+        <PlaneTitle>采摘信息</PlaneTitle>
+        <div class="plane-content">
+            <div ref="container" class="chart-container"></div>
+            <div class="chart-title"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}<span>吨</span></div></div>
+        </div>
+    </Plane>
 </template>
 <script>
     import { createNamespacedHelpers, mapState } from 'vuex'

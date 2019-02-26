@@ -97,6 +97,18 @@
                                 barBorderRadius: 30,
                                 color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: '#00EFF8' }, { offset: 1, color: '#005DBE' }])
                             }
+                        },
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'insideRight',
+                                formatter (item) {
+                                    return `${item.value} 亩`
+                                },
+                                color: '#fff',
+                                fontSize: 14,
+                                offset: [0, 2]
+                            }
                         }
                     }]
                 }

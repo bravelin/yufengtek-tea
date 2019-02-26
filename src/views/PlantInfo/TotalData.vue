@@ -1,7 +1,7 @@
 <!--总体数据-->
 <template>
     <Plane class="total-data-wrap">
-        <PlaneTitle>总体数据</PlaneTitle>
+        <PlaneTitle>统计数据</PlaneTitle>
         <div class="plane-content" ref="container"></div>
     </Plane>
 </template>
@@ -46,7 +46,7 @@
                 const datas = that.$store.state[moduleNameSpace].totalData
                 if (datas && datas.length) {
                     if (that.container) {
-                        that.chart ? that.refreshChart(datas) : that.initChart(datas)
+                        that.chart ? that.refresh(datas) : that.init(datas)
                     }
                 }
             },

@@ -1,15 +1,22 @@
 <template>
-    <div class="map-container"></div>
+    <div class="map-container" id="map-container"></div>
 </template>
 <script>
     import { createNamespacedHelpers } from 'vuex'
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import config from '@/lib/config'
+    import mapStyle from './mapStyle'
+
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const fmsDataProp = `$store.state.${moduleNameSpace}.fms`
     const monitorDataProp = `$store.state.${moduleNameSpace}.monitors`
+
+    let fmIconNormal = null
+    let fmIconActive = null
+    let cameraIconNormal = null
+    let cameraIconActive = null
 
     export default {
         name: 'ProductionMonitorMap',
@@ -35,25 +42,36 @@
         mounted () {
             const that = this
             that.$nextTick(() => {
-                const map = new AMap.Map(that.$el, {
-                    zoom: config.iotMonitorMap.zoom,
-                    center: config.iotMonitorMap.center,
-                    mapStyle: config.mapStyle, // 设置地图的显示样式
-                    viewMode: '2D', // 设置地图模式
-                    lang: 'zh_cn' // 设置地图语言类型
+                const map = new BMap.Map('map-container')
+                const mapCenterPoint = new BMap.Point(config.iotMonitorMap.center[0], config.iotMonitorMap.center[1])
+                map.centerAndZoom(mapCenterPoint, config.iotMonitorMap.zoom)
+                map.enableScrollWheelZoom(true)
+                map.setMapStyleV2({ styleJson: mapStyle })
+
+                // 标记的ICON对象初始化
+                fmIconNormal = new BMap.Icon(config.fmMarkerImgUrl.normal, new BMap.Size(23, 25), {
+                    anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
                 })
-                map.on('complete', () => {
-                    that.mapReady = true
-                    that.map = map
-                    if (that.mapMonitorMarkers.length == 0) {
-                        if (that.monitors.length) {
-                            that.addMonitorMarkers()
-                        }
-                        if (that.fms.length) {
-                            that.addFmMarkers()
-                        }
+                fmIconActive = new BMap.Icon(config.fmMarkerImgUrl.active, new BMap.Size(23, 25), {
+                    anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
+                })
+                cameraIconNormal = new BMap.Icon(config.monitorMarkerImgUrl.normal, new BMap.Size(23, 25), {
+                    anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
+                })
+                cameraIconActive = new BMap.Icon(config.monitorMarkerImgUrl.active, new BMap.Size(23, 25), {
+                    anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
+                })
+
+                that.map = map
+                that.mapReady = true
+                if (that.mapMonitorMarkers.length == 0) {
+                    if (that.monitors.length) {
+                        that.addMonitorMarkers()
                     }
-                })
+                    if (that.fms.length) {
+                        that.addFmMarkers()
+                    }
+                }
             })
         },
         methods: {
@@ -64,9 +82,8 @@
                 if (!map) {
                     return
                 }
-                map.remove(that.mapMonitorMarkers)
+                map.clearOverlays()
                 that.mapMonitorMarkers = that.monitors.map(item => that.createMarker(item))
-                map.add(that.mapMonitorMarkers)
             },
             // 增加fm标记
             addFmMarkers () {
@@ -75,30 +92,24 @@
                 if (!map) {
                     return
                 }
-                map.remove(that.mapFmMarkers)
+                map.clearOverlays()
                 that.mapFmMarkers = that.fms.map(item => that.createMarker(item))
-                map.add(that.mapFmMarkers)
             },
             // 创建标记
             createMarker (data) {
                 const that = this
                 const { name, lng, lat, id, type } = data
-                const position = new AMap.LngLat(lng, lat)
-                let imageUrl = ''
+                const position = new BMap.Point(lng, lat)
+                let icon = null
                 if (type == 'mn') {
-                    imageUrl = data.isActive ? config.monitorMarkerImgUrl.active : config.monitorMarkerImgUrl.normal
+                    icon = data.isActive ? cameraIconActive : cameraIconNormal
                 } else if (type == 'fm') {
-                    imageUrl = data.isActive ? config.fmMarkerImgUrl.active : config.fmMarkerImgUrl.normal
+                    icon = data.isActive ? fmIconActive : fmIconNormal
                 }
-                const marker = new AMap.Marker({
-                    position,
-                    offset: new AMap.Pixel(-11, -22),
-                    icon: imageUrl,
-                    title: name,
-                    zoom: 13
-                })
+                const marker = new BMap.Marker(position, { icon })
+                that.map.addOverlay(marker)
                 marker.self = data
-                marker.on('click', (e) => {
+                marker.addEventListener('click', (e) => {
                     that.doHandlerClickMarker(e.target.self, e.target)
                 })
                 return marker
@@ -119,7 +130,7 @@
                     if (oldActiveMarkerObjs[i].self.id == oldActiveMarkerData.id) {
                         oldActiveMarker = oldActiveMarkerObjs[i]
                         oldActiveMarkerObjs.splice(i, 1)
-                        map.remove(oldActiveMarker)
+                        map.removeOverlay(oldActiveMarker)
                         break
                     }
                 }
@@ -128,7 +139,7 @@
                 for (let j = 0; j < newActiveMarkerObjs.length; j++) {
                     if (newActiveMarkerObjs[j].self.id == data.id) {
                         newActiveMarkerObjs.splice(j, 1)
-                        map.remove(marker)
+                        map.removeOverlay(marker)
                         break
                     }
                 }
@@ -138,8 +149,6 @@
                 })
                 const obj1 = that.createMarker(oldActiveMarkerData)
                 const obj2 = that.createMarker(data)
-                map.add(obj1)
-                map.add(obj2)
                 oldActiveMarkerObjs.push(obj1)
                 newActiveMarkerObjs.push(obj2)
             }

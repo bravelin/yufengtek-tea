@@ -13,7 +13,8 @@
     import types from '@/store/constants/types'
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.amountRankDatas`
+    const dataProp = 'amountRankDatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
 
     export default {
         name: 'home-amount-rank',
@@ -35,7 +36,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].amountRankDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -44,7 +45,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].amountRankDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -109,21 +110,9 @@
                         itemStyle: {
                             normal: {
                                 barBorderRadius: 30,
-                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: '#00EFF8' }, { offset: 1, color: '#005DBE' }])
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{ offset: 0, color: '#003366' }, { offset: 1, color: '#2663bc' }])
                             }
                         }
-                        // label: {
-                        //     normal: {
-                        //         show: true,
-                        //         position: 'insideRight',
-                        //         formatter (item) {
-                        //             return `${item.value} ${that.amountRankUnit}`
-                        //         },
-                        //         color: '#fff',
-                        //         fontSize: 12,
-                        //         offset: [0, 2]
-                        //     }
-                        // }
                     }]
                 }
                 that.chart = echarts.init(container)
@@ -136,10 +125,10 @@
                 const { titles, values } = that.handleChartData(datas)
                 const currOption = chart.getOption()
                 const series = currOption.series
-                const yAxis = currOption.yAxis
+                const xAxis = currOption.xAxis
                 series[0].data = values
-                yAxis[0].data = titles
-                chart.setOption({ series, yAxis })
+                xAxis[0].data = titles
+                chart.setOption({ series, xAxis })
                 setTimeout(() => { chart.resize() }, 10)
             },
             // 数据加工

@@ -13,12 +13,13 @@
     import types from '@/store/constants/types'
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.varietiesDatas`
+    const dataProp = 'varietiesDatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
 
     export default {
         name: 'plant-tea-farm',
         computed: {
-            ...thisMapState(['varietiesDatas', 'varietiesTotalData'])
+            ...thisMapState(['varietiesTotalData'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
@@ -35,7 +36,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].varietiesDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -44,7 +45,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].varietiesDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)

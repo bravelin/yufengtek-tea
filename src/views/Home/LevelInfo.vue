@@ -1,6 +1,9 @@
 <!--制茶等级-->
 <template>
-    <div ref="container"></div>
+    <Plane class="level-info-wrap">
+        <PlaneTitle>制茶工艺</PlaneTitle>
+        <div class="plane-content" ref="container"></div>
+    </Plane>
 </template>
 <script>
     import { createNamespacedHelpers, mapState } from 'vuex'
@@ -9,7 +12,8 @@
     import types from '@/store/constants/types'
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.levelDatas`
+    const dataProp = 'levelDatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     export default {
         name: 'home-level-info',
         computed: {
@@ -31,7 +35,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].levelDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -40,7 +44,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].levelDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)

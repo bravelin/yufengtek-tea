@@ -87,7 +87,12 @@
                         data: lineDatas,
                         symbol: 'circle',
                         symbolSize: 6,
-                        showSymbol: true
+                        showSymbol: true,
+                        areaStyle: {
+                            normal: {
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(4, 165, 252, 0.7)' }, { offset: 0.85, color: 'rgba(4, 165, 252, 0.3)' }], false)
+                            }
+                        }
                     }]
                 }
                 that.chart = echarts.init(container)
