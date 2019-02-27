@@ -2,7 +2,7 @@
     <Plane class="count-stat-wrap">
         <PlaneTitle>溯源次数统计</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton></FullScreenButton>
+        <PlaneTools></PlaneTools>
     </Plane>
 </template>
 <script>

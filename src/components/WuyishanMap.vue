@@ -14,6 +14,40 @@
                 type: String,
                 default: '',
                 required: true
+            },
+            full: {
+                type: Boolean,
+                default: false,
+            }
+        },
+        watch: {
+            full () {
+                const that = this
+                setTimeout(() => {
+                    const chart = that.chart
+                    if (chart) {
+                        let options = null
+                        if (that.full) {
+                            options = {
+                                series: [{
+                                    label: {
+                                        normal: { textStyle: { fontSize: 16 } }
+                                    }
+                                }]
+                            }
+                        } else {
+                            options = {
+                                series: [{
+                                    label: {
+                                        normal: { textStyle: { fontSize: 12 } }
+                                    }
+                                }]
+                            }
+                        }
+                        chart.setOption(options)
+                        chart.resize()
+                    }
+                }, 100)
             }
         },
         data () {
@@ -79,7 +113,7 @@
                                     }
                                 },
                                 roam: true,
-                                zoom: 1.24,
+                                zoom: 1.2,
                                 data: that.mapDatas
                             }
                         ]

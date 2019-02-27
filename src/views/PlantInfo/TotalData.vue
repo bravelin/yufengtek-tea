@@ -3,7 +3,7 @@
     <Plane class="total-data-wrap" :full="totalDataFullState">
         <PlaneTitle>统计数据</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :full="totalDataFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="totalDataFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>

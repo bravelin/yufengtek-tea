@@ -6,7 +6,7 @@
             <ProtectionActPie></ProtectionActPie>
             <ProtectionActLine></ProtectionActLine>
         </div>
-        <FullScreenButton :full="protectionFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="protectionFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>

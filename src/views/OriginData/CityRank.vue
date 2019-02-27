@@ -2,7 +2,7 @@
     <Plane class="city-rank-wrap">
         <PlaneTitle>溯源城市排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton></FullScreenButton>
+        <PlaneTools></PlaneTools>
     </Plane>
 </template>
 <script>

@@ -4,7 +4,7 @@
         <PlaneTitle>山场品质</PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <div class="chart-title"><h4>山场比例</h4><div>{{ farmTotalArea }}<span>亩</span></div></div>
-        <FullScreenButton :full="teaFarmFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="teaFarmFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>

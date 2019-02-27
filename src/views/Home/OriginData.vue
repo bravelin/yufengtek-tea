@@ -3,7 +3,7 @@
     <Plane class="origin-wrap" :full="originDataFullState">
         <PlaneTitle>溯源排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :full="originDataFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="originDataFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -66,12 +66,16 @@
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}'
+                        formatter: '{b}：{c}',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
+                        textStyle: {
+                            fontSize: 14
+                        }
                     },
                     series: [{
                         type: 'wordCloud',
                         gridSize: 10,
-                        sizeRange: [14, 40],
+                        sizeRange: [14, 30],
                         rotationRange: [0, 0],
                         shape: 'circle',
                         autoSize: {
@@ -104,10 +108,19 @@
             refresh (datas) {
                 const that = this
                 const chart = that.chart
-                const currOption = chart.getOption()
-                const series = currOption.series
-                series[0].data = datas
-                chart.setOption({ series })
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        series: [{ data: datas, gridSize: 20, sizeRange: [14, 50] }],
+                        tooltip: { textStyle: { fontSize: 18 } }
+                    }
+                } else {
+                    options = {
+                        series: [{ data: datas, gridSize: 10, sizeRange: [14, 30] }],
+                        tooltip: { textStyle: { fontSize: 14 } }
+                    }
+                }
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 200)
             },
             // full state change

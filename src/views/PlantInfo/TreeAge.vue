@@ -3,7 +3,7 @@
     <Plane class="tree-age-wrap" :full="treeAgeFullState">
         <PlaneTitle>树龄分布</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :full="treeAgeFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="treeAgeFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>

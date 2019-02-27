@@ -4,7 +4,7 @@
         <PlaneTitle>茶树品种</PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <div class="chart-title"><h4>品种比例</h4><div>{{ varietiesTotalData }}<span>吨</span></div></div>
-        <FullScreenButton :full="teaVarietiesFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="teaVarietiesFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>

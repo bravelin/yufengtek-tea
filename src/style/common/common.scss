@@ -38,6 +38,7 @@
     position: relative;
     padding: 5px 10px;
     box-sizing: border-box;
+    transition: all 0.2s ease-out;
     >canvas{
         position: absolute;
         z-index: -1;
@@ -46,21 +47,8 @@
         right: 0;
         bottom: 0;
     }
-    .full-icon{
-        display: none;
-        position: absolute;
-        top: 8px;
-        right: 8px;
-        color: #b0b0b0;
-        cursor: pointer;
-        transition: color 0.3s ease-out;
-        z-index: 2;
-        &:hover{
-            color: #d0d0d0;
-        }
-    }
     &:hover{
-        .full-icon{
+        .panel-tools{
             display: block;
         }
     }
@@ -80,11 +68,31 @@
             font-size: 20px;
             font-weight: bold;
         }
-        .full-icon{
+        .panel-tools{
             top: 6px;
             right: 6px;
             font-size: 18px;
         }
+    }
+}
+.panel-tools{
+    display: none;
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    // border: 1px solid #f00;
+    z-index: 5;
+    .iconfont{
+        color: #b0b0b0;
+        cursor: pointer;
+        transition: color 0.3s ease-out;
+        z-index: 2;
+        &:hover{
+            color: #d0d0d0;
+        }
+    }
+    .full-icon{
+        margin-right: 10px;
     }
 }
 .plane-title{

@@ -81,6 +81,11 @@
         .chart-title{
             top: 50%;
         }
+        &.full-screen{
+            .chart-title>h4{
+                font-size: 20px;
+            }
+        }
     }
     .iot-wrap{
         .plane-container{

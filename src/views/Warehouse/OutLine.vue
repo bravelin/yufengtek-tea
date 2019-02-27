@@ -3,7 +3,7 @@
     <Plane class="out-line-wrap">
         <PlaneTitle>今年出库信息</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton></FullScreenButton>
+        <PlaneTools></PlaneTools>
     </Plane>
 </template>
 <script>

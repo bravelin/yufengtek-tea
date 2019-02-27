@@ -3,7 +3,7 @@
     <Plane class="warehouse-info-wrap" :full="warehouseFullState">
         <PlaneTitle>入库出库</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :full="warehouseFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="warehouseFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -66,11 +66,14 @@
                     tooltip: {
                         trigger: 'axis',
                         formatter: `{b0}<br/>{a0}: {c0} ${that.warehouseUnit}<br/>{a1}: {c1} ${that.warehouseUnit}`,
-                        backgroundColor: 'rgba(0, 159, 253, 0.5)',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: {
                             lineStyle: {
                                 color: 'rgba(238,238,238,0.4)'
                             }
+                        },
+                        textStyle: {
+                            fontSize: 14
                         }
                     },
                     legend: {
@@ -95,16 +98,16 @@
                     xAxis: {
                         data: titles,
                         axisLine: { lineStyle: { color: '#0c3b71' } },
-                        axisLabel: { margin: 10, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
+                        axisLabel: { margin: 8, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
                     },
-                    yAxis: {
+                    yAxis: [{
                         axisLine: { lineStyle: { color: '#0c3b71' } },
-                        axisLabel: { interval: 0, color: '#fff' },
+                        axisLabel: { margin: 8, interval: 0, color: '#fff', fontSize: 12 },
                         splitLine: {
                             show: true,
                             lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
                         }
-                    },
+                    }],
                     color: ['#003366', '#2663bc'],
                     series: [{
                         name: '入库',
@@ -136,23 +139,27 @@
                 const that = this
                 const chart = that.chart
                 const { titles, values } = that.handleChartData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                const xAxis = currOption.xAxis
-                xAxis[0].data = titles
-                series[0].data = values[0]
-                series[1].data = values[1]
-                let config = {}
+                let config = null
                 if (that[fullProp]) {
                     config = {
-                        grid: { top: 58, bottom: 20, left: 25, right: 25 }
+                        tooltip: { textStyle: { fontSize: 18 } },
+                        xAxis: [{ data: titles, axisLabel: { margin: 12, fontSize: 15 } }],
+                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
+                        grid: { top: 58, bottom: 20, left: 25, right: 25 },
+                        series: [{ barWidth: 20, data: values[0] }, { barWidth: 20, data: values[1] }],
+                        legend: { right: 20, textStyle: { fontSize: 16 } }
                     }
                 } else {
                     config = {
-                        grid: { top: 48, bottom: 2, left: 5, right: 5 }
+                        tooltip: { textStyle: { fontSize: 14 } },
+                        xAxis: [{ data: titles, axisLabel: { margin: 8, fontSize: 12 } }],
+                        yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
+                        grid: { top: 48, bottom: 2, left: 5, right: 5 },
+                        series: [{ barWidth: 10, data: values[0] }, { barWidth: 10, data: values[1] }],
+                        legend: { right: 0, textStyle: { fontSize: 14 } }
                     }
                 }
-                chart.setOption(Object.assign({ series, xAxis }, config))
+                chart.setOption(config)
                 setTimeout(() => { chart.resize() }, 100)
             },
             // 数据加工

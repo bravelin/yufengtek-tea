@@ -3,8 +3,8 @@
     <Plane class="farming-info-wrap" :full="farmingInfoFullState">
         <PlaneTitle>施肥信息</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <div class="chart-title"><h4>农事活动比</h4></div>
-        <FullScreenButton :full="farmingInfoFullState" @change="doFullStateChange"></FullScreenButton>
+        <!-- <div class="chart-title"><h4>农事活动比</h4></div> -->
+        <PlaneTools :full="farmingInfoFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -67,8 +67,20 @@
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{d}%'
+                        formatter: '{b}：{d}%',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
+                        textStyle: { fontSize: 14 }
                     },
+                    graphic: [{
+                        type: 'text',
+                        left: '36.5%',
+                        top: 'center',
+                        style: {
+                            text: '农事活动比',
+                            fill: '#d0d0d0',
+                            font: 'normal 14px "Microsoft YaHei", sans-serif'
+                        }
+                    }],
                     legend: {
                         show: true,
                         data: legendData,
@@ -111,12 +123,23 @@
                 const that = this
                 const chart = that.chart
                 const { seriesData, legendData } = that.handleChartData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                const legend = currOption.legend
-                series[0].data = seriesData
-                legend.data = legendData
-                chart.setOption({ series, legend })
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 18 } },
+                        series: [{ data: seriesData, label: { fontSize: 16 } }],
+                        legend: { data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
+                        graphic: [{ left: '40.9%', style: { font: 'normal bold 20px "Microsoft YaHei", sans-serif' } }]
+                    }
+                } else {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 14 } },
+                        series: [{ data: seriesData, label: { fontSize: 12 } }],
+                        legend: { data: legendData, right: '3%', itemGap: 15, top: 10, textStyle: { fontSize: 14 } },
+                        graphic: [{ left: '36.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } }]
+                    }
+                }
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工

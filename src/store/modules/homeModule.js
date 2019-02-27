@@ -26,7 +26,8 @@ export default {
         pickInfoFullState: false,
         warehouseFullState: false,
         originDataFullState: false,
-        levelInfoFullState: false
+        levelInfoFullState: false,
+        mapFullState: false
     },
     actions,
     mutations

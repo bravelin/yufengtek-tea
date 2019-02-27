@@ -4,9 +4,9 @@
         <PlaneTitle>采摘信息</PlaneTitle>
         <div class="plane-content">
             <div ref="container" class="chart-container"></div>
-            <div class="chart-title"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}<span>吨</span></div></div>
+            <!-- <div class="chart-title"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}<span>吨</span></div></div> -->
         </div>
-        <FullScreenButton :full="pickInfoFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="pickInfoFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -70,8 +70,29 @@
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}吨 ({d}%)'
+                        formatter: '{b}：{c}吨 ({d}%)',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
+                        textStyle: { fontSize: 14 }
                     },
+                    graphic: [{
+                        type: 'text',
+                        left: '36.5%',
+                        top: '40.5%',
+                        style: {
+                            text: '茶叶总产量',
+                            fill: '#d0d0d0',
+                            font: 'normal 14px "Microsoft YaHei", sans-serif'
+                        }
+                    }, {
+                        type: 'text',
+                        left: '36.5%',
+                        top: '50.5%',
+                        style: {
+                            text: `${that.teaTotalAmount} 吨`,
+                            fill: '#dfdfdf',
+                            font: 'normal bold 16px "Microsoft YaHei", sans-serif'
+                        }
+                    }],
                     legend: {
                         show: true,
                         data: legendData,
@@ -114,12 +135,43 @@
                 const that = this
                 const chart = that.chart
                 const { seriesData, legendData } = that.handleChartData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                const legend = currOption.legend
-                series[0].data = seriesData
-                legend.data = legendData
-                chart.setOption({ series, legend })
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 18 } },
+                        series: [{ data: seriesData, label: { fontSize: 16 } }],
+                        legend: { data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
+                        graphic: [
+                            { left: '40.5%', top: '40.5%', style: { font: 'normal 20px "Microsoft YaHei", sans-serif' } },
+                            {
+                                left: '41%',
+                                top: '50.5%',
+                                style: {
+                                    text: `${that.teaTotalAmount} 吨`,
+                                    font: 'normal bold 22px "Microsoft YaHei", sans-serif'
+                                }
+                            }
+                        ]
+                    }
+                } else {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 14 } },
+                        series: [{ data: seriesData, label: { fontSize: 12 } }],
+                        legend: { data: legendData, right: '3%', itemGap: 15, top: 10, textStyle: { fontSize: 14 } },
+                        graphic: [
+                            { left: '36.5%', top: '40.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } },
+                            {
+                                left: '36.5%',
+                                top: '50.5%',
+                                style: {
+                                    text: `${that.teaTotalAmount} 吨`,
+                                    font: 'normal bold 16px "Microsoft YaHei", sans-serif'
+                                }
+                            }
+                        ]
+                    }
+                }
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工

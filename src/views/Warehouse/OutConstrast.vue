@@ -3,7 +3,7 @@
     <Plane class="out-constrast-wrap">
         <PlaneTitle>历史出库对比</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton></FullScreenButton>
+        <PlaneTools></PlaneTools>
     </Plane>
 </template>
 <script>

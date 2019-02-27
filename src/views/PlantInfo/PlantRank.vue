@@ -3,7 +3,7 @@
     <Plane class="plant-rank-wrap" :full="plantRankFullState">
         <PlaneTitle>种植排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :full="plantRankFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="plantRankFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>

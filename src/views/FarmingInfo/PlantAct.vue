@@ -6,7 +6,7 @@
             <PlantActPie></PlantActPie>
             <PlantActLine></PlantActLine>
         </div>
-        <FullScreenButton :full="plantFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="plantFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>

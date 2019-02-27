@@ -6,7 +6,7 @@
             <FertilizerActPie></FertilizerActPie>
             <FertilizerActLine></FertilizerActLine>
         </div>
-        <FullScreenButton :full="fertilizerFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="fertilizerFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>

@@ -3,7 +3,7 @@
     <Plane class="level-info-wrap" :full="levelInfoFullState">
         <PlaneTitle>制茶工艺</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :full="levelInfoFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="levelInfoFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -67,7 +67,9 @@
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}吨 ({d}%)'
+                        formatter: '{b}：{c}吨 ({d}%)',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
+                        textStyle: { fontSize: 14 }
                     },
                     legend: {
                         show: true,
@@ -111,12 +113,21 @@
                 const that = this
                 const chart = that.chart
                 const { seriesData, legendData } = that.handleChartData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                const legend = currOption.legend
-                series[0].data = seriesData
-                legend.data = legendData
-                chart.setOption({ series, legend })
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 18 } },
+                        series: [{ data: seriesData, label: { fontSize: 16 } }],
+                        legend: { data: legendData, right: '4%', top: 20, itemGap: 20, textStyle: { fontSize: 16 } }
+                    }
+                } else {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 14 } },
+                        series: [{ data: seriesData, label: { fontSize: 12 } }],
+                        legend: { data: legendData, right: '3%', top: 10, itemGap: 15, textStyle: { fontSize: 14 } }
+                    }
+                }
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工

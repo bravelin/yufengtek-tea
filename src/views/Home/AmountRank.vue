@@ -3,7 +3,7 @@
     <Plane class="amount-rank-wrap" :full="amountRankFullState">
         <PlaneTitle>茶树排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :full="amountRankFullState" @change="doFullStateChange"></FullScreenButton>
+        <PlaneTools :full="amountRankFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -69,7 +69,7 @@
                     tooltip: {
                         trigger: 'axis',
                         formatter: '{b}：{c}' + ' 亩',
-                        backgroundColor: 'rgba(0, 159, 253, 0.5)',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: {
                             lineStyle: {
                                 color: 'rgba(238,238,238,0.4)'
@@ -131,30 +131,25 @@
                 const that = this
                 const chart = that.chart
                 const { titles, values } = that.handleChartData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                const xAxis = currOption.xAxis
-                series[0].data = values
-                xAxis[0].data = titles
-                let options = {}
+                let options = null
                 if (that[fullProp]) {
                     options = {
-                        grid: { top: 20, left: 20, right: 20, bottom: 20 },
-                        xAxis: { axisLabel: { margin: 10, fontSize: 15 } },
-                        yAxis: [{ axisLabel: { margin: 10, fontSize: 15 } }],
+                        grid: { top: 25, left: 20, right: 20, bottom: 20 },
+                        xAxis: { axisLabel: { margin: 12, fontSize: 15 }, data: titles },
+                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
                         tooltip: { textStyle: { fontSize: 18 } },
-                        series: [{ barWidth: 20 }]
+                        series: [{ barWidth: 20, data: values }]
                     }
                 } else {
                     options = {
                         grid: { top: 10, left: 5, right: 10, bottom: 0 },
-                        xAxis: { axisLabel: { margin: 5, fontSize: 12 } },
+                        xAxis: { axisLabel: { margin: 5, fontSize: 12 }, data: titles },
                         yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } },
-                        series: [{ barWidth: 10 }]
+                        series: [{ barWidth: 10, data: values }]
                     }
                 }
-                chart.setOption(Object.assign({ series, xAxis }, options))
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 100)
             },
             // 数据加工
