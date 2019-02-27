@@ -70,11 +70,16 @@
                 that.chart.setOption(options)
             },
             getSerials (datas) {
+                const that = this
                 const series = []
                 let centerX = 0
                 let centerY = '50%'
                 let textColor = '#70ffac'
                 const centerXArr = ['17%', '50%', '83%']
+                let fontSizeArr = [15, 21]
+                if (that[fullProp]) {
+                    fontSizeArr = [20, 28]
+                }
                 datas.forEach((item, index) => {
                     centerX = centerXArr[index]
                     series.push({
@@ -89,15 +94,15 @@
                         data: [
                             {
                                 value: 75,
-                                label: { normal: { padding: [0, 0, 8], formatter: item.label, textStyle: { color: '#fff', fontSize: 15 } } }
+                                label: { normal: { padding: [0, 0, 8], formatter: item.label, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             },
                             {
                                 value: 25,
-                                label: { normal: { formatter: `\n${item.data}`, textStyle: { color: textColor, fontSize: 21, fontWeight: 'bold' } } }
+                                label: { normal: { formatter: `\n${item.data}`, textStyle: { color: textColor, fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
                             },
                             {
                                 value: 0,
-                                label: { normal: { formatter: item.unit, textStyle: { color: '#fff', fontSize: 15 } } }
+                                label: { normal: { formatter: item.unit, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             }
                         ]
                     })

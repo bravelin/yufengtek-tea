@@ -1,7 +1,8 @@
 <!--武夷地图-->
 <template>
-    <Plane class="map-wrap">
-        <WuyishanMap @change="doMapChange" :curr="currSelectedRegion"></WuyishanMap>
+    <Plane class="map-wrap" :full="mapFullState">
+        <WuyishanMap @change="doMapChange" :curr="currSelectedRegion" :full="mapFullState"></WuyishanMap>
+        <PlaneTools :full="mapFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -9,16 +10,17 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import WuyishanMap from '@/components/WuyishanMap'
-
+    const fullProp = 'mapFullState'
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
+
     export default {
         name: 'PlantMap',
         components: {
             WuyishanMap
         },
         computed: {
-            ...thisMapState(['currSelectedRegion'])
+            ...thisMapState(['currSelectedRegion', fullProp])
         },
         methods: {
             doMapChange (place) {
@@ -29,6 +31,13 @@
                 store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TREE_AGE_DATA)
                 store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_FARM_DATA)
                 store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_VARIETIES_DATA)
+            },
+            doFullStateChange (payload) {
+                const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

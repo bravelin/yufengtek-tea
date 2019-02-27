@@ -50,7 +50,6 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                console.log('doInitOrRefreshChart......plant rank')
                 const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
@@ -65,7 +64,7 @@
                 const { titles, values } = that.handleChartData(datas)
                 const options = {
                     grid: {
-                        top: 0, left: 60, right: 20, bottom: 15
+                        top: 0, left: 3, right: 16, bottom: 5, containLabel: true
                     },
                     xAxis: {
                         show: true,
@@ -74,7 +73,7 @@
                             lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
                         },
                         axisLine: { lineStyle: { color: 'rgba(0,0,0,0)' } },
-                        axisLabel: { margin: 5, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
+                        axisLabel: { margin: 8, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
                     },
                     yAxis: [{
                         show: true,
@@ -92,18 +91,18 @@
                         axisLabel: {
                             color: '#fff',
                             fontSize: 12,
-                            margin: 10
+                            margin: 8
                         }
                     }],
                     series: [{
                         type: 'bar',
                         yAxisIndex: 0,
                         data: values,
-                        barWidth: 10,
+                        barWidth: 18,
                         itemStyle: {
                             normal: {
                                 barBorderRadius: 30,
-                                color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [{ offset: 0, color: '#00EFF8' }, { offset: 1, color: '#005DBE' }])
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{ offset: 0, color: '#003366' }, { offset: 1, color: '#2663bc' }])
                             }
                         },
                         label: {
@@ -128,12 +127,23 @@
                 const that = this
                 const chart = that.chart
                 const { titles, values } = that.handleChartData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                const yAxis = currOption.yAxis
-                series[0].data = values
-                yAxis[0].data = titles
-                chart.setOption({ series, yAxis })
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        grid: { top: 20, left: 20, right: 35, bottom: 20 },
+                        series: [{ data: values, barWidth: 25, label: { normal: { fontSize: 16 } } }],
+                        yAxis: [{ data: titles, axisLabel: { margin: 12, fontSize: 18 } }],
+                        xAxis: { axisLabel: { margin: 12, fontSize: 18 } }
+                    }
+                } else {
+                    options = {
+                        grid: { top: 0, left: 3, right: 16, bottom: 5 },
+                        series: [{ data: values, barWidth: 18, label: { normal: { fontSize: 14 } } }],
+                        yAxis: [{ data: titles, axisLabel: { margin: 8, fontSize: 12 } }],
+                        xAxis: { axisLabel: { margin: 8, fontSize: 12 } }
+                    }
+                }
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工

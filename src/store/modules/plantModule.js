@@ -22,18 +22,21 @@ export default {
         // 山场品质
         farmTotalArea: 0,
         teaFarmTypeDatas: [],
+
         // 茶树品种
         varietiesTotalData: 0,
         varietiesDatas: [],
         treeAgeDistributeUnit: '亩',
         treeAgeDistributeDatas: [],
         totalData: [],
+
         // 全屏状态控制
         totalDataFullState: false,
         treeAgeFullState: false,
         teaVarietiesFullState: false,
         plantRankFullState: false,
-        teaFarmFullState: false
+        teaFarmFullState: false,
+        mapFullState: false
     },
     actions,
     mutations
