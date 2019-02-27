@@ -28,10 +28,10 @@ export default {
             { type: '20年以上', data: 982 }
         ]
         setTimeout(() => {
-            const baseData = context.state.currSelectedRegion == '' ? 5020 : 1000
+            const baseData = context.state.currSelectedRegion == '' ? 3000 : 1000
             context.state.treeAgeDistributeDatas = tempData.map(item => {
                 return {
-                    type: item.type, data: parseInt(Math.random() * baseData)
+                    type: item.type, data: parseInt(Math.random() * baseData) + 900
                 }
             })
         }, 300)
@@ -49,7 +49,7 @@ export default {
             let total = 0
             let data = 0
             context.state.teaFarmTypeDatas = tempData.map(item => {
-                data = parseInt(Math.random() * baseData)
+                data = parseInt(Math.random() * baseData) + 300
                 total += data
                 return {
                     label: item.label, value: data

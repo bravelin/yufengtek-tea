@@ -2,6 +2,7 @@
     <Plane class="city-rank-wrap">
         <PlaneTitle>溯源城市排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
+        <FullScreenButton></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -99,7 +100,7 @@
                 const series = currOption.series
                 series[0].data = seriesData
                 chart.setOption({ series })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // full state change
             doSwitchFullState () {

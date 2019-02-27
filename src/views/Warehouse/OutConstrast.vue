@@ -3,6 +3,7 @@
     <Plane class="out-constrast-wrap">
         <PlaneTitle>历史出库对比</PlaneTitle>
         <div class="plane-content" ref="container"></div>
+        <FullScreenButton></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -136,7 +137,7 @@
                 xAxis[0].data = titles
                 legend.data = legends
                 chart.setOption({ series, xAxis, legend })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {

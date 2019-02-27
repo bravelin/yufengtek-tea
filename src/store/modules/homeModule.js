@@ -19,6 +19,14 @@ export default {
         warehouseDatas: [],
         cityDatas: [],
         currSelectedRegion: '', // 当前所选的区域，空值为全市
+
+        // 全屏状态
+        amountRankFullState: false,
+        farmingInfoFullState: false,
+        pickInfoFullState: false,
+        warehouseFullState: false,
+        originDataFullState: false,
+        levelInfoFullState: false
     },
     actions,
     mutations

@@ -12,7 +12,6 @@
                 <div>{{ monitorAmount }}</div>
             </div>
         </div>
-        <FullScreenButton :link="{ name: 'iot' }" :full="screenFullState"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -24,8 +23,7 @@
     export default {
         name: 'app-iot',
         computed: {
-            ...thisMapState(['cameraAmount', 'monitorAmount']),
-            ...mapState(['screenFullState'])
+            ...thisMapState(['cameraAmount', 'monitorAmount'])
         }
     }
 </script>

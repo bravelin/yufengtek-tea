@@ -1,9 +1,9 @@
 <!--茶树排行-->
 <template>
-    <Plane class="amount-rank-wrap">
+    <Plane class="amount-rank-wrap" :full="amountRankFullState">
         <PlaneTitle>茶树排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :link="{ name: 'farming' }"></FullScreenButton>
+        <FullScreenButton :full="amountRankFullState" @change="doFullStateChange"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -14,15 +14,20 @@
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'amountRankDatas'
+    const fullProp = 'amountRankFullState'
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'home-amount-rank',
         computed: {
-            ...thisMapState(['amountRankUnit'])
+            ...thisMapState(['amountRankUnit', fullProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -63,12 +68,15 @@
                     },
                     tooltip: {
                         trigger: 'axis',
-                        formatter: '{b}：{c}' + '亩',
+                        formatter: '{b}：{c}' + ' 亩',
                         backgroundColor: 'rgba(0, 159, 253, 0.5)',
                         axisPointer: {
                             lineStyle: {
                                 color: 'rgba(238,238,238,0.4)'
                             }
+                        },
+                        textStyle: {
+                            fontSize: 14
                         }
                     },
                     yAxis: [{
@@ -128,8 +136,26 @@
                 const xAxis = currOption.xAxis
                 series[0].data = values
                 xAxis[0].data = titles
-                chart.setOption({ series, xAxis })
-                setTimeout(() => { chart.resize() }, 10)
+                let options = {}
+                if (that[fullProp]) {
+                    options = {
+                        grid: { top: 20, left: 20, right: 20, bottom: 20 },
+                        xAxis: { axisLabel: { margin: 10, fontSize: 15 } },
+                        yAxis: [{ axisLabel: { margin: 10, fontSize: 15 } }],
+                        tooltip: { textStyle: { fontSize: 18 } },
+                        series: [{ barWidth: 20 }]
+                    }
+                } else {
+                    options = {
+                        grid: { top: 10, left: 5, right: 10, bottom: 0 },
+                        xAxis: { axisLabel: { margin: 5, fontSize: 12 } },
+                        yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
+                        tooltip: { textStyle: { fontSize: 14 } },
+                        series: [{ barWidth: 10 }]
+                    }
+                }
+                chart.setOption(Object.assign({ series, xAxis }, options))
+                setTimeout(() => { chart.resize() }, 100)
             },
             // 数据加工
             handleChartData (datas) {
@@ -142,8 +168,12 @@
                 return { titles, values }
             },
             // full state change
-            doSwitchFullState () {
+            doFullStateChange (payload) {
                 const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

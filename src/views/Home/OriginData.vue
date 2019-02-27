@@ -1,9 +1,9 @@
 <!--溯源排行-->
 <template>
-    <Plane class="origin-wrap">
+    <Plane class="origin-wrap" :full="originDataFullState">
         <PlaneTitle>溯源排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :link="{ name: 'origin' }" :full="screenFullState"></FullScreenButton>
+        <FullScreenButton :full="originDataFullState" @change="doFullStateChange"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -16,14 +16,19 @@
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.cityDatas`
+    const fullProp = 'originDataFullState'
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'home-origin-data',
         computed: {
-            ...mapState(['screenFullState'])
+            ...thisMapState([fullProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -103,11 +108,15 @@
                 const series = currOption.series
                 series[0].data = datas
                 chart.setOption({ series })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // full state change
-            doSwitchFullState () {
+            doFullStateChange (payload) {
                 const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

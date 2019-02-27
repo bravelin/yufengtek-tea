@@ -3,6 +3,7 @@
     <Plane class="in-line-wrap">
         <PlaneTitle>今年入库信息</PlaneTitle>
         <div class="plane-content" ref="container"></div>
+        <FullScreenButton></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -112,7 +113,7 @@
                 series[0].data = lineDatas
                 xAxis[0].data = titles
                 chart.setOption({ series, xAxis, tooltip })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {

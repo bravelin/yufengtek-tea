@@ -2,6 +2,7 @@
     <Plane class="count-stat-wrap">
         <PlaneTitle>溯源次数统计</PlaneTitle>
         <div class="plane-content" ref="container"></div>
+        <FullScreenButton></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -109,7 +110,7 @@
                 series[0].data = lineDatas
                 xAxis[0].data = titles
                 chart.setOption({ series, xAxis })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {

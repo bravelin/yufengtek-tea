@@ -17,6 +17,7 @@ const types = [
     'FARMING_GET_PLANT_ACT_DATA',
     'FARMING_GET_FERTILIZER_ACT_DATA',
     'FARMING_GET_PROTECTION_ACT_DATA',
+    'FARMING_CHANGE_FULL_STATE',
     // ***************************************************************出库入库
     'WAREHOUSE_CHANGE_CURR_REGION', // 切换当前选中的地图区域
     'WAREHOUSE_GET_TODAY_DATA',
@@ -30,6 +31,7 @@ const types = [
     'PLANT_GET_TREE_AGE_DATA', // 获取树龄分布数据
     'PLANT_GET_TEA_FARM_DATA', // 获取山场品质数据
     'PLANT_GET_TEA_VARIETIES_DATA', // 获取茶树品种数据
+    'PLANT_CHANGE_FULL_STATE',
     // ***************************************************************首页
     'HOME_CHANGE_CURR_REGION', // 切换当前选中的地图区域
     'HOME_GET_AMOUNT_RANK_DATA', // 获取茶树排行数据
@@ -39,6 +41,7 @@ const types = [
     'HOME_GET_CITY_DATA', // 获取城市溯源排行
     'HOME_GET_MONITOR_AMOUNT', // 获取监控设备数据
     'HOME_GET_TEA_LEVEL_DATA', // 获取制茶等级数据
+    'HOME_CHANGE_FULL_STATE', // 更改Plane图表的全屏状态
 ]
 
 const typesObj = {}

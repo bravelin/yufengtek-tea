@@ -1,11 +1,12 @@
 <!--采摘信息-->
 <template>
-    <Plane class="pick-info-wrap">
+    <Plane class="pick-info-wrap" :full="pickInfoFullState">
         <PlaneTitle>采摘信息</PlaneTitle>
         <div class="plane-content">
             <div ref="container" class="chart-container"></div>
             <div class="chart-title"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}<span>吨</span></div></div>
         </div>
+        <FullScreenButton :full="pickInfoFullState" @change="doFullStateChange"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -17,15 +18,20 @@
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.pickDatas`
+    const fullProp = 'pickInfoFullState'
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'home-pick-info',
         computed: {
-            ...thisMapState(['teaTotalAmount']),
+            ...thisMapState(['teaTotalAmount', fullProp]),
             ...mapState(['screenFullState'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -114,7 +120,7 @@
                 series[0].data = seriesData
                 legend.data = legendData
                 chart.setOption({ series, legend })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {
@@ -130,8 +136,12 @@
                 return { legendData, seriesData }
             },
             // full state change
-            doSwitchFullState () {
+            doFullStateChange (payload) {
                 const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

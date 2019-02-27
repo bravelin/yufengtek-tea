@@ -1,8 +1,9 @@
 <!--树龄分布-->
 <template>
-    <Plane class="tree-age-wrap">
+    <Plane class="tree-age-wrap" :full="treeAgeFullState">
         <PlaneTitle>树龄分布</PlaneTitle>
         <div class="plane-content" ref="container"></div>
+        <FullScreenButton :full="treeAgeFullState" @change="doFullStateChange"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -14,14 +15,19 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'treeAgeDistributeDatas'
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullProp = 'treeAgeFullState'
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'plant-tree-age',
         computed: {
-            ...thisMapState(['treeAgeDistributeUnit'])
+            ...thisMapState(['treeAgeDistributeUnit', fullProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -127,7 +133,7 @@
                 series[0].data = values
                 yAxis[0].data = titles
                 chart.setOption({ series, yAxis })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {
@@ -138,6 +144,14 @@
                     values.push(item.data)
                 })
                 return { titles, values }
+            },
+            // full state change
+            doFullStateChange (payload) {
+                const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

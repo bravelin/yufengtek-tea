@@ -1,9 +1,10 @@
 <!--茶树品种-->
 <template>
-    <Plane class="tea-varieties-wrap">
+    <Plane class="tea-varieties-wrap" :full="teaVarietiesFullState">
         <PlaneTitle>茶树品种</PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <div class="chart-title"><h4>品种比例</h4><div>{{ varietiesTotalData }}<span>吨</span></div></div>
+        <FullScreenButton :full="teaVarietiesFullState" @change="doFullStateChange"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -15,14 +16,19 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'varietiesDatas'
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullProp = 'teaVarietiesFullState'
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'plant-tea-farm',
         computed: {
-            ...thisMapState(['varietiesTotalData'])
+            ...thisMapState(['varietiesTotalData', fullProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -111,7 +117,7 @@
                 series[0].data = seriesData
                 legend.data = legendData
                 chart.setOption({ series, legend })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             doHandlerData (datas) {
                 const that = this
@@ -124,6 +130,14 @@
                     legendData.push(item.label)
                 }
                 return { legendData, seriesData }
+            },
+            // full state change
+            doFullStateChange (payload) {
+                const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

@@ -1,8 +1,9 @@
 <!--总体数据-->
 <template>
-    <Plane class="total-data-wrap">
+    <Plane class="total-data-wrap" :full="totalDataFullState">
         <PlaneTitle>统计数据</PlaneTitle>
         <div class="plane-content" ref="container"></div>
+        <FullScreenButton :full="totalDataFullState" @change="doFullStateChange"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -13,14 +14,19 @@
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.totalData`
+    const fullProp = 'totalDataFullState'
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'plant-total-data',
         computed: {
-            ...thisMapState(['totalData'])
+            ...thisMapState(['totalData', fullProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -105,7 +111,15 @@
                 const currOption = chart.getOption()
                 const series = that.getSerials(datas)
                 chart.setOption({ series })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
+            },
+            // full state change
+            doFullStateChange (payload) {
+                const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

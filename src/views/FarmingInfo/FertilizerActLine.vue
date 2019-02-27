@@ -11,10 +11,15 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'fertilizerActLineDatas'
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullProp = 'fertilizerFullState'
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
     export default {
         name: 'farming-fertilizer-act-line',
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -107,7 +112,7 @@
                 series[0].data = lineDatas
                 xAxis[0].data = titles
                 chart.setOption({ series, xAxis, tooltip })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {

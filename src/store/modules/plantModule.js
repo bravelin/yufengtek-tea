@@ -27,7 +27,13 @@ export default {
         varietiesDatas: [],
         treeAgeDistributeUnit: '亩',
         treeAgeDistributeDatas: [],
-        totalData: []
+        totalData: [],
+        // 全屏状态控制
+        totalDataFullState: false,
+        treeAgeFullState: false,
+        teaVarietiesFullState: false,
+        plantRankFullState: false,
+        teaFarmFullState: false
     },
     actions,
     mutations

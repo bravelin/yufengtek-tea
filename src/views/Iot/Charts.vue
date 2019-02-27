@@ -163,7 +163,7 @@
                     return `时间：${params[0].name}点<br/>${that.currFmName}：${params[0].data.value} ${that.chartUnit}`
                 }
                 chart.setOption({ series, xAxis, tooltip })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             doHandlerData (list) {
                 const titles = []

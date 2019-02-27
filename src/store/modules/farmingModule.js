@@ -10,7 +10,10 @@ export default {
         fertilizerActPieDatas: [],
         fertilizerActLineDatas: [],
         protectionActPieDatas: [],
-        protectionActLineDatas: []
+        protectionActLineDatas: [],
+        plantFullState: false,
+        protectionFullState: false,
+        fertilizerFullState: false
     },
     actions,
     mutations

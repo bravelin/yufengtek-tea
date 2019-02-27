@@ -126,7 +126,7 @@
                 series[0].data = datas
                 series[1].data = datas.sort((a, b) => { return b.value - a.value }).slice(0, 6)
                 chart.setOption({ series })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             }
         }
     }

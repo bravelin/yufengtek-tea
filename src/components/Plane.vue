@@ -1,5 +1,5 @@
 <template>
-    <div class="plane">
+    <div class="plane" :class="{ 'full-screen' : full }">
         <canvas ref="bg"></canvas>
         <slot></slot>
     </div>
@@ -7,6 +7,18 @@
 <script>
     export default {
         name: 'Plane',
+        props: {
+            full: {
+                type: Boolean,
+                default: false
+            }
+        },
+        watch: {
+            full () {
+                const that = this
+                setTimeout(() => { that.draw() }, 500)
+            }
+        },
         mounted () {
             const that = this
             that.$nextTick(() => {

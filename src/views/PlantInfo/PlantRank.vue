@@ -1,8 +1,9 @@
 <!--种植排行-->
 <template>
-    <Plane class="plant-rank-wrap">
+    <Plane class="plant-rank-wrap" :full="plantRankFullState">
         <PlaneTitle>种植排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
+        <FullScreenButton :full="plantRankFullState" @change="doFullStateChange"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -12,15 +13,21 @@
     import types from '@/store/constants/types'
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.amountRankDatas`
+    const dataProp = 'amountRankDatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullProp = 'plantRankFullState'
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'plant-amount-rank',
         computed: {
-            ...thisMapState(['amountRankUnit'])
+            ...thisMapState(['amountRankUnit', fullProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -34,7 +41,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].amountRankDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -43,10 +50,11 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].amountRankDatas
+                console.log('doInitOrRefreshChart......plant rank')
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
-                        that.chart ? that.refreshChart(datas) : that.initChart(datas)
+                        that.chart ? that.refresh(datas) : that.init(datas)
                     }
                 }
             },
@@ -126,7 +134,7 @@
                 series[0].data = values
                 yAxis[0].data = titles
                 chart.setOption({ series, yAxis })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {
@@ -137,6 +145,14 @@
                     values.push(item.data)
                 })
                 return { titles, values }
+            },
+            // full state change
+            doFullStateChange (payload) {
+                const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

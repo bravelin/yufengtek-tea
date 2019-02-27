@@ -11,10 +11,16 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'plantActPieDatas'
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullProp = 'plantFullState'
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+
     export default {
         name: 'farming-plant-act-pie',
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -106,7 +112,7 @@
                 series[0].data = seriesData
                 legend.data = legendData
                 chart.setOption({ series, legend })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {

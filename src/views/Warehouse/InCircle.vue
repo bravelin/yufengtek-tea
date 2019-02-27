@@ -93,7 +93,7 @@
                 console.log('...series,,,', series)
                 series[0].data[1].label.formatter = `\n${data}`
                 chart.setOption({ series })
-                setTimeout(() => { chart.resize() }, 10)
+                setTimeout(() => { chart.resize() }, 200)
             }
         }
     }

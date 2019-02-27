@@ -4,7 +4,6 @@
         <div class="plane-content">
             <WuyishanMap @change="doMapChange" :curr="currSelectedRegion"></WuyishanMap>
         </div>
-        <FullScreenButton :link="{ name: 'plant' }" :full="screenFullState"></FullScreenButton>
     </Plane>
 </template>
 <script>

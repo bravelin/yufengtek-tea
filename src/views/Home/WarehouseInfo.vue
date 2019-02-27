@@ -1,9 +1,9 @@
 <!--入库出库-->
 <template>
-    <Plane class="warehouse-info-wrap">
+    <Plane class="warehouse-info-wrap" :full="warehouseFullState">
         <PlaneTitle>入库出库</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <FullScreenButton :link="{ name: 'farming' }"></FullScreenButton>
+        <FullScreenButton :full="warehouseFullState" @change="doFullStateChange"></FullScreenButton>
     </Plane>
 </template>
 <script>
@@ -14,15 +14,20 @@
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'warehouseDatas'
+    const fullProp = 'warehouseFullState'
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'home-warehouse',
         computed: {
-            ...thisMapState(['warehouseUnit'])
+            ...thisMapState(['warehouseUnit', fullProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -60,7 +65,7 @@
                 const options = {
                     tooltip: {
                         trigger: 'axis',
-                        formatter: `{b0}<br/>{a0}: {c0}${that.warehouseUnit}<br/>{a1}: {c1}${that.warehouseUnit}`,
+                        formatter: `{b0}<br/>{a0}: {c0} ${that.warehouseUnit}<br/>{a1}: {c1} ${that.warehouseUnit}`,
                         backgroundColor: 'rgba(0, 159, 253, 0.5)',
                         axisPointer: {
                             lineStyle: {
@@ -137,8 +142,18 @@
                 xAxis[0].data = titles
                 series[0].data = values[0]
                 series[1].data = values[1]
-                chart.setOption({ series, xAxis })
-                setTimeout(() => { chart.resize() }, 10)
+                let config = {}
+                if (that[fullProp]) {
+                    config = {
+                        grid: { top: 58, bottom: 20, left: 25, right: 25 }
+                    }
+                } else {
+                    config = {
+                        grid: { top: 48, bottom: 2, left: 5, right: 5 }
+                    }
+                }
+                chart.setOption(Object.assign({ series, xAxis }, config))
+                setTimeout(() => { chart.resize() }, 100)
             },
             // 数据加工
             handleChartData (datas) {
@@ -152,8 +167,12 @@
                 return { titles, values }
             },
             // full state change
-            doSwitchFullState () {
+            doFullStateChange (payload) {
                 const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }
