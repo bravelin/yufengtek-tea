@@ -47,6 +47,17 @@
             store.dispatch(moduleNameSpace + '/' + types.HOME_GET_CITY_DATA)
             store.dispatch(moduleNameSpace + '/' + types.HOME_GET_MONITOR_AMOUNT)
             store.dispatch(moduleNameSpace + '/' + types.HOME_GET_TEA_LEVEL_DATA)
+        },
+        beforeDestroy () {
+            const that = this
+            const store = that.$store
+            const fullProps = ['mapFullState', 'amountRankFullState', 'farmingInfoFullState', 'pickInfoFullState', 'warehouseFullState', 'originDataFullState', 'levelInfoFullState']
+            fullProps.forEach(prop => {
+                store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
+                    fullStateName: prop,
+                    state: false
+                })
+            })
         }
     }
 </script>

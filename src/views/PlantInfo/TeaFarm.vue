@@ -3,7 +3,7 @@
     <Plane class="tea-farm-wrap" :full="teaFarmFullState">
         <PlaneTitle>山场品质</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <div class="chart-title"><h4>山场比例</h4><div>{{ farmTotalArea }}<span>亩</span></div></div>
+        <!-- <div class="chart-title"><h4>山场比例</h4><div>{{ farmTotalArea }}<span>亩</span></div></div> -->
         <PlaneTools :full="teaFarmFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
@@ -67,7 +67,9 @@
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}亩 ({d}%)'
+                        formatter: '{b}：{c}亩 ({d}%)',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
+                        textStyle: { fontSize: 14 }
                     },
                     legend: {
                         show: true,
@@ -82,6 +84,27 @@
                             padding: [2, 0, 0, 4]
                         }
                     },
+                    graphic: [{
+                        type: 'text',
+                        left: '37.5%',
+                        top: '40.5%',
+                        style: {
+                            x: 20,
+                            text: '山场比例',
+                            textAlign: 'center',
+                            fill: '#d0d0d0',
+                            font: 'normal 14px "Microsoft YaHei", sans-serif'
+                        }
+                    }, {
+                        type: 'text',
+                        left: '37%',
+                        top: '50.5%',
+                        style: {
+                            text: `${that.farmTotalArea} 亩`,
+                            fill: '#dfdfdf',
+                            font: 'normal bold 16px "Microsoft YaHei", sans-serif'
+                        }
+                    }],
                     series: [{
                         type: 'pie',
                         radius: ['45%', '88%'],
@@ -111,12 +134,43 @@
                 const that = this
                 const chart = that.chart
                 const { seriesData, legendData } = that.doHandlerData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                const legend = currOption.legend
-                series[0].data = seriesData
-                legend.data = legendData
-                chart.setOption({ series, legend })
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 18 } },
+                        series: [{ data: seriesData, label: { fontSize: 16 } }],
+                        legend: { data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
+                        graphic: [
+                            { left: '41.5%', top: '40.5%', style: { font: 'normal 20px "Microsoft YaHei", sans-serif' } },
+                            {
+                                left: '41.3%',
+                                top: '50.5%',
+                                style: {
+                                    text: `${that.farmTotalArea} 亩`,
+                                    font: 'normal bold 25px "Microsoft YaHei", sans-serif'
+                                }
+                            }
+                        ]
+                    }
+                } else {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 14 } },
+                        series: [{ data: seriesData, label: { fontSize: 12 } }],
+                        legend: { data: legendData, right: '3%', itemGap: 15, top: 10, textStyle: { fontSize: 14 } },
+                        graphic: [
+                            { left: '36.5%', top: '40.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } },
+                            {
+                                left: '36.5%',
+                                top: '50.5%',
+                                style: {
+                                    text: `${that.farmTotalArea} 亩`,
+                                    font: 'normal bold 16px "Microsoft YaHei", sans-serif'
+                                }
+                            }
+                        ]
+                    }
+                }
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 200)
             },
             doHandlerData (datas) {

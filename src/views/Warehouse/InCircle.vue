@@ -1,8 +1,9 @@
 <!--入库信息-->
 <template>
-    <Plane class="in-circle-wrap">
+    <Plane class="in-circle-wrap" :full="inCircleChartFullState">
         <PlaneTitle>今日入库信息</PlaneTitle>
         <div class="plane-content" ref="container"></div>
+        <PlaneTools :full="inCircleChartFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -12,16 +13,21 @@
     import types from '@/store/constants/types'
     const moduleNameSpace = ns.WAREHOUSE
     const dataProp = 'toDayInAmount'
+    const fullProp = 'inCircleChartFullState'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'warehouse-in-circle',
         computed: {
-            ...thisMapState([`${dataProp}`])
+            ...thisMapState([dataProp, fullProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -55,45 +61,61 @@
                 const container = that.container
                 const options = {
                     grid: {
-                        top: 10, left: 5, right: 5, bottom: 0
+                        top: 15, left: 5, right: 5, bottom: 0
                     },
                     series: [{
                         type: 'pie',
                         radius: ['80%', '90%'],
-                        center: ['50%', '50%'],
+                        center: ['50%', '55%'],
                         startAngle: 225,
                         color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#00a2ff' }, { offset: 1, color: '#70ffac' }]), 'transparent'],
                         labelLine: { normal: { show: false } },
                         label: { normal: { position: 'center' } },
-                        data: [
-                            {
-                                value: 75,
-                                label: { normal: { padding: [0, 0, 8], formatter: '入库', textStyle: { color: '#fff', fontSize: 15 } } }
-                            },
-                            {
-                                value: 25,
-                                label: { normal: { formatter: `\n${data}`, textStyle: { color: '#70ffac', fontSize: 24, fontWeight: 'bold' } } }
-                            },
-                            {
-                                value: 0,
-                                label: { normal: { formatter: '吨', textStyle: { color: '#fff', fontSize: 15 } } }
-                            }
-                        ]
+                        data: that.getDataLabels(data)
                     }]
                 }
                 that.chart = echarts.init(container)
                 that.chart.setOption(options)
             },
+            getDataLabels (data) {
+                return [
+                    {
+                        value: 78,
+                        label: { normal: { padding: [0, 0, 10], formatter: '入库', textStyle: { color: '#fff', fontSize: 15 } } }
+                    },
+                    {
+                        value: 25,
+                        label: { normal: { formatter: `\n${data}`, textStyle: { color: '#70ffac', fontSize: 24, fontWeight: 'bold' } } }
+                    },
+                    {
+                        value: 0,
+                        label: { normal: { formatter: '吨', textStyle: { color: '#fff', fontSize: 15 } } }
+                    }
+                ]
+            },
             // 刷新图表
             refresh (data) {
                 const that = this
                 const chart = that.chart
-                const currOption = chart.getOption()
-                const series = currOption.series
-                console.log('...series,,,', series)
-                series[0].data[1].label.formatter = `\n${data}`
-                chart.setOption({ series })
+                const dataLabels = that.getDataLabels(data)
+                if (that[fullProp]) {
+                    dataLabels[0].label.normal.padding = [0, 0, 28]
+                    dataLabels[0].label.normal.textStyle.fontSize = 20
+                    dataLabels[1].label.normal.textStyle.fontSize = 32
+                    dataLabels[2].label.normal.textStyle.fontSize = 20
+                }
+                const options = {
+                    series: [{ data: dataLabels }]
+                }
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 200)
+            },
+            doFullStateChange (payload) {
+                const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.WAREHOUSE_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

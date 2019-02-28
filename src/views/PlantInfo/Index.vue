@@ -43,6 +43,18 @@
             store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TREE_AGE_DATA)
             store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_FARM_DATA)
             store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_VARIETIES_DATA)
+            store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_AMOUNT_RANK)
+        },
+        beforeDestroy () {
+            const that = this
+            const store = that.$store
+            const fullProps = ['totalDataFullState', 'treeAgeFullState', 'teaVarietiesFullState', 'plantRankFullState', 'teaFarmFullState', 'mapFullState']
+            fullProps.forEach(prop => {
+                store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_FULL_STATE, {
+                    fullStateName: prop,
+                    state: false
+                })
+            })
         }
     }
 </script>

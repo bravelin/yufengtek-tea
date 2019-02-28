@@ -31,6 +31,7 @@
                 store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TREE_AGE_DATA)
                 store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_FARM_DATA)
                 store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_VARIETIES_DATA)
+                store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_AMOUNT_RANK)
             },
             doFullStateChange (payload) {
                 const that = this

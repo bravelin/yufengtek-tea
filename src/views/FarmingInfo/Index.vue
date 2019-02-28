@@ -36,6 +36,17 @@
             store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PLANT_ACT_DATA)
             store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_FERTILIZER_ACT_DATA)
             store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PROTECTION_ACT_DATA)
+        },
+        beforeDestroy () {
+            const that = this
+            const store = that.$store
+            const fullProps = ['plantFullState', 'protectionFullState', 'fertilizerFullState', 'mapFullState']
+            fullProps.forEach(prop => {
+                store.commit(moduleNameSpace + '/' + types.FARMING_CHANGE_FULL_STATE, {
+                    fullStateName: prop,
+                    state: false
+                })
+            })
         }
     }
 </script>

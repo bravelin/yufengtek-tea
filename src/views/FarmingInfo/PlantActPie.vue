@@ -16,6 +16,9 @@
 
     export default {
         name: 'farming-plant-act-pie',
+        computed: {
+            ...thisMapState([fullProp])
+        },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
                 this.doInitOrRefreshChart()
@@ -59,10 +62,9 @@
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        // formatter: '{b}：{c}吨 ({d}%)'
-                        formatter (params) {
-                            console.log('plantActPie...', params)
-                        }
+                        formatter: '{b}：{c}吨 ({d}%)',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
+                        textStyle: { fontSize: 14 }
                     },
                     legend: {
                         show: true,
@@ -106,13 +108,25 @@
                 const that = this
                 const chart = that.chart
                 const { seriesData, legendData } = that.handleChartData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                const legend = currOption.legend
-                series[0].data = seriesData
-                legend.data = legendData
-                chart.setOption({ series, legend })
-                setTimeout(() => { chart.resize() }, 200)
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 18 } },
+                        series: [{ center: ['47%', '50%'], data: seriesData, label: { fontSize: 18 } }],
+                        legend: { data: legendData, right: 15, itemGap: 20, top: 15, textStyle: { fontSize: 15 } },
+                    }
+                } else {
+                    options = {
+                        tooltip: { textStyle: { fontSize: 14 } },
+                        series: [{ center: ['36%', '50%'], data: seriesData, label: { fontSize: 12 } }],
+                        legend: { data: legendData, right: 0, itemGap: 10, top: 0, textStyle: { fontSize: 12 } },
+                    }
+                }
+                chart.setOption(options)
+                let resizeCount = 6
+                const timer = setInterval(() => {
+                    --resizeCount > 0 ? chart.resize() : window.clearInterval(timer)
+                }, 150)
             },
             // 数据加工
             handleChartData (datas) {

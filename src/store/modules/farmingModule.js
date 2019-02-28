@@ -11,6 +11,7 @@ export default {
         fertilizerActLineDatas: [],
         protectionActPieDatas: [],
         protectionActLineDatas: [],
+        mapFullState: false,
         plantFullState: false,
         protectionFullState: false,
         fertilizerFullState: false

@@ -43,6 +43,17 @@
             store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_THIS_YEAR_OUT_DATA)
             store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_HISTORY_IN_DATA)
             store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_HISTORY_OUT_DATA)
+        },
+        beforeDestroy () {
+            const that = this
+            const store = that.$store
+            const fullProps = ['mapFullState', 'inCircleChartFullState', 'outCircleChartFullState', 'inLineChartFullState', 'outLineChartFullState', 'inConstrastFullState', 'outConstrastFullState']
+            fullProps.forEach(prop => {
+                store.commit(moduleNameSpace + '/' + types.WAREHOUSE_CHANGE_FULL_STATE, {
+                    fullStateName: prop,
+                    state: false
+                })
+            })
         }
     }
 </script>

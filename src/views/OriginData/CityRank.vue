@@ -1,8 +1,8 @@
 <template>
-    <Plane class="city-rank-wrap">
+    <Plane class="city-rank-wrap" :full="cityRankFullState">
         <PlaneTitle>溯源城市排行</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <PlaneTools></PlaneTools>
+        <PlaneTools :full="cityRankFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -14,12 +14,21 @@
     require('echarts-wordcloud')
     const moduleNameSpace = ns.ORIGIN
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.cityDatas`
+    const dataProp = 'cityDatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullProp = 'cityRankFullState'
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'origin-city-rank',
+        computed: {
+            ...thisMapState([fullProp])
+        },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -33,7 +42,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].cityDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -42,7 +51,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].farmingActdatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -95,16 +104,27 @@
             refresh (datas) {
                 const that = this
                 const chart = that.chart
-                const { seriesData } = that.handleChartData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                series[0].data = seriesData
-                chart.setOption({ series })
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        series: [{ data: datas, gridSize: 20, sizeRange: [14, 50] }],
+                        tooltip: { textStyle: { fontSize: 18 } }
+                    }
+                } else {
+                    options = {
+                        series: [{ data: datas, gridSize: 10, sizeRange: [14, 30] }],
+                        tooltip: { textStyle: { fontSize: 14 } }
+                    }
+                }
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 200)
             },
-            // full state change
-            doSwitchFullState () {
+            doFullStateChange (payload) {
                 const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.ORIGIN_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

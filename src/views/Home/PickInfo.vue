@@ -148,7 +148,7 @@
                                 top: '50.5%',
                                 style: {
                                     text: `${that.teaTotalAmount} 吨`,
-                                    font: 'normal bold 22px "Microsoft YaHei", sans-serif'
+                                    font: 'normal bold 25px "Microsoft YaHei", sans-serif'
                                 }
                             }
                         ]

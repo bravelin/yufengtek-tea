@@ -1,4 +1,18 @@
 import types from '@/store/constants/types'
+const amountRankOriginData = [
+    { place: '星村镇', data: 1200 },
+    { place: '五夫镇', data: 1120 },
+    { place: '上梅乡', data: 1033 },
+    { place: '杨庄乡', data: 982 },
+    { place: '兴田镇', data: 900 },
+    { place: '岚谷乡', data: 890 },
+    { place: '吴屯乡', data: 721 },
+    { place: '崇安街道', data: 523 },
+    { place: '武夷街道', data: 356 },
+    { place: '新丰街道', data: 200 }
+]
+const Num = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
+
 export default {
     // 获取统计数据
     [types.PLANT_GET_STAT_DATA] (context) {
@@ -79,6 +93,20 @@ export default {
                 }
             })
             context.state.varietiesTotalData = total
+        }, 600)
+    },
+    // 获取种植排行
+    [types.PLANT_GET_AMOUNT_RANK] (context) {
+        setTimeout(() => {
+            if (context.state.currSelectedRegion == '') {
+                context.state.amountRankDatas = amountRankOriginData.sort((a, b) => { return a.data > b.data ? -1 : 1 })
+            } else {
+                let list = Num.map(item => {
+                    return { place: '公司' + item, data: parseInt(Math.random() * 1500) + 300 }
+                })
+                list.sort((a, b) => { return a.data > b.data ? -1 : 1 })
+                context.state.amountRankDatas = list
+            }
         }, 600)
     }
 }

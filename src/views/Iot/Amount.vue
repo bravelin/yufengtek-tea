@@ -4,11 +4,11 @@
         <div class="plane-container">
             <div class="iot-item">
                 <div><i class="iconfont">&#xe62e;</i><div>摄像头</div></div>
-                <div>{{ cameraAmount }}</div>
+                <div>{{ cameraAmount || 187 }}</div>
             </div>
             <div class="iot-item">
                 <div><i class="iconfont">&#xe61b;</i><div>监测站</div></div>
-                <div>{{ monitorAmount }}</div>
+                <div>{{ monitorAmount || 634 }}</div>
             </div>
         </div>
     </Plane>

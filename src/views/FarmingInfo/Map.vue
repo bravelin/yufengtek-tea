@@ -1,7 +1,8 @@
 <!--武夷地图-->
 <template>
-    <Plane class="map-wrap">
-        <WuyishanMap @change="doMapChange" :curr="currSelectedRegion"></WuyishanMap>
+    <Plane class="map-wrap" :full="mapFullState">
+        <WuyishanMap @change="doMapChange" :curr="currSelectedRegion" :full="mapFullState"></WuyishanMap>
+        <PlaneTools :full="mapFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -10,6 +11,7 @@
     import types from '@/store/constants/types'
     import WuyishanMap from '@/components/WuyishanMap'
     const moduleNameSpace = ns.FARMING
+    const fullProp = 'mapFullState'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
 
     export default {
@@ -18,7 +20,7 @@
             WuyishanMap
         },
         computed: {
-            ...thisMapState(['currSelectedRegion'])
+            ...thisMapState(['currSelectedRegion', fullProp])
         },
         methods: {
             doMapChange (place) {
@@ -28,6 +30,13 @@
                 store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PLANT_ACT_DATA)
                 store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_FERTILIZER_ACT_DATA)
                 store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PROTECTION_ACT_DATA)
+            },
+            doFullStateChange (payload) {
+                const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.FARMING_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

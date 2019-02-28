@@ -35,6 +35,17 @@
             const store = that.$store
             store.commit(types.SWITCH_SCREEN_FULL, true)
             store.commit(types.SWITCH_LOADING, false)
+        },
+        beforeDestroy () {
+            const that = this
+            const store = that.$store
+            const fullProps = ['cityRankFullState', 'countStateFullState', 'mapFullState']
+            fullProps.forEach(prop => {
+                store.commit(moduleNameSpace + '/' + types.ORIGIN_CHANGE_FULL_STATE, {
+                    fullStateName: prop,
+                    state: false
+                })
+            })
         }
     }
 </script>

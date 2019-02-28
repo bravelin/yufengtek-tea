@@ -60,10 +60,12 @@
         bottom: 0;
         width: auto !important;
         height: auto !important;
-        z-index: 5;
-        background: rgba(#001e38, 0.95);
+        z-index: 7;
+        background: rgba(#1D1A3A, 0.95);
         margin-top: 0 !important;
         margin-bottom: 0 !important;
+        margin-right: 0 !important;
+        margin-left: 0 !important;
         .plane-title{
             font-size: 20px;
             font-weight: bold;

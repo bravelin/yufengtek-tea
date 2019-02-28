@@ -13,7 +13,6 @@
                             <li class="sub-item" v-for="(subItem, subIndex) in item.list" :key="subIndex">
                                 <div>{{ subItem.time }}</div>
                                 <div>{{ subItem.place }}</div>
-                                <div>{{ subItem.tel }}</div>
                             </li>
                         </ul>
                     </li>

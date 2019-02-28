@@ -15,7 +15,8 @@
     require('echarts-wordcloud')
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.cityDatas`
+    const dataProp = 'cityDatas'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'originDataFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
@@ -42,7 +43,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].cityDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -51,7 +52,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].cityDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)

@@ -46,7 +46,7 @@
                 const mapCenterPoint = new BMap.Point(config.iotMonitorMap.center[0], config.iotMonitorMap.center[1])
                 map.centerAndZoom(mapCenterPoint, config.iotMonitorMap.zoom)
                 map.enableScrollWheelZoom(true)
-                map.setMapStyleV2({ styleJson: mapStyle })
+                // map.setMapStyleV2({ styleJson: mapStyle })
 
                 // 标记的ICON对象初始化
                 fmIconNormal = new BMap.Icon(config.fmMarkerImgUrl.normal, new BMap.Size(23, 25), {
@@ -82,7 +82,12 @@
                 if (!map) {
                     return
                 }
-                map.clearOverlays()
+                // 删除所有的Monitor标记
+                if (that.mapMonitorMarkers.length) {
+                    that.mapMonitorMarkers.forEach(item => {
+                        map.removeOverlay(item)
+                    })
+                }
                 that.mapMonitorMarkers = that.monitors.map(item => that.createMarker(item))
             },
             // 增加fm标记
@@ -92,7 +97,12 @@
                 if (!map) {
                     return
                 }
-                map.clearOverlays()
+                // 删除所有的fm标记
+                if (that.mapFmMarkers.length) {
+                    that.mapFmMarkers.forEach(item => {
+                        map.removeOverlay(item)
+                    })
+                }
                 that.mapFmMarkers = that.fms.map(item => that.createMarker(item))
             },
             // 创建标记

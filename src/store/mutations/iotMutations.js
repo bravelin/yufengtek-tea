@@ -30,5 +30,8 @@ export default {
     },
     [types.IOT_CURVE_FULL_STATE_CHANGE] (state, payload) {
         state.curveChartFullState = payload !== undefined ? payload : !state.curveChartFullState
+    },
+    [types.IOT_CHANGE_FULL_STATE] (state, payload) {
+        state[payload.fullStateName] = payload.state
     }
 }

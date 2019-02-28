@@ -21,7 +21,7 @@
                 curr: '',
                 type: '',
                 showSearchList: false,
-                cacheSearchList: ['会昌', '五云山', '齐云山', '花果山']
+                cacheSearchList: []
             }
         },
         created () {

@@ -103,7 +103,10 @@ export default {
             { name: '长沙', value: [113, 28.21, 95] },
             { name: '秦皇岛', value: [119.57, 39.95, 475] },
             { name: '荆州', value: [112.239741, 30.335165, 147] },
-        ]
+        ],
+        mapFullState: false,
+        cityRankFullState: false,
+        countStateFullState: false
     },
     actions,
     mutations

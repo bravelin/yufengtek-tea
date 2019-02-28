@@ -12,7 +12,7 @@ export default {
         },
         currFm: 'temperature', // temperature humidity light pressure
         currFmName: '温度',
-        chartUnit: '%', // 图表的单位
+        chartUnit: '℃', // 图表的单位
         currFmDataType: 'HOUR', // HOUR WEEK
         fmData: {
             temperature: '12.13',

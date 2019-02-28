@@ -15,6 +15,9 @@
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
     export default {
         name: 'farming-fertilizer-act-line',
+        computed: {
+            ...thisMapState([fullProp])
+        },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
                 this.doInitOrRefreshChart()
@@ -58,28 +61,29 @@
                     grid: { top: 10, left: 0, right: 0, bottom: 0, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
-                        formatter: '{b}：{c}' + '吨',
-                        backgroundColor: 'rgba(0, 159, 253, 0.5)',
+                        formatter: '{b}：{c}' + '亩',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: {
                             lineStyle: {
                                 color: 'rgba(238,238,238,0.4)'
                             }
-                        }
+                        },
+                        textStyle: { fontSize: 14 }
                     },
                     xAxis: [{
                         type: 'category',
                         data: titles,
                         boundaryGap: true,
-                        axisTick: { show: false },
+                        axisTick: { show: true },
                         axisLine: { lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
-                        axisLabel: { margin: 15, textStyle: { color: '#fff' } }
+                        axisLabel: { margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
                     }],
                     yAxis: [{
                         show: true,
                         splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.3)' } },
-                        axisTick: { show: false },
+                        axisTick: { show: true },
                         axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
-                        axisLabel: { show: true, color: '#fff' }
+                        axisLabel: { margin: 8, show: true, textStyle: { color: '#fff', fontSize: 12 } }
                     }],
                     color: ['rgb(109, 252, 175)'],
                     series: [
@@ -105,14 +109,29 @@
                 const that = this
                 const chart = that.chart
                 const { titles, lineDatas } = that.handleChartData(datas)
-                const currOption = chart.getOption()
-                const series = currOption.series
-                const xAxis = currOption.xAxis
-                const tooltip = currOption.tooltip
-                series[0].data = lineDatas
-                xAxis[0].data = titles
-                chart.setOption({ series, xAxis, tooltip })
-                setTimeout(() => { chart.resize() }, 200)
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        grid: { top: 32, left: 20, right: 20, bottom: 20 },
+                        series: [{ data: lineDatas }],
+                        xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
+                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
+                        tooltip: { textStyle: { fontSize: 18 } },
+                    }
+                } else {
+                    options = {
+                        grid: { top: 10, left: 0, right: 0, bottom: 0 },
+                        series: [{ data: lineDatas }],
+                        xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
+                        yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
+                        tooltip: { textStyle: { fontSize: 14 } }
+                    }
+                }
+                chart.setOption(options)
+                let resizeCount = 6
+                const timer = setInterval(() => {
+                    --resizeCount > 0 ? chart.resize() : window.clearInterval(timer)
+                }, 150)
             },
             // 数据加工
             handleChartData (datas) {

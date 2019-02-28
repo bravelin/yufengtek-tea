@@ -1,9 +1,9 @@
 <!--历史出库对比-->
 <template>
-    <Plane class="out-constrast-wrap">
+    <Plane class="out-constrast-wrap" :full="outConstrastFullState">
         <PlaneTitle>历史出库对比</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <PlaneTools></PlaneTools>
+        <PlaneTools :full="outConstrastFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -14,13 +14,21 @@
 
     const moduleNameSpace = ns.WAREHOUSE
     const dataProp = 'historyOutDatas'
+    const fullProp = 'outConstrastFullState'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'warehouse-out-constrast',
+        computed: {
+            ...thisMapState([fullProp])
+        },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+                this.doInitOrRefreshChart()
+            },
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -60,7 +68,7 @@
                     legend: {
                         data: legends,
                         right: 0,
-                        top: 0,
+                        top: 15,
                         itemGap: 10,
                         textStyle: {
                             color: '#d0d0d0',
@@ -75,7 +83,7 @@
                                 return legends[index] + '年' + item.name + '：' + item.value + '吨'
                             }).join('<br/>')
                         },
-                        backgroundColor: 'rgba(0, 159, 253, 0.5)',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: {
                             lineStyle: {
                                 color: 'rgba(238,238,238,0.4)'
@@ -86,17 +94,17 @@
                         type: 'category',
                         data: titles,
                         boundaryGap: true,
-                        axisTick: { show: false },
+                        axisTick: { show: true },
                         axisLine: { lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
-                        axisLabel: { margin: 15, textStyle: { color: '#fff' } }
+                        axisLabel: { margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
                     }],
                     color: ['rgb(109, 252, 175)', 'rgb(4, 165, 252)'],
                     yAxis: [{
                         show: true,
                         splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.3)' } },
-                        axisTick: { show: false },
+                        axisTick: { show: true },
                         axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
-                        axisLabel: { show: true, color: '#fff' }
+                        axisLabel: { show: true, margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
                     }],
                     series: that.getSeries(lineDatas)
                 }
@@ -130,13 +138,28 @@
                 const that = this
                 const chart = that.chart
                 const { titles, lineDatas, legends } = that.handleChartData(datas)
-                const currOption = chart.getOption()
                 const series = that.getSeries(lineDatas)
-                const xAxis = currOption.xAxis
-                const legend = currOption.legend
-                xAxis[0].data = titles
-                legend.data = legends
-                chart.setOption({ series, xAxis, legend })
+                let options = null
+                if (that[fullProp]) {
+                    options = {
+                        grid: { top: 65, left: 20, right: 20, bottom: 20 },
+                        xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
+                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
+                        tooltip: { textStyle: { fontSize: 18 } },
+                        series,
+                        legend: { data: legends, top: 25, right: 15, textStyle: { fontSize: 15, padding: [5, 0, 0, 5] } }
+                    }
+                } else {
+                    options = {
+                        grid: { top: 45, left: 0, right: 5, bottom: 0 },
+                        xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
+                        yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
+                        tooltip: { textStyle: { fontSize: 14 } },
+                        series,
+                        legend: { data: legends, top: 15, right: 0, textStyle: { fontSize: 12, padding: [2, 0, 0, 2] } }
+                    }
+                }
+                chart.setOption(options)
                 setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
@@ -161,6 +184,13 @@
                 }
                 const titles = Object.keys(titleObjs)
                 return { titles, lineDatas, legends }
+            },
+            doFullStateChange (payload) {
+                const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.WAREHOUSE_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }

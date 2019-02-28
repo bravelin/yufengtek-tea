@@ -8,6 +8,10 @@ export default {
         }).then(res => {
             const monitors = res.monaList || []
             context.state.monitors = monitors.map((item, index) => {
+                // if (index == 0) {
+                //     context.state.currActive.index = 0
+                //     context.state.currActive.type = 'mn'
+                // }
                 return {
                     id: item.vdcam_id,
                     name: item.vdcam_name,
@@ -60,13 +64,23 @@ export default {
         const state = context.state
         const currFmDataType = state.currFmDataType
         const currFm = state.currFm
+        let baseData = 50
+        if (currFm == 'temperature') {
+            baseData = 30
+        } else if (currFm == 'humidity') {
+            baseData = 50
+        } else if (currFm == 'light') {
+            baseData = 3500
+        } else if (currFm == 'pressure') {
+            baseData = 5000
+        }
         if (currFmDataType == 'HOUR') {
             ajax({ url: api.getFmsHourChartData }).then(res => {
                 // state.chartUnit = res.unitContent
                 const list = res.todayBrokenLineList || []
                 state.fmChartDatas = list.map(item => {
                     return {
-                        title: item.template_txdate, data: parseInt(item.brokenLineValue || 0) + parseInt(50 * Math.random())
+                        title: item.template_txdate, data: parseInt(item.brokenLineValue || 0) + parseInt(baseData * Math.random())
                     }
                 })
             })
@@ -76,7 +90,7 @@ export default {
                 const list = res.weekDayBrokenLineList || []
                 state.fmChartDatas = list.map(item => {
                     return {
-                        title: item.template_txdate, data: parseInt(item.brokenLineValue || 0) + parseInt(50 * Math.random())
+                        title: item.template_txdate, data: parseInt(item.brokenLineValue || 0) + parseInt(baseData * Math.random())
                     }
                 })
             })

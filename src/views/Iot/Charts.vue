@@ -1,5 +1,5 @@
 <template>
-    <Plane class="iot-container">
+    <Plane class="iot-container" :full="curveChartFullState">
         <PlaneTitle>实时环境</PlaneTitle>
         <ul class="data-list">
             <li class="temperature" :class="{ active: currFm == 'temperature' }" @click="switchFm('temperature', '温度')">
@@ -24,6 +24,7 @@
             <li :class="{ active: currFmDataType=='WEEK' }" @click="switchFmDataType('WEEK')">七天数据</li>
         </ul>
         <div class="plane-content" ref="chart"></div>
+        <PlaneTools :full="curveChartFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -32,14 +33,16 @@
     import types from '@/store/constants/types'
     import echarts from '@/lib/echarts'
     const moduleNameSpace = ns.IOT
+    const fullProp = 'curveChartFullState'
+    const dataProp = 'fmChartDatas'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.fmChartDatas`
-    const fullStateProp = `$store.state.${moduleNameSpace}.curveChartFullState`
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
 
     export default {
         name: 'ProductionMonitorCharts',
         computed: {
-            ...thisMapState(['currFm', 'fmData', 'currFmDataType', 'fmChartDatas', 'currFmName', 'chartUnit', 'curveChartFullState'])
+            ...thisMapState(['curveChartFullState', 'currFm', 'fmData', 'currFmDataType', 'fmChartDatas', 'currFmName', 'chartUnit', 'curveChartFullState'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
@@ -59,7 +62,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.chart
-                if (that.fmChartDatas.length) {
+                if (that[dataProp].length) {
                     that.initChart()
                 }
             })
@@ -67,7 +70,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].fmChartDatas
+                const datas = that.$store.state[moduleNameSpace][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refreshChart(datas) : that.initChart(datas)
@@ -177,9 +180,12 @@
                 return { titles, lineDatas, barDatas }
             },
             // full state change
-            doSwitchFullState () {
+            doFullStateChange (payload) {
                 const that = this
-                that.$store.commit(`${moduleNameSpace}/${types.PRODUCTION_CURVE_FULL_STATE_CHANGE}`)
+                that.$store.commit(moduleNameSpace + '/' + types.IOT_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
             }
         }
     }
