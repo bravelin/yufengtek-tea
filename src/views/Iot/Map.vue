@@ -6,7 +6,7 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import config from '@/lib/config'
-    import mapStyle from './mapStyle'
+    import mapStyle from './mapStyleV1'
 
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -47,6 +47,7 @@
                 map.centerAndZoom(mapCenterPoint, config.iotMonitorMap.zoom)
                 map.enableScrollWheelZoom(true)
                 // map.setMapStyleV2({ styleJson: mapStyle })
+                map.setMapStyle({ styleJson: mapStyle })
 
                 // 标记的ICON对象初始化
                 fmIconNormal = new BMap.Icon(config.fmMarkerImgUrl.normal, new BMap.Size(23, 25), {

@@ -13,6 +13,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'plantFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'farming-plant-act-pie',
@@ -24,6 +25,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },

@@ -136,12 +136,13 @@
 }
 .plane-content{
     height: calc(100% - 42px);
+    // border: 1px solid #f0f;
 }
 .nav-menu{
     display: flex;
     flex-direction: row;
     color: #fff;
-    margin-bottom: 2px;
+    margin-bottom: 10px;
     margin-left: 30px;
     margin-right: 30px;
     // border: 1px solid #f00;
@@ -179,9 +180,9 @@
         display: flex;
         flex: 1;
         flex-direction: row;
-        border-bottom: 2px solid #102d56;
+        border-bottom: 2px solid rgba(53, 121, 255, 0.25);
         height: 47px;
-        padding-left: 12px;
+        padding-left: 15px;
         margin-left: -10px;
         padding-top: 2px;
         &:after{
@@ -191,7 +192,7 @@
             right: 0;
             bottom: -14px;
             height: 5px;
-            background: #102d56;
+            background: rgba(53, 121, 255, 0.25);
         }
         >li{
             position: relative;
@@ -211,7 +212,7 @@
             }
             &.active, &:hover{
                 &:before{
-                    background: #2663bc;
+                    background: rgba(53, 121, 255, 0.55);;
                 }
             }
             &:before{
@@ -223,28 +224,28 @@
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: #102d56;
+                background: rgba(53, 121, 255, 0.25);
                 transition: all 0.3s ease-out;
                 transform: skewX(-30deg);
             }
         }
     }
-    &:after{
-        content: '';
-        display: block;
-        width: 527px;
-        height: 76px;
-        line-height: 70px;
-        text-align: center;
-        font-size: 30px;
-        font-style: italic;
-        letter-spacing: 5px;
-        font-weight: bold;
-        margin-left: -10px;
-        margin-top: -1px;
-        content: "武夷山市智慧茗茶数据平台";
-        background: url('./assets/images/title.png');
-    }
+    // &:after{
+    //     content: '';
+    //     display: block;
+    //     width: 527px;
+    //     height: 76px;
+    //     line-height: 70px;
+    //     text-align: center;
+    //     font-size: 30px;
+    //     font-style: italic;
+    //     letter-spacing: 5px;
+    //     font-weight: bold;
+    //     margin-left: -10px;
+    //     margin-top: -1px;
+    //     content: "武夷山市智慧茗茶数据平台";
+    //     background: url('./assets/images/title.png');
+    // }
 }
 
 .el-picker-panel{
@@ -281,4 +282,81 @@
 }
 .el-picker-panel__content .el-date-table>tbody>tr>th{
     color: #aaa;
+}
+@media screen and (max-width: 1490px) {
+    .page, .nav-menu{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .nav-menu{
+        .menu{
+            >li{
+                font-size: 16px;
+                margin-right: 8px;
+                letter-spacing: 2px;
+                &:last-child{
+                    margin-right: 1px;
+                }
+            }
+        }
+    }
+    .plane-title{
+        font-size: 16px;
+        letter-spacing: 0;
+        >i{
+            height: 16px;
+        }
+    }
+    .plane-content{
+        height: calc(100% - 34px);
+    }
+}
+
+@media screen and (max-height: 800px) {
+    .nav-menu{
+        margin-bottom: 4px;
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .page, .nav-menu{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .nav-menu{
+        .menu{
+            >li{
+                font-size: 14px;
+                margin-right: 4px;
+                &:last-child{
+                    margin-right: 0px;
+                }
+            }
+        }
+    }
+    .plane{
+        padding: 5px;
+    }
+    .plane-title{
+        font-size: 14px;
+        line-height: 1.6;
+        letter-spacing: 0;
+        >i{
+            height: 14px;
+            top: 5px;
+        }
+        &:before{
+            top: 9px;
+        }
+        &:after{
+            top: 6px;
+            height: 12px;
+        }
+    }
+    .plane-content{
+        height: calc(100% - 22px);
+    }
+    .wuyishan-map-container > div.curr-region{
+        font-size: 18px !important;
+    }
 }

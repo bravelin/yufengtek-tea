@@ -36,3 +36,34 @@
           }
      }
 }
+@media screen and (max-width: 1490px){
+     .farming-info-page{
+          >div{
+               &:nth-of-type(1){
+                    width: calc(45% - 10px);
+               }
+               &:nth-of-type(2){
+                    width: 55%;
+               }
+          }
+          .act-wrap .plane-content > div:nth-of-type(1){
+               flex: 1.2;
+          }
+     }
+}
+@media screen and (max-width: 1300px){
+     .farming-info-page{
+          >div{
+               &:nth-of-type(1){
+                    width: calc(39% - 6px);
+                    margin-right: 6px;
+               }
+               &:nth-of-type(2){
+                    width: 61%;
+               }
+          }
+          .act-wrap .plane-content > div:nth-of-type(1){
+               flex: 1.5;
+          }
+     }
+}

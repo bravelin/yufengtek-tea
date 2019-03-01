@@ -12,6 +12,7 @@ export default {
         state.winHeight = doc.documentElement.clientHeight || win.innerHeight
         state.winWidth = doc.documentElement.clientWidth || win.innerWidth
         doc.body.style.minHeight = state.winHeight + 'px'
+        state.windowResizeState = state.windowResizeState + 1
     },
     [types.SET_CURR_ROUTER] (state, payload) {
         const currRouter = state.currRouter

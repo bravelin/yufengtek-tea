@@ -18,6 +18,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'mapFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'origin-map',
@@ -29,6 +30,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -103,7 +107,7 @@
                         {
                             type: 'effectScatter',
                             coordinateSystem: 'bmap',
-                            data: datas.sort((a, b) => { return b.value - a.value }).slice(0, 6),
+                            data: datas.sort((a, b) => { return b.value - a.value }).slice(0, 5),
                             symbolSize (val) {
                                 return val[2] / 15
                             },

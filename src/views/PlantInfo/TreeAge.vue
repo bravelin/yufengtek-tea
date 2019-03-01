@@ -17,6 +17,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'treeAgeFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'plant-tree-age',
@@ -28,6 +29,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },

@@ -9,5 +9,15 @@
             <router-link tag="li" :to="{ name: 'warehouse' }">出库入库</router-link>
             <router-link tag="li" :to="{ name: 'origin' }">溯源数据</router-link>
         </ul>
+        <AppTitle></AppTitle>
     </div>
 </template>
+<script>
+    import AppTitle from './AppTitle'
+    export default {
+        name: 'NavMenu',
+        components: {
+            AppTitle
+        }
+    }
+</script>

@@ -19,6 +19,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'originDataFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'home-origin-data',
@@ -30,6 +31,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },

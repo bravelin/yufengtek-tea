@@ -17,6 +17,7 @@
     const fullProp = 'levelInfoFullState'
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'home-level-info',
@@ -29,6 +30,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },

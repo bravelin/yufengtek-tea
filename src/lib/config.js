@@ -11,6 +11,6 @@ export default {
     },
     iotMonitorMap: {
         center: [114.9, 25.807761], // 物联监控地图中心点
-        zoom: 8
+        zoom: 9
     },
 }

@@ -4,7 +4,7 @@
         <PlaneTitle>采摘信息</PlaneTitle>
         <div class="plane-content">
             <div ref="container" class="chart-container"></div>
-            <!-- <div class="chart-title"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}<span>吨</span></div></div> -->
+            <div class="chart-title"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}<span>吨</span></div></div>
         </div>
         <PlaneTools :full="pickInfoFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
@@ -20,6 +20,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.pickDatas`
     const fullProp = 'pickInfoFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'home-pick-info',
@@ -32,6 +33,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -74,25 +78,25 @@
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         textStyle: { fontSize: 14 }
                     },
-                    graphic: [{
-                        type: 'text',
-                        left: '36.5%',
-                        top: '40.5%',
-                        style: {
-                            text: '茶叶总产量',
-                            fill: '#d0d0d0',
-                            font: 'normal 14px "Microsoft YaHei", sans-serif'
-                        }
-                    }, {
-                        type: 'text',
-                        left: '36.5%',
-                        top: '50.5%',
-                        style: {
-                            text: `${that.teaTotalAmount} 吨`,
-                            fill: '#dfdfdf',
-                            font: 'normal bold 16px "Microsoft YaHei", sans-serif'
-                        }
-                    }],
+                    // graphic: [{
+                    //     type: 'text',
+                    //     left: '36.5%',
+                    //     top: '40.5%',
+                    //     style: {
+                    //         text: '茶叶总产量',
+                    //         fill: '#d0d0d0',
+                    //         font: 'normal 14px "Microsoft YaHei", sans-serif'
+                    //     }
+                    // }, {
+                    //     type: 'text',
+                    //     left: '36.5%',
+                    //     top: '50.5%',
+                    //     style: {
+                    //         text: `${that.teaTotalAmount} 吨`,
+                    //         fill: '#dfdfdf',
+                    //         font: 'normal bold 16px "Microsoft YaHei", sans-serif'
+                    //     }
+                    // }],
                     legend: {
                         show: true,
                         data: legendData,
@@ -141,34 +145,34 @@
                         tooltip: { textStyle: { fontSize: 18 } },
                         series: [{ data: seriesData, label: { fontSize: 16 } }],
                         legend: { data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
-                        graphic: [
-                            { left: '40.5%', top: '40.5%', style: { font: 'normal 20px "Microsoft YaHei", sans-serif' } },
-                            {
-                                left: '41%',
-                                top: '50.5%',
-                                style: {
-                                    text: `${that.teaTotalAmount} 吨`,
-                                    font: 'normal bold 25px "Microsoft YaHei", sans-serif'
-                                }
-                            }
-                        ]
+                        // graphic: [
+                        //     { left: '40.5%', top: '40.5%', style: { font: 'normal 20px "Microsoft YaHei", sans-serif' } },
+                        //     {
+                        //         left: '41%',
+                        //         top: '50.5%',
+                        //         style: {
+                        //             text: `${that.teaTotalAmount} 吨`,
+                        //             font: 'normal bold 25px "Microsoft YaHei", sans-serif'
+                        //         }
+                        //     }
+                        // ]
                     }
                 } else {
                     options = {
                         tooltip: { textStyle: { fontSize: 14 } },
                         series: [{ data: seriesData, label: { fontSize: 12 } }],
                         legend: { data: legendData, right: '3%', itemGap: 15, top: 10, textStyle: { fontSize: 14 } },
-                        graphic: [
-                            { left: '36.5%', top: '40.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } },
-                            {
-                                left: '36.5%',
-                                top: '50.5%',
-                                style: {
-                                    text: `${that.teaTotalAmount} 吨`,
-                                    font: 'normal bold 16px "Microsoft YaHei", sans-serif'
-                                }
-                            }
-                        ]
+                        // graphic: [
+                        //     { left: '36.5%', top: '40.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } },
+                        //     {
+                        //         left: '36.5%',
+                        //         top: '50.5%',
+                        //         style: {
+                        //             text: `${that.teaTotalAmount} 吨`,
+                        //             font: 'normal bold 16px "Microsoft YaHei", sans-serif'
+                        //         }
+                        //     }
+                        // ]
                     }
                 }
                 chart.setOption(options)

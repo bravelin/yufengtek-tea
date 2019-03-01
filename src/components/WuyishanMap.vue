@@ -23,31 +23,7 @@
         watch: {
             full () {
                 const that = this
-                setTimeout(() => {
-                    const chart = that.chart
-                    if (chart) {
-                        let options = null
-                        if (that.full) {
-                            options = {
-                                series: [{
-                                    label: {
-                                        normal: { textStyle: { fontSize: 16 } }
-                                    }
-                                }]
-                            }
-                        } else {
-                            options = {
-                                series: [{
-                                    label: {
-                                        normal: { textStyle: { fontSize: 12 } }
-                                    }
-                                }]
-                            }
-                        }
-                        chart.setOption(options)
-                        chart.resize()
-                    }
-                }, 100)
+                that.refresh()
             }
         },
         data () {
@@ -121,6 +97,7 @@
                     that.chart.on('click', params => {
                         that.doClickMap(params.name)
                     })
+                    window.addEventListener('resize', that.refresh)
                 })
             })
         },
@@ -143,7 +120,39 @@
             doClearMap () {
                 const that = this
                 that.doClickMap('')
+            },
+            refresh () {
+                const that = this
+                setTimeout(() => {
+                    const chart = that.chart
+                    if (chart) {
+                        let options = null
+                        if (that.full) {
+                            options = {
+                                series: [{
+                                    label: {
+                                        normal: { textStyle: { fontSize: 16 } }
+                                    }
+                                }]
+                            }
+                        } else {
+                            options = {
+                                series: [{
+                                    label: {
+                                        normal: { textStyle: { fontSize: 12 } }
+                                    }
+                                }]
+                            }
+                        }
+                        chart.setOption(options)
+                        chart.resize()
+                    }
+                }, 120)
             }
+        },
+        beforeDestroy () {
+            const that = this
+            window.removeEventListener('resize', that.refresh)
         }
     }
 </script>

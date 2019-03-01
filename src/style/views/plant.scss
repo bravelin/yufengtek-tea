@@ -56,3 +56,45 @@
         }
     }
 }
+@media screen and (max-width: 1490px){
+    .plant-info-page{
+        >div{
+            &:nth-of-type(1){
+                width: calc(45% - 10px);
+            }
+            &:nth-of-type(2){
+                width: calc(30.5% - 5px);
+            }
+            &:nth-of-type(3){
+                width: calc(27% - 5px);
+            }
+        }
+        .tea-varieties-wrap,.tea-farm-wrap{
+            .chart-title{
+                >h4{
+                    font-size: 12px;
+                }
+                >div{
+                    font-size: 18px;
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width: 1300px){
+    .plant-info-page{
+        >div{
+            &:nth-of-type(1){
+                width: calc(39% - 6px);
+                margin-right: 6px;
+            }
+            &:nth-of-type(2){
+                width: calc(35% - 3px);
+                margin-right: 6px;
+            }
+            &:nth-of-type(3){
+                width: calc(26% - 3px);
+            }
+        }
+    }
+}

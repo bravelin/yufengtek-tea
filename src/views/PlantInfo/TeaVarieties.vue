@@ -3,7 +3,7 @@
     <Plane class="tea-varieties-wrap" :full="teaVarietiesFullState">
         <PlaneTitle>茶树品种</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <!-- <div class="chart-title"><h4>品种比例</h4><div>{{ varietiesTotalData }}<span>吨</span></div></div> -->
+        <div class="chart-title"><h4>品种比例</h4><div>{{ varietiesTotalData }}<span>吨</span></div></div>
         <PlaneTools :full="teaVarietiesFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
@@ -18,6 +18,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'teaVarietiesFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'plant-tea-farm',
@@ -29,6 +30,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -84,28 +88,28 @@
                             padding: [2, 0, 0, 4]
                         }
                     },
-                    graphic: [{
-                        type: 'text',
-                        left: '37.5%',
-                        top: '40.5%',
-                        position: [-20, 0],
-                        style: {
-                            x: 20,
-                            text: '品种比例',
-                            textAlign: 'center',
-                            fill: '#d0d0d0',
-                            font: 'normal 14px "Microsoft YaHei", sans-serif'
-                        }
-                    }, {
-                        type: 'text',
-                        left: '37%',
-                        top: '50.5%',
-                        style: {
-                            text: `${that.varietiesTotalData} 吨`,
-                            fill: '#dfdfdf',
-                            font: 'normal bold 16px "Microsoft YaHei", sans-serif'
-                        }
-                    }],
+                    // graphic: [{
+                    //     type: 'text',
+                    //     left: '37.5%',
+                    //     top: '40.5%',
+                    //     position: [-20, 0],
+                    //     style: {
+                    //         x: 20,
+                    //         text: '品种比例',
+                    //         textAlign: 'center',
+                    //         fill: '#d0d0d0',
+                    //         font: 'normal 14px "Microsoft YaHei", sans-serif'
+                    //     }
+                    // }, {
+                    //     type: 'text',
+                    //     left: '37%',
+                    //     top: '50.5%',
+                    //     style: {
+                    //         text: `${that.varietiesTotalData} 吨`,
+                    //         fill: '#dfdfdf',
+                    //         font: 'normal bold 16px "Microsoft YaHei", sans-serif'
+                    //     }
+                    // }],
                     series: [{
                         type: 'pie',
                         radius: ['45%', '88%'],

@@ -17,6 +17,7 @@
     const fullProp = 'amountRankFullState'
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'home-amount-rank',
@@ -28,6 +29,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },

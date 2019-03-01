@@ -23,9 +23,7 @@
             const that = this
             that.$nextTick(() => {
                 that.draw()
-                window.addEventListener('resize', () => {
-                    that.draw()
-                })
+                window.addEventListener('resize', that.draw)
             })
         },
         methods: {
@@ -84,6 +82,10 @@
                     ctx.stroke()
                 }
             }
+        },
+        beforeDestroy () {
+            const that = this
+            window.removeEventListener('resize', that.draw)
         }
     }
 </script>

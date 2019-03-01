@@ -16,6 +16,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.totalData`
     const fullProp = 'totalDataFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'plant-total-data',
@@ -27,6 +28,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -80,12 +84,17 @@
                 if (that[fullProp]) {
                     fontSizeArr = [20, 28]
                 }
+                let containerHeight = parseInt(window.getComputedStyle(that.$refs.container, null)['height'])
+                let pieRadiusArr = ['53%', '61%']
+                if (!isNaN(containerHeight) && containerHeight > 223) {
+                    pieRadiusArr = ['49%', '56%']
+                }
                 datas.forEach((item, index) => {
                     centerX = centerXArr[index]
                     series.push({
                         name: item.label,
                         type: 'pie',
-                        radius: ['56%', '63%'],
+                        radius: pieRadiusArr,
                         center: [centerX, centerY],
                         startAngle: 225,
                         color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#00a2ff' }, { offset: 1, color: '#70ffac' }]), 'transparent'],

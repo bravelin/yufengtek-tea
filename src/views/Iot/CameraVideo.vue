@@ -24,16 +24,7 @@
         mounted () {
             const that = this
             that.$nextTick(() => {
-                const container = that.$refs.container
-                const styles = getComputedStyle(container, null)
-                const w = parseInt(styles.width)
-                const h = (12 / 16) * w
-                that.containerHeight = h
-                that.width = w
-                that.height = h
-                // that.playerOptions.width = w
-                // that.playerOptions.height = h
-                that.player = new EZUIPlayer('myPlayer')
+                that.init()
             })
         },
         data () {
@@ -60,6 +51,32 @@
             }
         },
         methods: {
+            init () {
+                const that = this
+                const { w, h } = that.getSize()
+                if (h < 200) {
+                    setTimeout(() => { that.init() }, 1200)
+                } else {
+                    that.initVideo(w, h)
+                }
+            },
+            initVideo (w, h) {
+                const that = this
+                that.containerHeight = h
+                that.width = w - 10
+                that.height = h - 10
+                // that.playerOptions.width = w
+                // that.playerOptions.height = h
+                that.player = new EZUIPlayer('myPlayer')
+            },
+            getSize () {
+                const that = this
+                const container = that.$refs.container
+                const styles = getComputedStyle(container, null)
+                const w = parseInt(styles.width) || 0
+                const h = (12 / 16) * w
+                return { w, h }
+            },
             playerReadied () {}
         }
     }

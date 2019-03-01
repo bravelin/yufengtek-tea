@@ -3,7 +3,7 @@
     <Plane class="tea-farm-wrap" :full="teaFarmFullState">
         <PlaneTitle>山场品质</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <!-- <div class="chart-title"><h4>山场比例</h4><div>{{ farmTotalArea }}<span>亩</span></div></div> -->
+        <div class="chart-title"><h4>山场比例</h4><div>{{ farmTotalArea }}<span>亩</span></div></div>
         <PlaneTools :full="teaFarmFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
@@ -18,6 +18,7 @@
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'teaFarmFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'plant-tea-farm',
@@ -29,6 +30,9 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
+                this.doInitOrRefreshChart()
+            },
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
@@ -84,27 +88,27 @@
                             padding: [2, 0, 0, 4]
                         }
                     },
-                    graphic: [{
-                        type: 'text',
-                        left: '37.5%',
-                        top: '40.5%',
-                        style: {
-                            x: 20,
-                            text: '山场比例',
-                            textAlign: 'center',
-                            fill: '#d0d0d0',
-                            font: 'normal 14px "Microsoft YaHei", sans-serif'
-                        }
-                    }, {
-                        type: 'text',
-                        left: '37%',
-                        top: '50.5%',
-                        style: {
-                            text: `${that.farmTotalArea} 亩`,
-                            fill: '#dfdfdf',
-                            font: 'normal bold 16px "Microsoft YaHei", sans-serif'
-                        }
-                    }],
+                    // graphic: [{
+                    //     type: 'text',
+                    //     left: '37.5%',
+                    //     top: '40.5%',
+                    //     style: {
+                    //         x: 20,
+                    //         text: '山场比例',
+                    //         textAlign: 'center',
+                    //         fill: '#d0d0d0',
+                    //         font: 'normal 14px "Microsoft YaHei", sans-serif'
+                    //     }
+                    // }, {
+                    //     type: 'text',
+                    //     left: '37%',
+                    //     top: '50.5%',
+                    //     style: {
+                    //         text: `${that.farmTotalArea} 亩`,
+                    //         fill: '#dfdfdf',
+                    //         font: 'normal bold 16px "Microsoft YaHei", sans-serif'
+                    //     }
+                    // }],
                     series: [{
                         type: 'pie',
                         radius: ['45%', '88%'],
