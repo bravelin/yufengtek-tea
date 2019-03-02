@@ -122,7 +122,7 @@
                         itemStyle: {
                             normal: {
                                 barBorderRadius: 30,
-                                color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{ offset: 0, color: '#003366' }, { offset: 1, color: '#2663bc' }])
+                                color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{ offset: 0, color: '#2663bc' }, { offset: 1, color: '#003366' }])
                             }
                         }
                     }]

@@ -9,7 +9,7 @@ const amountRankOriginData = [
     { place: '吴屯乡', data: 721 },
     { place: '崇安街道', data: 523 },
     { place: '武夷街道', data: 356 },
-    { place: '新丰街道', data: 200 }
+    { place: '新丰街道', data: 300 }
 ]
 const Num = ['一', '二', '三', '四', '五', '六', '七', '八', '九', '十']
 

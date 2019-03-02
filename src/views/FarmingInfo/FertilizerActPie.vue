@@ -18,7 +18,10 @@
     export default {
         name: 'farming-fertilizer-act-pie',
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp]),
+            miniScreen () {
+                return this.$store.state.winWidth < 1300
+            }
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -62,6 +65,7 @@
                 const that = this
                 const container = that.container
                 const { seriesData, legendData } = that.handleChartData(datas)
+                const miniScreen = that.miniScreen
                 const options = {
                     tooltip: {
                         trigger: 'item',
@@ -76,7 +80,7 @@
                         orient: 'vertical',
                         right: 0,
                         top: 0,
-                        itemGap: 10,
+                        itemGap: miniScreen ? 5 : 10,
                         textStyle: {
                             color: '#d0d0d0',
                             fontSize: 12,
@@ -93,7 +97,8 @@
                             formatter: '{d}%',
                             fontSize: 12
                         },
-                        color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
+                        // color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
+                        color: ['#15467d', '#87d0f6', '#4775b7', '#91acd4', '#2663bc'],
                         data: seriesData,
                         itemStyle: {
                             emphasis: {
@@ -113,6 +118,7 @@
                 const chart = that.chart
                 const { seriesData, legendData } = that.handleChartData(datas)
                 let options = null
+                const miniScreen = that.miniScreen
                 if (that[fullProp]) {
                     options = {
                         tooltip: { textStyle: { fontSize: 18 } },
@@ -123,7 +129,7 @@
                     options = {
                         tooltip: { textStyle: { fontSize: 14 } },
                         series: [{ center: ['36%', '50%'], data: seriesData, label: { fontSize: 12 } }],
-                        legend: { data: legendData, right: 0, itemGap: 10, top: 0, textStyle: { fontSize: 12 } },
+                        legend: { data: legendData, right: 0, itemGap: miniScreen ? 5 : 10, top: 0, textStyle: { fontSize: 12 } },
                     }
                 }
                 chart.setOption(options)

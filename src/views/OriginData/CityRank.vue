@@ -23,7 +23,10 @@
     export default {
         name: 'origin-city-rank',
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp]),
+            miniScreen () {
+                return this.$store.state.winWidth < 1300
+            }
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -66,16 +69,21 @@
             init (datas) {
                 const that = this
                 const container = that.container
+                const miniScreen = that.miniScreen
                 const options = {
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}'
+                        formatter: '{b}：{c}',
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
+                        textStyle: {
+                            fontSize: 14
+                        }
                     },
                     series: [{
                         type: 'wordCloud',
                         gridSize: 10,
-                        sizeRange: [14, 40],
+                        sizeRange: miniScreen ? [12, 24] : [14, 40],
                         rotationRange: [0, 0],
                         shape: 'circle',
                         autoSize: {
@@ -109,6 +117,7 @@
                 const that = this
                 const chart = that.chart
                 let options = null
+                const miniScreen = that.miniScreen
                 if (that[fullProp]) {
                     options = {
                         series: [{ data: datas, gridSize: 20, sizeRange: [14, 50] }],
@@ -116,7 +125,7 @@
                     }
                 } else {
                     options = {
-                        series: [{ data: datas, gridSize: 10, sizeRange: [14, 30] }],
+                        series: [{ data: datas, gridSize: 10, sizeRange: miniScreen ? [12, 24] : [14, 30] }],
                         tooltip: { textStyle: { fontSize: 14 } }
                     }
                 }

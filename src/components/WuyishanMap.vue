@@ -68,7 +68,7 @@
                             y: 'bottom',
                             splitList: [
                                 { start: 0, end: 0, color: '#15467d' },
-                                { start: SPLITVALUE, end: SPLITVALUE, color: '#08AF9C' } // 选中的区块颜色
+                                { start: SPLITVALUE, end: SPLITVALUE, color: '#389BB7' } // 选中的区块颜色
                             ]
                         },
                         series: [
@@ -76,7 +76,7 @@
                                 type: 'map',
                                 mapType: 'wuyishan',
                                 itemStyle: {
-                                    emphasis: { areaColor: '#389BB7', borderWidth: 0 },
+                                    emphasis: { areaColor: 'rgba(56,155,183, 0.5)', borderWidth: 0 },
                                     normal: { areaColor: '#15467d', borderColor: '#2f90cd', borderWidth: 1 }
                                 },
                                 label: {

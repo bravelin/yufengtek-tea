@@ -53,7 +53,7 @@
             // border: 1px solid #f00;
         }
     }
-    .farming-info-wrap, .pick-info-wrap{
+    .pick-info-wrap{
         position: relative;
         .chart-title{
             position: absolute;
@@ -76,14 +76,20 @@
                 }
             }
         }
-    }
-    .farming-info-wrap{
-        .chart-title{
-            top: 50%;
-        }
         &.full-screen{
-            .chart-title>h4{
-                font-size: 20px;
+            .chart-title{
+                >h4{
+                    font-size: 20px;
+                    letter-spacing: 2px;
+                }
+                >div{
+                    font-size: 26px;
+                    // font-weight: bold;
+                    >span{
+                        font-size: 18px;
+                        margin-left: 6px;
+                    }
+                }
             }
         }
     }
@@ -128,7 +134,7 @@
                     font-size: 28px;
                     letter-spacing: 2px;
                     color: #d0d0d0;
-                    border-left: 1px dotted rgba(53, 121, 255, 0.25);
+                    border-left: 1px dotted rgba(255, 255, 255, 0.2);
                 }
             }
         }
@@ -148,13 +154,29 @@
                 height: calc(100% - 42px);
             }
         }
-        .farming-info-wrap,.pick-info-wrap{
+        .pick-info-wrap{
             .chart-title{
                 >h4{
                     font-size: 12px;
                 }
                 >div{
                     font-size: 18px;
+                }
+            }
+            &.full-screen{
+                .chart-title{
+                    >h4{
+                        font-size: 18px;
+                        letter-spacing: 2px;
+                    }
+                    >div{
+                        font-size: 24px;
+                        // font-weight: bold;
+                        >span{
+                            font-size: 16px;
+                            margin-left: 4px;
+                        }
+                    }
                 }
             }
         }
@@ -202,6 +224,17 @@
         .warehouse-info-wrap{
             height: calc(34.84% - 3px);
             margin-top: 6px;
+        }
+        .farming-info-wrap, .pick-info-wrap{
+            .chart-title{
+                left: -12%;
+            }
+        }
+        .warehouse-info-wrap{
+            >div.plane-content{
+                // border: 1px solid #f00;
+                margin-top: -22px;
+            }
         }
     }
 }

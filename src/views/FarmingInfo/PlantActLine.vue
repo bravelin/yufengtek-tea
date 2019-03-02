@@ -90,7 +90,7 @@
                         axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
                         axisLabel: { show: true, margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
                     }],
-                    color: ['#821eff'],
+                    color: ['rgb(67, 81, 124)'],
                     series: [
                     {
                         smooth: true,
@@ -101,7 +101,7 @@
                         data: lineDatas,
                         areaStyle: {
                             normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(130, 30, 255, 0.7)' }, { offset: 0.85, color: 'rgba(130, 30, 255, 0.3)' }], false)
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(67, 81, 124, 0.3)' }, { offset: 0.85, color: 'rgba(67, 81, 124, 0.1)' }], false)
                             }
                         }
                     }]

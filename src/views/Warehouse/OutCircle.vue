@@ -72,7 +72,7 @@
                         radius: ['80%', '90%'],
                         center: ['50%', '55%'],
                         startAngle: 225,
-                        color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#00a2ff' }, { offset: 1, color: '#70ffac' }]), 'transparent'],
+                        color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#003366' }, { offset: 1, color: '#91acd4' }]), 'transparent'],
                         labelLine: { normal: { show: false } },
                         label: { normal: { position: 'center' } },
                         data: that.getDataLabels(data)
@@ -89,7 +89,7 @@
                     },
                     {
                         value: 25,
-                        label: { normal: { formatter: `\n${data}`, textStyle: { color: '#70ffac', fontSize: 24, fontWeight: 'bold' } } }
+                        label: { normal: { formatter: `\n${data}`, textStyle: { color: '#87d0f6', fontSize: 24, fontWeight: 'bold' } } }
                     },
                     {
                         value: 0,

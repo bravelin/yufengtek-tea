@@ -1,5 +1,6 @@
 <template>
     <div id="app" :style="{ height: winHeight + 'px' }">
+        <Sky></Sky>
         <NavMenu></NavMenu>
         <router-view :style="{ height: pageHeight + 'px' }"/>
         <Spinner v-show="loading"></Spinner>
@@ -12,11 +13,12 @@
     import { mapState } from 'vuex'
     import types from '@/store/constants/types'
     import NavMenu from '@/views/NavMenu'
+    import Sky from '@/components/Sky'
 
     export default {
         name: 'app',
         components: {
-            Spinner, NavMenu
+            Spinner, NavMenu, Sky
         },
         data () {
             return {

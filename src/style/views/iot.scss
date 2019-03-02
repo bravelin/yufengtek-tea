@@ -232,7 +232,7 @@
                 align-items: center;
                 cursor: pointer;
                 transition: all 0.3s ease-out;
-                color: #93bcf7;
+                color: #43517c;
                 font-size: 15px;
                 padding-left: 20px;
                 &:nth-of-type(1){
@@ -247,7 +247,7 @@
                     width: 12px;
                     height: 12px;
                     border-radius: 50%;
-                    background: #93bcf7;
+                    background: #43517c;
                     transition: all 0.3s ease-out;
                 }
                 &:before{
@@ -256,17 +256,17 @@
                     display: block;
                     width: 22px;
                     height: 1px;
-                    background: #93bcf7;
+                    background: #43517c;
                     left: -10px;
                     top: 10px;
                     transition: all 0.3s ease-out;
                 }
                 &.active{
-                    color: #821eff;
+                    color: #87d0f6;
                     font-weight: bold;
                     font-size: 15px;
                     &:before, &:after{
-                        background: #821eff;
+                        background: #87d0f6;
                     }
                 }
             }
@@ -319,7 +319,7 @@
         }
         .iot-item{
             display: flex;
-            background: rgba(15, 71, 130, 0.2);
+            background: rgba(15, 71, 130, 0.5);
             border-radius: 6px;
             flex-direction: row;
             padding: 8px;
@@ -365,6 +365,9 @@
             padding: 15px 5px 30px;
             li>div:nth-of-type(1){
                 font-size: 18px;
+            }
+            li>div:nth-of-type(2){
+                font-size: 14px;
             }
         }
     }

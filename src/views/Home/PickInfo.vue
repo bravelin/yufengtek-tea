@@ -26,7 +26,9 @@
         name: 'home-pick-info',
         computed: {
             ...thisMapState(['teaTotalAmount', fullProp]),
-            ...mapState(['screenFullState'])
+            miniScreen () {
+                return this.$store.state.winWidth < 1300
+            }
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -69,6 +71,7 @@
             init (datas) {
                 const that = this
                 const container = that.container
+                const miniScreen = that.miniScreen
                 const { seriesData, legendData } = that.handleChartData(datas)
                 const options = {
                     tooltip: {
@@ -101,26 +104,27 @@
                         show: true,
                         data: legendData,
                         orient: 'vertical',
-                        right: '3%',
+                        right: miniScreen ? 0 : '3%',
                         top: 10,
-                        itemGap: 15,
+                        itemGap: miniScreen ? 5 : 15,
                         textStyle: {
                             color: '#d0d0d0',
-                            fontSize: 14,
-                            padding: [2, 0, 0, 4]
+                            fontSize: miniScreen ? 12 : 14,
+                            padding: [2, 0, 0, miniScreen ? 0 : 4]
                         }
                     },
                     series: [{
                         type: 'pie',
-                        radius: ['45%', '88%'],
-                        center: ['44%', '50%'],
+                        radius: ['45%', miniScreen ? '80%' : '88%'],
+                        center: [miniScreen ? '38%' : '44%', '50%'],
                         label: {
                             show: true,
                             position: 'inside',
                             formatter: '{d}%',
                             fontSize: 12
                         },
-                        color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
+                        // color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
+                        color: ['#43517c', '#87d0f6', '#4775b7', '#91acd4', '#15467d'],
                         data: seriesData,
                         itemStyle: {
                             emphasis: {
@@ -140,10 +144,11 @@
                 const chart = that.chart
                 const { seriesData, legendData } = that.handleChartData(datas)
                 let options = null
+                const miniScreen = that.miniScreen
                 if (that[fullProp]) {
                     options = {
                         tooltip: { textStyle: { fontSize: 18 } },
-                        series: [{ data: seriesData, label: { fontSize: 16 } }],
+                        series: [{ center: [miniScreen ? '38%' : '44%', '50%'], radius: ['45%', '88%'], data: seriesData, label: { fontSize: 16 } }],
                         legend: { data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
                         // graphic: [
                         //     { left: '40.5%', top: '40.5%', style: { font: 'normal 20px "Microsoft YaHei", sans-serif' } },
@@ -160,8 +165,8 @@
                 } else {
                     options = {
                         tooltip: { textStyle: { fontSize: 14 } },
-                        series: [{ data: seriesData, label: { fontSize: 12 } }],
-                        legend: { data: legendData, right: '3%', itemGap: 15, top: 10, textStyle: { fontSize: 14 } },
+                        series: [{ center: [miniScreen ? '38%' : '44%', '50%'], radius: ['45%', miniScreen ? '80%' : '88%'], data: seriesData, label: { fontSize: 12 } }],
+                        legend: { data: legendData, right: miniScreen ? 0 : '3%', itemGap: miniScreen ? 5 : 15, top: 10, textStyle: { fontSize: miniScreen ? 12 : 14, padding: [2, 0, 0, miniScreen ? 0 : 4] } },
                         // graphic: [
                         //     { left: '36.5%', top: '40.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } },
                         //     {

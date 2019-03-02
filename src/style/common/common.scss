@@ -52,6 +52,11 @@
             display: block;
         }
     }
+    &:hover{
+        border-radius: 2px;
+        background: rgba(18, 35, 87, 0.9);
+        box-shadow: 0 0 10px rgba(255, 255, 255,.99);
+    }
     &.full-screen{
         position: fixed !important;
         top: 92px;
@@ -61,7 +66,7 @@
         width: auto !important;
         height: auto !important;
         z-index: 7;
-        background: rgba(#1D1A3A, 0.95);
+        background: rgba(18, 35, 87, 0.9);
         margin-top: 0 !important;
         margin-bottom: 0 !important;
         margin-right: 0 !important;
@@ -74,6 +79,10 @@
             top: 6px;
             right: 6px;
             font-size: 18px;
+        }
+        &:hover{
+            background: rgba(18, 35, 87, 0.9);
+            box-shadow: none;
         }
     }
 }
@@ -310,6 +319,11 @@
     .plane-content{
         height: calc(100% - 34px);
     }
+    .plane.full-screen{
+        left: 10px;
+        right: 10px;
+        top: 80px;
+    }
 }
 
 @media screen and (max-height: 800px) {
@@ -322,6 +336,10 @@
     .page, .nav-menu{
         margin-left: 5px;
         margin-right: 5px;
+    }
+    .plane.full-screen{
+        left: 5px;
+        right: 5px;
     }
     .nav-menu{
         .menu{

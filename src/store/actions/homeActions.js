@@ -29,10 +29,24 @@ export default {
     },
     // 获取施肥比例数据
     [types.HOME_GET_FARMING_ACT_DATA] (context) {
-        const tempData = [{ label: '有机肥', value: 32 }, { label: '无机肥', value: 22 }, { label: '饼肥', value: 46 }, { label: '复合肥', value: 26 }]
+        let baseData = context.state.currSelectedRegion == '' ? 2000 : 500
+        const tempData = [
+            { label: '1月', value: 32 },
+            { label: '2月', value: 22 },
+            { label: '3月', value: 46 },
+            { label: '4月', value: 26 },
+            { label: '5月', value: 26 },
+            { label: '6月', value: 26 },
+            { label: '7月', value: 26 },
+            { label: '8月', value: 26 },
+            { label: '9月', value: 26 },
+            { label: '10月', value: 26 },
+            { label: '11月', value: 26 },
+            { label: '12月', value: 26 }
+        ]
         setTimeout(() => {
             context.state.farmingActdatas = tempData.map(item => {
-                return { label: item.label, value: parseInt(100 * Math.random()) }
+                return { label: item.label, value: parseInt(baseData * Math.random()) }
             })
         }, 700)
     },

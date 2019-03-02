@@ -39,8 +39,13 @@
                     ctx.stroke()
                     ctx.beginPath()
                     ctx.lineWidth = 4
-                    ctx.moveTo(25, bottom - 9)
+                    ctx.moveTo(19, bottom - 9)
                     ctx.lineTo(right, bottom - 9)
+                    ctx.stroke()
+                    ctx.beginPath()
+                    ctx.lineWidth = 6
+                    ctx.moveTo(0, bottom - 1)
+                    ctx.lineTo(6, bottom - 1)
                     ctx.stroke()
                 }
             }

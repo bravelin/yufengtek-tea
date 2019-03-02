@@ -24,7 +24,10 @@
     export default {
         name: 'home-origin-data',
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp]),
+            miniScreen () {
+                return this.$store.state.winWidth < 1300
+            }
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -67,6 +70,7 @@
             init (datas) {
                 const that = this
                 const container = that.container
+                const miniScreen = that.miniScreen
                 const options = {
                     tooltip: {
                         trigger: 'item',
@@ -80,7 +84,7 @@
                     series: [{
                         type: 'wordCloud',
                         gridSize: 10,
-                        sizeRange: [14, 30],
+                        sizeRange: miniScreen ? [12, 22] : [14, 30],
                         rotationRange: [0, 0],
                         shape: 'circle',
                         autoSize: {
@@ -113,6 +117,7 @@
             refresh (datas) {
                 const that = this
                 const chart = that.chart
+                const miniScreen = that.miniScreen
                 let options = null
                 if (that[fullProp]) {
                     options = {
@@ -121,7 +126,7 @@
                     }
                 } else {
                     options = {
-                        series: [{ data: datas, gridSize: 10, sizeRange: [14, 30] }],
+                        series: [{ data: datas, gridSize: 10, sizeRange: miniScreen ? [12, 22] : [14, 30] }],
                         tooltip: { textStyle: { fontSize: 14 } }
                     }
                 }

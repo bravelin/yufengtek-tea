@@ -23,7 +23,10 @@
     export default {
         name: 'plant-tea-farm',
         computed: {
-            ...thisMapState(['varietiesTotalData', fullProp])
+            ...thisMapState(['varietiesTotalData', fullProp]),
+            miniScreen () {
+                return this.$store.state.winWidth < 1300
+            }
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
@@ -67,6 +70,7 @@
                 const that = this
                 const container = that.container
                 const { seriesData, legendData } = that.doHandlerData(datas)
+                const miniScreen = that.miniScreen
                 const options = {
                     tooltip: {
                         trigger: 'item',
@@ -81,11 +85,11 @@
                         orient: 'vertical',
                         right: '3%',
                         top: 10,
-                        itemGap: 15,
+                        itemGap: miniScreen ? 5 : 15,
                         textStyle: {
                             color: '#d0d0d0',
-                            fontSize: 14,
-                            padding: [2, 0, 0, 4]
+                            fontSize: miniScreen ? 12 : 14,
+                            padding: [2, 0, 0, miniScreen ? 0 : 4]
                         }
                     },
                     // graphic: [{
@@ -120,7 +124,8 @@
                             formatter: '{d}%',
                             fontSize: 12
                         },
-                        color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
+                        // color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
+                        color: ['#15467d', '#43517c', '#87d0f6', '#4775b7', '#91acd4'],
                         data: seriesData,
                         itemStyle: {
                             emphasis: {
@@ -140,39 +145,40 @@
                 const chart = that.chart
                 const { seriesData, legendData } = that.doHandlerData(datas)
                 let options = null
+                const miniScreen = that.miniScreen
                 if (that[fullProp]) {
                     options = {
                         tooltip: { textStyle: { fontSize: 18 } },
                         series: [{ data: seriesData, label: { fontSize: 16 } }],
-                        legend: { data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
-                        graphic: [
-                            { left: '41.5%', top: '40.5%', style: { font: 'normal 20px "Microsoft YaHei", sans-serif' } },
-                            {
-                                left: '41.3%',
-                                top: '50.5%',
-                                style: {
-                                    text: `${that.varietiesTotalData} 吨`,
-                                    font: 'normal bold 25px "Microsoft YaHei", sans-serif'
-                                }
-                            }
-                        ]
+                        legend: { padding: [2, 0, 0, 4], data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
+                        // graphic: [
+                        //     { left: '41.5%', top: '40.5%', style: { font: 'normal 20px "Microsoft YaHei", sans-serif' } },
+                        //     {
+                        //         left: '41.3%',
+                        //         top: '50.5%',
+                        //         style: {
+                        //             text: `${that.varietiesTotalData} 吨`,
+                        //             font: 'normal bold 25px "Microsoft YaHei", sans-serif'
+                        //         }
+                        //     }
+                        // ]
                     }
                 } else {
                     options = {
                         tooltip: { textStyle: { fontSize: 14 } },
                         series: [{ data: seriesData, label: { fontSize: 12 } }],
-                        legend: { data: legendData, right: '3%', itemGap: 15, top: 10, textStyle: { fontSize: 14 } },
-                        graphic: [
-                            { left: '36.5%', top: '40.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } },
-                            {
-                                left: '36.5%',
-                                top: '50.5%',
-                                style: {
-                                    text: `${that.varietiesTotalData} 吨`,
-                                    font: 'normal bold 16px "Microsoft YaHei", sans-serif'
-                                }
-                            }
-                        ]
+                        legend: { padding: [2, 0, 0, miniScreen ? 0 : 4], data: legendData, right: '3%', itemGap: miniScreen ? 5 : 15, top: 10, textStyle: { fontSize: miniScreen ? 12 : 14 } },
+                        // graphic: [
+                        //     { left: '36.5%', top: '40.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } },
+                        //     {
+                        //         left: '36.5%',
+                        //         top: '50.5%',
+                        //         style: {
+                        //             text: `${that.varietiesTotalData} 吨`,
+                        //             font: 'normal bold 16px "Microsoft YaHei", sans-serif'
+                        //         }
+                        //     }
+                        // ]
                     }
                 }
                 chart.setOption(options)

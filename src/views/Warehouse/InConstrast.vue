@@ -102,7 +102,7 @@
                         axisLine: { lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
                         axisLabel: { margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
                     }],
-                    color: ['rgb(109, 252, 175)', 'rgb(4, 165, 252)'],
+                    color: ['rgb(4, 165, 252)', '#91acd4'],
                     yAxis: [{
                         show: true,
                         splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.3)' } },
@@ -127,11 +127,11 @@
                         showSymbol: true,
                         areaStyle: index == 0 ? {
                             normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(109, 252, 175, 0.6)' }, { offset: 0.85, color: 'rgba(109, 252, 175, 0.3)' }], false)
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(4, 165, 252, 0.3)' }, { offset: 1, color: 'rgba(4, 165, 252, 0.1)' }], false)
                             }
                         } : {
                             normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(4, 165, 252, 0.7)' }, { offset: 0.85, color: 'rgba(4, 165, 252, 0.3)' }], false)
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(145,172,212, 0.3)' }, { offset: 1, color: 'rgba(145,172,212, 0.1)' }], false)
                             }
                         }
                     }

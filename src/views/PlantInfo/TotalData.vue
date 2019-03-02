@@ -21,7 +21,10 @@
     export default {
         name: 'plant-total-data',
         computed: {
-            ...thisMapState(['totalData', fullProp])
+            ...thisMapState(['totalData', fullProp]),
+            miniScreen () {
+                return this.$store.state.winWidth < 1380
+            }
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
@@ -78,16 +81,23 @@
                 const series = []
                 let centerX = 0
                 let centerY = '50%'
-                let textColor = '#70ffac'
+                const miniScreen = that.miniScreen
+                let textColor = '#87d0f6'
                 const centerXArr = ['17%', '50%', '83%']
                 let fontSizeArr = [15, 21]
                 if (that[fullProp]) {
                     fontSizeArr = [20, 28]
+                } else if (miniScreen) {
+                    fontSizeArr = [13, 18]
                 }
                 let containerHeight = parseInt(window.getComputedStyle(that.$refs.container, null)['height'])
-                let pieRadiusArr = ['53%', '61%']
-                if (!isNaN(containerHeight) && containerHeight > 223) {
-                    pieRadiusArr = ['49%', '56%']
+                let pieRadiusArr = ['53%', '60%']
+                if (!isNaN(containerHeight)) {
+                    if (containerHeight > 223) {
+                        pieRadiusArr = ['49%', '56%']
+                    } else if (containerHeight < 180) {
+                        pieRadiusArr = ['60%', '67%']
+                    }
                 }
                 datas.forEach((item, index) => {
                     centerX = centerXArr[index]
@@ -97,7 +107,7 @@
                         radius: pieRadiusArr,
                         center: [centerX, centerY],
                         startAngle: 225,
-                        color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#00a2ff' }, { offset: 1, color: '#70ffac' }]), 'transparent'],
+                        color: [new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: '#003366' }, { offset: 1, color: '#91acd4' }]), 'transparent'],
                         labelLine: { normal: { show: false } },
                         label: { normal: { position: 'center' } },
                         data: [

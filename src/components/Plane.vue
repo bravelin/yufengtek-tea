@@ -5,6 +5,7 @@
     </div>
 </template>
 <script>
+    const colors = ['rgba(53, 121, 255, 0.15)', 'rgba(18, 35, 87, 0.5)', 'rgba(53, 121, 255, 0.2)']
     export default {
         name: 'Plane',
         props: {
@@ -43,8 +44,8 @@
                     ctx.clearRect(0, 0, w, h)
                     const radius = 4
                     const top = 0.5
-                    ctx.strokeStyle = 'rgba(53, 121, 255, 0.15)'
-                    ctx.fillStyle = 'rgba(18, 35, 87, 0.1)'
+                    ctx.strokeStyle = colors[0]
+                    ctx.fillStyle = colors[1]
                     ctx.lineWidth = 1
                     ctx.beginPath()
                     ctx.moveTo(radius, top)
@@ -60,7 +61,7 @@
                     ctx.fill()
                     // 绘制四个角
                     const len = 9
-                    ctx.strokeStyle = 'rgba(53, 121, 255, 0.2)'
+                    ctx.strokeStyle = colors[2]
                     ctx.lineWidth = 2
                     ctx.beginPath()
                     ctx.moveTo(0.5, radius + len)
@@ -81,7 +82,15 @@
                     ctx.lineTo(0.5, h - radius - 0.5 - len)
                     ctx.stroke()
                 }
-            }
+            },
+            // doMouseEnter () {
+            //     this.colorType = 1
+            //     this.draw()
+            // },
+            // doMouseOut () {
+            //     this.colorType = 0
+            //     this.draw()
+            // }
         },
         beforeDestroy () {
             const that = this

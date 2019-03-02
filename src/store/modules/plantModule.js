@@ -17,7 +17,7 @@ export default {
             { place: '吴屯乡', data: 721 },
             { place: '崇安街道', data: 523 },
             { place: '武夷街道', data: 356 },
-            { place: '新丰街道', data: 200 }
+            { place: '新丰街道', data: 280 }
         ],
         // 山场品质
         farmTotalArea: 0,

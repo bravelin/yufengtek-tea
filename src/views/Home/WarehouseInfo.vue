@@ -22,7 +22,10 @@
     export default {
         name: 'home-warehouse',
         computed: {
-            ...thisMapState(['warehouseUnit', fullProp])
+            ...thisMapState(['warehouseUnit', fullProp]),
+            miniScreen () {
+                return this.$store.state.winWidth < 1300
+            }
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -66,6 +69,7 @@
                 const that = this
                 const container = that.container
                 const { titles, values } = that.handleChartData(datas)
+                const miniScreen = that.miniScreen
                 const options = {
                     tooltip: {
                         trigger: 'axis',
@@ -85,11 +89,11 @@
                         data: ['入库', '出库'],
                         right: 0,
                         top: 18,
-                        itemGap: 15,
+                        itemGap: miniScreen ? 5 : 15,
                         textStyle: {
                             color: '#d0d0d0',
-                            fontSize: 14,
-                            padding: [2, 0, 0, 2]
+                            fontSize: miniScreen ? 12 : 14,
+                            padding: [2, 0, 0, miniScreen ? 0 : 2]
                         }
                     },
                     grid: {
@@ -112,11 +116,11 @@
                             lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
                         }
                     }],
-                    color: ['#003366', '#2663bc'],
+                    color: ['#91acd4', '#2663bc'],
                     series: [{
                         name: '入库',
                         type: 'bar',
-                        barWidth: 10,
+                        barWidth: miniScreen ? 8 : 10,
                         itemStyle: {
                             normal: {
                                 barBorderRadius: 5
@@ -126,7 +130,7 @@
                     }, {
                         name: '出库',
                         type: 'bar',
-                        barWidth: 10,
+                        barWidth: miniScreen ? 8 : 10,
                         itemStyle: {
                             normal: {
                                 barBorderRadius: 5
@@ -142,6 +146,7 @@
             refresh (datas) {
                 const that = this
                 const chart = that.chart
+                const miniScreen = that.miniScreen
                 const { titles, values } = that.handleChartData(datas)
                 let config = null
                 if (that[fullProp]) {
@@ -151,7 +156,7 @@
                         yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
                         grid: { top: 58, bottom: 20, left: 25, right: 25 },
                         series: [{ barWidth: 20, data: values[0] }, { barWidth: 20, data: values[1] }],
-                        legend: { right: 20, textStyle: { fontSize: 16 } }
+                        legend: { itemGap: 15, right: 20, textStyle: { fontSize: 16, padding: [2, 0, 0, 2] } }
                     }
                 } else {
                     config = {
@@ -159,8 +164,8 @@
                         xAxis: [{ data: titles, axisLabel: { margin: 8, fontSize: 12 } }],
                         yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
                         grid: { top: 48, bottom: 2, left: 5, right: 5 },
-                        series: [{ barWidth: 10, data: values[0] }, { barWidth: 10, data: values[1] }],
-                        legend: { right: 0, textStyle: { fontSize: 14 } }
+                        series: [{ barWidth: miniScreen ? 8 : 10, data: values[0] }, { barWidth: 10, data: values[1] }],
+                        legend: { itemGap: miniScreen ? 5 : 15, right: 0, textStyle: { fontSize: miniScreen ? 12 : 14, padding: [2, 0, 0, miniScreen ? 0 : 2] } }
                     }
                 }
                 chart.setOption(config)

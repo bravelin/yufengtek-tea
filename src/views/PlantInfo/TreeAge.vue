@@ -22,7 +22,10 @@
     export default {
         name: 'plant-tree-age',
         computed: {
-            ...thisMapState(['treeAgeDistributeUnit', fullProp])
+            ...thisMapState(['treeAgeDistributeUnit', fullProp]),
+            miniScreen () {
+                return this.$store.state.winWidth < 1300
+            }
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
@@ -66,6 +69,7 @@
                  const that = this
                 const container = that.container
                 const { titles, values } = that.handleChartData(datas)
+                const miniScreen = that.miniScreen
                 const options = {
                     grid: {
                         top: 0, left: 3, right: 16, bottom: 5, containLabel: true
@@ -117,7 +121,7 @@
                                     return `${item.value} 亩`
                                 },
                                 color: '#fff',
-                                fontSize: 14,
+                                fontSize: miniScreen ? 12 : 14,
                                 offset: [0, 2]
                             }
                         }
@@ -132,6 +136,7 @@
                 const chart = that.chart
                 const { titles, values } = that.handleChartData(datas)
                 let options = null
+                const miniScreen = that.miniScreen
                 if (that[fullProp]) {
                     options = {
                         grid: { top: 20, left: 20, right: 35, bottom: 20 },
@@ -142,7 +147,7 @@
                 } else {
                     options = {
                         grid: { top: 0, left: 3, right: 16, bottom: 5 },
-                        series: [{ data: values, barWidth: 18, label: { normal: { fontSize: 14 } } }],
+                        series: [{ data: values, barWidth: 18, label: { normal: { fontSize: miniScreen ? 12 : 14 } } }],
                         yAxis: [{ data: titles, axisLabel: { margin: 8, fontSize: 12 } }],
                         xAxis: { axisLabel: { margin: 8, fontSize: 12 } }
                     }
