@@ -1,30 +1,30 @@
 <template>
-    <Plane class="iot-container" :full="curveChartFullState">
-        <PlaneTitle>实时环境</PlaneTitle>
+    <Plane class="iot-container" :full="fm2.curveChartFullState">
+        <PlaneTitle>FM2实时环境</PlaneTitle>
         <ul class="data-list">
-            <li class="temperature" :class="{ active: currFm == 'temperature' }" @click="switchFm('temperature', '温度')">
-                <div>{{ fmData.temperature }}°C</div>
-                <div>温度</div>
+            <li class="wind" :class="{ active: fm2.type == 'wind' }" @click="switchFm('wind', '风速')">
+                <div>{{ fm2.data.wind }}m/s</div>
+                <div>风速</div>
             </li>
-            <li class="humidity" :class="{ active: currFm == 'humidity' }" @click="switchFm('humidity', '湿度')">
-                <div>{{ fmData.humidity }}%</div>
-                <div>湿度</div>
+            <li class="rain" :class="{ active: fm2.type == 'rain' }" @click="switchFm('rain', '降雨量')">
+                <div>{{ fm2.data.rain }}mm</div>
+                <div>降雨量</div>
             </li>
-            <li class="light" :class="{ active: currFm == 'light' }" @click="switchFm('light', '光照')">
-                <div>{{ fmData.light }}Lux</div>
-                <div>光照</div>
+            <li class="soil-temperature" :class="{ active: fm2.type == 'temperature' }" @click="switchFm('temperature', '土壤温度')">
+                <div>{{ fm2.data.temperature }}°C</div>
+                <div>土壤温度</div>
             </li>
-            <li class="pressure" :class="{ active: currFm == 'pressure' }" @click="switchFm('pressure', '气压')">
-                <div>{{ fmData.pressure }}Pa</div>
-                <div>气压</div>
+            <li class="soil-humidity" :class="{ active: fm2.type == 'humidity' }" @click="switchFm('humidity', '土壤湿度')">
+                <div>{{ fm2.data.humidity }}%</div>
+                <div>土壤湿度</div>
             </li>
         </ul>
         <ul class="selector">
-            <li :class="{ active: currFmDataType=='HOUR' }" @click="switchFmDataType('HOUR')">时刻数据</li>
-            <li :class="{ active: currFmDataType=='WEEK' }" @click="switchFmDataType('WEEK')">七天数据</li>
+            <li :class="{ active: fm2.time == 'HOUR' }" @click="switchFmTimeType('HOUR')">时刻数据</li>
+            <li :class="{ active: fm2.time == 'WEEK' }" @click="switchFmTimeType('WEEK')">七天数据</li>
         </ul>
         <div class="plane-content" ref="chart"></div>
-        <PlaneTools :full="curveChartFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTools :full="fm2.curveChartFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -34,16 +34,16 @@
     import echarts from '@/lib/echarts'
     const moduleNameSpace = ns.IOT
     const fullProp = 'curveChartFullState'
-    const dataProp = 'fmChartDatas'
+    const dataProp = 'chartDatas'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const chartDataProp = `$store.state.${moduleNameSpace}.fm2.${dataProp}`
+    const fullStateProp = `$store.state.${moduleNameSpace}.fm2.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'ProductionMonitorCharts',
+        name: 'iot-fm2-charts',
         computed: {
-            ...thisMapState(['curveChartFullState', 'currFm', 'fmData', 'currFmDataType', 'fmChartDatas', 'currFmName', 'chartUnit', 'curveChartFullState'])
+            ...thisMapState(['fm2'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
@@ -66,7 +66,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.chart
-                if (that[dataProp].length) {
+                if (that['fm2'][dataProp].length) {
                     that.initChart()
                 }
             })
@@ -74,7 +74,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace][dataProp]
+                const datas = that.$store.state[moduleNameSpace]['fm2'][dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refreshChart(datas) : that.initChart(datas)
@@ -87,23 +87,23 @@
                 if (that.currFm == value) {
                     return
                 }
-                store.commit(moduleNameSpace + '/' + types.SWITCH_FM, { value, name })
-                setTimeout(() => { store.dispatch(moduleNameSpace + '/' + types.GET_FMS_CHART_DATA) }, 1000)
+                store.commit(moduleNameSpace + '/' + types.SWITCH_FM2_TYPE, { value, name })
+                setTimeout(() => { store.dispatch(moduleNameSpace + '/' + types.GET_FM2_CHART_DATA) }, 1000)
             },
             // 更改时刻数据/七天数据
-            switchFmDataType (val) {
+            switchFmTimeType (val) {
                 const that = this
                 const store = that.$store
-                if (that.currFmDataType == val) {
+                if (that.fm2.time == val) {
                     return
                 }
-                store.commit(moduleNameSpace + '/' + types.SWITCH_FM_DATA_TYPE, val)
-                store.dispatch(moduleNameSpace + '/' + types.GET_FMS_CHART_DATA)
+                store.commit(moduleNameSpace + '/' + types.SWITCH_FM2_TIME_TYPE, val)
+                store.dispatch(moduleNameSpace + '/' + types.GET_FM2_CHART_DATA)
             },
             // 初始化图表
             initChart () {
                 const that = this
-                const { titles, barDatas, lineDatas } = that.doHandlerData(that.fmChartDatas)
+                const { titles, barDatas, lineDatas } = that.doHandlerData(that.fm2.chartDatas)
                 that.chart = echarts.init(that.container)
                 const option = {
                     grid: { top: 20, left: 10, right: 10, bottom: 12, containLabel: true },
@@ -116,7 +116,7 @@
                             }
                         },
                         formatter (params) {
-                            return `时间：${params[0].name}<br/>${that.currFmName}：${params[0].data.value} ${that.chartUnit}`
+                            return `时间：${params[0].name}<br/>${that.fm2.name}：${params[0].data.value} ${that.fm2.chartUnit}`
                         }
                     },
                     xAxis: [{
@@ -140,10 +140,10 @@
                     {
                         type: 'line',
                         data: lineDatas,
-                        symbol: 'circle',
-                        symbolSize: 6,
                         showSymbol: true,
                         smooth: true,
+                        symbol: that.fm2.type == 'wind' ? `image://${location.origin}/images/arrow.png` : 'circle',
+                        symbolSize: that.fm2.type == 'wind' ? 20 : 6,
                         areaStyle: {
                             normal: {
                                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(67, 81, 124, 0.3)' }, { offset: 1, color: 'rgba(67, 81, 124, 0.1)' }], false)
@@ -157,7 +157,7 @@
             refreshChart () {
                 const that = this
                 const chart = that.chart
-                const { titles, barDatas, lineDatas } = that.doHandlerData(that.fmChartDatas)
+                const { titles, barDatas, lineDatas } = that.doHandlerData(that.fm2.chartDatas)
                 const currOption = chart.getOption()
                 const series = currOption.series
                 const xAxis = currOption.xAxis
@@ -165,19 +165,32 @@
                 series[0].data = lineDatas
                 xAxis[0].data = titles
                 tooltip.formatter = function (params) {
-                    return `时间：${params[0].name}点<br/>${that.currFmName}：${params[0].data.value} ${that.chartUnit}`
+                    return `时间：${params[0].name}点<br/>${that.fm2.name}：${params[0].data.value} ${that.fm2.chartUnit}`
+                }
+                if (that.fm2.type == 'wind') {
+                    series[0].symbol = `image://${location.origin}/images/arrow.png`
+                    series[0].symbolSize = 20
+                } else {
+                    series[0].symbol = 'circle'
+                    series[0].symbolSize = 6
                 }
                 chart.setOption({ series, xAxis, tooltip })
                 setTimeout(() => { chart.resize() }, 200)
             },
             doHandlerData (list) {
+                const that = this
                 const titles = []
                 const barDatas = []
                 const lineDatas = []
+                let obj = null
                 list.forEach(item => {
                     titles.push(item.title)
                     barDatas.push({ name: item.title, value: item.data })
-                    lineDatas.push({ name: item.title, value: item.data })
+                    obj = { name: item.title, value: item.data }
+                    if (that.fm2.type == 'wind') {
+                        obj.symbolRotate = item.rotate
+                    }
+                    lineDatas.push(obj)
                 })
                 return { titles, lineDatas, barDatas }
             },

@@ -1,6 +1,6 @@
 <template>
     <div class="search-wrap">
-        <div class="search-input"><i class="iconfont">&#xe62c;</i><input placeholder="搜索FM1、摄像头名称" type="text" @focus="doFocusInput()" v-model="curr" maxlength="30"/><button @click="doSearch()">搜索</button></div>
+        <div class="search-input"><i class="iconfont">&#xe62c;</i><input placeholder="搜索摄像头，监测站，智能水肥" type="text" @focus="doFocusInput()" v-model="curr" maxlength="30"/><button @click="doSearch()">搜索</button></div>
         <div class="search-list" :class="{ active: showSearchList }">
             <div class="search-type">
                 <div :class="{ active: type == 'FM1' }" @click="doSelectType('FM1')"><img src="../../assets/images/4/9.png" />FM1</div>
@@ -37,7 +37,7 @@
                 }
             },
             doFocusInput () {
-                this.showSearchList = true
+                this.showSearchList = false
             },
             doDel () {
                 const that = this

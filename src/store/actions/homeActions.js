@@ -141,6 +141,7 @@ export default {
             let baseData = context.state.currSelectedRegion == '' ? 600 : 100
             context.state.cameraAmount = parseInt(baseData * Math.random()) + 50
             context.state.monitorAmount = parseInt(baseData * Math.random()) + 30
+            context.state.waterFertilizerAmount = parseInt(baseData * Math.random()) + 33
         }, 250)
     },
     // 获取制茶等级数据

@@ -3,39 +3,48 @@
         "todayBrokenLineList": [
                 {
                         "brokenLineValue": "12.89",
-                        "template_txdate": "00"
+                        "template_txdate": "00",
+                        "month": "1月"
                 },
                 {
                         "brokenLineValue": "11.13",
-                        "template_txdate": "03"
+                        "template_txdate": "03",
+                        "month": "2月"
                 },
                 {
                         "brokenLineValue": "10.62",
-                        "template_txdate": "06"
+                        "template_txdate": "06",
+                        "month": "3月"
                 },
                 {
                         "brokenLineValue": "11.25",
-                        "template_txdate": "09"
+                        "template_txdate": "09",
+                        "month": "4月"
                 },
                 {
                         "brokenLineValue": "16.36",
-                        "template_txdate": "12"
+                        "template_txdate": "12",
+                        "month": "5月"
                 },
                 {
                         "brokenLineValue": "15.11",
-                        "template_txdate": "15"
+                        "template_txdate": "15",
+                        "month": "6月"
                 },
                 {
                         "brokenLineValue": "",
-                        "template_txdate": "18"
+                        "template_txdate": "18",
+                        "month": "7月"
                 },
                 {
                         "brokenLineValue": "",
-                        "template_txdate": "21"
+                        "template_txdate": "21",
+                        "month": "8月"
                 },
                 {
                         "brokenLineValue": "",
-                        "template_txdate": "23"
+                        "template_txdate": "23",
+                        "month": "9月"
                 }
         ]
 }

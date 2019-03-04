@@ -11,6 +11,10 @@
                 <div><i class="iconfont">&#xe61b;</i><div>监测站</div></div>
                 <div>{{ monitorAmount }}</div>
             </div>
+            <div class="iot-item">
+                <div><i class="iconfont">&#xe60c;</i><div>水肥设备</div></div>
+                <div>{{ waterFertilizerAmount }}</div>
+            </div>
         </div>
     </Plane>
 </template>
@@ -23,7 +27,7 @@
     export default {
         name: 'app-iot',
         computed: {
-            ...thisMapState(['cameraAmount', 'monitorAmount'])
+            ...thisMapState(['cameraAmount', 'monitorAmount', 'waterFertilizerAmount'])
         }
     }
 </script>

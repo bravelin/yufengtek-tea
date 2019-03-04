@@ -213,6 +213,46 @@
                 background-image: url('../../assets/images/4/6.png');
             }
         }
+        li.wind{
+            &:before{
+                background-image: url('../../assets/images/4/11.png');
+            }
+        }
+        li.rain{
+            &:before{
+                background-image: url('../../assets/images/4/12.png');
+            }
+        }
+        li.soil-temperature{
+            &:before{
+                background-image: url('../../assets/images/4/13.png');
+            }
+        }
+        li.soil-humidity{
+            &:before{
+                background-image: url('../../assets/images/4/14.png');
+            }
+        }
+        li.ec{
+            &:before{
+                background-image: url('../../assets/images/4/15.png');
+            }
+        }
+        li.ph{
+            &:before{
+                background-image: url('../../assets/images/4/16.png');
+            }
+        }
+        li.water{
+            &:before{
+                background-image: url('../../assets/images/4/17.png');
+            }
+        }
+        li.fertilizer{
+            &:before{
+                background-image: url('../../assets/images/4/18.png');
+            }
+        }
     }
 
     .iot-container{
@@ -308,13 +348,13 @@
         .plane-container{
             display: flex;
             // padding: 10px;
-            height: calc(100% - 5px);
+            height: 100%;
             >div{
                 // height: calc(50% - 4px);
                 flex: 1;
             }
-            >div:first-child{
-                margin-right: 8px;
+            >div:not(:first-child){
+                margin-left: 8px;
             }
         }
         .iot-item{
@@ -392,8 +432,12 @@
         }
         .iot-wrap{
             margin-bottom: 6px;
+            .plane-container > div:not(:first-child) {
+                margin-left: 4px;
+            }
             .iot-item>div:nth-of-type(2){
-                font-size: 24px;
+                font-size: 18px;
+                flex: 0.6;
             }
         }
     }
