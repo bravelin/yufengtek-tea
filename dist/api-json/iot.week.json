@@ -3,31 +3,38 @@
         "weekDayBrokenLineList": [
                 {
                         "brokenLineValue": "15.88",
-                        "template_txdate": "2019-01-23"
+                        "template_txdate": "2019-01-23",
+                        "month": "1月"
                 },
                 {
                         "brokenLineValue": "14.49",
-                        "template_txdate": "2019-01-24"
+                        "template_txdate": "2019-01-24",
+                        "month": "2月"
                 },
                 {
                         "brokenLineValue": "16.96",
-                        "template_txdate": "2019-01-25"
+                        "template_txdate": "2019-01-25",
+                        "month": "3月"
                 },
                 {
                         "brokenLineValue": "11.08",
-                        "template_txdate": "2019-01-26"
+                        "template_txdate": "2019-01-26",
+                        "month": "3月"
                 },
                 {
                         "brokenLineValue": "12.28",
-                        "template_txdate": "2019-01-27"
+                        "template_txdate": "2019-01-27",
+                        "month": "4月"
                 },
                 {
                         "brokenLineValue": "15.57",
-                        "template_txdate": "2019-01-28"
+                        "template_txdate": "2019-01-28",
+                        "month": "5月"
                 },
                 {
                         "brokenLineValue": "11.38",
-                        "template_txdate": "2019-01-29"
+                        "template_txdate": "2019-01-29",
+                        "month": "6月"
                 }
         ]
 }

@@ -30,8 +30,8 @@ export default {
         },
         fm2: {
             type: 'wind', // wind rain temperature humidity
-            name: '温度',
-            chartUnit: '℃',
+            name: '风速',
+            chartUnit: 'm/s',
             time: 'HOUR', // HOUR WEEK 数据时间类型
             data: {
                 wind: '12',
