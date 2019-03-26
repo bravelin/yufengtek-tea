@@ -8,7 +8,7 @@
             <CameraVideo v-show="currActive.type==types.IOT_TYPE_GUN"></CameraVideo>
         </div>
         <Map></Map>
-        <Search></Search>
+        <!--<Search></Search>-->
         <PhotoViewer v-show="photoViewerFullState"></PhotoViewer>
     </div>
 </template>
@@ -33,7 +33,7 @@
             ...thisMapState(['currActive', 'photoViewerFullState'])
         },
         components: {
-            FM1Charts, FM2Charts, WFCharts, Map, Search, CameraVideo, Amount, PhotoViewer
+            FM1Charts, FM2Charts, WFCharts, Map, CameraVideo, Amount, PhotoViewer
         },
         data () {
             return {
@@ -46,11 +46,15 @@
             store.commit(types.SWITCH_LOADING, false)
             store.dispatch(moduleNameSpace + '/' + types.GET_IOT_DATA)
             window.aa = store
+            // currActive 当前选中的数据类型
         },
         beforeDestroy () {
             const store = this.$store
             store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, {
                 fullStateName: 'photoViewerFullState', state: false
+            })
+            store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, {
+                    id: 0, type: types.IOT_TYPE_FM1
             })
         }
     }

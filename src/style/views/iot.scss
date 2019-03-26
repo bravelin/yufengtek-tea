@@ -329,15 +329,32 @@
             }
         }
     }
-
+    .cameraCenter{
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
     .video-container{
         border: 5px solid rgba(15, 71, 130, 0.6);
         border-radius: 6px;
-        margin-top: 40px;
+        height: 100%;
+        // margin-top: 40px;
         box-sizing: border-box;
         background: #000;
     }
-
+    .iotList{
+        display: flex;
+        justify-content: space-between;
+        >div:not(:first-child){
+            margin-left: 8px;
+        }
+        .iot-wrap{
+            flex:1;
+            .iot-item{
+                height: 100%;
+            }
+        }
+    }
     .iot-wrap{
         height: 90px;
         margin-bottom: 10px;

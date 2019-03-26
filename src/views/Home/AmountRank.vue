@@ -22,16 +22,16 @@
     export default {
         name: 'home-amount-rank',
         computed: {
-            ...thisMapState(['amountRankUnit', fullProp])
+            ...thisMapState(['amountRankUnit', fullProp, 'amountRankDatas'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
                 this.doInitOrRefreshChart()
             },
-            [fullStateProp] () {
+            [fullStateProp] () { // 监听全屏状态
                 this.doInitOrRefreshChart()
             },
-            [resizeStateProp] () {
+            [resizeStateProp] () { // 监听当前窗口大小
                 this.doInitOrRefreshChart()
             }
         },
@@ -63,7 +63,7 @@
             },
             // 创建图表
             init (datas) {
-                 const that = this
+                const that = this
                 const container = that.container
                 const { titles, values } = that.handleChartData(datas)
                 const options = {
@@ -161,8 +161,8 @@
                 const titles = []
                 const values = []
                 datas.forEach(item => {
-                    titles.push(item.place)
-                    values.push(item.data)
+                    titles.push(item.town)
+                    values.push(item.area)
                 })
                 return { titles, values }
             },

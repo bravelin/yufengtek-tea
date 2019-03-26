@@ -23,6 +23,7 @@ const types = [
     'SWITCH_WF_TIME_TYPE', // 更改WF的数据类型，时刻数据/七天数据
 
     'IOT_CHANGE_FULL_STATE', // 曲线图表全屏状态
+    'IOT_TYPE_OF_DISPLAY', // 全景显示监控还是图片
     'CHANGE_PHOTO_VIEW_URL',
     'IOT_TYPE_FM1', // fm1
     'IOT_TYPE_FM2', // fm2
@@ -64,6 +65,14 @@ const types = [
     'HOME_CHANGE_FULL_STATE', // 更改Plane图表的全屏状态
     // ****************************************************************溯源
     'ORIGIN_CHANGE_FULL_STATE', // 更改全屏状态
+    'GET_ORIGIN_DATA', // 溯源数据
+    'GET_ORIGIN_LIST_DATA', // 溯源地址
+    'CHANGE_PHOTO_VIEW_URL', // 全景图
+    'WEBSOCKET', // websocket
+    'GETWEBSOCKET',
+    'GET_GUN_DATA', // 摄像头的值
+    'CHANGE_GUN_DIRECTION', // 控制摄像头的方向
+    'GET_360_DATA', // 球机摄像头数据
 ]
 
 const typesObj = {}

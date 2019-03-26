@@ -60,6 +60,7 @@
     var isHttps = location.protocol === 'https:' ? true : false;
     // 是否为移动端
     var isMobile = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i);
+    console.log(isMobile)
     var testVideo = document.createElement('video');
     // 是否支持video标签和addEventListener方法（主要为了区别ie8）
     var isModernBrowser = !!testVideo.canPlayType && !!window.addEventListener;
@@ -117,6 +118,7 @@
     function addJs(filename, callback){
         var oJs = document.createElement("script");
         oJs.setAttribute("src", filename);
+        console.log(oJs)
         oJs.onload = callback;
         document.getElementsByTagName("head")[0].appendChild(oJs);
     }
@@ -140,8 +142,9 @@
         var sources = this.video.getElementsByTagName('source');
         // 转为数组对象，不受removeChild影响
         sources = Array.prototype.slice.call(sources, 0);
-
+        console.log(this.video)
         if(this.video.src){
+            console.log(11)
             // 移动端删除rtmp地址
             if(isMobile && RTMP_REG.test(this.video.src)){
                 this.video.removeAttribute('src');
@@ -349,6 +352,7 @@
 
         // 新增相同id的div标签，然后删除video标签
         this.videoFlash = document.createElement('DIV');
+        console.log(this.video)
         this.video.parentNode.replaceChild(this.videoFlash, this.video);
         this.video = this.videoFlash;
         this.videoFlash.id = this.opt.parentId;

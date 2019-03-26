@@ -74,11 +74,11 @@
                     grid: { top: 16, left: 0, right: 5, bottom: 0, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
-                        formatter: '{b}：{c}' + 'kg',
+                        formatter: '{b}月：{c}' + 'kg',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: {
                             lineStyle: {
-                                color: 'rgba(238,238,238,0.4)'
+                                color: 'rgba(238, 238, 238, 0.4)'
                             }
                         },
                         textStyle: { fontSize: 14 }
@@ -163,7 +163,7 @@
                 let w = 0
                 const maxWidth = that[fullProp] ? 42 : 28
                 datas.forEach(item => {
-                    titles.push(item.label) // date data
+                    titles.push(item.label + '月') // date data
                     w = widthObj[item.value]
                     w = w > maxWidth ? maxWidth : w
                     values.push({

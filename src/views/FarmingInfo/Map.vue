@@ -27,9 +27,9 @@
                 const that = this
                 const store = that.$store
                 store.commit(moduleNameSpace + '/' + types.FARMING_CHANGE_CURR_REGION, place)
-                store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PLANT_ACT_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_FERTILIZER_ACT_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PROTECTION_ACT_DATA)
+                store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PLANT_ACT_DATA, place)
+                // store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_FERTILIZER_ACT_DATA)
+                // store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PROTECTION_ACT_DATA)
             },
             doFullStateChange (payload) {
                 const that = this

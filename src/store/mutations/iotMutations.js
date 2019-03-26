@@ -1,15 +1,13 @@
 import types from '@/store/constants/types'
 export default {
-    [types.CHANGE_PHOTO_VIEW_URL] (state, payload) {
-        state.photoViewUrl = payload
-    },
+
     [types.CHANGE_ACTIVE_MARKER] (state, payload) {
         const currActive = state.currActive
         const currId = currActive.Id
-        const iotDatas = state.iotDatas
-        iotDatas.forEach(item => {
-            item.isActive = item.id == payload.id
-        })
+        // const iotDatas = state.iotDatas
+        // iotDatas.forEach(item => {
+        //     item.isActive = item.id == payload.id
+        // })
         currActive.id = payload.id
         currActive.type = payload.type
     },
@@ -66,5 +64,8 @@ export default {
     },
     [types.IOT_CHANGE_FULL_STATE] (state, payload) {
         state[payload.fullStateName] = payload.state
+    },
+    [types.IOT_TYPE_OF_DISPLAY] (state, payload) {
+        state.display = payload.fullStateName
     }
 }

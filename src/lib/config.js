@@ -24,7 +24,7 @@ export default {
         normal: './images/360.png'
     },
     iotMonitorMap: {
-        center: [114.9, 25.807761], // 物联监控地图中心点
-        zoom: 9
+        center: [118.03, 27.77], // 物联监控地图中心点
+        zoom: 10
     },
 }

@@ -5,15 +5,19 @@ import types from '@/store/constants/types'
 export default {
     namespaced: true,
     state: {
-        cameraAmount: 116,
-        monitorAmount: 234,
-        waterFertilizerAmount: 205, // 水肥设备
+        cameraAmount: 0,
+        monitorAmount: 0,
+        waterFertilizerAmount: 0, // 水肥设备
         iotDatas: [], // 设备数据
+        camera: [],
+        emVos: [],
+        Fm1: [],
+        Fm2: [],
         photoViewUrl: './360/01.jpg',
         currActive: {
             type: types.IOT_TYPE_FM1,
             id: '001'
-        },
+        }, // 默认为FM1
         fm1: {
             type: 'temperature', // temperature humidity light pressure
             name: '温度',
@@ -25,6 +29,7 @@ export default {
                 light: '9987.0',
                 pressure: '988.51'
             },
+            sno: '',
             chartDatas: [], // 时刻/七天图表数据
             curveChartFullState: false, // 控制全屏状态
         },
@@ -39,6 +44,7 @@ export default {
                 temperature: '17',
                 humidity: '16'
             },
+            sno: '',
             chartDatas: [], // 时刻/七天图表数据
             curveChartFullState: false, // 控制全屏状态
         },
@@ -57,6 +63,9 @@ export default {
             curveChartFullState: false, // 控制全屏状态
         },
         photoViewerFullState: false, // 全景的全屏状态
+        videoUrl: '', // 监控录像地址
+        videoUrl360: '', // 球机摄像头地址
+        display: ''
     },
     actions,
     mutations

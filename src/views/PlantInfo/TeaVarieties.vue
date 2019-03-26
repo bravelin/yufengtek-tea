@@ -1,9 +1,9 @@
 <!--茶树品种-->
 <template>
     <Plane class="tea-varieties-wrap" :full="teaVarietiesFullState">
-        <PlaneTitle>茶树品种</PlaneTitle>
+        <PlaneTitle>茶树种植面积</PlaneTitle>
         <div class="plane-content" ref="container"></div>
-        <div class="chart-title"><h4>品种比例</h4><div>{{ varietiesTotalData }}<span>吨</span></div></div>
+        <div class="chart-title"><h4>种植比例</h4><div>{{ varietiesTotalData }}<span>亩</span></div></div>
         <PlaneTools :full="teaVarietiesFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
@@ -191,8 +191,8 @@
                 let item = null
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
-                    seriesData.push({ name: item.label, value: item.value })
-                    legendData.push(item.label)
+                    seriesData.push({ name: item.varieties, value: item.area })
+                    legendData.push(item.varieties)
                 }
                 return { legendData, seriesData }
             },

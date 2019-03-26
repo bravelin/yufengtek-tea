@@ -27,11 +27,11 @@
                 const that = this
                 const store = that.$store
                 store.commit(moduleNameSpace + '/' + types.WAREHOUSE_CHANGE_CURR_REGION, place)
-                store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_TODAY_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_THIS_YEAR_IN_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_THIS_YEAR_OUT_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_HISTORY_IN_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_HISTORY_OUT_DATA)
+                store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_TODAY_DATA, place)
+                // store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_THIS_YEAR_IN_DATA)
+                // store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_THIS_YEAR_OUT_DATA)
+                // store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_HISTORY_IN_DATA)
+                // store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_HISTORY_OUT_DATA)
             },
             doFullStateChange (payload) {
                 const that = this

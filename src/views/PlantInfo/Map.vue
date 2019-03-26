@@ -27,11 +27,11 @@
                 const that = this
                 const store = that.$store
                 store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_CURR_REGION, place)
-                store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_STAT_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TREE_AGE_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_FARM_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_VARIETIES_DATA)
-                store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_AMOUNT_RANK)
+                store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_STAT_DATA, place)
+                // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TREE_AGE_DATA)
+                // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_FARM_DATA)
+                // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_VARIETIES_DATA)
+                // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_AMOUNT_RANK)
             },
             doFullStateChange (payload) {
                 const that = this

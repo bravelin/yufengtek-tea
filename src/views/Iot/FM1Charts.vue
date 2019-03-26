@@ -81,14 +81,16 @@
                     }
                 }
             },
+            // 更改实时环境数据
             switchFm (value, name) {
                 const that = this
                 const store = that.$store
-                if (that.currFm == value) {
+                if (that.fm1.type == value) {
                     return
                 }
                 store.commit(moduleNameSpace + '/' + types.SWITCH_FM1_TYPE, { value, name })
-                setTimeout(() => { store.dispatch(moduleNameSpace + '/' + types.GET_FM1_CHART_DATA) }, 1000)
+                const sno = store.state[moduleNameSpace]['fm1'].sno
+                setTimeout(() => { store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, sno) }, 100)
             },
             // 更改时刻数据/七天数据
             switchFmTimeType (val) {
@@ -97,8 +99,9 @@
                 if (that.fm1.time == val) {
                     return
                 }
+                const sno = store.state[moduleNameSpace]['fm1'].sno
                 store.commit(moduleNameSpace + '/' + types.SWITCH_FM1_TIME_TYPE, val)
-                store.dispatch(moduleNameSpace + '/' + types.GET_FM1_CHART_DATA)
+                store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, sno)
             },
             // 初始化图表
             initChart () {
@@ -106,7 +109,7 @@
                 const { titles, barDatas, lineDatas } = that.doHandlerData(that.fm1.chartDatas)
                 that.chart = echarts.init(that.container)
                 const option = {
-                    grid: { top: 20, left: 10, right: 10, bottom: 12, containLabel: true },
+                    grid: { top: 20, left: 22, right: 20, bottom: 12, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
                         backgroundColor: 'rgba(0, 159, 253, 0.5)',
@@ -123,7 +126,7 @@
                         type: 'category',
                         data: titles,
                         boundaryGap: true,
-                        axisTick: { show: false },
+                        axisTick: { show: true },
                         axisLine: { lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
                         axisLabel: { margin: 15, textStyle: { color: '#fff' } },
                         splitLine: { show: false, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.15)' } },
@@ -170,12 +173,13 @@
                 chart.setOption({ series, xAxis, tooltip })
                 setTimeout(() => { chart.resize() }, 200)
             },
+            // 处理折线图数据
             doHandlerData (list) {
                 const titles = []
                 const barDatas = []
                 const lineDatas = []
                 list.forEach(item => {
-                    titles.push(item.title)
+                    titles.push((item.title.length > 6) ? item.title.substr(5) : item.title)
                     barDatas.push({ name: item.title, value: item.data })
                     lineDatas.push({ name: item.title, value: item.data })
                 })

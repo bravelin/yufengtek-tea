@@ -175,18 +175,25 @@
                 let dataItem = null
                 let lineObj = null
                 const legends = []
+                var titles = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                if (datas[0].list.length != 12) {
+                    var ss = datas[0].list[0].label
+                    for (var j = 1; j < ss; j++) {
+                        datas[0].list.unshift({ label: j, value: 0 })
+                    }
+                }
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
                     lineObj = { year: item.year, list: [] }
                     legends.push(item.year)
                     for (let j = 0; j < item.list.length; j++) {
                         dataItem = item.list[j]
-                        titleObjs[dataItem.label] = true
+                        // titleObjs[dataItem.label] = true
                         lineObj.list.push(dataItem.value)
                     }
                     lineDatas.push(lineObj)
                 }
-                const titles = Object.keys(titleObjs)
+                // const titles = Object.keys(titleObjs)
                 return { titles, lineDatas, legends }
             },
             doFullStateChange (payload) {

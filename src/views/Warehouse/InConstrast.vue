@@ -168,6 +168,7 @@
             },
             // 数据加工
             handleChartData (datas) {
+                console.log(datas)
                 const that = this
                 const lineDatas = []
                 let item = null
@@ -175,6 +176,13 @@
                 let dataItem = null
                 let lineObj = null
                 const legends = []
+                var titles = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                if (datas[0].list.length != 12) {
+                    var ss = datas[0].list[0].label
+                    for (var j = 1; j < ss; j++) {
+                        datas[0].list.unshift({ label: j, value: 0 })
+                    }
+                }
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
                     lineObj = { year: item.year, list: [] }
@@ -186,7 +194,8 @@
                     }
                     lineDatas.push(lineObj)
                 }
-                const titles = Object.keys(titleObjs)
+                // const titles = Object.keys(titleObjs)
+                console.log({ titles, lineDatas, legends })
                 return { titles, lineDatas, legends }
             },
             // full state change

@@ -1,15 +1,18 @@
 <template>
     <Plane class="photo-viewer" :full="photoViewerFullState">
-        <PlaneTitle>全景图</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="photoViewerFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTitle>{{display=='' ? '全景图' : '视频监控'}}</PlaneTitle>
+        <div class="plane-content" ref="container" v-show="display==''"></div>
+        <CameraVideo v-show="display=='camera'"></CameraVideo>
+        <PlaneTools :full="photoViewerFullState" @change="doFullStateChange" :style="{display: displayType}"></PlaneTools>
     </Plane>
 </template>
 <script>
+
     import { createNamespacedHelpers } from 'vuex'
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import PhotoSphereViewer from 'photo-sphere-viewer'
+    import CameraVideo from './Camera360'
     const moduleNameSpace = ns.IOT
     const fullProp = 'photoViewerFullState'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -20,22 +23,32 @@
     export default {
         name: 'iot-photo-viewer',
         computed: {
-            ...thisMapState(['photoViewerFullState', 'photoViewUrl'])
+            ...thisMapState(['photoViewerFullState', 'photoViewUrl', 'currActive', 'display'])
         },
         watch: {
             [viewUrlProp] () {
                 this.doRefresh()
             }
         },
+        created() {
+            var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i)
+            this.displayType = displayType ? 'block' : 'none'
+        },
+        components: {
+            CameraVideo
+        },
         data () {
             return {
                 container: null,
-                viewer: null
+                viewer: null,
+                displayType: 'none',
+                types
             }
         },
         mounted () {
             const that = this
             that.$nextTick(() => {
+                console.log(this.display)
                 that.container = that.$refs.container
                 that.init()
             })
@@ -53,13 +66,17 @@
                         panorama: that.photoViewUrl,
                         container: that.container,
                         time_anim: false,
-                        navbar: true
+                        navbar: true,
+                        default_fov: 90
                     })
                 }
             },
             doRefresh () {
                 const that = this
                 if (that.viewer) {
+                    console.log(that.photoViewUrl)
+                    const photoViewUrl = store.state[moduleNameSpace]['photoViewUrl']
+                    console.log(photoViewUrl)
                     that.viewer.setPanorama(that.photoViewUrl)
                 }
             },

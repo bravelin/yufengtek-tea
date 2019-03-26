@@ -8,12 +8,13 @@ export default {
         monitorAmount: 234,
         waterFertilizerAmount: 205, // 水肥设备
         farmingActdatas: [],
-        pickDatas: [],
+        pickDatas: [], // 采摘数据
+        teaTotalAmount: '', // 采摘总量
         // 等级
         levelDatas: [],
         // 茶树排行
         amountRankUnit: '亩',
-        amountRankDatas: [],
+        amountRankDatas: [], // 茶树排行
         warehouseUnit: '吨',
         // 入库出库数据
         warehouseDatas: [],

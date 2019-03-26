@@ -170,6 +170,7 @@
                 chart.setOption({ series, xAxis, tooltip })
                 setTimeout(() => { chart.resize() }, 200)
             },
+            // 处理折线数据
             doHandlerData (list) {
                 const titles = []
                 const barDatas = []

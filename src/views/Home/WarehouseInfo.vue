@@ -28,7 +28,8 @@
             }
         },
         watch: {
-            [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+            [chartDataProp] () {
+                // 监听store中图表数据的改变，刷新图表
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
@@ -58,7 +59,7 @@
             doInitOrRefreshChart () {
                 const that = this
                 const datas = that.$store.state[moduleNameSpace][dataProp]
-                if (datas && datas.length) {
+                if (datas) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
                     }
@@ -175,10 +176,12 @@
             handleChartData (datas) {
                 const titles = []
                 const values = [[], []]
-                datas.forEach(item => {
-                    titles.push(item.date)
-                    values[0].push(item.in)
-                    values[1].push(item.out)
+                datas.in.forEach(item => {
+                    titles.push(item.month + '月')
+                    values[0].push(item.amount)
+                })
+                datas.out.forEach(item => {
+                    values[1].push(item.amount)
                 })
                 return { titles, values }
             },

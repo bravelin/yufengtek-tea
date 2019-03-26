@@ -148,7 +148,7 @@
                 let item = null
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
-                    titles.push(item.label)
+                    titles.push(item.label + '月')
                     lineDatas.push(item.value)
                 }
                 return { titles, lineDatas }

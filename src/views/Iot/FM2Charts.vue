@@ -75,6 +75,7 @@
             doInitOrRefreshChart () {
                 const that = this
                 const datas = that.$store.state[moduleNameSpace]['fm2'][dataProp]
+                // console.log(datas)
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refreshChart(datas) : that.initChart(datas)
@@ -87,8 +88,9 @@
                 if (that.currFm == value) {
                     return
                 }
+                const sno = store.state[moduleNameSpace]['fm2'].sno
                 store.commit(moduleNameSpace + '/' + types.SWITCH_FM2_TYPE, { value, name })
-                setTimeout(() => { store.dispatch(moduleNameSpace + '/' + types.GET_FM2_CHART_DATA) }, 1000)
+                setTimeout(() => { store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, sno) }, 1000)
             },
             // 更改时刻数据/七天数据
             switchFmTimeType (val) {
@@ -97,8 +99,9 @@
                 if (that.fm2.time == val) {
                     return
                 }
+                const sno = store.state[moduleNameSpace]['fm2'].sno
                 store.commit(moduleNameSpace + '/' + types.SWITCH_FM2_TIME_TYPE, val)
-                store.dispatch(moduleNameSpace + '/' + types.GET_FM2_CHART_DATA)
+                store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, sno)
             },
             // 初始化图表
             initChart () {
@@ -106,7 +109,7 @@
                 const { titles, barDatas, lineDatas } = that.doHandlerData(that.fm2.chartDatas)
                 that.chart = echarts.init(that.container)
                 const option = {
-                    grid: { top: 20, left: 10, right: 10, bottom: 12, containLabel: true },
+                    grid: { top: 20, left: 22, right: 20, bottom: 12, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
                         backgroundColor: 'rgba(0, 159, 253, 0.5)',
@@ -184,10 +187,11 @@
                 const lineDatas = []
                 let obj = null
                 list.forEach(item => {
-                    titles.push(item.title)
+                    titles.push((item.title.length > 6) ? item.title.substr(5) : item.title)
                     barDatas.push({ name: item.title, value: item.data })
                     obj = { name: item.title, value: item.data }
                     if (that.fm2.type == 'wind') {
+                        // 风向旋转角度
                         obj.symbolRotate = item.rotate
                     }
                     lineDatas.push(obj)

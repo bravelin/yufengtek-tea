@@ -37,7 +37,7 @@
                 }
             },
             doFocusInput () {
-                this.showSearchList = false
+                this.showSearchList = true
             },
             doDel () {
                 const that = this

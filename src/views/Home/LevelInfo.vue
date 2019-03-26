@@ -147,8 +147,8 @@
                 let item = null
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
-                    seriesData.push({ name: item.label, value: item.value })
-                    legendData.push(item.label)
+                    seriesData.push({ name: item.grade, value: item.gravity })
+                    legendData.push(item.grade)
                 }
                 return { legendData, seriesData }
             },

@@ -1,6 +1,6 @@
 const CompressionPlugin = require('compression-webpack-plugin')
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'development' ? './' : './',
+    baseUrl: process.env.NODE_ENV === 'development' ? './' : './',
     // outputDir: '../server/app/public/u/',
     assetsDir: '',
     productionSourceMap: false,
@@ -16,13 +16,13 @@ module.exports = {
         }
     },
     devServer: {
-        port: 8082,
+        port: 8066,
         https: false,
         hotOnly: false,
         disableHostCheck: true,
         proxy: {
-            '/api': {
-                target: 'http://127.0.0.1:8080',
+            '/bigdata': {
+                target: '192.168.0.132:8066',
                 changeOrigin: true
             }
         }

@@ -30,16 +30,29 @@
         computed: {
             ...mapState(['screenFullState'])
         },
+        data() {
+            return {
+                websocket: null
+            }
+        },
         created () {
             const that = this
             const store = that.$store
             store.commit(types.SWITCH_SCREEN_FULL, true)
             store.commit(types.SWITCH_LOADING, false)
+            store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_DATA)
+            store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_LIST_DATA, { currentPage: 1 })
+            // store.dispatch(moduleNameSpace + '/' + types.GETWEBSOCKET)
+        },
+        methods: {
         },
         beforeDestroy () {
             const that = this
             const store = that.$store
             const fullProps = ['cityRankFullState', 'countStateFullState', 'mapFullState']
+            console.log(this.$store.state[moduleNameSpace].websocket)
+            this.$store.state[moduleNameSpace].websocket.onclose()
+            this.$store.state[moduleNameSpace].websocket.send('111')
             fullProps.forEach(prop => {
                 store.commit(moduleNameSpace + '/' + types.ORIGIN_CHANGE_FULL_STATE, {
                     fullStateName: prop,

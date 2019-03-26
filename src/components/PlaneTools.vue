@@ -1,6 +1,6 @@
 <template>
     <div class="panel-tools">
-        <i class="iconfont full-icon" v-html="full ? '&#xe621;' : '&#xe629;'" @click="change()"></i>
+        <i class="iconfont full-icon" v-html="full ? '&#xe621;' : '&#xe629;'" @click="change()" ></i>
         <i class="iconfont download-icon" @click="download()">&#xe620;</i>
     </div>
 </template>
@@ -12,6 +12,9 @@
                 type: Boolean,
                 default: false
             }
+        },
+        created() {
+            
         },
         methods: {
             change () {

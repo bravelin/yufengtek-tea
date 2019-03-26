@@ -2,7 +2,6 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = ''
-
 // 请求发送之前的拦截器
 axios.interceptors.request.use(config => {
     // ========

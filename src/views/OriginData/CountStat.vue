@@ -147,8 +147,8 @@
                 let item = null
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
-                    titles.push(item.label)
-                    lineDatas.push(item.value)
+                    titles.push(item.osmonth + '月')
+                    lineDatas.push(item.count)
                 }
                 return { titles, lineDatas }
             },

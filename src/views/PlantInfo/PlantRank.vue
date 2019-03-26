@@ -116,7 +116,7 @@
                         label: {
                             normal: {
                                 show: true,
-                                position: 'insideRight',
+                                position: 'insideLeft',
                                 formatter (item) {
                                     return `${item.value} 亩`
                                 },
@@ -160,8 +160,8 @@
                 const titles = []
                 const values = []
                 datas.forEach(item => {
-                    titles.push(item.place)
-                    values.push(item.data)
+                    titles.push(item.gardenName)
+                    values.push(item.area)
                 })
                 return { titles, values }
             },
