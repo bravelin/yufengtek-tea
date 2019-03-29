@@ -1,6 +1,6 @@
 export default {
     mapStyle: 'amap://styles/darkblue',
-    socketUrl: '',
+    socketUrl: 'ws://192.168.0.140:8066/myHandler',
     fm1MarkerImgUrl: {
         normal: './images/fm1.png',
         active: './images/fm1_active.png'

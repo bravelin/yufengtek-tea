@@ -250,10 +250,10 @@ export default {
         ajax({ url: util.globeURL + '/data/momitor/getFmbDataLast?sno=' + context.state.fm2.sno, method: 'post' }).then(res => {
             if (timeType == 'HOUR') {
                 // const length = res.repData.todayData.length - 1
-                fm2.data.temperature = parseInt(res.repData.soiltemp).toFixed(2)
-                fm2.data.humidity = parseInt(res.repData.soilmture).toFixed(2)
-                fm2.data.wind = parseInt(res.repData.windspd).toFixed(2)
-                fm2.data.rain = parseInt(res.repData.rain).toFixed(2)
+                fm2.data.temperature = parseInt(res.repData.data.soiltemp).toFixed(2)
+                fm2.data.humidity = parseInt(res.repData.data.soilmture).toFixed(2)
+                fm2.data.wind = parseInt(res.repData.data.windspd).toFixed(2)
+                fm2.data.rain = parseInt(res.repData.data.rain).toFixed(2)
             }
         })
     },

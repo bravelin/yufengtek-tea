@@ -30,6 +30,7 @@
                 map: null,
                 mapReady: false,
                 markers: [], // 标记
+                activeIcon: false
             }
         },
         computed: {
@@ -118,6 +119,7 @@
                 const { address_gislong, address_gislatd, type } = data
                 const position = new BMap.Point(address_gislong, address_gislatd)
                 let icon = null
+                // console.log(data.isActive)
                 if (type == types.IOT_TYPE_FM1) {
                     icon = data.isActive ? fm1IconActive : fm1IconNormal
                 } else if (type == types.IOT_TYPE_FM2) {
@@ -136,7 +138,39 @@
                 that.map.addOverlay(marker) // 向地图添加标注
                 marker.self = data
                 marker.addEventListener('click', (e) => {
+                    that.activeIcon = false
+                    that.map.removeOverlay(that.markers[e.target.self.index])
+                    const tt = e.target.self
+                    tt.isActive = false
+                    const obj1 = that.createMarker(tt)
+                    that.markers.splice(e.target.self.index, 1, obj1)
                     that.doHandlerClickMarker(e.target.self, e.target)
+                })
+                // console.log(that.map)
+                // var activeIcon = false
+                marker.addEventListener('mouseover', (e) => {
+                    if(!that.activeIcon){
+                        that.activeIcon = true
+                        that.map.removeOverlay(that.markers[e.target.self.index])
+                        const tt = e.target.self
+                        tt.isActive = true
+                        const obj1 = that.createMarker(tt)
+                        that.markers.splice(e.target.self.index, 1, obj1)
+                        // console.log(that.markers)
+                    }
+                    
+                })
+                marker.addEventListener('mouseout', (e) => {
+                    if(that.activeIcon&&(that.$store.state[moduleNameSpace].currActive.id!=e.target.self.index)){
+                        that.activeIcon = false
+                        that.map.removeOverlay(that.markers[e.target.self.index])
+                        const tt = e.target.self
+                        tt.isActive = false
+                        const obj1 = that.createMarker(tt)
+                        that.markers.splice(e.target.self.index, 1, obj1)
+                        // console.log(that.markers)
+                    }
+                    
                 })
                 // this.markers.push(marker)
                 return marker

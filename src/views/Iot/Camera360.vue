@@ -35,7 +35,60 @@
             var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
             document.onkeydown = function (e) {
                 e.preventDefault()
-                const key = e.key
+                var key = ''
+                console.log(e.key)
+                console.log(typeof key)
+                switch (e.key) {
+                    case '1':
+                        key = 5 // 左下
+                        break
+                    case '2':
+                        key = 1 // 向下
+                        break
+                    case 'ArrowDown':
+                        key = 1 // 向下
+                        break
+                    case '3':
+                        key = 7 // 右下
+                        break
+                    case '4':
+                        key = 2 // 向左
+                        break
+                    case 'ArrowLeft':
+                        key = 2 // 向左
+                        break
+                    case '5':
+                        key = 10 // 近焦
+                        break
+                    case '6':
+                        key = 3 // 向右
+                        break
+                    case 'ArrowRight':
+                        key = 3
+                        break
+                    case '7':
+                        key = 4 // 左上
+                        break
+                    case '8':
+                        key = 0 // 向上
+                        break
+                    case 'ArrowUp':
+                        key = 0
+                        break
+                    case '9':
+                        key = 6 // 左下
+                        break
+                    case '0':
+                        key = 11 // 远焦距
+                        break
+                    case '+':
+                        key = 8 // 放大
+                        break
+                    case '-':
+                        key = 9 // 缩小
+                        break
+                }
+                console.log(key)
                 if (typeof key == 'number') {
                     if (that.$store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
                         that.keyDown = true

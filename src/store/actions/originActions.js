@@ -26,7 +26,7 @@ export default {
         })
     },
     [types.GETWEBSOCKET] (context, payload) {
-        const wsuri = 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler'
+        const wsuri = 'ws://192.168.0.140:8066/myHandler'
         context.state.websocket = new WebSocket(wsuri)
         context.state.websocket.onopen = function (e) {
             // console.log(e)
@@ -46,12 +46,16 @@ export default {
                 }
             }
         }
+        context.state.websocket.onerror = function (e) {
+            console.log(e)
+        }
         context.state.websocket.onclose = function (e) {
             console.log(e)
             console.log('连接关闭')
         }
         context.state.websocket.send = function (message) {
             console.log('发送成功')
+            console.log(context.state.websocket)
         }
     }
 }

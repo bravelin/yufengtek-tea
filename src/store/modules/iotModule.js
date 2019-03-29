@@ -16,7 +16,7 @@ export default {
         photoViewUrl: './360/01.jpg',
         currActive: {
             type: types.IOT_TYPE_FM1,
-            id: '001'
+            id: 0
         }, // 默认为FM1
         fm1: {
             type: 'temperature', // temperature humidity light pressure

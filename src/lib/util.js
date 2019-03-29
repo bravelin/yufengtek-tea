@@ -54,6 +54,6 @@ export function formatTime (date, format = 'yyyy-MM-dd hh:mm:ss') {
 
 // 公用地址
  let globeURL = 'https://tea.yufengtek.com/tea-IIS-Web'
- // let globeURL = 'http://192.168.0.136:8066'
+ // let globeURL = 'http://192.168.0.140:8066'
  let globeUrlTwo = 'tea.yufengtek.com/tea-IIS-Web'
  export default { globeURL, globeUrlTwo }

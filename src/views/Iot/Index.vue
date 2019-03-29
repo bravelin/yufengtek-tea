@@ -52,7 +52,7 @@
                 if (bool) {
                     const type = that.currActive.type == 'IOT_TYPE_FM1' ? types.GET_FM1_CHART_DATA : types.GET_FM2_CHART_DATA
                     store.dispatch(moduleNameSpace + '/' + type)
-                    if (mimute == 20 || mimute == 1) {
+                    if (mimute == 31 || mimute == 1) {
                         const type1 = that.currActive.type == 'IOT_TYPE_FM1' ? types.GET_FM1_DATA : types.GET_FM2_DATA
                         store.dispatch(moduleNameSpace + '/' + type1)
                     }
