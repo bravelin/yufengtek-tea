@@ -1,7 +1,7 @@
 <template>
     <div class="app-title">
         <canvas ref="bg"></canvas>
-        <h3>武夷山市智慧茗茶数据平台</h3>
+        <h3>武夷山市智慧茗园数据平台</h3>
     </div>
 </template>
 <script>

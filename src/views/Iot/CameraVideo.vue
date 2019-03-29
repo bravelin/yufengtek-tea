@@ -4,7 +4,7 @@
         <div class="plane-content">
             <div id="containerVideo" class="video-container" ref="container" :style="{ height: containerHeight + 'px' }">
                 <!-- <video-player class="video-player-box" :options="playerOptions" :playsinline="true" @ready="playerReadied"></video-player> -->
-                <video :id="videoId" :style="{ width: 400 + 'px', height: 300 + 'px' }" controls playsInline webkit-playsinline autoplay>
+                <video id="videoId" :style="{ width: width + 'px', height: height + 'px' }" controls playsInline webkit-playsinline autoplay>
                     <source :src="videoUrl" type="application/x-mpegURL" />
                     <source :src="videoUrl" type="" />
                 </video>
@@ -42,6 +42,7 @@
             [dataVideo] (val) {
                  const that = this
                 const { w, h } = that.getSize()
+                console.log(w)
                 this.initVideo(w, h)
             }
         },
@@ -49,7 +50,7 @@
             const that = this
             that.$nextTick(() => {
                 that.init()
-                that.video = document.getElementById(that.videoId)
+                that.video = document.getElementById('videoId')
             })
         },
         data () {
@@ -86,7 +87,7 @@
                 if (h < 200) {
                     that.timer = setTimeout(() => { that.init() }, 1200) // 第一次没法直接加载出来
                 } else {
-                    // that.initVideo(w, h)
+                    that.initVideo(w, h)
                 }
             },
             initVideo (w, h) {
@@ -97,35 +98,16 @@
                 // that.playerOptions.width = w
                 // that.playerOptions.height = h
                 that.$nextTick(() => {
-                    if (document.getElementById(that.videoId)) {
-                        console.log(document.getElementById(that.videoId))
-                        // this.videoId = videoId;
-                        var videoId = that.videoId
+                    if (document.getElementById('videoId')) {
                         if (that.player) {
-                            console.log(1)
-                            var videoHtml = document.getElementById(that.videoId)
-                            document.getElementById(that.videoId).remove()
+                            var videoHtml = document.getElementById('videoId')
+                            document.getElementById('videoId').remove()
                             that.play = null
-                            // that.videoId = 'v' + Math.random()
-                            console.log(document.getElementById('containerVideo'))
                             document.getElementById('containerVideo').appendChild(that.video)
-                            console.log('videoId........' + document.getElementById('containerVideo'))
-                            that.player = new EZUIPlayer(that.videoId)
-                            // that.player = new EZUIPlayer(that.videoId)
-                            
-                            // that.player.opt.sources[0] = 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b'
-                            // that.player.opt.sources[1] = 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b'
-                            // that.player.play()
+                            that.player = new EZUIPlayer('videoId')
                         } else {
-                            // that.player = new EZUIPlayer(that.videoId)
-                            that.player = new EZUIPlayer(that.videoId)
-                            // console.log(that.player)
-                            // that.player.on('play', function(e) {
-                            //     console.log('开始/恢复播放')
-                            // })
+                            that.player = new EZUIPlayer('videoId')
                         }
-                        // that.player.play()
-                        console.log(that.player)
                     }
                 })
             },

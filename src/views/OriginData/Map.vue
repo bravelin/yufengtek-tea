@@ -88,7 +88,7 @@
                             coordinateSystem: 'bmap',
                             data: datas,
                             symbolSize (val) {
-                                return val[2] / 2
+                                return val[2] / 20 > 18 ? 18 : val[2] / 20
                             },
                             label: {
                                 normal: {
@@ -109,7 +109,7 @@
                             coordinateSystem: 'bmap',
                             data: datas.sort((a, b) => { return b.value - a.value }).slice(0, 5),
                             symbolSize (val) {
-                                return val[2] / 2
+                                return val[2] / 20 > 18 ? 18 : val[2] / 20
                             },
                             showEffectOn: 'render',
                             rippleEffect: { brushType: 'stroke' },

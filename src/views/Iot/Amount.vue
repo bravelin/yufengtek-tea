@@ -2,13 +2,13 @@
 <template>
     <div class="iotList">
         <Plane class="iot-wrap">
-            <div class="iot-item" @click="changeIotDatas('camera')">
+            <div class="iot-item" :class="{ activeItem: activeIotItem == 'camera' }" @click="changeIotDatas('camera')">
                 <div><i class="iconfont">&#xe62e;</i><div>摄像头</div></div>
                 <div>{{ cameraAmount }}</div>
             </div>
         </Plane>
         <Plane class="iot-wrap" >
-            <div class="iot-item" @click="changeIotDatas('monitor')">
+            <div class="iot-item" :class="{ activeItem: activeIotItem == 'monitor' }" @click="changeIotDatas('monitor')">
                 <div><i class="iconfont">&#xe61b;</i><div>监测站</div></div>
                 <div>{{ monitorAmount }}</div>
             </div>
@@ -31,9 +31,15 @@
         computed: {
             ...thisMapState(['cameraAmount', 'monitorAmount', 'fertilizerAmount', 'waterFertilizerAmount'])
         },
+        data() {
+            return {
+                activeIotItem: ''
+            }
+        },
         methods: {
             changeIotDatas (value) {
                 const store = this.$store
+                this.activeIotItem = value
                 store.dispatch(moduleNameSpace + '/' + types.GET_IOT_DATA,value)
             }
         },

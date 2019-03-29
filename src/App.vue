@@ -29,7 +29,8 @@
             pageHeight () {
                 const state = this.$store.state
                 let h = state.winHeight - 105
-                return h > 680 ? h : 680
+                // return h
+                return h > 540 ? h : 540
             }
         },
         created () {

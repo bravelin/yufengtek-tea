@@ -1,10 +1,10 @@
 <template>
     <!--<Plane class="iot-container camera-video">
         <PlaneTitle>视频监控</PlaneTitle>-->
-        <div class="plane-content cameraCenter">
-            <div class="video-container" ref="container2" >
+        <div class="plane-content cameraCenter" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd' >
+            <div class="video-container" ref="container2" id="containerVideo2">
                 <!-- <video-player class="video-player-box" :options="playerOptions" :playsinline="true" @ready="playerReadied"></video-player> -->
-                <video :id="videoId" :style="{ width: width + 'px', height: height + 'px' }" controls playsInline webkit-playsinline autoplay>
+                <video id="videoId2" :style="{ width: width + 'px', height: height + 'px' }" controls playsInline webkit-playsinline autoplay>
                     <source :src="videoUrl360" type="application/x-mpegURL"/>
                 </video>
             </div>
@@ -30,27 +30,25 @@
         computed: {
             ...thisMapState(['currActive', 'videoUrl360'])
         },
-        created() {
-            
+        created () {
             var that = this
             var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
-            // if (displayType) {
-                document.touchStart = function (e) {
-                    console.log(e)
-                }
-            // }
             document.onkeydown = function (e) {
                 e.preventDefault()
                 const key = e.key
-                if (that.$store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
-                    that.keyDown = true
-                    that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
+                if (typeof key == 'number') {
+                    if (that.$store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
+                        that.keyDown = true
+                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
+                    }
                 }
             }
             document.onkeyup = function () {
-                if (that.keyDown) {
-                    that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
-                    that.keyDown = false
+                if (typeof key == 'number') {
+                    if (that.keyDown) {
+                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
+                        that.keyDown = false
+                    }
                 }
             }
         },
@@ -64,8 +62,6 @@
                 }
             },
             [dataVideo] (val) {
-                // console.log(val)
-                 // console.log(this.videoUrl360)
                 const { w, h } = this.getSize()
                 this.initVideo(w, h)
             }
@@ -74,6 +70,7 @@
             const that = this
             that.$nextTick(() => {
                 that.init()
+                that.video = document.getElementById('videoId2')
             })
         },
         data () {
@@ -86,7 +83,13 @@
                 height: 0,
                 keyDown: false,
                 timer: null,
-                displayType: false
+                displayType: false,
+                moveUp: false,
+                startX: '',
+                startY: '',
+                endX: '',
+                endY: '',
+                video: ''
                 // playerOptions: {
                 //     autoplay: true,
                 //     width: 388,
@@ -104,6 +107,70 @@
             }
         },
         methods: {
+            touchStart (e) {
+                this.startX = e.touches[0].clientX
+                this.startY = e.touches[0].clientY
+            },
+            touchMove (e) {
+                var that = this
+                if ((e.touches[0].clientX - this.startX > 2 || e.touches[0].clientY - this.startY > 2) && !this.moveUp) {
+                    this.moveUp = true
+                    const endX = e.touches[0].clientX
+                    const endY = e.touches[0].clientY
+                    that.upOrDown(this.startX, this.startY, endX, endY)
+                }
+            },
+            touchEnd () {
+                console.log('停止')
+                var that = this
+                that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
+                this.moveUp = false
+            },
+            upOrDown (startX, startY, endX, endY) {
+                const that = this
+                let direction = that.GetSlideDirection(startX, startY, endX, endY)
+                switch (direction) {
+                    case 1:
+                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 0) // 向上
+                        break
+                    case 2:
+                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 1) // 向上
+                        break
+                    case 3:
+                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 2) // 向左
+                        break
+                    case 4:
+                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 3) // 向右
+                        break
+                    default:
+                        break
+                    }
+            },
+            GetSlideDirection (startX, startY, endX, endY) {
+                const that = this
+                let dy = startY - endY
+                let dx = endX - startX
+                let result = 0
+                // 如果滑动距离太短
+                if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
+                    return result
+                }
+                let angle = that.GetSlideAngle(dx, dy)
+                if (angle >= -45 && angle < 45) {
+                    result = 4
+                } else if (angle >= 45 && angle < 135) {
+                    result = 1
+                } else if (angle >= -135 && angle < -45) {
+                    result = 2
+                } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
+                    result = 3
+                }
+                return result
+            },
+            // 返回角度
+            GetSlideAngle (dx, dy) {
+                return Math.atan2(dy, dx) * 180 / Math.PI
+            },
             init () {
                 const that = this
                 const { w, h } = that.getSize()
@@ -121,8 +188,16 @@
                 // that.playerOptions.width = w
                 // that.playerOptions.height = h
                 that.$nextTick(() => {
-                    if (document.getElementById(that.videoId)) {
-                        that.player2 = new EZUIPlayer(that.videoId)
+                    if (document.getElementById('videoId2')) {
+                        if (that.player2) {
+                            var videoHtml = document.getElementById('videoId2')
+                            document.getElementById('videoId2').remove()
+                            that.player = null
+                            document.getElementById('containerVideo2').appendChild(that.video)
+                            that.player2 = new EZUIPlayer('videoId2')
+                        } else {
+                            that.player2 = new EZUIPlayer('videoId2')
+                        }
                         console.log(that.player2)
                     }
                 })

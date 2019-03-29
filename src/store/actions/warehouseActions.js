@@ -27,6 +27,7 @@ export default {
                 var year = new Date().getFullYear()
                 historyInDatas.push({ year: year - 1, list: repData.lastYearInStock })
                 historyInDatas.push({ year: year, list: repData.thisYearInStock })
+                console.log(historyInDatas)
                 context.state.historyInDatas = historyInDatas.map(item => {
                     return {
                         year: item.year.toString(),

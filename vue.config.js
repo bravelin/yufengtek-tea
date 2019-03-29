@@ -22,8 +22,11 @@ module.exports = {
         disableHostCheck: true,
         proxy: {
             '/bigdata': {
-                target: '192.168.0.132:8066',
-                changeOrigin: true
+                target: 'https://tea.yufengtek.com/tea-IIS-Web',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/bigdata': ''
+                }
             }
         }
     }

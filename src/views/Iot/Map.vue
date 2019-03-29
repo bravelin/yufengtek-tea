@@ -44,7 +44,7 @@
             const that = this
             that.$nextTick(() => {
                 // 创建map实例
-                const map = new BMap.Map('map-container')
+                const map = new BMap.Map('map-container', { enableMapClick: false })
                 const mapCenterPoint = new BMap.Point(config.iotMonitorMap.center[0], config.iotMonitorMap.center[1]) // 创建点坐标
                 map.centerAndZoom(mapCenterPoint, config.iotMonitorMap.zoom) // 初始化地图，设置中心点坐标和地图级别
                 map.enableScrollWheelZoom(true) // 开启鼠标滚动缩放
@@ -203,7 +203,7 @@
                     // store.dispatch(moduleNameSpace + '/' + types.GET_FM1_CHART_DATA)
                 } else if (data.type == types.IOT_TYPE_FM2) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, data.sno)
-                    store.dispatch(moduleNameSpace + '/' + types.GET_FM2_CHART_DATA)
+                    // store.dispatch(moduleNameSpace + '/' + types.GET_FM2_CHART_DATA)
                 } else if (data.type == types.IOT_TYPE_WF) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_WF_DATA)
                     store.dispatch(moduleNameSpace + '/' + types.GET_WF_CHART_DATA)

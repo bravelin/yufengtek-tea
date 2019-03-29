@@ -168,7 +168,6 @@
             },
             // 数据加工
             handleChartData (datas) {
-                console.log(datas)
                 const that = this
                 const lineDatas = []
                 let item = null
@@ -195,7 +194,6 @@
                     lineDatas.push(lineObj)
                 }
                 // const titles = Object.keys(titleObjs)
-                console.log({ titles, lineDatas, legends })
                 return { titles, lineDatas, legends }
             },
             // full state change

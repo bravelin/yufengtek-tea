@@ -6,4 +6,5 @@ export default {
     getFmsData: './api-json/fms.json',
     getFmsHourChartData: './api-json/iot.hour.json',
     getFmsWeekChartData: './api-json/iot.week.json',
+    home: '/data/monitor/selectStation'
 }

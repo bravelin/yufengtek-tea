@@ -30,14 +30,15 @@
     export default {
         name: 'iot-index',
         computed: {
-            ...thisMapState(['currActive', 'photoViewerFullState'])
+            ...thisMapState(['currActive', 'photoViewerFullState', 'fm1', 'fm2'])
         },
         components: {
             FM1Charts, FM2Charts, WFCharts, Map, CameraVideo, Amount, PhotoViewer
         },
         data () {
             return {
-                types
+                types,
+                timer: null
             }
         },
         created () {
@@ -45,6 +46,18 @@
             const store = that.$store
             store.commit(types.SWITCH_LOADING, false)
             store.dispatch(moduleNameSpace + '/' + types.GET_IOT_DATA)
+            that.timer = setInterval(function () {
+                var bool = (that.currActive.type == 'IOT_TYPE_FM1' || 'IOT_TYPE_FM2') && (that.fm1.time == 'HOUR' || that.fm2.time == 'HOUR')
+                var mimute = new Date().getMinutes()
+                if (bool) {
+                    const type = that.currActive.type == 'IOT_TYPE_FM1' ? types.GET_FM1_CHART_DATA : types.GET_FM2_CHART_DATA
+                    store.dispatch(moduleNameSpace + '/' + type)
+                    if (mimute == 20 || mimute == 1) {
+                        const type1 = that.currActive.type == 'IOT_TYPE_FM1' ? types.GET_FM1_DATA : types.GET_FM2_DATA
+                        store.dispatch(moduleNameSpace + '/' + type1)
+                    }
+                }
+            }, 1000 * 60)
             window.aa = store
             // currActive 当前选中的数据类型
         },
@@ -56,6 +69,7 @@
             store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, {
                     id: 0, type: types.IOT_TYPE_FM1
             })
+            clearInterval(this.timer)
         }
     }
 </script>

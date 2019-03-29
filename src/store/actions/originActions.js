@@ -16,22 +16,27 @@ export default {
         if (payload.currentPage == 1) { context.state.addressList = [] }
         const data = { currentPage: payload.currentPage, originDate: payload.originDate || '' }
         ajax({ url: util.globeURL + '/bigdata/origin/pageList', method: 'post', data: data }).then(res => {
-            context.state.addressList = context.state.addressList.concat(res.repData.originList)
-            context.state.totalPage = res.repData.pageInfo.totalPages
-            context.state.currentPage = payload.currentPage
-            context.dispatch(types.GETWEBSOCKET)
+            if (res.code == 200) {
+                context.state.addressList = res.repData.originList
+                context.state.totalPage = res.repData.pageInfo.totalPages
+                context.state.currentPage = payload.currentPage
+                context.state.originDate = payload.originDate
+            }
+            // context.dispatch(types.GETWEBSOCKET)
         })
     },
     [types.GETWEBSOCKET] (context, payload) {
-        const wsuri = 'ws://192.168.0.132:8066/myHandler'
+        const wsuri = 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler'
         context.state.websocket = new WebSocket(wsuri)
         context.state.websocket.onopen = function (e) {
             // console.log(e)
         }
         context.state.websocket.onmessage = function (e) {
-            // console.log(e)
+            console.log(e)
+            // 选定时间时不插入数据
             var ss = typeof e.data
-            if (ss == 'Object') {
+            // console.log(ss)
+            if (ss == 'string') {
                 var data = JSON.parse(e.data)
                 if (data.date == context.state.addressList[0].date) {
                     context.state.addressList[0].list.unshift(data)
@@ -42,11 +47,11 @@ export default {
             }
         }
         context.state.websocket.onclose = function (e) {
+            console.log(e)
             console.log('连接关闭')
         }
         context.state.websocket.send = function (message) {
             console.log('发送成功')
         }
-        console.log(context.state.websocket.readyState)
     }
 }

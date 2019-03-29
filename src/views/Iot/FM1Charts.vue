@@ -35,7 +35,9 @@
     const moduleNameSpace = ns.IOT
     const fullProp = 'curveChartFullState'
     const dataProp = 'chartDatas'
+    const typeProp = 'data'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
+    const typeDataProp = `$store.state.${moduleNameSpace}.fm1.${typeProp}`
     const chartDataProp = `$store.state.${moduleNameSpace}.fm1.${dataProp}`
     const fullStateProp = `$store.state.${moduleNameSpace}.fm1.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
@@ -48,6 +50,9 @@
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
                 this.doInitOrRefreshChart()
+            },
+            [typeDataProp] () {
+                console.log('changeFm1')
             },
             [fullStateProp] () {
                 this.doInitOrRefreshChart()

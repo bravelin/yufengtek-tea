@@ -46,7 +46,7 @@
     }
     .address-list-wrap{
         .plane-title{
-            z-index: -1;
+            // z-index: -1;
         }
         >div.iconfont{
             position: absolute;
@@ -170,11 +170,11 @@
 @media screen and (max-width: 1490px){
     .origin-page{
         .map-wrap{
-            width: calc(50% - 10px);
+            width: calc(53% - 10px);
         }
         >div{
             &:nth-of-type(2){
-                width: 50%;
+                width: 47%;
             }
         }
         .address-list-wrap .plane-content{
@@ -187,12 +187,12 @@
 @media screen and (max-width: 1300px){
     .origin-page{
         .map-wrap{
-            width: calc(42% - 6px);
+            width: calc(52% - 6px);
             margin-right: 6px;
         }
         >div{
             &:nth-of-type(2){
-                width: 58%;
+                width: 48%;
                 >div{
                     &:nth-of-type(1){
                         height: 35%;

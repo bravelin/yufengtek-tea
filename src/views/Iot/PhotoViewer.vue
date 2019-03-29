@@ -32,7 +32,7 @@
         },
         created() {
             var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i)
-            this.displayType = displayType ? 'block' : 'none'
+            this.displayType = displayType ? 'block' : ''
         },
         components: {
             CameraVideo
@@ -73,10 +73,9 @@
             },
             doRefresh () {
                 const that = this
+                const store = that.$store
                 if (that.viewer) {
-                    console.log(that.photoViewUrl)
                     const photoViewUrl = store.state[moduleNameSpace]['photoViewUrl']
-                    console.log(photoViewUrl)
                     that.viewer.setPanorama(that.photoViewUrl)
                 }
             },

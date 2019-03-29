@@ -70,7 +70,7 @@
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}吨 ({d}%)',
+                        formatter: '{b}：{c}亩 ({d}%)',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         textStyle: { fontSize: 14 }
                     },
@@ -91,11 +91,30 @@
                         type: 'pie',
                         radius: ['40%', '80%'],
                         center: ['36%', '50%'],
+                        minAngle: 5,
+                        minShowLabelAngle: 720,
+                        avoidLabelOverlap: false,
                         label: {
                             show: true,
+                            align: 'left',
                             position: 'inside',
+                            normal:{
+                                show: true,
+                                position: 'inside',
+                                textStyle: {
+                                    color: 'rgba(255, 255, 255, 1)'
+                                },
+                                formatter: '{d}%',
+                            },
+                            // emphasis: {
+                            //     show: true,
+                            //     textStyle: {
+                            //         fontSize: '18',
+                            //         fontWeight: 'bold'
+                            //     }
+                            // },
                             formatter: '{d}%',
-                            fontSize: 12
+                            // fontSize: 12
                         },
                         // color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
                         color: ['#15467d', '#87d0f6', '#4775b7', '#91acd4', '#2663bc'],
