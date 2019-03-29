@@ -13,9 +13,6 @@
                 default: false
             }
         },
-        created() {
-            
-        },
         methods: {
             change () {
                 const that = this

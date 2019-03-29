@@ -98,7 +98,7 @@
                             show: true,
                             align: 'left',
                             position: 'inside',
-                            normal:{
+                            normal: {
                                 show: true,
                                 position: 'inside',
                                 textStyle: {

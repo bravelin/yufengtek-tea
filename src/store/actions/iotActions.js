@@ -7,7 +7,7 @@ import util from '@/lib/util'
 export default {
     [types.GET_IOT_DATA] (context, payload) { // 获取IOT物联设备数据
         ajax({ url: util.globeURL + '/data/monitor/selectStation', method: 'post' }).then(res => {
-            res.repData.cameraVos.map(item => {
+            res.repData.cameraVos.map((item, index) => {
                 item.type = item.camera_type == '1' ? types.IOT_TYPE_GUN : types.IOT_TYPE_360
                 item.isActive = false
             })
