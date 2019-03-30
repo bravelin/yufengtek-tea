@@ -1,43 +1,68 @@
 <template>
-    <!--<Plane class="iot-container camera-video">
-        <PlaneTitle>视频监控</PlaneTitle>-->
-        <div class="plane-content cameraCenter" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd' >
-            <div class="video-container" ref="container2" id="containerVideo2">
-                <!-- <video-player class="video-player-box" :options="playerOptions" :playsinline="true" @ready="playerReadied"></video-player> -->
-                <video id="videoId2" :style="{ width: width + 'px', height: height + 'px' }" controls playsInline webkit-playsinline autoplay>
-                    <source :src="videoUrl360" type="application/x-mpegURL"/>
-                </video>
-            </div>
+    <div class="plane-content cameraCenter" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
+        <div class="video-container" ref="container">
+            <video-js :id="videoId" class="vjs-default-skin video-wrap" controls></video-js>
         </div>
-    <!--</Plane>-->
+    </div>
 </template>
 <script>
-    import '@/lib/ezuikit'
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const dataProp = `$store.state.${moduleNameSpace}.currActive.type`
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl360`
+
     export default {
         name: 'Production360Video',
-        props: {
-            url: {
-                type: String
-            }
-        },
         computed: {
-            ...thisMapState(['currActive', 'videoUrl360'])
+            ...thisMapState(['videoUrl360'])
         },
         created () {
-            var that = this
-            var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
-            var key = ''
-            document.onkeydown = function (e) {
+            const that = this
+            const store = that.$store
+            const displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
+            document.addEventListener('keydown', that.doHandleKeyDown)
+            document.addEventListener('keyup', that.doHandleKeyUp)
+        },
+        watch: {
+            [dataVideo] (val) {
+                const that = this
+                const { w, h } = that.getSize()
+                that.initVideo(w, h)
+            }
+        },
+        mounted () {
+            const that = this
+            that.$nextTick(() => {
+                that.videoWrap = document.getElementById(that.videoId)
+                that.init()
+            })
+        },
+        data () {
+            return {
+                videoId: 'v' + Math.random(),
+                videoWrap: null,
+                ready: false,
+                player: null,
+                width: 0,
+                height: 0,
+                keyDown: false,
+                timer: null,
+                displayType: false,
+                moveUp: false,
+                startX: '',
+                startY: '',
+                endX: '',
+                endY: '',
+            }
+        },
+        methods: {
+            doHandleKeyDown (e) {
                 e.preventDefault()
-                console.log(e.key)
-                console.log(typeof key)
+                const that = this
+                const store = that.$store
+                let key = e.key
                 switch (e.key) {
                     case '1':
                         key = 5 // 左下
@@ -88,81 +113,25 @@
                         key = 9 // 缩小
                         break
                 }
-                console.log(key)
+                
                 if (typeof key == 'number') {
-                    if (that.$store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
-                        console.log(1)
+                    if (store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
                         that.keyDown = true
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
                     }
                 }
-            }
-            document.onkeyup = function () {
-                console
+            },
+            doHandleKeyUp (e) {
+                let key = e.key
+                const that = this
+                const store = that.$store
                 if (typeof key == 'number') {
-                    console.log(122)
                     if (that.keyDown) {
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
                         that.keyDown = false
                     }
                 }
-            }
-        },
-        watch: {
-            [dataProp] (val) {
-                // 切换到此处再获取容器大小
-                if (val == 'IOT_TYPE_GUN') {
-                    // const { w, h } = this.getSize()
-                    console.log(this.videoUrl360)
-                    // this.initVideo(w, h)
-                }
             },
-            [dataVideo] (val) {
-                const { w, h } = this.getSize()
-                this.initVideo(w, h)
-            }
-        },
-        mounted () {
-            const that = this
-            that.$nextTick(() => {
-                that.init()
-                that.video = document.getElementById('videoId2')
-            })
-        },
-        data () {
-            return {
-                videoId: 'v' + Math.random(),
-                ready: false,
-                player2: null,
-                containerHeight: 0,
-                width: 0,
-                height: 0,
-                keyDown: false,
-                timer: null,
-                displayType: false,
-                moveUp: false,
-                startX: '',
-                startY: '',
-                endX: '',
-                endY: '',
-                video: ''
-                // playerOptions: {
-                //     autoplay: true,
-                //     width: 388,
-                //     height: 211,
-                //     fluid: false,
-                //     preload: 'auto',
-                //     language: 'zh-CN',
-                //     sources: [{ type: 'application/x-mpegURL', src: 'http://hls01open.ys7.com/openlive/3cb95e485da24838ae7d65b99ff6cc27.m3u8' }],
-                //     notSupportedMessage: '暂无法播放',
-                //     controlBar: {
-                //         fullscreenToggle: true,
-                //         remainingTimeDisplay: false
-                //     }
-                // }
-            }
-        },
-        methods: {
             touchStart (e) {
                 this.startX = e.touches[0].clientX
                 this.startY = e.touches[0].clientY
@@ -177,26 +146,26 @@
                 }
             },
             touchEnd () {
-                console.log('停止')
                 var that = this
                 that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
                 this.moveUp = false
             },
             upOrDown (startX, startY, endX, endY) {
                 const that = this
+                const store = that.$store
                 let direction = that.GetSlideDirection(startX, startY, endX, endY)
                 switch (direction) {
                     case 1:
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 0) // 向上
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 0) // 向上
                         break
                     case 2:
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 1) // 向上
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 1) // 向上
                         break
                     case 3:
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 2) // 向左
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 2) // 向左
                         break
                     case 4:
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 3) // 向右
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 3) // 向右
                         break
                     default:
                         break
@@ -230,52 +199,64 @@
             init () {
                 const that = this
                 const { w, h } = that.getSize()
-                if (h < 200) {
-                    that.timer = setTimeout(() => { that.init() }, 1200) // 第一次没法直接加载出来
+                console.log('init 360 camera....', w, h)
+                if (h < 200 || w < 200) {
+                    that.timer = setTimeout(() => { that.init() }, 1200)
                 } else {
                     that.initVideo(w, h)
                 }
             },
             initVideo (w, h) {
                 const that = this
-                that.containerHeight = h
+                if (!that.videoUrl360) {
+                    return
+                }
+                const videoWrap = that.videoWrap
+                const playerOptions = {
+                    autoplay: true,
+                    preload: 'auto',
+                    language: 'zh-CN',
+                    sources: [{ type: 'application/x-mpegURL', src: that.videoUrl360 }],
+                    notSupportedMessage: '暂时无法播放',
+                    html5: { hls: { withCredentials: false } },
+                    controlBar: {
+                        fullscreenToggle: true,
+                        remainingTimeDisplay: false,
+                        timeDivider: false,
+                        durationDisplay: false
+                    }
+                }
                 that.width = w - 10
                 that.height = h - 10
-                // that.playerOptions.width = w
-                // that.playerOptions.height = h
+                videoWrap.style.width = that.width + 'px'
+                videoWrap.style.height = that.height + 'px'
                 that.$nextTick(() => {
-                    if (document.getElementById('videoId2')) {
-                        if (that.player2) {
-                            var videoHtml = document.getElementById('videoId2')
-                            document.getElementById('videoId2').remove()
-                            that.player = null
-                            document.getElementById('containerVideo2').appendChild(that.video)
-                            that.player2 = new EZUIPlayer('videoId2')
-                        } else {
-                            that.player2 = new EZUIPlayer('videoId2')
-                        }
-                        console.log(that.player2)
+                    if (that.player) {
+                        that.player.src(that.videoUrl360)
+                        that.player.load()
+                    } else {
+                        that.player = videojs(videoWrap, playerOptions)
                     }
                 })
             },
             getSize () {
                 const that = this
-                const container = that.$refs.container2
+                const container = that.$refs.container.parentNode
                 if (container) {
                     const styles = getComputedStyle(container, null)
-                    const w = parseInt(styles.height) * 4 / 3 || 0
-                    const h = (12 / 16) * w
-                    // console.log({w, h})
+                    const w = parseInt(styles.width) || 0
+                    const h = parseInt(styles.height) || 0
                     return { w, h }
                 }
-            },
-            playerReadied () {}
+            }
         },
         beforeDestroy() {
             const that = this
             if (that.timer) {
                 clearTimeout(that.timer)
             }
-        },
+            document.removeEventListener('keydown', that.doHandleKeyDown)
+            document.removeEventListener('keyup', that.doHandleKeyUp)
+        }
     }
 </script>

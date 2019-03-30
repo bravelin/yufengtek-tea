@@ -34,6 +34,15 @@
 .vjs-error .vjs-error-display .vjs-modal-dialog-content{
     display: none;
 }
+.vjs-live-control{
+    display: none !important;
+}
+.video-js.vjs-fullscreen{
+    >video{
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
 .plane{
     position: relative;
     padding: 5px 10px;

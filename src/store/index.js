@@ -17,8 +17,7 @@ export default new Vuex.Store({
         chartFullPage: false, // 当前是否有图表是全屏状态
         loading: false, // loading的状态
         screenFullState: false, // 全屏状态
-        windowResizeState: 0,
-        htttp: 'heeppdhf'
+        windowResizeState: 0
     },
     mutations,
     modules

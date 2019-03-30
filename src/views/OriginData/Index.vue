@@ -114,6 +114,7 @@
             // this.ws.onclose()
             this.$store.state[moduleNameSpace].websocket.onclose()
             this.$store.state[moduleNameSpace].websocket.send('111')
+            this.ws.onclose()
             fullProps.forEach(prop => {
                 store.commit(moduleNameSpace + '/' + types.ORIGIN_CHANGE_FULL_STATE, {
                     fullStateName: prop,
