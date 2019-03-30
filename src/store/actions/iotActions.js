@@ -305,20 +305,21 @@ export default {
         }
     },
     [types.CHANGE_PHOTO_VIEW_URL] (context, payload) {
-        console.log(context.state.photoViewUrl)
+        // console.log(context.state.photoViewUrl)
         ajax({ url: util.globeURL + '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {
-            console.log(res.repData[11].substring(4, res.repData[11].length))
-            var tt = res.repData[11].substring(4, res.repData[11].length)
-            console.log(res.repData[11].substring(0, res.repData[11].indexOf(':')))
-            context.state.photoViewUrl = 'https' + tt || context.state.photoViewUrl // 防止未返回数据
+            var tt = res.repData[11]
+            if (res.repData[11].substring(0, 4) == 'http:') {
+                tt = 'https' + res.repData[11].substring(4, res.repData[11].length)
+            }
+            context.state.photoViewUrl = tt || context.state.photoViewUrl // 防止未返回数据
             // context.state.photoViewUrl = 'https://stdag-image.oss-cn-beijing.aliyuncs.com/camera_one_image/20190329/31384703333230302d002800_1553855533-20190329183217716.jpg'
         })
     },
     [types.GET_GUN_DATA] (context, payload) {
         context.state.camera = payload
-        console.log(payload)
-        context.state.videoUrl = payload.address_gislatd == 27.6591 ? 'http://hls.open.ys7.com/openlive/6aa02972eedf411897e4126b3c959cf7.m3u8' : context.state.camera.camera_url
-        console.log(context.state.videoUrl)
+        // console.log(payload)
+        context.state.videoUrl = context.state.camera.camera_url
+        // console.log(context.state.videoUrl)
     },
     [types.GET_360_DATA] (context, payload) {
         context.state.camera = payload

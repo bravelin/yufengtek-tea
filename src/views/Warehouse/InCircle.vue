@@ -85,15 +85,15 @@
                 return [
                     {
                         value: 78,
-                        label: { normal: { padding: [0, 0, 10], formatter: '入库', textStyle: { color: '#fff', fontSize: 15 } } }
+                        label: { normal: { padding: [0, 0, 10], formatter: '入库\n\n\n', textStyle: { color: '#fff', fontSize: 15 } } }
                     },
                     {
                         value: 25,
-                        label: { normal: { formatter: `\n${data}`, textStyle: { color: '#87d0f6', fontSize: 24, fontWeight: 'bold' } } }
+                        label: { normal: { formatter: `${data}`, textStyle: { color: '#87d0f6', fontSize: 24, fontWeight: 'bold' } } }
                     },
                     {
                         value: 0,
-                        label: { normal: { formatter: '吨', textStyle: { color: '#fff', fontSize: 15 } } }
+                        label: { normal: { formatter: '\n\n\n吨', textStyle: { color: '#fff', fontSize: 15 } } }
                     }
                 ]
             },

@@ -1,5 +1,5 @@
 <template>
-    <div class="plane-content cameraCenter" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
+    <div class="plane-content cameraCenter" @touchstart.prevent="touchStart" @touchmove.prevent='touchMove' @touchend='touchEnd'>
         <div class="video-container" ref="container">
             <video-js :id="videoId" class="vjs-default-skin video-wrap" controls></video-js>
         </div>
@@ -139,8 +139,8 @@
             },
             touchMove (e) {
                 var that = this
-                e.preventDefault();
-                e.stopPropagation();
+                e.preventDefault()
+                e.stopPropagation()
                 if ((e.touches[0].clientX - this.startX > 2 || e.touches[0].clientY - this.startY > 2) && !this.moveUp) {
                     this.moveUp = true
                     const endX = e.touches[0].clientX

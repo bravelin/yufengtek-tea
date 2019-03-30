@@ -48,14 +48,14 @@
             store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_LIST_DATA, { currentPage: 1 })
             // socket.init()
             // that.createWebSocket()
-            // that.webSocketLink()
-            store.dispatch(moduleNameSpace + '/' + types.GETWEBSOCKET)
+            that.webSocketLink()
+            //store.dispatch(moduleNameSpace + '/' + types.GETWEBSOCKET)
         },
         methods: {
             webSocketLink () {
                 let that = this
                 var heartCheck = {
-                    timeout: 5000,
+                    timeout: 5000*2,
                     timeoutObj: null,
                     reset: function () {
                         clearInterval(this.timeoutObj)
@@ -66,8 +66,8 @@
                             if (that.ws.readyState == 1) {
                                 that.ws.send('HeartBeat')
                             }
-                            // console.log("HeartBeat")
-                        }, this.timeout)
+                            console.log("HeartBeat")
+                        }, heartCheck.timeout)
                     }
                 }
                 if ('WebSocket' in window) {
@@ -78,9 +78,10 @@
                     heartCheck.reset().start()
                 }
                 that.ws.onmessage = function (e) {
+                    //console.log(e)
                     const addressList = that.$store.state[moduleNameSpace].addressList
                     var ss = typeof e.data
-                    // console.log(ss)
+                    console.log(ss)
                     if (ss == 'string' && e.data != 'Hello') {
                         var data = JSON.parse(e.data)
                         if (data.date == addressList[0].date) {
@@ -93,10 +94,10 @@
                     }
                     console.log(e)
                 }
-                that.ws.send = function(e) {
-                    console.log(that.ws)
-                    console.log('发送消息成功')
-                }
+                // that.ws.send = function(e) {
+                //     console.log(that.ws)
+                //     console.log('发送消息成功')
+                // }
                 that.ws.onclose = function () {
                     heartCheck.reset()
                     console.log('连接关闭')
@@ -110,8 +111,8 @@
             console.log(this.$store.state[moduleNameSpace].websocket)
             // this.ws.onclose()
             this.$store.state[moduleNameSpace].websocket.onclose()
-            this.$store.state[moduleNameSpace].websocket.send('111')
-            this.ws.onclose()
+            this.$store.state[moduleNameSpace].websocket.send('111' + '\n')
+            // this.ws.onclose()
             fullProps.forEach(prop => {
                 store.commit(moduleNameSpace + '/' + types.ORIGIN_CHANGE_FULL_STATE, {
                     fullStateName: prop,
