@@ -124,6 +124,7 @@
             // 创建标记
             createMarker (data) {
                 const that = this
+                /* eslint-disable */
                 const { address_gislong, address_gislatd, type } = data
                 const position = new BMap.Point(address_gislong, address_gislatd)
                 let icon = null
@@ -154,8 +155,6 @@
                     that.markers.splice(e.target.self.index, 1, obj1)
                     that.doHandlerClickMarker(e.target.self, e.target)
                 })
-                // console.log(that.map)
-                // var activeIcon = false
                 marker.addEventListener('mouseover', (e) => {
                     if (!that.activeIcon) {
                         that.activeIcon = true

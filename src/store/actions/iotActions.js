@@ -2,8 +2,7 @@ import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
 import api from '@/lib/api'
 import util from '@/lib/util'
-// bigdata
-// console.log
+
 export default {
     [types.GET_IOT_DATA] (context, payload) { // 获取IOT物联设备数据
         ajax({ url: util.globeURL + '/data/monitor/selectStation', method: 'post' }).then(res => {

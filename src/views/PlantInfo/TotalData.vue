@@ -114,7 +114,7 @@
                         data: [
                             {
                                 value: 75,
-                                label: { normal: {  formatter: item.label, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                                label: { normal: { formatter: item.label, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             },
                             {
                                 value: 25,
@@ -122,7 +122,7 @@
                             },
                             {
                                 value: 0,
-                                label: { normal: { formatter:   `\n\n\n${item.unit}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                                label: { normal: { formatter: `\n\n\n${item.unit}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             }
                         ]
                     })
