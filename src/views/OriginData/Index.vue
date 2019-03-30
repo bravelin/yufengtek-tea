@@ -63,10 +63,9 @@
                     },
                     start: function () {
                         this.timeoutObj = setInterval(function () {
-                            if (that.ws.readyState==1) {
+                            if (that.ws.readyState == 1) {
                                 that.ws.send('HeartBeat')
                             }
-                            
                             // console.log("HeartBeat")
                         }, this.timeout)
                     }
@@ -77,7 +76,6 @@
                 }
                 that.ws.onopen = function (e) {
                     heartCheck.reset().start()
-                   
                 }
                 that.ws.onmessage = function (e) {
                     const addressList = that.$store.state[moduleNameSpace].addressList
@@ -97,7 +95,6 @@
                 }
                 that.ws.send = function(e) {
                     console.log(that.ws)
-                    
                     console.log('发送消息成功')
                 }
                 that.ws.onclose = function () {

@@ -171,7 +171,7 @@
                     w = w > maxWidth ? maxWidth : w
                     values.push({
                         name: item.label,
-                        value: item.value,
+                        value: item.value.toFixed(2),
                         emphasis: { label: true },
                         label: {
                             show: true,

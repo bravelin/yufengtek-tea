@@ -51,6 +51,7 @@
         beforeDestroy () {
             const that = this
             const store = that.$store
+            store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_CURR_REGION, '')
             const fullProps = ['mapFullState', 'amountRankFullState', 'farmingInfoFullState', 'pickInfoFullState', 'warehouseFullState', 'originDataFullState', 'levelInfoFullState']
             fullProps.forEach(prop => {
                 store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {

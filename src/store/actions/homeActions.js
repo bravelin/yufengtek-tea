@@ -18,11 +18,11 @@ export default {
                 data = item.amount
                 return { label: item.classify, value: data }
             })
-            context.state.teaTotalAmount = res.repData.totalPicking
+            context.state.teaTotalAmount = (res.repData.totalPicking == null || res.repData.totalPicking.length == 0) ? context.state.teaTotalAmount : res.repData.totalPicking
             // 获取出库入库数据
             let warehouseDatas = {}
-            warehouseDatas.in = (res.repData.inStock)
-            warehouseDatas.out = (res.repData.inStock)
+            warehouseDatas.in = (res.repData.inStock.length == 0) ? context.state.warehouseDatas.in : res.repData.inStock
+            warehouseDatas.out = (res.repData.inStock.length == 0) ? context.state.warehouseDatas.out : res.repData.outStock
             context.state.warehouseDatas = warehouseDatas
             // 城市溯源排行
             var result = res.repData.origin.map(item => { return { value: item.counts, name: item.cityname } })

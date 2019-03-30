@@ -63,6 +63,7 @@
                 if (!that.videoUrl) {
                     return
                 }
+                console.log('videoUrl...', that.videoUrl)
                 const videoWrap = that.videoWrap
                 const playerOptions = {
                     autoplay: true,

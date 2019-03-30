@@ -4,9 +4,9 @@ import mutations from '@/store/mutations/homeMutations'
 export default {
     namespaced: true,
     state: {
-        cameraAmount: 116,
-        monitorAmount: 234,
-        waterFertilizerAmount: 205, // 水肥设备
+        cameraAmount: 0,
+        monitorAmount: 0,
+        waterFertilizerAmount: 0, // 水肥设备
         farmingActdatas: [],
         pickDatas: [], // 采摘数据
         teaTotalAmount: '', // 采摘总量

@@ -149,6 +149,7 @@ export default {
         const state = context.state
         const fm1 = state.fm1
         const timeType = state.fm1.time
+        console.log(fm1)
         ajax({ url: util.globeURL + '/data/momitor/getflddataLast?sno=' + context.state.fm1.sno, method: 'post' }).then(res => {
             if (timeType == 'HOUR') {
                 // const length = res.repData.todayData.length - 1
@@ -316,7 +317,7 @@ export default {
     [types.GET_GUN_DATA] (context, payload) {
         context.state.camera = payload
         console.log(payload)
-        context.state.videoUrl = payload.address_gislatd == 27.27 ? 'rtmp://rtmp.open.ys7.com/openlive/f01018a141094b7fa138b9d0b856507b' : context.state.camera.camera_url
+        context.state.videoUrl = payload.address_gislatd == 27.6591 ? 'http://hls.open.ys7.com/openlive/6aa02972eedf411897e4126b3c959cf7.m3u8' : context.state.camera.camera_url
         console.log(context.state.videoUrl)
     },
     [types.GET_360_DATA] (context, payload) {

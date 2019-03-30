@@ -47,7 +47,8 @@
             store.commit(types.SWITCH_LOADING, false)
             store.dispatch(moduleNameSpace + '/' + types.GET_IOT_DATA)
             that.timer = setInterval(function () {
-                var bool = (that.currActive.type == 'IOT_TYPE_FM1' || 'IOT_TYPE_FM2') && (that.fm1.time == 'HOUR' || that.fm2.time == 'HOUR')
+                // var bool = (that.currActive.type == 'IOT_TYPE_FM1' || 'IOT_TYPE_FM2') && (that.fm1.time == 'HOUR' || that.fm2.time == 'HOUR')
+                var bool = (that.currActive.type == 'IOT_TYPE_FM1' && that.fm1.time == 'HOUR') || (that.currActive.type == 'IOT_TYPE_FM2' && that.fm2.time == 'HOUR')
                 var mimute = new Date().getMinutes()
                 if (bool) {
                     const type = that.currActive.type == 'IOT_TYPE_FM1' ? types.GET_FM1_CHART_DATA : types.GET_FM2_CHART_DATA

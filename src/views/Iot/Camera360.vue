@@ -48,6 +48,7 @@
                 width: 0,
                 height: 0,
                 keyDown: false,
+                key: '',
                 timer: null,
                 displayType: false,
                 moveUp: false,
@@ -113,10 +114,10 @@
                         key = 9 // 缩小
                         break
                 }
-                
                 if (typeof key == 'number') {
                     if (store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
                         that.keyDown = true
+                        that.key = key
                         store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
                     }
                 }
@@ -125,7 +126,7 @@
                 let key = e.key
                 const that = this
                 const store = that.$store
-                if (typeof key == 'number') {
+                if (typeof that.key == 'number') {
                     if (that.keyDown) {
                         store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
                         that.keyDown = false
@@ -138,6 +139,8 @@
             },
             touchMove (e) {
                 var that = this
+                e.preventDefault();
+                e.stopPropagation();
                 if ((e.touches[0].clientX - this.startX > 2 || e.touches[0].clientY - this.startY > 2) && !this.moveUp) {
                     this.moveUp = true
                     const endX = e.touches[0].clientX
@@ -199,9 +202,9 @@
             init () {
                 const that = this
                 const { w, h } = that.getSize()
-                console.log('init 360 camera....', w, h)
-                if (h < 200 || w < 200) {
-                    that.timer = setTimeout(() => { that.init() }, 1200)
+                // console.log('init 360 camera....', w, h)
+                if (h < 200) {
+                    // that.timer = setTimeout(() => { that.init() }, 1200)
                 } else {
                     that.initVideo(w, h)
                 }
@@ -232,7 +235,7 @@
                 videoWrap.style.height = that.height + 'px'
                 that.$nextTick(() => {
                     if (that.player) {
-                        that.player.src(that.videoUrl360)
+                        that.player.src('that.videoUrl360')
                         that.player.load()
                     } else {
                         that.player = videojs(videoWrap, playerOptions)

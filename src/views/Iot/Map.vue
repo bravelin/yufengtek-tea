@@ -157,7 +157,7 @@
                 // console.log(that.map)
                 // var activeIcon = false
                 marker.addEventListener('mouseover', (e) => {
-                    if(!that.activeIcon){
+                    if (!that.activeIcon) {
                         that.activeIcon = true
                         that.map.removeOverlay(that.markers[e.target.self.index])
                         const tt = e.target.self
@@ -166,10 +166,9 @@
                         that.markers.splice(e.target.self.index, 1, obj1)
                         // console.log(that.markers)
                     }
-                    
                 })
                 marker.addEventListener('mouseout', (e) => {
-                    if(that.activeIcon&&(that.$store.state[moduleNameSpace].currActive.id!=e.target.self.index)){
+                    if (that.activeIcon && (that.$store.state[moduleNameSpace].currActive.id != e.target.self.index)) {
                         that.activeIcon = false
                         that.map.removeOverlay(that.markers[e.target.self.index])
                         const tt = e.target.self
@@ -178,7 +177,6 @@
                         that.markers.splice(e.target.self.index, 1, obj1)
                         // console.log(that.markers)
                     }
-                    
                 })
                 // this.markers.push(marker)
                 return marker

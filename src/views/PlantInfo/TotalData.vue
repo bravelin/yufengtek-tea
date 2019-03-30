@@ -48,6 +48,7 @@
             that.$nextTick(() => {
                 that.container = that.$refs.container
                 const datas = that.$store.state[moduleNameSpace].totalData
+                console.log(datas)
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -113,7 +114,7 @@
                         data: [
                             {
                                 value: 75,
-                                label: { normal: { padding: [0, 0, 8], formatter: item.label, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                                label: { normal: {  formatter: item.label, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             },
                             {
                                 value: 25,
@@ -121,7 +122,7 @@
                             },
                             {
                                 value: 0,
-                                label: { normal: { formatter: item.unit, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                                label: { normal: { formatter:   `\n\n\n${item.unit}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             }
                         ]
                     })
