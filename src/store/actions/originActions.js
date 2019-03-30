@@ -26,7 +26,7 @@ export default {
         })
     },
     [types.GETWEBSOCKET] (context, payload) {
-        const wsuri = 'ws://192.168.0.140:8066/myHandler'
+        const wsuri = 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler'
         context.state.websocket = new WebSocket(wsuri)
         context.state.websocket.onopen = function (e) {
             // console.log(e)

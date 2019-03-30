@@ -33,9 +33,9 @@
         created () {
             var that = this
             var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
+            var key = ''
             document.onkeydown = function (e) {
                 e.preventDefault()
-                var key = ''
                 console.log(e.key)
                 console.log(typeof key)
                 switch (e.key) {
@@ -91,13 +91,16 @@
                 console.log(key)
                 if (typeof key == 'number') {
                     if (that.$store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
+                        console.log(1)
                         that.keyDown = true
                         that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
                     }
                 }
             }
             document.onkeyup = function () {
+                console
                 if (typeof key == 'number') {
+                    console.log(122)
                     if (that.keyDown) {
                         that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
                         that.keyDown = false

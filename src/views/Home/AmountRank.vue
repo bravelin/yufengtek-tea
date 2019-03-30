@@ -161,7 +161,7 @@
                 const titles = []
                 const values = []
                 datas.forEach(item => {
-                    titles.push(item.town)
+                    titles.push(item.town.length < 5 ? item.town : item.town.substring(0, 4) + '…')
                     values.push(item.area)
                 })
                 return { titles, values }

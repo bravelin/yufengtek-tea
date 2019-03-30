@@ -178,7 +178,7 @@ export default {
         ajax({ url: util.globeURL + '/data/monitor/getFmbData?sno=' + context.state.fm2.sno, method: 'post' }).then(res => {
             if (timeType == 'HOUR') {
                 const length = res.repData.todayData.length - 1
-                fm2.data.temperature = parseInt(res.repData.todayData[length].soiltemp).toFixed(2)
+                fm2.data.temperature = res.repData.todayData[length].soiltemp.toString()
                 fm2.data.humidity = parseInt(res.repData.todayData[length].soilmture).toFixed(2)
                 fm2.data.wind = parseInt(res.repData.todayData[length].windspd).toFixed(2)
                 fm2.data.rain = parseInt(res.repData.todayData[length].rain).toFixed(2)
@@ -304,9 +304,13 @@ export default {
         }
     },
     [types.CHANGE_PHOTO_VIEW_URL] (context, payload) {
+        console.log(context.state.photoViewUrl)
         ajax({ url: util.globeURL + '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {
-            context.state.photoViewUrl = res.repData[11] || context.state.photoViewUrl // 防止未返回数据
-            // context.state.photoViewUrl = ''
+            console.log(res.repData[11].substring(4, res.repData[11].length))
+            var tt = res.repData[11].substring(4, res.repData[11].length)
+            console.log(res.repData[11].substring(0, res.repData[11].indexOf(':')))
+            context.state.photoViewUrl = 'https' + tt || context.state.photoViewUrl // 防止未返回数据
+            // context.state.photoViewUrl = 'https://stdag-image.oss-cn-beijing.aliyuncs.com/camera_one_image/20190329/31384703333230302d002800_1553855533-20190329183217716.jpg'
         })
     },
     [types.GET_GUN_DATA] (context, payload) {

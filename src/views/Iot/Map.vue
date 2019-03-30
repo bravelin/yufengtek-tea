@@ -21,7 +21,9 @@
     let wfIconNormal = null
     let wfIconActive = null
     let sphereIconNormal = null
+    let sphereIconActive = null
     let photoIconNormal = null
+    let photoIconActive = null
 
     export default {
         name: 'ProductionMonitorMap',
@@ -82,7 +84,13 @@
                 sphereIconNormal = new BMap.Icon(config.sphereMarkerImgUrl.normal, iconSize, {
                     anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
                 })
+                sphereIconActive = new BMap.Icon(config.sphereMarkerImgUrl.active, iconSize, {
+                    anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
+                })
                 photoIconNormal = new BMap.Icon(config.photoMarkerImgUrl.normal, iconSize, {
+                    anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
+                })
+                photoIconActive = new BMap.Icon(config.photoMarkerImgUrl.active, iconSize, {
                     anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
                 })
                 that.map = map
@@ -129,9 +137,9 @@
                 } else if (type == types.IOT_TYPE_WF) {
                     icon = data.isActive ? wfIconActive : wfIconNormal
                 } else if (type == types.IOT_TYPE_SPHERE) {
-                    icon = sphereIconNormal
+                    icon = data.isActive ? sphereIconActive : sphereIconNormal
                 } else if (type == types.IOT_TYPE_360) {
-                    icon = photoIconNormal
+                    icon = data.isActive ? photoIconActive : photoIconNormal
                 }
                 // console.log(icon)
                 const marker = new BMap.Marker(position, { icon })

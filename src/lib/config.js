@@ -18,10 +18,12 @@ export default {
         active: './images/wf_active.png'
     },
     sphereMarkerImgUrl: {
-        normal: './images/sphere.png'
+        normal: './images/sphere.png',
+        active: './images/sphere_active.png'
     },
     photoMarkerImgUrl: {
-        normal: './images/360.png'
+        normal: './images/360.png',
+        active: './images/360_active.png'
     },
     iotMonitorMap: {
         center: [117.869, 27.659], // 物联监控地图中心点
