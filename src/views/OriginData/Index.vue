@@ -19,6 +19,7 @@
     import CountStat from './CountStat'
     import Map from './Map'
     import socket from '@/lib/socket'
+    import config from '@/lib/config'
 
     const moduleNameSpace = ns.ORIGIN
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -34,9 +35,7 @@
         data() {
             return {
                 ws: null,
-                wsUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
                 lockReconnect: false,
-                tt: '',
             }
         },
         created () {
@@ -71,8 +70,7 @@
                     }
                 }
                 if ('WebSocket' in window) {
-                    that.ws = new WebSocket(that.wsUrl)
-                     console.log(that.ws.readyState)
+                    that.ws = new WebSocket(config.socketUrl)
                 }
                 that.ws.onopen = function (e) {
                     heartCheck.reset().start()
@@ -83,7 +81,7 @@
                     var ss = typeof e.data
                     console.log(ss)
                     if (ss == 'string' && e.data != 'Hello') {
-                        var data = JSON.parse(e.data)
+                        const data = JSON.parse(e.data)
                         if (data.date == addressList[0].date) {
                             addressList[0].list.unshift(data)
                         } else {
@@ -108,7 +106,6 @@
             const that = this
             const store = that.$store
             const fullProps = ['cityRankFullState', 'countStateFullState', 'mapFullState']
-            console.log(this.$store.state[moduleNameSpace].websocket)
             // this.ws.onclose()
             this.$store.state[moduleNameSpace].websocket.onclose()
             this.$store.state[moduleNameSpace].websocket.send('111' + '\n')

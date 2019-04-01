@@ -1,11 +1,11 @@
 import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
-import util from '@/lib/util'
+
 export default {
     // 获取茶树排行数据
     [types.HOME_GET_AMOUNT_RANK_DATA] (context, payload) {
         const data = payload ? { addr: payload || '' } : ''
-        ajax({ url: util.globeURL + '/bigdata/home/detail', method: 'post', data: data }).then(res => {
+        ajax({ url: '/bigdata/home/detail', method: 'post', data: data }).then(res => {
             // 茶树排行
             context.state.amountRankDatas = res.repData.planting.sort((a, b) => { return a.area > b.area ? 1 : -1 })
             // 获取施肥比例数据

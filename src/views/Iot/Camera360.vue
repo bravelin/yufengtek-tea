@@ -88,7 +88,7 @@
                 }
             }
             document.onkeyup = function () {
-                if (typeof that.key == 'number') {
+                if (typeof key == 'number') {
                     if (that.keyDown) {
                         that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
                         that.keyDown = false
@@ -135,8 +135,6 @@
             },
             touchMove (e) {
                 var that = this
-                e.preventDefault()
-                e.stopPropagation()
                 if ((e.touches[0].clientX - this.startX > 2 || e.touches[0].clientY - this.startY > 2) && !this.moveUp) {
                     this.moveUp = true
                     const endX = e.touches[0].clientX

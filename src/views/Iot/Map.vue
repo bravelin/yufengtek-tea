@@ -174,8 +174,9 @@ import { constants } from 'fs';
                     that.infoWindow.close()
                     that.$store.state[moduleNameSpace].mapSize = true
                     console.log(that.$store.state)
-                    const mapCenterPoint = new BMap.Point(27.6591, 117.8702) // 创建点坐标
-                    that.map.centerAndZoom(mapCenterPoint, 20)
+                    //const mapCenterPoint = new BMap.Point(27.6591, 117.8702) // 创建点坐标
+                    // that.map.centerAndZoom(mapCenterPoint, 20)
+                    //that.mappanTo(center: Point, opts: PanOptions)
                     //that.addMarkers()
                     that.activeIcon = false
                     that.map.removeOverlay(that.markers[e.target.self.index])

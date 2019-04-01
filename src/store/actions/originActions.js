@@ -1,10 +1,10 @@
 import types from '@/store/constants/types'
-import ajax from '../../lib/ajax'
-import util from '@/lib/util'
+import ajax from '@/lib/ajax'
+import config from '@/lib/config'
 
 export default {
     [types.GET_ORIGIN_DATA] (context) {
-        ajax({ url: util.globeURL + '/bigdata/origin/detail', method: 'post' }).then(res => {
+        ajax({ url: '/bigdata/origin/detail', method: 'post' }).then(res => {
             context.state.cityDatas = res.repData.originCity.map(item => { return { value: item.count, name: item.city } })
             context.state.countStatDatas = res.repData.originCount
             var value = []
@@ -15,27 +15,24 @@ export default {
     [types.GET_ORIGIN_LIST_DATA] (context, payload) {
         if (payload.currentPage == 1) { context.state.addressList = [] }
         const data = { currentPage: payload.currentPage, originDate: payload.originDate || '' }
-        ajax({ url: util.globeURL + '/bigdata/origin/pageList', method: 'post', data: data }).then(res => {
+        ajax({ url: '/bigdata/origin/pageList', method: 'post', data: data }).then(res => {
             if (res.code == 200) {
                 context.state.addressList = res.repData.originList
                 context.state.totalPage = res.repData.pageInfo.totalPages
                 context.state.currentPage = payload.currentPage
                 context.state.originDate = payload.originDate
             }
-            // context.dispatch(types.GETWEBSOCKET)
         })
     },
     [types.GETWEBSOCKET] (context, payload) {
-        const wsuri = 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler'
+        const wsuri = config.socketUrl
         context.state.websocket = new WebSocket(wsuri)
         context.state.websocket.onopen = function (e) {
             // console.log(e)
         }
         context.state.websocket.onmessage = function (e) {
-            console.log(e)
             // 选定时间时不插入数据
             var ss = typeof e.data
-            // console.log(ss)
             if (ss == 'string') {
                 var data = JSON.parse(e.data)
                 if (data.date == context.state.addressList[0].date) {

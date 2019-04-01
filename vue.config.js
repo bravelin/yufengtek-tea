@@ -22,10 +22,17 @@ module.exports = {
         disableHostCheck: true,
         proxy: {
             '/bigdata': {
-                target: 'https://tea.yufengtek.com/tea-IIS-Web',
+                target: 'https://tea.yufengtek.com/tea-IIS-Web/bigdata',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/bigdata': ''
+                }
+            },
+            '/data': {
+                target: 'https://tea.yufengtek.com/tea-IIS-Web/data',
+                changeOrigin: true,
+                pathRewrite: {
+                    '^/data': ''
                 }
             }
         }
