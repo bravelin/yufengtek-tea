@@ -11,7 +11,6 @@
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
     import MapStyleJson from './mapStyle'
-
     const moduleNameSpace = ns.ORIGIN
     const dataProp = 'mapDatas'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState

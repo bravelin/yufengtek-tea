@@ -7,10 +7,12 @@
     import types from '@/store/constants/types'
     import config from '@/lib/config'
     import mapStyle from './mapStyleV1'
-
+    import '@/lib/InfoBox_min.js'
+import { constants } from 'fs';
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = `$store.state.${moduleNameSpace}.iotDatas`
+    const mapSise = `$store.state.${moduleNameSpace}.mapSise`
 
     let fm1IconNormal = null // 正常
     let fm1IconActive = null // 选中
@@ -32,7 +34,8 @@
                 map: null,
                 mapReady: false,
                 markers: [], // 标记
-                activeIcon: false
+                activeIcon: false,
+                infoWindow: ''
             }
         },
         computed: {
@@ -40,6 +43,10 @@
         },
         watch: {
             [dataProp] () {
+                this.addMarkers()
+            },
+            [mapSise] () {
+                console.log(156)
                 this.addMarkers()
             }
         },
@@ -96,6 +103,7 @@
                 that.map = map
                 that.mapReady = true // 准备就绪
                 if (that.camera.length != 0) {
+                    console.log(7898)
                     that.addMarkers()
                 }
             })
@@ -124,9 +132,11 @@
             // 创建标记
             createMarker (data) {
                 const that = this
+                /* eslint-disable */
                 const { address_gislong, address_gislatd, type } = data
                 const position = new BMap.Point(address_gislong, address_gislatd)
                 let icon = null
+                // let infoWindow = ''
                 // console.log(data.isActive)
                 if (type == types.IOT_TYPE_FM1) {
                     icon = data.isActive ? fm1IconActive : fm1IconNormal
@@ -141,11 +151,32 @@
                 } else if (type == types.IOT_TYPE_360) {
                     icon = data.isActive ? photoIconActive : photoIconNormal
                 }
-                // console.log(icon)
+                var opts = {
+                    offset: {width:10, height:20},
+                    boxStyle:{
+                        width: "240px",
+                        padding: '5px',
+                        marginBottom: "5px",
+                        marginleft:"6px",
+                    },
+                    closeIconMargin: "5px 8px 4px 4px",
+                    closeIconUrl: 'none',
+                    enableAutoPan: false,
+                }
+                var content = "<div style='color:white;background:rgba(15, 71, 130, 1);border-radius:5px;'>" +
+                                "查看该区域设备" + "<ul><li><image src='images/360.png'></image><span>水肥一体化</span></li>" +
+                                "<li><image src='images/360.png'></image><span>监控FM1</span></li><li><image src='images/360.png'></image><span>监控FM2</span></li></ul>"
+                                "<div class='info-triangle'></div></div>"
                 const marker = new BMap.Marker(position, { icon })
                 that.map.addOverlay(marker) // 向地图添加标注
                 marker.self = data
                 marker.addEventListener('click', (e) => {
+                    that.infoWindow.close()
+                    that.$store.state[moduleNameSpace].mapSize = true
+                    console.log(that.$store.state)
+                    const mapCenterPoint = new BMap.Point(27.6591, 117.8702) // 创建点坐标
+                    that.map.centerAndZoom(mapCenterPoint, 20)
+                    //that.addMarkers()
                     that.activeIcon = false
                     that.map.removeOverlay(that.markers[e.target.self.index])
                     const tt = e.target.self
@@ -154,11 +185,11 @@
                     that.markers.splice(e.target.self.index, 1, obj1)
                     that.doHandlerClickMarker(e.target.self, e.target)
                 })
-                // console.log(that.map)
-                // var activeIcon = false
                 marker.addEventListener('mouseover', (e) => {
                     if (!that.activeIcon) {
                         that.activeIcon = true
+                        that.infoWindow = new BMapLib.InfoBox(that.map,content,opts);
+                        that.infoWindow.open(marker)
                         that.map.removeOverlay(that.markers[e.target.self.index])
                         const tt = e.target.self
                         tt.isActive = true
@@ -169,13 +200,13 @@
                 })
                 marker.addEventListener('mouseout', (e) => {
                     if (that.activeIcon && (that.$store.state[moduleNameSpace].currActive.id != e.target.self.index)) {
+                        that.infoWindow.close()
                         that.activeIcon = false
                         that.map.removeOverlay(that.markers[e.target.self.index])
                         const tt = e.target.self
                         tt.isActive = false
                         const obj1 = that.createMarker(tt)
                         that.markers.splice(e.target.self.index, 1, obj1)
-                        // console.log(that.markers)
                     }
                 })
                 // this.markers.push(marker)

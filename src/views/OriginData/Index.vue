@@ -48,8 +48,8 @@
             store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_LIST_DATA, { currentPage: 1 })
             // socket.init()
             // that.createWebSocket()
-            that.webSocketLink()
-            //store.dispatch(moduleNameSpace + '/' + types.GETWEBSOCKET)
+            // that.webSocketLink()
+            store.dispatch(moduleNameSpace + '/' + types.GETWEBSOCKET)
         },
         methods: {
             webSocketLink () {
@@ -66,7 +66,7 @@
                             if (that.ws.readyState == 1) {
                                 that.ws.send('HeartBeat')
                             }
-                            console.log("HeartBeat")
+                            console.log('HeartBeat')
                         }, heartCheck.timeout)
                     }
                 }
@@ -78,7 +78,7 @@
                     heartCheck.reset().start()
                 }
                 that.ws.onmessage = function (e) {
-                    //console.log(e)
+                    // console.log(e)
                     const addressList = that.$store.state[moduleNameSpace].addressList
                     var ss = typeof e.data
                     console.log(ss)

@@ -2,8 +2,7 @@ import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
 import api from '@/lib/api'
 import util from '@/lib/util'
-// bigdata
-// console.log
+
 export default {
     [types.GET_IOT_DATA] (context, payload) { // 获取IOT物联设备数据
         ajax({ url: util.globeURL + '/data/monitor/selectStation', method: 'post' }).then(res => {
@@ -308,10 +307,11 @@ export default {
         // console.log(context.state.photoViewUrl)
         ajax({ url: util.globeURL + '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {
             var tt = res.repData[11]
-            if (res.repData[11].substring(0, 4) == 'http:') {
+            if (res.repData[11].substring(0, 5) == 'http:') {
                 tt = 'https' + res.repData[11].substring(4, res.repData[11].length)
             }
             context.state.photoViewUrl = tt || context.state.photoViewUrl // 防止未返回数据
+            console.log(context.state.photoViewUrl)
             // context.state.photoViewUrl = 'https://stdag-image.oss-cn-beijing.aliyuncs.com/camera_one_image/20190329/31384703333230302d002800_1553855533-20190329183217716.jpg'
         })
     },
