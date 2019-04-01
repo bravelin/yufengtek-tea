@@ -19,6 +19,7 @@
     import CountStat from './CountStat'
     import Map from './Map'
     import socket from '@/lib/socket'
+    import config from '@/lib/config'
 
     const moduleNameSpace = ns.ORIGIN
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -34,9 +35,7 @@
         data() {
             return {
                 ws: null,
-                wsUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
                 lockReconnect: false,
-                tt: '',
             }
         },
         created () {
@@ -66,23 +65,20 @@
                             if (that.ws.readyState == 1) {
                                 that.ws.send('HeartBeat')
                             }
-                            // console.log("HeartBeat")
                         }, this.timeout)
                     }
                 }
                 if ('WebSocket' in window) {
-                    that.ws = new WebSocket(that.wsUrl)
-                     console.log(that.ws.readyState)
+                    that.ws = new WebSocket(config.socketUrl)
                 }
                 that.ws.onopen = function (e) {
                     heartCheck.reset().start()
                 }
                 that.ws.onmessage = function (e) {
                     const addressList = that.$store.state[moduleNameSpace].addressList
-                    var ss = typeof e.data
-                    // console.log(ss)
+                    const ss = typeof e.data
                     if (ss == 'string' && e.data != 'Hello') {
-                        var data = JSON.parse(e.data)
+                        const data = JSON.parse(e.data)
                         if (data.date == addressList[0].date) {
                             addressList[0].list.unshift(data)
                         } else {
@@ -107,11 +103,10 @@
             const that = this
             const store = that.$store
             const fullProps = ['cityRankFullState', 'countStateFullState', 'mapFullState']
-            console.log(this.$store.state[moduleNameSpace].websocket)
             // this.ws.onclose()
-            this.$store.state[moduleNameSpace].websocket.onclose()
-            this.$store.state[moduleNameSpace].websocket.send('111')
-            this.ws.onclose()
+            store.state[moduleNameSpace].websocket.onclose()
+            store.state[moduleNameSpace].websocket.send('111')
+            that.ws.onclose()
             fullProps.forEach(prop => {
                 store.commit(moduleNameSpace + '/' + types.ORIGIN_CHANGE_FULL_STATE, {
                     fullStateName: prop,

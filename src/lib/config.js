@@ -1,6 +1,5 @@
 export default {
     mapStyle: 'amap://styles/darkblue',
-    socketUrl: 'ws://192.168.0.140:8066/myHandler',
     fm1MarkerImgUrl: {
         normal: './images/fm1.png',
         active: './images/fm1_active.png'
@@ -29,4 +28,11 @@ export default {
         center: [117.869, 27.659], // 物联监控地图中心点
         zoom: 15
     },
+    // 生产环境
+    // baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
+    // socketUrl: '',
+
+    // 开发环境下
+    baseUrl: '',
+    socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 }

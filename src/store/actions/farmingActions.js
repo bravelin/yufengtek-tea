@@ -1,11 +1,10 @@
 import types from '@/store/constants/types'
-import ajax from '../../lib/ajax'
-import util from '@/lib/util'
+import ajax from '@/lib/ajax'
+
 export default {
     [types.FARMING_GET_PLANT_ACT_DATA] (context, payload) {
         const data = payload ? { address_country: '武夷山市', address_town: payload || '' } : { address_country: '武夷山市', address_town: '' }
-        // ?address_country=' + '武夷山市' + '&address_town=' + addressTown
-        ajax({ url: util.globeURL + '/data/farm/getData', method: 'post', data: data }).then(res => {
+        ajax({ url: '/data/farm/getData', method: 'post', data: data }).then(res => {
             if (res.code == 200) {
                 context.state.plantActPieDatas = res.repData.yearPlant
                 context.state.plantActLineDatas = res.repData.monthPlant

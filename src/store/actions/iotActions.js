@@ -1,11 +1,10 @@
 import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
 import api from '@/lib/api'
-import util from '@/lib/util'
 
 export default {
     [types.GET_IOT_DATA] (context, payload) { // 获取IOT物联设备数据
-        ajax({ url: util.globeURL + '/data/monitor/selectStation', method: 'post' }).then(res => {
+        ajax({ url: '/data/monitor/selectStation', method: 'post' }).then(res => {
             res.repData.cameraVos.map((item, index) => {
                 item.type = item.camera_type == '1' ? types.IOT_TYPE_GUN : types.IOT_TYPE_360
                 item.isActive = false
@@ -76,7 +75,7 @@ export default {
         const timeType = state.fm1.time
         const type = state.fm1.type
         context.state.fm1.sno = payload || context.state.fm1.sno
-        ajax({ url: util.globeURL + '/data/monitor/getflddata?sno=' + context.state.fm1.sno, method: 'post' }).then(res => {
+        ajax({ url: '/data/monitor/getflddata?sno=' + context.state.fm1.sno, method: 'post' }).then(res => {
             if (timeType == 'HOUR') {
                 const length = res.repData.todayData.length - 1
                 // fm1.data.temperature = res.repData.todayData[length].flddata_temp
@@ -148,26 +147,15 @@ export default {
         const state = context.state
         const fm1 = state.fm1
         const timeType = state.fm1.time
-        console.log(fm1)
-        ajax({ url: util.globeURL + '/data/momitor/getflddataLast?sno=' + context.state.fm1.sno, method: 'post' }).then(res => {
+        ajax({ url: '/data/momitor/getflddataLast?sno=' + context.state.fm1.sno, method: 'post' }).then(res => {
             if (timeType == 'HOUR') {
                 // const length = res.repData.todayData.length - 1
                 fm1.data.temperature = res.repData.data.flddata_temp
                 fm1.data.humidity = res.repData.data.flddata_humid
                 fm1.data.light = res.repData.data.flddata_sunlux
                 fm1.data.pressure = res.repData.data.flddata_pa
-                console.log(fm1)
             }
         })
-        // if (type == 'temperature') {
-        //     baseData = 30
-        // } else if (type == 'humidity') {
-        //     baseData = 50
-        // } else if (type == 'light') {
-        //     baseData = 3500
-        // } else if (type == 'pressure') {
-        //     baseData = 5000
-        // }
     },
     [types.GET_FM2_DATA] (context, payload) {
         const state = context.state
@@ -175,7 +163,7 @@ export default {
         const timeType = state.fm2.time
         const type = state.fm2.type
         context.state.fm2.sno = payload || context.state.fm2.sno
-        ajax({ url: util.globeURL + '/data/monitor/getFmbData?sno=' + context.state.fm2.sno, method: 'post' }).then(res => {
+        ajax({ url: '/data/monitor/getFmbData?sno=' + context.state.fm2.sno, method: 'post' }).then(res => {
             if (timeType == 'HOUR') {
                 const length = res.repData.todayData.length - 1
                 fm2.data.temperature = res.repData.todayData[length].soiltemp.toString()
@@ -247,9 +235,8 @@ export default {
         const state = context.state
         const fm2 = state.fm2
         const timeType = state.fm2.time
-        ajax({ url: util.globeURL + '/data/momitor/getFmbDataLast?sno=' + context.state.fm2.sno, method: 'post' }).then(res => {
+        ajax({ url: '/data/momitor/getFmbDataLast?sno=' + context.state.fm2.sno, method: 'post' }).then(res => {
             if (timeType == 'HOUR') {
-                // const length = res.repData.todayData.length - 1
                 fm2.data.temperature = parseInt(res.repData.data.soiltemp).toFixed(2)
                 fm2.data.humidity = parseInt(res.repData.data.soilmture).toFixed(2)
                 fm2.data.wind = parseInt(res.repData.data.windspd).toFixed(2)
@@ -304,20 +291,15 @@ export default {
         }
     },
     [types.CHANGE_PHOTO_VIEW_URL] (context, payload) {
-        console.log(context.state.photoViewUrl)
-        ajax({ url: util.globeURL + '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {
-            console.log(res.repData[11].substring(4, res.repData[11].length))
+        ajax({ url: '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {
             var tt = res.repData[11].substring(4, res.repData[11].length)
-            console.log(res.repData[11].substring(0, res.repData[11].indexOf(':')))
             context.state.photoViewUrl = 'https' + tt || context.state.photoViewUrl // 防止未返回数据
             // context.state.photoViewUrl = 'https://stdag-image.oss-cn-beijing.aliyuncs.com/camera_one_image/20190329/31384703333230302d002800_1553855533-20190329183217716.jpg'
         })
     },
     [types.GET_GUN_DATA] (context, payload) {
         context.state.camera = payload
-        console.log(payload)
         context.state.videoUrl = payload.address_gislatd == 27.6591 ? 'http://hls.open.ys7.com/openlive/6aa02972eedf411897e4126b3c959cf7.m3u8' : context.state.camera.camera_url
-        console.log(context.state.videoUrl)
     },
     [types.GET_360_DATA] (context, payload) {
         context.state.camera = payload
@@ -325,14 +307,12 @@ export default {
     },
     [types.CHANGE_GUN_DIRECTION] (context, payload) {
         const sno = context.state.camera.camera_sno
-        console.log(payload)
-        const data = { sno: sno, direction: parseInt(payload) }
         if (payload == 'up') {
-            ajax({ url: util.globeURL + '/data/momitor/CameraStop?sno=' + sno, method: 'post' }).then(res => {
+            ajax({ url: '/data/momitor/CameraStop?sno=' + sno, method: 'post' }).then(res => {
                 console.log(res)
             })
         } else {
-            ajax({ url: util.globeURL + '/data/momitor/CameraRun?sno=' + sno + '&direction=' + parseInt(payload), method: 'post' }).then(res => {
+            ajax({ url: '/data/momitor/CameraRun?sno=' + sno + '&direction=' + parseInt(payload), method: 'post' }).then(res => {
                 console.log(res)
             })
         }
