@@ -1,18 +1,15 @@
 <template>
-    <div class="plane-content cameraCenter" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd' >
-        <div class="video-container" ref="container2" id="containerVideo2">
-            <video id="videoId2" :style="{ width: width + 'px', height: height + 'px' }" controls playsInline webkit-playsinline autoplay>
-                <source :src="videoUrl360" type="application/x-mpegURL"/>
-                <source src="http://hls.open.ys7.com/openlive/6aa02972eedf411897e4126b3c959cf7.m3u8"/>
-            </video>
+    <div class="plane-content cameraCenter" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
+        <div class="video-container" ref="container">
+            <video-js :id="videoId" class="vjs-default-skin video-wrap" controls></video-js>
         </div>
     </div>
 </template>
 <script>
-    import '@/lib/ezuikit'
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
+    import config from '@/lib/config'
 
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -26,9 +23,48 @@
         created () {
             const that = this
             const store = that.$store
-            var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
-            document.onkeydown = function (e) {
+            const displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
+            document.addEventListener('keydown', that.doHandleKeyDown)
+            document.addEventListener('keyup', that.doHandleKeyUp)
+        },
+        watch: {
+            [dataVideo] (val) {
+                const that = this
+                const { w, h } = that.getSize()
+                that.initVideo(w, h)
+            }
+        },
+        mounted () {
+            const that = this
+            that.$nextTick(() => {
+                that.videoWrap = document.getElementById(that.videoId)
+                that.init()
+            })
+        },
+        data () {
+            return {
+                videoId: 'v' + Math.random(),
+                videoWrap: null,
+                ready: false,
+                player: null,
+                width: 0,
+                height: 0,
+                keyDown: false,
+                key: '',
+                timer: null,
+                displayType: false,
+                moveUp: false,
+                startX: '',
+                startY: '',
+                endX: '',
+                endY: '',
+            }
+        },
+        methods: {
+            doHandleKeyDown (e) {
                 e.preventDefault()
+                const that = this
+                const store = that.$store
                 let key = e.key
                 switch (e.key) {
                     case '1':
@@ -87,55 +123,26 @@
                         store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
                     }
                 }
-            }
-            document.onkeyup = function () {
+            },
+            doHandleKeyUp (e) {
+                let key = e.key
+                const that = this
+                const store = that.$store
                 if (typeof that.key == 'number') {
                     if (that.keyDown) {
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
                         that.keyDown = false
                     }
                 }
-            }
-        },
-        watch: {
-            [dataVideo] (val) {
-                const { w, h } = this.getSize()
-                this.initVideo(w, h)
-            }
-        },
-        mounted () {
-            const that = this
-            that.$nextTick(() => {
-                that.init()
-                that.video = document.getElementById('videoId2')
-            })
-        },
-        data () {
-            return {
-                videoId: 'v' + Math.random(),
-                ready: false,
-                player2: null,
-                containerHeight: 0,
-                width: 0,
-                height: 0,
-                keyDown: false,
-                timer: null,
-                displayType: false,
-                moveUp: false,
-                startX: '',
-                startY: '',
-                endX: '',
-                endY: '',
-                video: ''
-            }
-        },
-        methods: {
+            },
             touchStart (e) {
                 this.startX = e.touches[0].clientX
                 this.startY = e.touches[0].clientY
             },
             touchMove (e) {
                 var that = this
+                e.preventDefault()
+                e.stopPropagation()
                 if ((e.touches[0].clientX - this.startX > 2 || e.touches[0].clientY - this.startY > 2) && !this.moveUp) {
                     this.moveUp = true
                     const endX = e.touches[0].clientX
@@ -150,19 +157,20 @@
             },
             upOrDown (startX, startY, endX, endY) {
                 const that = this
+                const store = that.$store
                 let direction = that.GetSlideDirection(startX, startY, endX, endY)
                 switch (direction) {
                     case 1:
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 0) // 向上
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 0) // 向上
                         break
                     case 2:
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 1) // 向上
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 1) // 向上
                         break
                     case 3:
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 2) // 向左
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 2) // 向左
                         break
                     case 4:
-                        that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 3) // 向右
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 3) // 向右
                         break
                     default:
                         break
@@ -196,38 +204,49 @@
             init () {
                 const that = this
                 const { w, h } = that.getSize()
-                if (h < 200) {
-                    that.timer = setTimeout(() => { that.init() }, 1200) // 第一次没法直接加载出来
-                } else {
-                    that.initVideo(w, h)
-                }
+                that.initVideo(w, h)
             },
             initVideo (w, h) {
                 const that = this
-                that.containerHeight = h
+                if (!that.videoUrl360) {
+                    return
+                }
+                const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
+                const videoWrap = that.videoWrap
+                const playerOptions = {
+                    autoplay: true,
+                    preload: 'auto',
+                    language: 'zh-CN',
+                    sources: [{ type: 'application/x-mpegURL', src: url }],
+                    notSupportedMessage: '暂时无法播放',
+                    html5: { hls: { withCredentials: false } },
+                    controlBar: {
+                        fullscreenToggle: true,
+                        remainingTimeDisplay: false,
+                        timeDivider: false,
+                        durationDisplay: false
+                    }
+                }
                 that.width = w - 10
                 that.height = h - 10
+                videoWrap.style.width = that.width + 'px'
+                videoWrap.style.height = that.height + 'px'
                 that.$nextTick(() => {
-                    if (document.getElementById('videoId2')) {
-                        if (that.player2) {
-                            var videoHtml = document.getElementById('videoId2')
-                            document.getElementById('videoId2').remove()
-                            that.player = null
-                            document.getElementById('containerVideo2').appendChild(that.video)
-                            that.player2 = new EZUIPlayer('videoId2')
-                        } else {
-                            that.player2 = new EZUIPlayer('videoId2')
-                        }
+                    if (that.player) {
+                        that.player.src(url)
+                        that.player.load()
+                    } else {
+                        that.player = videojs(videoWrap, playerOptions)
                     }
                 })
             },
             getSize () {
                 const that = this
-                const container = that.$refs.container2
+                const container = that.$refs.container.parentNode
                 if (container) {
                     const styles = getComputedStyle(container, null)
-                    const w = parseInt(styles.height) * 4 / 3 || 0
-                    const h = (12 / 16) * w
+                    const w = parseInt(styles.width) || 0
+                    const h = parseInt(styles.height) || 0
                     return { w, h }
                 }
             }
@@ -237,6 +256,8 @@
             if (that.timer) {
                 clearTimeout(that.timer)
             }
-        },
+            document.removeEventListener('keydown', that.doHandleKeyDown)
+            document.removeEventListener('keyup', that.doHandleKeyUp)
+        }
     }
 </script>

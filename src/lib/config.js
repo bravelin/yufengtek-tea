@@ -29,11 +29,11 @@ export default {
         zoom: 14
     },
     // 生产环境
-    baseUrl: 'http://192.168.0.136:8066',
-    //baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
+    // baseUrl: 'http://192.168.0.136:8066',
+    // baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
     socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 
     // 开发环境下
-    // baseUrl: '',
+    baseUrl: '',
     // socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 }

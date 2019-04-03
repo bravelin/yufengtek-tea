@@ -54,7 +54,7 @@
             webSocketLink () {
                 let that = this
                 var heartCheck = {
-                    timeout: 5000*2,
+                    timeout: 5000 * 2,
                     timeoutObj: null,
                     reset: function () {
                         clearInterval(this.timeoutObj)

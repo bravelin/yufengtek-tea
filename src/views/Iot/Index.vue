@@ -39,7 +39,7 @@
         },
         watch: {
             [mapSiseProp] (val) {
-                if(val >= 18){
+                if (val >= 18) {
                     this.show = true
                 }
             }

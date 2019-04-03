@@ -5,7 +5,7 @@ import api from '@/lib/api'
 export default {
     [types.GET_IOT_DATA] (context, payload) { // 获取IOT物联设备数据
         ajax({ url: '/data/monitor/selectStation', method: 'post' }).then(res => {
-            res.repData.cameraVos.map((item, index) => {
+            res.repData.cameraVos.map((item) => {
                 item.type = item.camera_type == '1' ? types.IOT_TYPE_GUN : types.IOT_TYPE_360
                 item.isActive = false
             })
@@ -298,7 +298,7 @@ export default {
                 tt = 'https' + res.repData[11].substring(4, res.repData[11].length)
             }
             context.state.photoViewUrl = tt || context.state.photoViewUrl // 防止未返回数据
-            console.log(context.state.photoViewUrl)
+            // console.log(context.state.photoViewUrl)
             // context.state.photoViewUrl = 'https://stdag-image.oss-cn-beijing.aliyuncs.com/camera_one_image/20190329/31384703333230302d002800_1553855533-20190329183217716.jpg'
         })
     },
