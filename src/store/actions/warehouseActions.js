@@ -25,30 +25,35 @@ export default {
                 var historyInDatas = []
                 var historyOutDatas = []
                 var year = new Date().getFullYear()
-                historyInDatas.push({ year: year - 1, list: repData.lastYearInStock })
-                historyInDatas.push({ year: year, list: repData.thisYearInStock })
-                context.state.historyInDatas = historyInDatas.map(item => {
-                    return {
-                        year: item.year.toString(),
-                        list: item.list.map(dataItem => {
-                            return {
-                                label: dataItem.omonth, value: dataItem.weight
-                                }
-                        })
-                    }
-                })
-                historyOutDatas.push({ year: year - 1, list: repData.lastYearOutStock })
-                historyOutDatas.push({ year: year, list: repData.thisYearOutStock })
-                context.state.historyOutDatas = historyOutDatas.map(item => {
-                    return {
-                        year: item.year.toString(),
-                        list: item.list.map(dataItem => {
-                            return {
-                                label: dataItem.omonth, value: dataItem.weight
-                            }
-                        })
-                    }
-                })
+                if (repData.lastYearInStock.length != 0 && repData.lastYearInStock != []) {
+                    historyInDatas.push({ year: year - 1, list: repData.lastYearInStock })
+                    historyInDatas.push({ year: year, list: repData.thisYearInStock })
+                    console.log(historyInDatas)
+                    context.state.historyInDatas = historyInDatas.map(item => {
+                        return {
+                            year: item.year.toString(),
+                            list: item.list.map(dataItem => {
+                                return {
+                                    label: dataItem.omonth, value: dataItem.weight
+                                    }
+                            })
+                        }
+                    })
+                }
+                if (repData.lastYearOutStock.length != 0 && repData.lastYearOutStock != []) {
+                    historyOutDatas.push({ year: year - 1, list: repData.lastYearOutStock })
+                    historyOutDatas.push({ year: year, list: repData.thisYearOutStock })
+                    context.state.historyOutDatas = historyOutDatas.map(item => {
+                        return {
+                            year: item.year.toString(),
+                            list: item.list.map(dataItem => {
+                                return {
+                                    label: dataItem.omonth, value: dataItem.weight
+                                    }
+                            })
+                        }
+                    })
+                }
             }
         })
     },

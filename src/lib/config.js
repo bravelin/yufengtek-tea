@@ -25,12 +25,12 @@ export default {
         active: './images/360_active.png'
     },
     iotMonitorMap: {
-        center: [117.869, 27.659], // 物联监控地图中心点
-        zoom: 15
+        center: [117.8689366, 27.658368], // 物联监控地图中心点
+        zoom: 19
     },
     // 生产环境
     // baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
-    // socketUrl: '',
+    // socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 
     // 开发环境下
     baseUrl: '',

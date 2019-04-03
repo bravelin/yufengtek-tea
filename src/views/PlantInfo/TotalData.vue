@@ -58,6 +58,7 @@
             doInitOrRefreshChart () {
                 const that = this
                 const datas = that.$store.state[moduleNameSpace].totalData
+                console.log(datas)
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -114,11 +115,11 @@
                         data: [
                             {
                                 value: 75,
-                                label: { normal: { formatter: item.label, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                                label: { normal: { padding: [0, 0, 8], formatter: `${item.label}\n\n\n`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             },
                             {
                                 value: 25,
-                                label: { normal: { formatter: `\n${item.data}`, textStyle: { color: textColor, fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
+                                label: { normal: { formatter: `${item.data}`, textStyle: { color: textColor, fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
                             },
                             {
                                 value: 0,

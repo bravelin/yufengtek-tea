@@ -11,7 +11,6 @@
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
     import MapStyleJson from './mapStyle'
-
     const moduleNameSpace = ns.ORIGIN
     const dataProp = 'mapDatas'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -88,7 +87,13 @@
                             coordinateSystem: 'bmap',
                             data: datas,
                             symbolSize (val) {
-                                return val[2] / 20 > 18 ? 18 : val[2] / 20
+                                var size1 = val[2] / 20
+                                if (val[2] / 20 < 3) {
+                                    size1 = 3
+                                } else if (val[2] / 20 > 18) {
+                                    size1 = 18
+                                }
+                                return size1
                             },
                             label: {
                                 normal: {
@@ -109,7 +114,13 @@
                             coordinateSystem: 'bmap',
                             data: datas.sort((a, b) => { return b.value - a.value }).slice(0, 5),
                             symbolSize (val) {
-                                return val[2] / 20 > 18 ? 18 : val[2] / 20
+                                var size1 = val[2] / 20
+                                if (val[2] / 20 < 3) {
+                                    size1 = 3
+                                } else if (val[2] / 20 > 18) {
+                                    size1 = 18
+                                }
+                                return size1
                             },
                             showEffectOn: 'render',
                             rippleEffect: { brushType: 'stroke' },

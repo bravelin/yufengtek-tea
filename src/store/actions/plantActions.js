@@ -13,8 +13,8 @@ export default {
         ajax({ url: '/bigdata/plant/detail', method: 'post', data: data }).then(res => {
             var repData = res.repData
             // 统计总数
-            tempData[0].data = repData.gardenCount
-            tempData[1].data = repData.gardenArea
+            tempData[0].data = repData.gardenCount == null ? 0 : repData.gardenCount
+            tempData[1].data = repData.gardenArea == null ? 0 : repData.gardenArea
             context.state.totalData = tempData
             // 树龄分布
             context.state.treeAgeDistributeDatas = repData.treeAge
