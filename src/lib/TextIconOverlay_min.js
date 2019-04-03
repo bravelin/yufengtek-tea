@@ -284,7 +284,7 @@ var BMapLib = window.BMapLib = BMapLib || {};
         };
         c.inherits = c.lang.inherits
     })();
-    var b = "http://api.map.baidu.com/library/TextIconOverlay/1.2/src/images/m";
+    var b = "https://api.map.baidu.com/library/TextIconOverlay/1.2/src/images/m";
     var a = "png";
     var e = BMapLib.TextIconOverlay = function (f, h, g) {
         this._position = f;

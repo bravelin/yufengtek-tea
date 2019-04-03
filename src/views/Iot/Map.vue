@@ -42,6 +42,7 @@
                 markerClusterer: '', // 是否被聚合
                 mk: '', // 聚合的标记
                 markerActive: '', // 选中的标记
+                displayType: false
             }
         },
         computed: {
@@ -151,6 +152,18 @@
                     that.addMarkers()
                     that.infoWindow = ''
                 })
+                var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
+                that.displayType = displayType
+                if (displayType) {
+                    map.disableDragging()
+                    map.addEventListener("touchmove", function (e) {
+                        map.enableDragging()
+                    });
+                    // TODO: 触摸结束时触发次此事件  此时开启禁止拖动
+                    map.addEventListener("touchend", function (e) {
+                        map.disableDragging()
+                    })
+                }
                 that.mapReady = true // 准备就绪
                 if (that.camera.length != 0) {
                     that.addMarkers()
@@ -220,6 +233,7 @@
                         marginBottom: '5px',
                         marginleft: '6px',
                     },
+                    closeIconUrl: 'images/icon-wf.png',
                     closeIconMargin: '5px 8px 4px 4px',
                     enableAutoPan: false,
                 }
@@ -233,6 +247,7 @@
                                 "<div class='info-triangle'></div></div>"
                 // that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                 data.onclick = function () {
+                    console.log('1235')
                     if (that.infoWindow) {
                         that.infoWindow.close()
                         const mapCenterPoint = new BMap.Point(marker.point.lng, marker.point.lat) // 创建点坐标
@@ -309,6 +324,7 @@
                         marginBottom: "5px",
                         marginleft:"6px",
                     },
+                    closeIconUrl: 'images/icon-wf.png',
                     closeIconMargin: "5px 8px 4px 4px",
                     enableAutoPan: false,
                 }
@@ -318,7 +334,9 @@
                 const marker = new BMap.Marker(position, { icon })
                 marker.self = data
                 marker.addEventListener('click', (e) => {
-                    that.infoWindow.close()
+                    if (that.infoWindow) {
+                        that.infoWindow.close()
+                    }
                     that.$store.state[moduleNameSpace].mapSize = true
                     // const mapCenterPoint = new BMap.Point(e.target.self.address_gislong, e.target.self.address_gislatd) // 创建点坐标
                     //that.map.centerAndZoom(mapCenterPoint, 20)
