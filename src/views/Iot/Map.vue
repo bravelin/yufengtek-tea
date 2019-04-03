@@ -51,6 +51,7 @@
         watch: {
             [dataProp] () {
                 this.addMarkers()
+                this.map.reset()
             },
             [mapSiseProp] () {
                 console.log(156)
@@ -199,9 +200,6 @@
                 var oldmk = []
                 for (var i = 0; i < mk.length; i++) {
                     var mCount = mk[i]._markers.length
-                    for (var j = 0; j < mk[i]._markers.length; j++) {
-                        that.addMarkerCluS(mk[i]._markers[j])
-                    }
                     if (mCount < 2) continue
                     var options = []
                     mk[i]._clusterMarker.removeEventListener('mouseover')
@@ -212,13 +210,6 @@
                 // that.markers.push(that.emVos.forEach(item => that.createMarker(item)))
                 // that.markers.push(that.Fm1.map(item => that.createMarker(item)))
                 // that.markers.push(that.Fm2.map(item => that.createMarker(item)))
-            },
-            // 自定义标记点
-            addMarkerCluS (marker) {
-                var that = this
-                marker.addEventListener('click', (e) => {
-                    that.doHandlerClickMarker(e.target.self, e.target)
-                })
             },
             // 点聚合标记
             addMarkerClu (point, data) {
@@ -255,6 +246,7 @@
                     }
                 }
                 data.addEventListener('mouseover', (e) => {
+                    console.log(1111)
                     that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                     that.infoWindow.open(marker)
                         // }
@@ -337,28 +329,18 @@
                     if (that.infoWindow) {
                         that.infoWindow.close()
                     }
-                    that.$store.state[moduleNameSpace].mapSize = true
-                    // const mapCenterPoint = new BMap.Point(e.target.self.address_gislong, e.target.self.address_gislatd) // 创建点坐标
-                    //that.map.centerAndZoom(mapCenterPoint, 20)
-                    //that.addMarkers()
-                    that.activeIcon = false
-                    that.map.removeOverlay(that.markers[e.target.self.index])
-                    const tt = e.target.self
-                    tt.isActive = false
-                    const obj1 = that.createMarker(tt)
-                    that.markers.splice(e.target.self.index, 1, obj1)
-                    //that.doHandlerClickMarker(e.target.self, e.target)
+                    if (!e.target.self.isActive) {
+                        that.doHandlerClickMarker(e.target.self, e.target)
+                    }
                 })
-                marker.addEventListener('mouseover', (e) => { 
-                    if (!that.activeIcon) {
-                        that.activeIcon = true
-                            that.infoWindow = new BMapLib.InfoBox(that.map,content,opts);
-                            that.infoWindow.open(marker)
+                marker.addEventListener('mouseover', (e) => {
+                    if (!e.target.self.isActive) {
+                        that.infoWindow = new BMapLib.InfoBox(that.map,content,opts);
+                        that.infoWindow.open(marker)
                     }
                 })
                 marker.addEventListener('mouseout', (e) => {
                     if(that.infoWindow){
-                        that.activeIcon = false
                         that.infoWindow.close()
                     }
                 })
