@@ -102,6 +102,7 @@
             doClearDate () {
                 const that = this
                 that.currSelectedDate = ''
+                that.$store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_LIST_DATA, { currentPage: 1 })
             }
         }
     }

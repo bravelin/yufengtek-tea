@@ -24,7 +24,43 @@
         border-radius: 6px;
         overflow: hidden;
     }
-
+    .map-ul{
+        display: flex;
+        flex-wrap: wrap;
+        padding-top:10px;
+        font-size: 12px;
+        .map-li{
+            width: 100px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            .map-image{
+                margin-right: 4px;
+                height: 15px;
+                width: 15px;
+                display: block;
+            }
+        }
+    }
+    .resetMap{
+        height: 50px;
+        width: 50px;
+        border-radius:50%;
+        background:white;
+        color:red;
+        position:fixed;
+        bottom:60px;
+        right:50px;
+        display: none;
+    }
+    .resetMapB{
+        display: block
+    }
+    .infoBox{
+        img{
+            display: none
+        }
+    }
     .search-wrap{
         position: absolute;
         top: 20px;

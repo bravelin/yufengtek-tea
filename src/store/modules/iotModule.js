@@ -66,7 +66,7 @@ export default {
         videoUrl: '', // 监控录像地址
         videoUrl360: '', // 球机摄像头地址
         display: '',
-        mapSise: false, // 地图是否处于最大放大等级
+        mapSise: 14, // 地图处于的放大等级
     },
     actions,
     mutations

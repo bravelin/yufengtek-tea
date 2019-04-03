@@ -3,16 +3,12 @@
         <PlaneTitle>视频监控</PlaneTitle>
         <div class="plane-content">
             <div id="containerVideo" class="video-container" ref="container" :style="{ height: containerHeight + 'px' }">
-                <video id="videoId" :style="{ width: width + 'px', height: height + 'px' }" controls playsInline webkit-playsinline autoplay>
-                    <source :src="videoUrl" type="application/x-mpegURL"/>
-                </video>
+                <video-js :id="videoId" class="vjs-default-skin video-wrap" controls></video-js>
             </div>
         </div>
     </Plane>
 </template>
-
 <script>
-    import '@/lib/ezuikit'
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
@@ -37,20 +33,18 @@
         mounted () {
             const that = this
             that.$nextTick(() => {
+                that.videoWrap = document.getElementById(that.videoId)
                 that.init()
-                that.video = document.getElementById('videoId')
             })
         },
         data () {
             return {
                 videoId: 'v' + Math.random(),
-                video: '',
-                ready: false,
+                videoWrap: null,
                 player: null,
                 containerHeight: 0,
                 width: 0,
                 height: 0,
-                keyDown: false,
                 timer: null
             }
         },
@@ -59,7 +53,7 @@
                 const that = this
                 const { w, h } = that.getSize()
                 if (h < 200) {
-                    that.timer = setTimeout(() => { that.init() }, 1200) // 第一次没法直接加载出来
+                    that.timer = setTimeout(() => { that.init() }, 1000)
                 } else {
                     that.initVideo(w, h)
                 }
@@ -88,6 +82,8 @@
                 that.containerHeight = h
                 that.width = w - 10
                 that.height = h - 10
+                videoWrap.style.width = that.width + 'px'
+                videoWrap.style.height = that.height + 'px'
                 that.$nextTick(() => {
                     if (that.player) {
                         that.player.src(url)
@@ -108,7 +104,7 @@
                 }
             }
         },
-        beforeDestroy () {
+        beforeDestroy() {
             const that = this
             if (that.timer) {
                 clearTimeout(that.timer)

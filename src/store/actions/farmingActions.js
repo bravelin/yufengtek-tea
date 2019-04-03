@@ -8,10 +8,10 @@ export default {
             if (res.code == 200) {
                 context.state.plantActPieDatas = res.repData.yearPlant
                 context.state.plantActLineDatas = res.repData.monthPlant
-                context.state.fertilizerActPieDatas = res.repData.yearFaramB
-                context.state.fertilizerActLineDatas = res.repData.monthFaramB
-                context.state.protectionActPieDatas = res.repData.yearFaramA
-                context.state.protectionActLineDatas = res.repData.monthFaramA
+                context.state.fertilizerActPieDatas = res.repData.yearFaramA
+                context.state.fertilizerActLineDatas = res.repData.monthFaramA
+                context.state.protectionActPieDatas = res.repData.yearFaramB
+                context.state.protectionActLineDatas = res.repData.monthFaramB
             }
         })
     }

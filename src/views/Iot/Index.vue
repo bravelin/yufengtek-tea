@@ -8,6 +8,7 @@
             <CameraVideo v-show="currActive.type==types.IOT_TYPE_GUN"></CameraVideo>
         </div>
         <Map></Map>
+        <div class="resetMap" :class="{resetMapB: show}">-</div>
         <!--<Search></Search>-->
         <PhotoViewer v-show="photoViewerFullState"></PhotoViewer>
     </div>
@@ -26,19 +27,28 @@
     import PhotoViewer from './PhotoViewer'
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
+    const mapSiseProp = `$store.state.${moduleNameSpace}.mapSise`
 
     export default {
         name: 'iot-index',
         computed: {
-            ...thisMapState(['currActive', 'photoViewerFullState', 'fm1', 'fm2'])
+            ...thisMapState(['currActive', 'photoViewerFullState', 'fm1', 'fm2', 'mapSize'])
         },
         components: {
             FM1Charts, FM2Charts, WFCharts, Map, CameraVideo, Amount, PhotoViewer
         },
+        watch: {
+            [mapSiseProp] (val) {
+                if (val >= 18) {
+                    this.show = true
+                }
+            }
+        },
         data () {
             return {
                 types,
-                timer: null
+                timer: null,
+                show: false
             }
         },
         created () {
