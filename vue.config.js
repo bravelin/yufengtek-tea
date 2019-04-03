@@ -17,7 +17,7 @@ module.exports = {
     },
     devServer: {
         port: 8066,
-        https: false,
+        https: true,
         hotOnly: false,
         disableHostCheck: true,
         proxy: {
@@ -35,6 +35,6 @@ module.exports = {
                     '^/data': ''
                 }
             }
-        }
+        },
     }
 }

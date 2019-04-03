@@ -35,4 +35,5 @@ export default {
     // 开发环境下
     baseUrl: '',
     socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
+    proxyUrl: 'https://proxy.yufengtek.com/'
 }

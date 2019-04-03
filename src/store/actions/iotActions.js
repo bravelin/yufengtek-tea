@@ -8,6 +8,7 @@ export default {
             res.repData.cameraVos.map((item, index) => {
                 item.type = item.camera_type == '1' ? types.IOT_TYPE_GUN : types.IOT_TYPE_360
                 item.isActive = false
+                item.camera_url = 'http://hls.open.ys7.com/openlive/6aa02972eedf411897e4126b3c959cf7.m3u8'
             })
             res.repData.emVos.map(item => {
                 item.type = types.IOT_TYPE_SPHERE

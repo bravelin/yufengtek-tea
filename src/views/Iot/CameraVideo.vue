@@ -12,6 +12,7 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
+    import config from '@/lib/config'
 
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -65,11 +66,13 @@
                 }
                 console.log('videoUrl...', that.videoUrl)
                 const videoWrap = that.videoWrap
+                const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl)
+                console.log('url.....', url)
                 const playerOptions = {
                     autoplay: true,
                     preload: 'auto',
                     language: 'zh-CN',
-                    sources: [{ type: 'application/x-mpegURL', src: that.videoUrl }],
+                    sources: [{ type: 'application/x-mpegURL', src: url }],
                     notSupportedMessage: '暂时无法播放',
                     html5: { hls: { withCredentials: false } },
                     controlBar: {
@@ -86,7 +89,7 @@
                 videoWrap.style.height = that.height + 'px'
                 that.$nextTick(() => {
                     if (that.player) {
-                        that.player.src(that.videoUrl)
+                        that.player.src(url)
                         that.player.load()
                     } else {
                         that.player = videojs(videoWrap, playerOptions)
