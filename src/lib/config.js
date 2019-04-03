@@ -26,13 +26,14 @@ export default {
     },
     iotMonitorMap: {
         center: [117.8689366, 27.658368], // 物联监控地图中心点
-        zoom: 19
+        zoom: 14
     },
     // 生产环境
+    baseUrl: 'http://192.168.0.136:8066',
     // baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
-    // socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
+    socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 
     // 开发环境下
-    baseUrl: '',
-    socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
+    // baseUrl: '',
+    // socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 }

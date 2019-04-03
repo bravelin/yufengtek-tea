@@ -6,8 +6,8 @@ export default {
     [types.PLANT_GET_STAT_DATA] (context, payload) {
         const data = payload ? { addr: payload || '' } : ''
         const tempData = [
-            { label: '茶园总数', data: '1322', unit: '家' },
-            { label: '茶园面积', data: '14.2万', unit: '亩' },
+            { label: '山场总数', data: '1322', unit: '家' },
+            { label: '种植面积', data: '14.2万', unit: '亩' },
             { label: '预估产量', data: '1988', unit: '吨' }
         ]
         ajax({ url: '/bigdata/plant/detail', method: 'post', data: data }).then(res => {

@@ -3,7 +3,7 @@ import axios from 'axios'
 import config from '@/lib/config'
 const Qs = require('qs')
 
-axios.defaults.baseURL = config.baseUrl
+axios.defaults.baseURL = ''
 // axios.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
 // 请求发送之前的拦截器
 axios.interceptors.request.use(config => {
@@ -27,6 +27,9 @@ export default function (options) {
             'Content-Type': 'application/x-www-form-urlencoded'
         }
         options.data = Qs.stringify(options.data)
+    }
+    if (!/json/.test(options.url)) {
+        options.url = config.baseUrl + options.url
     }
     return new Promise((resolve, reject) => {
         axios.request(options).then(res => {

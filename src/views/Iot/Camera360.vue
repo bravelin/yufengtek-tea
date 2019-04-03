@@ -3,6 +3,7 @@
         <div class="video-container" ref="container2" id="containerVideo2">
             <video id="videoId2" :style="{ width: width + 'px', height: height + 'px' }" controls playsInline webkit-playsinline autoplay>
                 <source :src="videoUrl360" type="application/x-mpegURL"/>
+                <source src="http://hls.open.ys7.com/openlive/6aa02972eedf411897e4126b3c959cf7.m3u8"/>
             </video>
         </div>
     </div>
@@ -88,7 +89,7 @@
                 }
             }
             document.onkeyup = function () {
-                if (typeof key == 'number') {
+                if (typeof that.key == 'number') {
                     if (that.keyDown) {
                         that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
                         that.keyDown = false
