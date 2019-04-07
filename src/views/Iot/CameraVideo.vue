@@ -52,11 +52,11 @@
             init () {
                 const that = this
                 const { w, h } = that.getSize()
-                if (h < 200) {
-                    that.timer = setTimeout(() => { that.init() }, 1000)
-                } else {
+                // if (h < 200) {
+                //     that.timer = setTimeout(() => { that.init() }, 1000)
+                // } else {
                     that.initVideo(w, h)
-                }
+                // }
             },
             initVideo (w, h) {
                 const that = this
@@ -64,7 +64,14 @@
                     return
                 }
                 const videoWrap = that.videoWrap
-                const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl)
+                var url = ''
+                var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
+                if (!displayType) {
+                    url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl)
+                } else {
+                    url = that.videoUrl
+                }
+                console.log(url)
                 const playerOptions = {
                     autoplay: true,
                     preload: 'auto',

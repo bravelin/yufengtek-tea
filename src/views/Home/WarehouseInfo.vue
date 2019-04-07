@@ -177,11 +177,11 @@
                 const titles = []
                 const values = [[], []]
                 datas.in.forEach(item => {
-                    titles.push(item.month + '月')
-                    values[0].push(item.amount)
+                    titles.push(item.omonth + '月')
+                    values[0].push(item.weight)
                 })
                 datas.out.forEach(item => {
-                    values[1].push(item.amount)
+                    values[1].push(item.weight)
                 })
                 return { titles, values }
             },

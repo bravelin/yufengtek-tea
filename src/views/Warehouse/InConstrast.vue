@@ -181,6 +181,9 @@
                     for (var j = 1; j < ss; j++) {
                         datas[0].list.unshift({ label: j, value: 0 })
                     }
+                    // for( var k = ss; k < 12; k++) {
+                    //     datas[0].list.unshift({ label: k, value: 0 })
+                    // }
                 }
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]

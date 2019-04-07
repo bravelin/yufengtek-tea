@@ -7,11 +7,11 @@
     import types from '@/store/constants/types'
     import config from '@/lib/config'
     import mapStyle from './mapStyleV1'
-    // import '@/lib/InfoBox_min.js'
-    // import '@/lib/MarkerClusterer_min.js'
-    // import '@/lib/TextIconOverlay_min.js'
+    // import '@/lib/InfoBox_min'
+    import '@/lib/MarkerClusterer_min'
+    import '@/lib/TextIconOverlay_min'
     import { constants } from 'fs'
-
+    console.log()
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = `$store.state.${moduleNameSpace}.iotDatas`
@@ -71,6 +71,7 @@
                 // 自定义控件类
                 function ZoomControl () {
                     // 设置默认停靠位置和偏移量
+                    /* eslint-disable */
                     this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT
                     this.defaultOffset = new BMap.Size(10, 10)
                 }
@@ -157,11 +158,11 @@
                 that.displayType = displayType
                 if (displayType) {
                     map.disableDragging()
-                    map.addEventListener("touchmove", function (e) {
+                    map.addEventListener('touchmove', function (e) {
                         map.enableDragging()
-                    });
+                    })
                     // TODO: 触摸结束时触发次此事件  此时开启禁止拖动
-                    map.addEventListener("touchend", function (e) {
+                    map.addEventListener('touchend', function (e) {
                         map.disableDragging()
                     })
                 }
@@ -186,24 +187,26 @@
                     })
                 }
                 if (that.markerClusterer) {
-                    //that.map.reset()
+                    // that.map.reset()
                     that.markerClusterer.clearMarkers()
                     that.infoWindow = ''
                     // that.addMarkers()
                 }
                 that.markers = that.iotDatas.map(item => that.createMarker(item))
+                /* eslint-disable */
                 var markerClusterer = new BMapLib.MarkerClusterer(that.map, { markers: that.iotDatas.map(item => that.createMarker(item)),
                 maxZoom: 16 })
                 that.markerClusterer = markerClusterer
                 var mk = markerClusterer._clusters
                 that.mk = mk
+                // console.log(mk)
                 var oldmk = []
                 for (var i = 0; i < mk.length; i++) {
                     var mCount = mk[i]._markers.length
                     if (mCount < 2) continue
                     var options = []
                     mk[i]._clusterMarker.removeEventListener('mouseover')
-                    that.addMarkerClu(mk[i]._center, mk[i]._clusterMarker)
+                    that.addMarkerClu(mk[i]._center, mk[i]._clusterMarker, mk[i]._markers, i+1)
                 }
                 // that.camera.forEach(item => that.createMarker(item))
                 // console.log(that.markers)
@@ -212,12 +215,12 @@
                 // that.markers.push(that.Fm2.map(item => that.createMarker(item)))
             },
             // 点聚合标记
-            addMarkerClu (point, data) {
+            addMarkerClu (point, data, sMarkers, num) {
                 let icon = fm1IconActive
                 var that = this
                 const marker = new BMap.Marker(point)
                 var opts = {
-                    offset: { width: 10, height: 20 },
+                    offset: { width: 10, height: 0 },
                     boxStyle: {
                         width: '220px',
                         padding: '5px',
@@ -228,35 +231,112 @@
                     closeIconMargin: '5px 8px 4px 4px',
                     enableAutoPan: false,
                 }
-                var content = "<div style='color:white;background:rgba(15, 71, 130, 1);border-radius:5px; padding:10px;box-shadow:0 0 5px rgba(255, 255, 255, 1)'>" +
-                                "查看该区域设备" + "<ul class='map-ul'><li class='map-li'><image class='map-image' src='images/icon-wf.png'></image><span>水肥一体化</span></li>" +
-                                "<li class='map-li'><image class='map-image' src='images/icon-360.png' /><span>全景摄像头</span></li>" +
-                                "<li class='map-li'><image class='map-image' src='images/icon-FM1.png' /><span>监控FM1</span></li>" +
-                                "<li class='map-li'><image class='map-image' src='images/icon-gun.png' /><span>普通摄像头</span></li>" +
-                                "<li class='map-li'><image class='map-image' src='images/icon-FM2.png' /><span>监控FM2</span></li>" + 
-                                "<li class='map-li'><image class='map-image' src='images/icon-sphere.png' /><span>云台摄像头</span></li></ul>"
-                                "<div class='info-triangle'></div></div>"
+                var label1 = null, label2 = null, label3 = null, label4 = null, label5 = null, label6 = null
+                for ( var k = 0; k < sMarkers.length; k++) {
+                    switch (sMarkers[k].self.type) {
+                        case 'IOT_TYPE_WF':
+                        label1 = 'label1'
+                        break
+                        case 'IOT_TYPE_SPHERE':
+                        label2 = 'label2'
+                        break
+                        case 'IOT_TYPE_FM1':
+                        label3 = 'label3'
+                        break
+                        case 'IOT_TYPE_GUN':
+                        label4 = 'label4'
+                        break
+                        case 'IOT_TYPE_FM2':
+                        label5 = 'label5'
+                        break
+                        case 'IOT_TYPE_360':
+                        label6 = 'label6'
+                        break
+                    }
+                }
+                // console.log(label1)
+                var content = "<div class='boxContent' id=" + 'boxs_' + num + ">" +
+                                "查看该区域设备" + "<ul class='map-ul'>" + 
+                                (label1 == 'label1' ? "<li class='map-li' id=" + 'label1_' + num  + "><image class='map-image' src='images/icon-wf.png'></image><span>水肥一体化</span></li>" : '') +
+                                (label2 == 'label2' ? "<li class='map-li' id=" + 'label2_' + num  + "><image class='map-image' src='images/icon-sphere.png' /><span>全景摄像头</span></li>" : '') +
+                                (label3 == 'label3' ? "<li class='map-li' id=" + 'label3_' + num + "><image class='map-image' src='images/icon-FM1.png' /><span>监控FM1</span></li>" : '') +
+                                (label4 == 'label4' ? "<li class='map-li' id=" + 'label4_' + num + "><image class='map-image' src='images/icon-gun.png' /><span>普通摄像头</span></li>" : '') +
+                                (label5 == 'label5' ? "<li class='map-li' id=" + 'label5_' + num + "><image class='map-image' src='images/icon-FM2.png' /><span>监控FM2</span></li>" : '') + 
+                                (label6 == 'label6' ? "<li class='map-li' id=" + 'label6_' + num + "><image class='map-image' src='images/icon-360.png' /><span>云台摄像头</span></li>" : '') + "</ul>"
+                                + "</div>" + "<div class='boxStri'></div>"
+                
                 // that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                 data.onclick = function () {
-                    console.log('1235')
                     if (that.infoWindow) {
                         that.infoWindow.close()
                         const mapCenterPoint = new BMap.Point(marker.point.lng, marker.point.lat) // 创建点坐标
                         that.map.centerAndZoom(mapCenterPoint, 20)
                     }
                 }
+                
                 data.addEventListener('mouseover', (e) => {
-                    console.log(1111)
-                    that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
-                    that.infoWindow.open(marker)
-                        // }
-                        // that.map.removeOverlay(that.markers[e.target.self.index])
-                        // const tt = e.target.self
-                        // tt.isActive = true
-                        // const obj1 = that.createMarker(tt)
-                        // that.markers.splice(e.target.self.index, 1, obj1)
-                        // console.log(that.markers)
-                   // }
+                    /* eslint-disable */
+                    if (that.infoWindow) {
+                       that.infoWindow.close()
+                    }
+                    if(!that.activeIcon){
+                        that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
+                        that.infoWindow.open(marker)
+                        that.activeIcon = true
+                        document.getElementById('boxs_' + num).addEventListener('mouseover', (e) => {
+                            if (!that.activeIcon) {
+                                if (that.infoWindow) {
+                                    that.infoWindow = ''
+                                }
+                                that.activeIcon = true
+                                that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
+                                that.infoWindow.open(marker)
+                            }
+                        })
+                        document.getElementById('boxs_' + num).addEventListener('mouseover', (e) => {
+                            if (that.activeIcon) {
+                                if (that.infoWindow) {
+                                    that.infoWindow.close()
+                                }
+                                that.activeIcon = false
+                            }
+                        })
+                        if (label1) {
+                            document.getElementById('label1_' + num).addEventListener('click', (e) => {
+                                    console.log(1)
+                            })
+                        }
+                        if (label2) {
+                            document.getElementById('label2_' + num).addEventListener('click', (e) => {
+                                that.showInfo(sMarkers, 'IOT_TYPE_SPHERE')
+                            })
+                        }
+                        if (label3) {
+                            console.log(1265)
+                            document.getElementById('label3_' + num).addEventListener('click', (e) => {
+                                that.showInfo(sMarkers, 'IOT_TYPE_FM1')
+                            })
+                        }
+                        if (label4) {
+                            console.log(126500)
+                            document.getElementById('label4_' + num).addEventListener('click', (e) => {
+                                that.showInfo(sMarkers, 'IOT_TYPE_GUN')
+                                console.log(4)
+                            })
+                        }
+                        if (label5) {
+                            document.getElementById('label5_' + num).addEventListener('click', (e) => {
+                                that.showInfo(sMarkers, 'IOT_TYPE_FM2')
+                                    console.log(5)
+                            })
+                        }
+                        if (label6) {
+                            document.getElementById('label6_' + num).addEventListener('click', (e) => {
+                                that.showInfo(sMarkers, 'IOT_TYPE_360')
+                                    console.log(6)
+                            })
+                        }
+                    }
                 })
                 // data.onmouseover = function() {
                 // console.log(4568)
@@ -283,14 +363,69 @@
                 // })
                 data.onmouseout = function() {
                     if (that.infoWindow) {
+                        console.log(120)
+                        setTimeout(function(){
+                            if(that.infoWindow){
+                                that.infoWindow.close()
+                            }
+                            
+                        }, 1000)
+                       //that.infoWindow.close()
+                    }
+                    if (that.activeIcon) {
+                        that.activeIcon = false
+                    }
+                }
+            },
+            // 点击放大，选择
+            showInfo (data, type) {
+                console.log(type)
+                var that = this
+                for ( var k = 0; k < data.length;) {
+                    console.log(data[k].self.type)
+                    if (data[k].self.type == type) {
+                        console.log(data[k])
+                        const log = data[k].self.address_gislong
+                        const lat = data[k].self.address_gislatd
+                        if (!data[k].self.isActive) {
+                            console.log('here')
+                            that.doHandlerClickMarker(data[k].self, data[k])
+                        }
                         that.infoWindow.close()
-                        console.log(that.infoWindow)
+                        const mapCenterPoint = new BMap.Point(log, lat) // 创建点坐标
+                        that.map.centerAndZoom(mapCenterPoint, 20)
+                        console.log(data[k])
+                        
+                        break;
+                    } else {
+                        k++
                     }
                 }
             },
             // 创建标记
             createMarker (data) {
                 const that = this
+                var tip = ''
+                switch (data.type) {
+                    case 'IOT_TYPE_WF':
+                    tip = '水肥一体化'
+                    break
+                    case 'IOT_TYPE_SPHERE':
+                    tip = '全景摄像头'
+                    break
+                    case 'IOT_TYPE_FM1':
+                    tip = '监控FM1'
+                    break
+                    case 'IOT_TYPE_GUN':
+                    tip = '普通摄像头'
+                    break
+                    case 'IOT_TYPE_FM2':
+                    tip = '监控FM2'
+                    break
+                    case 'IOT_TYPE_360':
+                    tip = '云台摄像头'
+                    break
+                }
                 /* eslint-disable */
                 const { address_gislong, address_gislatd, type } = data
                 const position = new BMap.Point(address_gislong, address_gislatd)
@@ -321,7 +456,7 @@
                     enableAutoPan: false,
                 }
                 var content = "<div style='color:white;background:rgba(15, 71, 130, 1);border-radius:5px; padding:10px;box-shadow:0 0 5px rgba(255, 255, 255, 1)'>" +
-                                "查看该设备" +
+                                "查看该" + tip
                                 "<div class='info-triangle'></div></div>"
                 const marker = new BMap.Marker(position, { icon })
                 marker.self = data
@@ -335,6 +470,7 @@
                 })
                 marker.addEventListener('mouseover', (e) => {
                     if (!e.target.self.isActive) {
+                        /* eslint-disable */
                         that.infoWindow = new BMapLib.InfoBox(that.map,content,opts);
                         that.infoWindow.open(marker)
                     }
@@ -344,7 +480,7 @@
                         that.infoWindow.close()
                     }
                 })
-                if (data.index == 0) { // 获取第一个标红的标记
+                if (data.isActive) { // 获取第一个标红的标记
                     that.markerActive = marker
                 }
                 return marker
@@ -376,7 +512,7 @@
                     store.dispatch(moduleNameSpace + '/' + types.GET_360_DATA, data)
                     return
                 }
-                console.log('here')
+                // console.log('here')
                 // 其他标记切换active和normal状态
                 that.markerClusterer.removeMarker(that.markerActive) // 去除点红的标记
                 const markerActive1 = that.markerActive

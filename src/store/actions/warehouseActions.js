@@ -24,9 +24,25 @@ export default {
                 // 历史出入库对比
                 var historyInDatas = []
                 var historyOutDatas = []
+                const tempData = [
+                    { omonth: '1月', weight: 0 },
+                    { omonth: '2月', weight: 0 },
+                    { omonth: '3月', weight: 0 },
+                    { omonth: '4月', weight: 0 },
+                    { omonth: '5月', weight: 0 },
+                    { omonth: '6月', weight: 0 },
+                    { omonth: '7月', weight: 0 },
+                    { omonth: '8月', weight: 0 },
+                    { omonth: '9月', weight: 0 },
+                    { omonth: '10月', weight: 0 },
+                    { omonth: '11月', weight: 0 },
+                    { omonth: '12月', weight: 0 }
+                ]
                 var year = new Date().getFullYear()
-                if (repData.lastYearInStock.length != 0 && repData.lastYearInStock != []) {
-                    historyInDatas.push({ year: year - 1, list: repData.lastYearInStock })
+                // if (repData.lastYearInStock.length != 0 && repData.lastYearInStock != []) {
+                    var list1 = tempData
+                    console.log(1235)
+                    historyInDatas.push({ year: year - 1, list: list1 })
                     historyInDatas.push({ year: year, list: repData.thisYearInStock })
                     console.log(historyInDatas)
                     context.state.historyInDatas = historyInDatas.map(item => {
@@ -39,9 +55,9 @@ export default {
                             })
                         }
                     })
-                }
+                // }
                 if (repData.lastYearOutStock.length != 0 && repData.lastYearOutStock != []) {
-                    historyOutDatas.push({ year: year - 1, list: repData.lastYearOutStock })
+                    historyOutDatas.push({ year: year - 1, list: list1 })
                     historyOutDatas.push({ year: year, list: repData.thisYearOutStock })
                     context.state.historyOutDatas = historyOutDatas.map(item => {
                         return {
