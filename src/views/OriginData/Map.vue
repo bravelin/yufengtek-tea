@@ -74,8 +74,8 @@
                         backgroundColor: 'rgba(0, 159, 253, 0.9)'
                     },
                     bmap: {
-                        center: [104.114129, 37.550339],
-                        zoom: 5,
+                        center: [108.9462765501, 34.3474989219],
+                        zoom: 5.5,
                         roam: true,
                         mapStyle: {
                             styleJson: MapStyleJson

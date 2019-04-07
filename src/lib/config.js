@@ -29,7 +29,6 @@ export default {
         zoom: 14
     },
     proxyUrl: 'https://proxy.yufengtek.com/',
-
     // 生产环境
     // baseUrl: 'http://192.168.0.136:8066',
     baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
