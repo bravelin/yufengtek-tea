@@ -1,13 +1,12 @@
 import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
-import config from '@/lib/config'
 
 export default {
     [types.GET_ORIGIN_DATA] (context) {
         ajax({ url: '/bigdata/origin/detail', method: 'post' }).then(res => {
             context.state.cityDatas = res.repData.originCity.map(item => { return { value: item.count, name: item.city } })
             context.state.countStatDatas = res.repData.originCount
-            var value = []
+            let value = []
             res.repData.originCity.map((item, index) => { value[index] = [item.latitude, item.longitude] })
             context.state.mapDatas = res.repData.originCity.map((item, index) => { return { value: value[index].concat(item.count), name: item.city } })
         })
@@ -23,36 +22,5 @@ export default {
                 context.state.originDate = payload.originDate
             }
         })
-    },
-    [types.GETWEBSOCKET] (context, payload) {
-        const wsuri = config.socketUrl
-        context.state.websocket = new WebSocket(wsuri)
-        context.state.websocket.onopen = function (e) {
-            // console.log(e)
-        }
-        context.state.websocket.onmessage = function (e) {
-            // 选定时间时不插入数据
-            var ss = typeof e.data
-            if (ss == 'string') {
-                var data = JSON.parse(e.data)
-                if (data.date == context.state.addressList[0].date) {
-                    context.state.addressList[0].list.unshift(data)
-                } else {
-                    const addr = { date: data.date, list: [data] }
-                    context.state.addressList.unshift(addr)
-                }
-            }
-        }
-        context.state.websocket.onerror = function (e) {
-            console.log(e)
-        }
-        context.state.websocket.onclose = function (e) {
-            console.log(e)
-            console.log('连接关闭')
-        }
-        context.state.websocket.send = function (message) {
-            console.log('发送成功')
-            console.log(context.state.websocket)
-        }
     }
 }

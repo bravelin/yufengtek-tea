@@ -89,7 +89,6 @@
                 }
             },
             doDatePickerChange (date) {
-                // this.$store.dispatch(moduleNameSpace + '/' + types.GETWEBSOCKET)
                 const that = this
                 that.currSelectedDate = formatTime(date, 'yyyy-MM-dd')
                 var currSelectedDate = that.currSelectedDate
