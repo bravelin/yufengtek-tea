@@ -17,7 +17,6 @@ Vue.config.productionTip = false
 Vue.prototype.$ajax = ajax
 Vue.prototype.$socket = socket
 Vue.use(vuescroll)
-// Vue.use(VueVideoPlayer)
 Vue.component('Plane', Plane)
 Vue.component('PlaneTitle', PlaneTitle)
 Vue.component('PlaneTools', PlaneTools)

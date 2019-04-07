@@ -52,7 +52,6 @@ export default {
         totalPage: 1, // 溯源地址总页数
         currentPage: 1, // 溯源地址当前页
         originDate: '', // 选择日期时间
-        websocket: null,
         mapDatas: [],
         mapFullState: false,
         cityRankFullState: false,
