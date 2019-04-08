@@ -1,7 +1,7 @@
 <template>
     <div class="plane-content cameraCenter" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
         <div class="video-container" ref="container">
-            <video-js :id="videoId" class="vjs-default-skin video-wrap" controls></video-js>
+            <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
         </div>
     </div>
 </template>
@@ -39,13 +39,12 @@
         mounted () {
             const that = this
             that.$nextTick(() => {
-                that.videoWrap = document.getElementById(that.videoId)
+                that.videoWrap = that.$refs.videoPlayer
                 that.init()
             })
         },
         data () {
             return {
-                videoId: 'v' + Math.random(),
                 videoWrap: null,
                 ready: false,
                 player: null,

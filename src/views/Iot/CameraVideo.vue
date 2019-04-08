@@ -3,7 +3,7 @@
         <PlaneTitle>视频监控</PlaneTitle>
         <div class="plane-content">
             <div id="containerVideo" class="video-container" ref="container" :style="{ height: containerHeight + 'px' }">
-                <video-js :id="videoId" class="vjs-default-skin video-wrap" controls></video-js>
+                <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
             </div>
         </div>
     </Plane>
@@ -37,13 +37,12 @@
         mounted () {
             const that = this
             that.$nextTick(() => {
-                that.videoWrap = document.getElementById(that.videoId)
+                that.videoWrap = that.$refs.videoPlayer
                 that.init()
             })
         },
         data () {
             return {
-                videoId: 'v' + Math.random(),
                 videoWrap: null,
                 player: null,
                 containerHeight: 0,
