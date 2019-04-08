@@ -17,6 +17,7 @@
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl`
+    const showProp = `$store.state.${moduleNameSpace}.currActive.type`
 
     export default {
         name: 'ProductionCameraVideo',
@@ -25,9 +26,12 @@
         },
         watch: {
             [dataVideo] (val) {
-                const that = this
-                const { w, h } = that.getSize()
-                that.initVideo(w, h)
+                this.init()
+            },
+            [showProp] (val) {
+                if (val == types.IOT_TYPE_GUN) {
+                    this.init()
+                }
             }
         },
         mounted () {
@@ -44,17 +48,14 @@
                 player: null,
                 containerHeight: 0,
                 width: 0,
-                height: 0,
-                timer: null
+                height: 0
             }
         },
         methods: {
             init () {
                 const that = this
                 const { w, h } = that.getSize()
-                if (h < 200) {
-                    that.timer = setTimeout(() => { that.init() }, 1000)
-                } else {
+                if (h >= 200) {
                     that.initVideo(w, h)
                 }
             },
@@ -106,8 +107,8 @@
         },
         beforeDestroy() {
             const that = this
-            if (that.timer) {
-                clearTimeout(that.timer)
+            if (that.player) {
+                that.player.dispose()
             }
         }
     }
