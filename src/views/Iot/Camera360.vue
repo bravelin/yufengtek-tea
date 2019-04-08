@@ -214,7 +214,14 @@
                 if (!that.videoUrl360) {
                     return
                 }
-                const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
+                // const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
+                var url = ''
+                var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
+                if (!displayType) {
+                    url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
+                } else {
+                    url = that.videoUrl
+                }
                 const videoWrap = that.videoWrap
                 const playerOptions = {
                     autoplay: true,

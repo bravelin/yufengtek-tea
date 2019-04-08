@@ -21,15 +21,15 @@ export default {
             // 茶树种植面积
             context.state.varietiesDatas = repData.treeVarieties
             var total = 0
-            for (var i = 0; i < repData.treeVarieties.length; i++) { total = repData.treeVarieties[i].area }
-            context.state.varietiesTotalData = total
+            for (var i = 0; i < repData.treeVarieties.length; i++) { total = repData.treeVarieties[i].area + total }
+            context.state.varietiesTotalData = total.toFixed(2)
             // 种植排行
             context.state.amountRankDatas = repData.plantRanking
             // 种植品质
             context.state.teaFarmTypeDatas = repData.plantQuality
             var total1 = 0
-            for (var j = 0; j < repData.treeVarieties.length; j++) { total1 = repData.treeVarieties[j].area }
-            context.state.farmTotalArea = total1
+            for (var j = 0; j < repData.plantQuality.length; j++) { total1 = repData.plantQuality[j].area + total1 }
+            context.state.farmTotalArea = total1.toFixed(2)
         })
     },
 }

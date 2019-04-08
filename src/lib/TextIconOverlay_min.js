@@ -1,4 +1,4 @@
-var BMapLib = window.BMapLib = BMapLib || {};
+//var BMapLib = window.BMapLib = BMapLib || {};
 (function () {
     var d, c = d = c || {
         version: "1.3.8"

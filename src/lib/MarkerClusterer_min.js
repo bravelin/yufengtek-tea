@@ -1,4 +1,4 @@
-var BMapLib = window.BMapLib = BMapLib || {};
+//var BMapLib = window.BMapLib = BMapLib || {};
 (function () {
     var b = function (m, l, j) {
         l = d(l);
@@ -305,7 +305,8 @@ var BMapLib = window.BMapLib = BMapLib || {};
         var k = this._map;
         var h = this.getBounds();
         this._clusterMarker.addEventListener("click", function (i) {
-            k.setViewport(h)
+            k.centerAndZoom(h, 20)
+            // k.setViewport(h)
         })
     };
     g.prototype.remove = function () {

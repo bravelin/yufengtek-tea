@@ -48,6 +48,7 @@
         beforeDestroy () {
             const that = this
             const store = that.$store
+            store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_CURR_REGION, '')
             const fullProps = ['totalDataFullState', 'treeAgeFullState', 'teaVarietiesFullState', 'plantRankFullState', 'teaFarmFullState', 'mapFullState']
             fullProps.forEach(prop => {
                 store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_FULL_STATE, {

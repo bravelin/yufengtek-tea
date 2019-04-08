@@ -42,6 +42,42 @@
             }
         }
     }
+    .boxStri{
+        // background:rgba(15, 71, 130, 1);
+        left: 100px;
+        bottom: -10px;
+        //top: 107px;
+        width: 34px;
+        height: 30px;
+        overflow: hidden;
+        position: absolute;
+        z-index: 1;
+        box-sizing: content-box;
+        
+    }
+    .boxContent{
+        color:white;
+        background:rgba(15, 71, 130, 1);
+        border-radius:5px;
+        padding:10px;
+        box-shadow:0 0 5px rgba(255, 255, 255, 1)
+    }
+    .boxStri:after{
+        position: absolute;
+        left: 5px;
+        top: 5px;
+        content: '';
+        width: 0;
+        height: 0;
+        border: 10px solid;
+        border-color: rgba(15, 71, 130, 1) rgba(15, 71, 130, 1) transparent transparent;
+        transform: rotate(135deg);
+        box-shadow: 1px -1px 1px rgba(255, 255, 255, 0.7);
+        -webkit-transform: rotate(135deg);
+        -moz-transform: rotate(135deg);
+        -ms-transform: rotate(135deg);
+        -o-transform: rotate(135deg);
+}
     .resetMap{
         height: 50px;
         width: 50px;

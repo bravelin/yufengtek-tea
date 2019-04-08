@@ -65,7 +65,13 @@
                     return
                 }
                 const videoWrap = that.videoWrap
-                const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl)
+                var url = ''
+                var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
+                if (!displayType) {
+                    url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl)
+                } else {
+                    url = that.videoUrl
+                }
                 const playerOptions = {
                     autoplay: true,
                     preload: 'auto',

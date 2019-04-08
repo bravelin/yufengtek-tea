@@ -160,7 +160,7 @@
                 const titles = []
                 const values = []
                 datas.forEach(item => {
-                    titles.push(item.treeAge + '年')
+                    titles.push(item.treeAge == '>20' ? '20年以上' : item.treeAge + '年')
                     values.push(item.area)
                 })
                 return { titles, values }
