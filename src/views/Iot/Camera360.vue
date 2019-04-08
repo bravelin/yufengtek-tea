@@ -1,7 +1,7 @@
 <template>
     <div class="plane-content cameraCenter" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
         <div class="video-container" ref="container">
-            <video-js :id="videoId" class="vjs-default-skin video-wrap" controls></video-js>
+            <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
         </div>
     </div>
 </template>
@@ -14,6 +14,7 @@
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl360`
+    const showProp = `$store.state.${moduleNameSpace}.photoViewerFullState`
 
     export default {
         name: 'Production360Video',
@@ -29,21 +30,21 @@
         },
         watch: {
             [dataVideo] (val) {
-                const that = this
-                const { w, h } = that.getSize()
-                that.initVideo(w, h)
-            }
+                this.init()
+            },
+            [showProp] (val) {
+                this.init()
+            },
         },
         mounted () {
             const that = this
             that.$nextTick(() => {
-                that.videoWrap = document.getElementById(that.videoId)
+                that.videoWrap = that.$refs.videoPlayer
                 that.init()
             })
         },
         data () {
             return {
-                videoId: 'v' + Math.random(),
                 videoWrap: null,
                 ready: false,
                 player: null,
@@ -51,7 +52,6 @@
                 height: 0,
                 keyDown: false,
                 key: '',
-                timer: null,
                 displayType: false,
                 moveUp: false,
                 startX: '',
@@ -158,7 +158,7 @@
             upOrDown (startX, startY, endX, endY) {
                 const that = this
                 const store = that.$store
-                let direction = that.GetSlideDirection(startX, startY, endX, endY)
+                let direction = that.getSlideDirection(startX, startY, endX, endY)
                 switch (direction) {
                     case 1:
                         store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 0) // 向上
@@ -176,7 +176,7 @@
                         break
                     }
             },
-            GetSlideDirection (startX, startY, endX, endY) {
+            getSlideDirection (startX, startY, endX, endY) {
                 const that = this
                 let dy = startY - endY
                 let dx = endX - startX
@@ -185,7 +185,7 @@
                 if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
                     return result
                 }
-                let angle = that.GetSlideAngle(dx, dy)
+                let angle = that.getSlideAngle(dx, dy)
                 if (angle >= -45 && angle < 45) {
                     result = 4
                 } else if (angle >= 45 && angle < 135) {
@@ -198,15 +198,13 @@
                 return result
             },
             // 返回角度
-            GetSlideAngle (dx, dy) {
+            getSlideAngle (dx, dy) {
                 return Math.atan2(dy, dx) * 180 / Math.PI
             },
             init () {
                 const that = this
                 const { w, h } = that.getSize()
-                if (h < 200) {
-                    that.timer = setTimeout(() => { that.init() }, 1000)
-                } else {
+                if (w > 500) {
                     that.initVideo(w, h)
                 }
             },
@@ -216,13 +214,14 @@
                     return
                 }
                 // const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
-                var url = ''
-                var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
-                if (!displayType) {
-                    url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
-                } else {
-                    url = that.videoUrl
-                }
+                // var url = ''
+                // var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
+                // if (!displayType) {
+                //     url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
+                // } else {
+                //     url = that.videoUrl
+                // }
+                const url = that.videoUrl360.replace(/http:/, 'https:')
                 const videoWrap = that.videoWrap
                 const playerOptions = {
                     autoplay: true,
@@ -265,8 +264,8 @@
         },
         beforeDestroy() {
             const that = this
-            if (that.timer) {
-                clearTimeout(that.timer)
+            if (that.player) {
+                that.player.dispose()
             }
             document.removeEventListener('keydown', that.doHandleKeyDown)
             document.removeEventListener('keyup', that.doHandleKeyUp)

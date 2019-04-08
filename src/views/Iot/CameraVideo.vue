@@ -3,7 +3,7 @@
         <PlaneTitle>视频监控</PlaneTitle>
         <div class="plane-content">
             <div id="containerVideo" class="video-container" ref="container" :style="{ height: containerHeight + 'px' }">
-                <video-js :id="videoId" class="vjs-default-skin video-wrap video-js vjs-big-play-centered vjs-16-9" controls></video-js>
+                <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
             </div>
         </div>
     </Plane>
@@ -17,6 +17,7 @@
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl`
+    const showProp = `$store.state.${moduleNameSpace}.currActive.type`
 
     export default {
         name: 'ProductionCameraVideo',
@@ -25,27 +26,28 @@
         },
         watch: {
             [dataVideo] (val) {
-                const that = this
-                const { w, h } = that.getSize()
-                that.initVideo(w, h)
+                this.init()
+            },
+            [showProp] (val) {
+                if (val == types.IOT_TYPE_GUN) {
+                    this.init()
+                }
             }
         },
         mounted () {
             const that = this
             that.$nextTick(() => {
-                that.videoWrap = document.getElementById(that.videoId)
+                that.videoWrap = that.$refs.videoPlayer
                 that.init()
             })
         },
         data () {
             return {
-                videoId: 'v' + Math.random(),
                 videoWrap: null,
                 player: null,
                 containerHeight: 0,
                 width: 0,
-                height: 0,
-                timer: null
+                height: 0
             }
         },
         methods: {
@@ -55,7 +57,9 @@
                 if (h < 200) {
                     that.timer = setTimeout(() => { that.init() }, 1000)
                 } else {
+                if (h >= 200) {
                     that.initVideo(w, h)
+                }
                 }
             },
             initVideo (w, h) {
@@ -64,14 +68,14 @@
                     return
                 }
                 const videoWrap = that.videoWrap
-                var url = ''
-                var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
-                if (!displayType) {
-                    url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl)
-                } else {
-                    url = that.videoUrl
-                }
-                // console.log(url)
+                // var url = ''
+                // var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
+                // if (!displayType) {
+                //     url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl)
+                // } else {
+                //     url = that.videoUrl
+                // }
+                const url = that.videoUrl.replace(/http/, 'https')
                 const playerOptions = {
                     autoplay: true,
                     preload: 'auto',
@@ -114,8 +118,8 @@
         },
         beforeDestroy() {
             const that = this
-            if (that.timer) {
-                clearTimeout(that.timer)
+            if (that.player) {
+                that.player.dispose()
             }
         }
     }
