@@ -215,13 +215,14 @@
                     return
                 }
                 // const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
-                var url = ''
-                var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
-                if (!displayType) {
-                    url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
-                } else {
-                    url = that.videoUrl
-                }
+                // var url = ''
+                // var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
+                // if (!displayType) {
+                //     url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
+                // } else {
+                //     url = that.videoUrl
+                // }
+                const url = that.videoUrl360.replace(/http:/, 'https:')
                 const videoWrap = that.videoWrap
                 const playerOptions = {
                     autoplay: true,
