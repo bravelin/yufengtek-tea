@@ -297,13 +297,17 @@
     }
 }
 .el-date-table td.available span{
-    color: #fff !important;
+    color: #fff
 }
 .el-date-table td.next-month, .el-date-table td.prev-month{
     color: #666 !important;
 }
 .el-picker-panel__content .el-date-table>tbody>tr>th{
     color: #aaa;
+}
+.el-date-table td.disabled div{
+    background: rgba(#102d56, 1) !important;
+    color: #666 !important
 }
 @media screen and (max-width: 1490px) {
     .page, .nav-menu{

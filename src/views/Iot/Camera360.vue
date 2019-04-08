@@ -204,7 +204,11 @@
             init () {
                 const that = this
                 const { w, h } = that.getSize()
-                that.initVideo(w, h)
+                if (h < 200) {
+                    that.timer = setTimeout(() => { that.init() }, 1000)
+                } else {
+                    that.initVideo(w, h)
+                }
             },
             initVideo (w, h) {
                 const that = this
@@ -238,6 +242,7 @@
                 that.height = h - 10
                 videoWrap.style.width = that.width + 'px'
                 videoWrap.style.height = that.height + 'px'
+                videoWrap.style.objectFit = 'fill'
                 that.$nextTick(() => {
                     if (that.player) {
                         that.player.src(url)

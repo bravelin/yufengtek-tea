@@ -45,9 +45,9 @@
         }
     }
     .address-list-wrap{
-        .plane-title{
-            // z-index: -1;
-        }
+        // .plane-title{
+        //     // z-index: -1;
+        // }
         >div.iconfont{
             position: absolute;
             color: #fff;
@@ -87,6 +87,9 @@
                 width: 60px;
                 cursor: pointer;
             }
+        }
+        .el-date-table td.disabled div{
+            color:red
         }
         .plane-content{
             height: calc(100% - 50px);

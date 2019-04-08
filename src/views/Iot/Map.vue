@@ -11,6 +11,7 @@
     import '@/lib/MarkerClusterer_min'
     import '@/lib/TextIconOverlay_min'
     import { constants } from 'fs'
+    // import { clearTimeout } from 'timers';
     console.log()
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -38,11 +39,13 @@
                 mapReady: false,
                 markers: [], // 标记
                 activeIcon: false,
+                otherActive: false,
                 infoWindow: '',
                 markerClusterer: '', // 是否被聚合
                 mk: '', // 聚合的标记
                 markerActive: '', // 选中的标记
-                displayType: false
+                displayType: false,
+                timer1: ''
             }
         },
         computed: {
@@ -273,37 +276,35 @@
                         that.map.centerAndZoom(mapCenterPoint, 20)
                     }
                 }
-                
                 data.addEventListener('mouseover', (e) => {
                     /* eslint-disable */
                     if (that.infoWindow) {
                        that.infoWindow.close()
                     }
+                    if(that.timer1 !=''){
+                        clearTimeout(that.timer1)
+                    }
+                    
                     if(!that.activeIcon){
                         that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                         that.infoWindow.open(marker)
                         that.activeIcon = true
                         document.getElementById('boxs_' + num).addEventListener('mouseover', (e) => {
-                            if (!that.activeIcon) {
-                                if (that.infoWindow) {
-                                    that.infoWindow = ''
-                                }
-                                that.activeIcon = true
-                                that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
-                                that.infoWindow.open(marker)
+                            that.otherActive = false
+                            if (!that.otherActive) {
+                                that.otherActive = true  
                             }
                         })
-                        document.getElementById('boxs_' + num).addEventListener('mouseover', (e) => {
-                            if (that.activeIcon) {
+                        document.getElementById('boxs_' + num).addEventListener('mouseleave', (e) => {
+                            if (that.otherActive) {
                                 if (that.infoWindow) {
                                     that.infoWindow.close()
                                 }
-                                that.activeIcon = false
+                                that.otherActive = false
                             }
                         })
                         if (label1) {
                             document.getElementById('label1_' + num).addEventListener('click', (e) => {
-                                    console.log(1)
                             })
                         }
                         if (label2) {
@@ -312,28 +313,23 @@
                             })
                         }
                         if (label3) {
-                            console.log(1265)
                             document.getElementById('label3_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_FM1')
                             })
                         }
                         if (label4) {
-                            console.log(126500)
                             document.getElementById('label4_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_GUN')
-                                console.log(4)
                             })
                         }
                         if (label5) {
                             document.getElementById('label5_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_FM2')
-                                    console.log(5)
                             })
                         }
                         if (label6) {
                             document.getElementById('label6_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_360')
-                                    console.log(6)
                             })
                         }
                     }
@@ -362,16 +358,12 @@
                 //     // }
                 // })
                 data.onmouseout = function() {
-                    if (that.infoWindow) {
-                        console.log(120)
-                        setTimeout(function(){
-                            if(that.infoWindow){
-                                that.infoWindow.close()
-                            }
-                            
-                        }, 1000)
-                       //that.infoWindow.close()
-                    }
+                    that.timer1 = setTimeout(function(){
+                        if(!that.otherActive){
+                            that.infoWindow.close()
+                        }                           
+                    }, 300)
+                    console.log(that.timer)
                     if (that.activeIcon) {
                         that.activeIcon = false
                     }
@@ -379,23 +371,18 @@
             },
             // 点击放大，选择
             showInfo (data, type) {
-                console.log(type)
                 var that = this
+                that.otherActive = false
                 for ( var k = 0; k < data.length;) {
-                    console.log(data[k].self.type)
                     if (data[k].self.type == type) {
-                        console.log(data[k])
                         const log = data[k].self.address_gislong
                         const lat = data[k].self.address_gislatd
                         if (!data[k].self.isActive) {
-                            console.log('here')
                             that.doHandlerClickMarker(data[k].self, data[k])
                         }
                         that.infoWindow.close()
                         const mapCenterPoint = new BMap.Point(log, lat) // 创建点坐标
                         that.map.centerAndZoom(mapCenterPoint, 20)
-                        console.log(data[k])
-                        
                         break;
                     } else {
                         k++

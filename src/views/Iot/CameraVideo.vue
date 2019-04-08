@@ -3,7 +3,7 @@
         <PlaneTitle>视频监控</PlaneTitle>
         <div class="plane-content">
             <div id="containerVideo" class="video-container" ref="container" :style="{ height: containerHeight + 'px' }">
-                <video-js :id="videoId" class="vjs-default-skin video-wrap" controls></video-js>
+                <video-js :id="videoId" class="vjs-default-skin video-wrap video-js vjs-big-play-centered vjs-16-9" controls></video-js>
             </div>
         </div>
     </Plane>
@@ -52,11 +52,11 @@
             init () {
                 const that = this
                 const { w, h } = that.getSize()
-                // if (h < 200) {
-                //     that.timer = setTimeout(() => { that.init() }, 1000)
-                // } else {
+                if (h < 200) {
+                    that.timer = setTimeout(() => { that.init() }, 1000)
+                } else {
                     that.initVideo(w, h)
-                // }
+                }
             },
             initVideo (w, h) {
                 const that = this
@@ -71,7 +71,7 @@
                 } else {
                     url = that.videoUrl
                 }
-                console.log(url)
+                // console.log(url)
                 const playerOptions = {
                     autoplay: true,
                     preload: 'auto',
@@ -91,6 +91,7 @@
                 that.height = h - 10
                 videoWrap.style.width = that.width + 'px'
                 videoWrap.style.height = that.height + 'px'
+                videoWrap.style.objectFit = 'fill'
                 that.$nextTick(() => {
                     if (that.player) {
                         that.player.src(url)
