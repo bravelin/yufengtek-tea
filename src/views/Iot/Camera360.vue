@@ -213,21 +213,22 @@
                 if (!that.videoUrl360) {
                     return
                 }
-                // const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
-                // var url = ''
-                // var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
-                // if (!displayType) {
-                //     url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
-                // } else {
-                //     url = that.videoUrl
-                // }
-                const url = that.videoUrl360.replace(/http:/, 'https:')
                 const videoWrap = that.videoWrap
+                // const url = that.videoUrl360.replace(/http:/, 'https:')
+                const url = 'https://flvopen.ys7.com:9188/openlive/0d68d69160ad4430aadbcb2e1eec1c50.flv'
                 const playerOptions = {
                     autoplay: true,
+                    techOrder: ['html5', 'flvjs'],
+                    flvjs: {
+                        mediaDataSource: {
+                            isLive: true,
+                            cors: true,
+                            withCredentials: false,
+                        }
+                    },
                     preload: 'auto',
                     language: 'zh-CN',
-                    sources: [{ type: 'application/x-mpegURL', src: url }],
+                    sources: [{ type: 'video/mp4', src: url }],
                     notSupportedMessage: '暂时无法播放',
                     html5: { hls: { withCredentials: false } },
                     controlBar: {
@@ -237,16 +238,26 @@
                         durationDisplay: false
                     }
                 }
+                that.containerHeight = h
                 that.width = w - 10
                 that.height = h - 10
                 videoWrap.style.width = that.width + 'px'
                 videoWrap.style.height = that.height + 'px'
+                let player = that.player
                 that.$nextTick(() => {
-                    if (that.player) {
-                        that.player.src(url)
-                        that.player.load()
+                    if (player) {
+                        player.src(url)
+                        player.load()
                     } else {
-                        that.player = videojs(videoWrap, playerOptions)
+                        player = that.player = videojs(videoWrap, playerOptions, () => {
+                            player.on('error', () => {
+                                player.src({ src: url, type: 'video/x-flv' })
+                                player.ready(() => {
+                                    player.load()
+                                    player.play()
+                                })
+                            })
+                        })
                     }
                 })
             },

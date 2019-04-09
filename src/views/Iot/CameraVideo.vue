@@ -64,13 +64,6 @@
                     return
                 }
                 const videoWrap = that.videoWrap
-                // var url = ''
-                // var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
-                // if (!displayType) {
-                //     url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl)
-                // } else {
-                //     url = that.videoUrl
-                // }
                 const url = that.videoUrl.replace(/http/, 'https')
                 const playerOptions = {
                     autoplay: true,
@@ -91,6 +84,7 @@
                 that.height = h - 10
                 videoWrap.style.width = that.width + 'px'
                 videoWrap.style.height = that.height + 'px'
+                videoWrap.style.objectFit = 'fill'
                 that.$nextTick(() => {
                     if (that.player) {
                         that.player.src(url)
