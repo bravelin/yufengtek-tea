@@ -75,7 +75,6 @@
             doInitOrRefreshChart () {
                 const that = this
                 const datas = that.$store.state[moduleNameSpace]['fm2'][dataProp]
-                // console.log(datas)
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refreshChart(datas) : that.initChart(datas)

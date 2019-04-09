@@ -7,11 +7,10 @@
     import types from '@/store/constants/types'
     import config from '@/lib/config'
     import mapStyle from './mapStyleV1'
-    // import '@/lib/InfoBox_min'
     import '@/lib/MarkerClusterer_min'
     import '@/lib/TextIconOverlay_min'
     import { constants } from 'fs'
-    console.log()
+
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = `$store.state.${moduleNameSpace}.iotDatas`
@@ -38,11 +37,13 @@
                 mapReady: false,
                 markers: [], // 标记
                 activeIcon: false,
+                otherActive: false,
                 infoWindow: '',
                 markerClusterer: '', // 是否被聚合
                 mk: '', // 聚合的标记
                 markerActive: '', // 选中的标记
-                displayType: false
+                displayType: false,
+                timer1: ''
             }
         },
         computed: {
@@ -54,7 +55,6 @@
                 this.map.reset()
             },
             [mapSiseProp] () {
-                console.log(156)
                 this.addMarkers()
             }
         },
@@ -89,7 +89,7 @@
                     div.style.textAlign = 'center'
                     div.style.width = '40px'
                     div.style.borderRadius = '50%'
-                    div.style.backgroundColor = 'rgba(15, 71, 130, 1)'
+                    div.style.backgroundColor = 'rgba(15, 71, 130, 0.5)'
                     div.style.color = 'white'
                     div.style.fontSize = '12px'
                     // 绑定事件，点击一次放大两级
@@ -199,7 +199,6 @@
                 that.markerClusterer = markerClusterer
                 var mk = markerClusterer._clusters
                 that.mk = mk
-                // console.log(mk)
                 var oldmk = []
                 for (var i = 0; i < mk.length; i++) {
                     var mCount = mk[i]._markers.length
@@ -208,11 +207,6 @@
                     mk[i]._clusterMarker.removeEventListener('mouseover')
                     that.addMarkerClu(mk[i]._center, mk[i]._clusterMarker, mk[i]._markers, i+1)
                 }
-                // that.camera.forEach(item => that.createMarker(item))
-                // console.log(that.markers)
-                // that.markers.push(that.emVos.forEach(item => that.createMarker(item)))
-                // that.markers.push(that.Fm1.map(item => that.createMarker(item)))
-                // that.markers.push(that.Fm2.map(item => that.createMarker(item)))
             },
             // 点聚合标记
             addMarkerClu (point, data, sMarkers, num) {
@@ -254,7 +248,6 @@
                         break
                     }
                 }
-                // console.log(label1)
                 var content = "<div class='boxContent' id=" + 'boxs_' + num + ">" +
                                 "查看该区域设备" + "<ul class='map-ul'>" + 
                                 (label1 == 'label1' ? "<li class='map-li' id=" + 'label1_' + num  + "><image class='map-image' src='images/icon-wf.png'></image><span>水肥一体化</span></li>" : '') +
@@ -264,8 +257,6 @@
                                 (label5 == 'label5' ? "<li class='map-li' id=" + 'label5_' + num + "><image class='map-image' src='images/icon-FM2.png' /><span>监控FM2</span></li>" : '') + 
                                 (label6 == 'label6' ? "<li class='map-li' id=" + 'label6_' + num + "><image class='map-image' src='images/icon-360.png' /><span>云台摄像头</span></li>" : '') + "</ul>"
                                 + "</div>" + "<div class='boxStri'></div>"
-                
-                // that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                 data.onclick = function () {
                     if (that.infoWindow) {
                         that.infoWindow.close()
@@ -273,37 +264,35 @@
                         that.map.centerAndZoom(mapCenterPoint, 20)
                     }
                 }
-                
                 data.addEventListener('mouseover', (e) => {
                     /* eslint-disable */
                     if (that.infoWindow) {
                        that.infoWindow.close()
                     }
-                    if(!that.activeIcon){
+                    if (that.timer1 !='') {
+                        clearTimeout(that.timer1)
+                    }
+                    
+                    if (!that.activeIcon) {
                         that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                         that.infoWindow.open(marker)
                         that.activeIcon = true
                         document.getElementById('boxs_' + num).addEventListener('mouseover', (e) => {
-                            if (!that.activeIcon) {
-                                if (that.infoWindow) {
-                                    that.infoWindow = ''
-                                }
-                                that.activeIcon = true
-                                that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
-                                that.infoWindow.open(marker)
+                            that.otherActive = false
+                            if (!that.otherActive) {
+                                that.otherActive = true  
                             }
                         })
-                        document.getElementById('boxs_' + num).addEventListener('mouseover', (e) => {
-                            if (that.activeIcon) {
+                        document.getElementById('boxs_' + num).addEventListener('mouseleave', (e) => {
+                            if (that.otherActive) {
                                 if (that.infoWindow) {
                                     that.infoWindow.close()
                                 }
-                                that.activeIcon = false
+                                that.otherActive = false
                             }
                         })
                         if (label1) {
                             document.getElementById('label1_' + num).addEventListener('click', (e) => {
-                                    console.log(1)
                             })
                         }
                         if (label2) {
@@ -312,66 +301,33 @@
                             })
                         }
                         if (label3) {
-                            console.log(1265)
                             document.getElementById('label3_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_FM1')
                             })
                         }
                         if (label4) {
-                            console.log(126500)
                             document.getElementById('label4_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_GUN')
-                                console.log(4)
                             })
                         }
                         if (label5) {
                             document.getElementById('label5_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_FM2')
-                                    console.log(5)
                             })
                         }
                         if (label6) {
                             document.getElementById('label6_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_360')
-                                    console.log(6)
                             })
                         }
                     }
                 })
-                // data.onmouseover = function() {
-                // console.log(4568)
-                // that.infoWindow = new BMapLib.InfoBox(that.map,content, opts);
-                // that.infoWindow.open(marker)
-                // }
-                // data.addEventListener('mouseout', (e) => {
-                //     // if (!that.activeIcon) {
-                //         console.log(1235)
-                //         // that.activeIcon = true
-                //         // console.log(that.map.getZoom())
-                //         // if(that.map.getZoom() > 18) {
-                //             console.log('get info?')
-                //             that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
-                //             // that.infoWindow.open(marker)
-                //         // }
-                //         // that.map.removeOverlay(that.markers[e.target.self.index])
-                //         // const tt = e.target.self
-                //         // tt.isActive = true
-                //         // const obj1 = that.createMarker(tt)
-                //         // that.markers.splice(e.target.self.index, 1, obj1)
-                //         // console.log(that.markers)
-                //     // }
-                // })
                 data.onmouseout = function() {
-                    if (that.infoWindow) {
-                        console.log(120)
-                        setTimeout(function(){
-                            if(that.infoWindow){
-                                that.infoWindow.close()
-                            }
-                            
-                        }, 1000)
-                       //that.infoWindow.close()
-                    }
+                    that.timer1 = setTimeout(function(){
+                        if(!that.otherActive){
+                            that.infoWindow.close()
+                        }                           
+                    }, 300)
                     if (that.activeIcon) {
                         that.activeIcon = false
                     }
@@ -379,23 +335,18 @@
             },
             // 点击放大，选择
             showInfo (data, type) {
-                console.log(type)
                 var that = this
+                that.otherActive = false
                 for ( var k = 0; k < data.length;) {
-                    console.log(data[k].self.type)
                     if (data[k].self.type == type) {
-                        console.log(data[k])
                         const log = data[k].self.address_gislong
                         const lat = data[k].self.address_gislatd
                         if (!data[k].self.isActive) {
-                            console.log('here')
                             that.doHandlerClickMarker(data[k].self, data[k])
                         }
                         that.infoWindow.close()
                         const mapCenterPoint = new BMap.Point(log, lat) // 创建点坐标
                         that.map.centerAndZoom(mapCenterPoint, 20)
-                        console.log(data[k])
-                        
                         break;
                     } else {
                         k++
@@ -405,7 +356,7 @@
             // 创建标记
             createMarker (data) {
                 const that = this
-                var tip = ''
+                let tip = ''
                 switch (data.type) {
                     case 'IOT_TYPE_WF':
                     tip = '水肥一体化'
@@ -444,8 +395,8 @@
                     icon = data.isActive ? photoIconActive : photoIconNormal
                 }
                 var opts = {
-                    offset: {width:10, height:20},
-                    boxStyle:{
+                    offset: { width: 10, height: 20 },
+                    boxStyle: {
                         width: "120px",
                         padding: '5px',
                         marginBottom: "5px",
@@ -512,7 +463,6 @@
                     store.dispatch(moduleNameSpace + '/' + types.GET_360_DATA, data)
                     return
                 }
-                // console.log('here')
                 // 其他标记切换active和normal状态
                 that.markerClusterer.removeMarker(that.markerActive) // 去除点红的标记
                 const markerActive1 = that.markerActive
@@ -524,44 +474,18 @@
                 that.markerActive = markerActive
                 markerActive.self.isActive = true
                 that.markerClusterer.addMarker(that.createMarker(markerActive.self))
-                // const map = that.map
-                // const markers = that.markers
-                // const currActive = that.currActive
-                // let markerId = null
-                // let oldData = null
-                // let j = 1
-                // for (var i = 0; i < markers.length; i++) {
-                //     if (markers[i].self.isActive) {
-                //         // console.log(markers[0].self.isActive)
-                //         j = i
-                //     }
-                // }
-                // oldData = markers[j].self
-                // oldData.isActive = false
-                // data.isActive = true
-                // map.removeOverlay(markers[j])
-                // map.removeOverlay(markers[data.index])
-                // const obj1 = that.createMarker(oldData)
-                // const obj2 = that.createMarker(data)
-                // markers.splice(j, 1, obj1)
-                // markers.splice(data.index, 1, obj2)
                 store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, {
                     id: data.index, type: data.type
                 })
                 if (data.type == types.IOT_TYPE_FM1) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, data.sno)
-                    // store.dispatch(moduleNameSpace + '/' + types.GET_FM1_CHART_DATA)
                 } else if (data.type == types.IOT_TYPE_FM2) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, data.sno)
-                    // store.dispatch(moduleNameSpace + '/' + types.GET_FM2_CHART_DATA)
                 } else if (data.type == types.IOT_TYPE_WF) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_WF_DATA)
                     store.dispatch(moduleNameSpace + '/' + types.GET_WF_CHART_DATA)
                 } else if (data.type == types.IOT_TYPE_GUN) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_GUN_DATA, data)
-                    // store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, {
-                    //     fullStateName: 'photoViewerFullState', state: true
-                    // })
                 }
             }
         }

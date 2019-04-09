@@ -48,7 +48,6 @@
         mounted () {
             const that = this
             that.$nextTick(() => {
-                console.log(this.display)
                 that.container = that.$refs.container
                 that.init()
             })

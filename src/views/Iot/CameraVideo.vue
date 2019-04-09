@@ -54,8 +54,12 @@
             init () {
                 const that = this
                 const { w, h } = that.getSize()
+                if (h < 200) {
+                    that.timer = setTimeout(() => { that.init() }, 1000)
+                } else {
                 if (h >= 200) {
                     that.initVideo(w, h)
+                }
                 }
             },
             initVideo (w, h) {

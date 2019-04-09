@@ -45,6 +45,7 @@
         },
         data () {
             return {
+                inInit: false, // 是否正在初始化
                 videoWrap: null,
                 ready: false,
                 player: null,
@@ -213,9 +214,12 @@
                 if (!that.videoUrl360) {
                     return
                 }
+                if (that.inInit) {
+                    return
+                }
+                that.inInit = true
                 const videoWrap = that.videoWrap
-                // const url = that.videoUrl360.replace(/http:/, 'https:')
-                const url = 'https://flvopen.ys7.com:9188/openlive/0d68d69160ad4430aadbcb2e1eec1c50.flv'
+                const url = that.videoUrl360.replace(/http:/, 'https:')
                 const playerOptions = {
                     autoplay: true,
                     techOrder: ['html5', 'flvjs'],
@@ -248,6 +252,7 @@
                     if (player) {
                         player.src(url)
                         player.load()
+                        player.play()
                     } else {
                         player = that.player = videojs(videoWrap, playerOptions, () => {
                             player.on('error', () => {
@@ -257,7 +262,9 @@
                                     player.play()
                                 })
                             })
+                            that.inInit = false
                         })
+                        setTimeout(() => { player.play() }, 50)
                     }
                 })
             },

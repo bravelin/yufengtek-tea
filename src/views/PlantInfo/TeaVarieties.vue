@@ -1,7 +1,7 @@
 <!--茶树品种-->
 <template>
     <Plane class="tea-varieties-wrap" :full="teaVarietiesFullState">
-        <PlaneTitle>茶树种植面积</PlaneTitle>
+        <PlaneTitle>种植面积</PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <div class="chart-title"><h4>种植比例</h4><div>{{ varietiesTotalData }}<span>亩</span></div></div>
         <PlaneTools :full="teaVarietiesFullState" @change="doFullStateChange"></PlaneTools>

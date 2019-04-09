@@ -1,7 +1,7 @@
 <template>
     <Plane class="address-list-wrap">
         <PlaneTitle>溯源地址</PlaneTitle>
-        <DatePicker type="date" v-model="currSelectedDate" @change="doDatePickerChange"></DatePicker>
+        <DatePicker type="date" v-model="currSelectedDate" @change="doDatePickerChange" :picker-options="pickerOptions1"></DatePicker>
         <div class="iconfont">&#xe650;</div>
         <span v-show="currSelectedDate">{{ currSelectedDate }}<i class="iconfont" @click="doClearDate">&#xe61c;</i></span>
         <div class="plane-content" ref="text">
@@ -65,7 +65,13 @@
                     },
                 },
                 ulHeight: '',
-                divHeight: ''
+                divHeight: '',
+                pickerOptions1: {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now()
+                    },
+                },
+
             }
         },
         mounted() {

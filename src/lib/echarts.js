@@ -20,4 +20,6 @@ require('echarts/lib/component/geo')
 require('echarts/lib/component/graphic')
 require('echarts/lib/chart/pictorialBar')
 require('echarts/extension/bmap/bmap')
+require('echarts/map/js/china')
+require('echarts/map/js/world')
 export default echarts
