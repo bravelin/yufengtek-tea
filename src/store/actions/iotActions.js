@@ -5,19 +5,19 @@ import api from '@/lib/api'
 export default {
     [types.GET_IOT_DATA] (context, payload) { // 获取IOT物联设备数据
         ajax({ url: '/data/monitor/selectStation', method: 'post' }).then(res => {
-            res.repData.cameraVos.map((item) => {
+            res.repData.cameraVos.forEach((item) => {
                 item.type = item.camera_type == '1' ? types.IOT_TYPE_GUN : types.IOT_TYPE_360
                 item.isActive = false
             })
-            res.repData.emVos.map(item => {
+            res.repData.emVos.forEach(item => {
                 item.type = types.IOT_TYPE_SPHERE
                 item.isActive = false
             })
-            res.repData.Fm1.map(item => {
+            res.repData.Fm1.forEach(item => {
                 item.type = types.IOT_TYPE_FM1
                 item.isActive = false
             })
-            res.repData.Fm2.map(item => {
+            res.repData.Fm2.forEach(item => {
                 item.type = types.IOT_TYPE_FM2
                 item.isActive = false
             })

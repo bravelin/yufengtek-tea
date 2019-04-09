@@ -265,7 +265,6 @@
                     }
                 }
                 data.addEventListener('mouseover', (e) => {
-                    /* eslint-disable */
                     if (that.infoWindow) {
                        that.infoWindow.close()
                     }
@@ -322,11 +321,11 @@
                         }
                     }
                 })
-                data.onmouseout = function() {
-                    that.timer1 = setTimeout(function(){
-                        if(!that.otherActive){
+                data.onmouseout = function () {
+                    that.timer1 = setTimeout(() => {
+                        if (!that.otherActive && that.infoWindow) {
                             that.infoWindow.close()
-                        }                           
+                        }          
                     }, 300)
                     if (that.activeIcon) {
                         that.activeIcon = false
@@ -337,7 +336,7 @@
             showInfo (data, type) {
                 var that = this
                 that.otherActive = false
-                for ( var k = 0; k < data.length;) {
+                for (let k = 0; k < data.length;) {
                     if (data[k].self.type == type) {
                         const log = data[k].self.address_gislong
                         const lat = data[k].self.address_gislatd
@@ -347,7 +346,7 @@
                         that.infoWindow.close()
                         const mapCenterPoint = new BMap.Point(log, lat) // 创建点坐标
                         that.map.centerAndZoom(mapCenterPoint, 20)
-                        break;
+                        break
                     } else {
                         k++
                     }
@@ -394,7 +393,7 @@
                 } else if (type == types.IOT_TYPE_360) {
                     icon = data.isActive ? photoIconActive : photoIconNormal
                 }
-                var opts = {
+                let opts = {
                     offset: { width: 10, height: 20 },
                     boxStyle: {
                         width: "120px",
@@ -443,31 +442,29 @@
                 if (data.isActive) { // 当前是选中的marker标记
                     return
                 }
-                if (data.type == types.IOT_TYPE_SPHERE) { // 弹出全景,展示图片
+                // 弹出全景,展示图片
+                if (data.type == types.IOT_TYPE_SPHERE) {
                     store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, {
                         fullStateName: 'photoViewerFullState', state: true
-                    })
-                    store.commit(`${moduleNameSpace}/${types.IOT_TYPE_OF_DISPLAY}`, {
-                        fullStateName: ''
                     })
                     store.dispatch(moduleNameSpace + '/' + types.CHANGE_PHOTO_VIEW_URL, data.em_devid)
                     return
                 }
+                // 360视频
                 if (data.type == types.IOT_TYPE_360) {
                     store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, {
-                        fullStateName: 'photoViewerFullState', state: true
-                    })
-                    store.commit(`${moduleNameSpace}/${types.IOT_TYPE_OF_DISPLAY}`, {
-                        fullStateName: 'camera'
+                        fullStateName: 'camera360FullState', state: true
                     })
                     store.dispatch(moduleNameSpace + '/' + types.GET_360_DATA, data)
                     return
                 }
+
                 // 其他标记切换active和normal状态
                 that.markerClusterer.removeMarker(that.markerActive) // 去除点红的标记
                 const markerActive1 = that.markerActive
                 markerActive1.self.isActive = false
                 that.markerClusterer.addMarker(that.createMarker(markerActive1.self))
+
                 // 标红新的标记
                 that.markerClusterer.removeMarker(marker)
                 const markerActive = marker

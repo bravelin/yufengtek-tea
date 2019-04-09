@@ -29,8 +29,11 @@
                 this.init()
             },
             [showProp] (val) {
+                const that = this
                 if (val == types.IOT_TYPE_GUN) {
                     this.init()
+                } else if (that.player) {
+                    that.player.pause()
                 }
             }
         },
@@ -53,14 +56,12 @@
         methods: {
             init () {
                 const that = this
-                const { w, h } = that.getSize()
-                if (h < 200) {
-                    that.timer = setTimeout(() => { that.init() }, 1000)
-                } else {
-                if (h >= 200) {
-                    that.initVideo(w, h)
-                }
-                }
+                that.$nextTick(() => {
+                    const { w, h } = that.getSize()
+                    if (h >= 200) {
+                        that.initVideo(w, h)
+                    }
+                })
             },
             initVideo (w, h) {
                 const that = this
@@ -106,6 +107,8 @@
                     const w = parseInt(styles.width) || 0
                     const h = (12 / 16) * w
                     return { w, h }
+                } else {
+                    return { w: 0, h: 0 }
                 }
             }
         },

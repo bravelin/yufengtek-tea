@@ -29,6 +29,7 @@
         data () {
             return {
                 chart: null,
+                currSelectedRegion: '',
                 mapDatas: [
                     { name: '星村镇', value: 0 },
                     { name: '兴田镇', value: 0 },
@@ -104,8 +105,8 @@
         methods: {
             doClickMap (place = '') {
                 const that = this
-                if (that.currSelectedRegion == place) {
-                    return
+                if (that.curr == place) { // 再次点击取消选中
+                    place = ''
                 }
                 const chart = that.chart
                 const currOption = chart.getOption()

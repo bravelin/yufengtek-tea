@@ -1,29 +1,25 @@
 <template>
     <Plane class="photo-viewer" :full="photoViewerFullState">
-        <PlaneTitle>{{display=='' ? '全景图' : '视频监控'}}</PlaneTitle>
-        <div class="plane-content" ref="container" v-show="display==''"></div>
-        <CameraVideo v-show="display=='camera'"></CameraVideo>
-        <PlaneTools :full="photoViewerFullState" @change="doFullStateChange" :style="{display: displayType}"></PlaneTools>
+        <PlaneTitle>全景图</PlaneTitle>
+        <div class="plane-content" ref="container"></div>
+        <PlaneTools :full="photoViewerFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
-
     import { createNamespacedHelpers } from 'vuex'
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import PhotoSphereViewer from 'photo-sphere-viewer'
-    import CameraVideo from './Camera360'
+
     const moduleNameSpace = ns.IOT
     const fullProp = 'photoViewerFullState'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
     const viewUrlProp = `$store.state.${moduleNameSpace}.photoViewUrl`
-    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'iot-photo-viewer',
         computed: {
-            ...thisMapState(['photoViewerFullState', 'photoViewUrl', 'currActive', 'display'])
+            ...thisMapState(['photoViewerFullState', 'photoViewUrl', 'currActive'])
         },
         watch: {
             [viewUrlProp] () {
@@ -31,11 +27,8 @@
             }
         },
         created() {
-            var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i)
+            const displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i)
             this.displayType = displayType ? 'block' : ''
-        },
-        components: {
-            CameraVideo
         },
         data () {
             return {
