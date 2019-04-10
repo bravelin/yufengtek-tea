@@ -23,7 +23,6 @@ const types = [
     'SWITCH_WF_TIME_TYPE', // 更改WF的数据类型，时刻数据/七天数据
 
     'IOT_CHANGE_FULL_STATE', // 曲线图表全屏状态
-    'IOT_TYPE_OF_DISPLAY', // 全景显示监控还是图片
     'CHANGE_PHOTO_VIEW_URL',
     'IOT_TYPE_FM1', // fm1
     'IOT_TYPE_FM2', // fm2

@@ -29,8 +29,11 @@
                 this.init()
             },
             [showProp] (val) {
+                const that = this
                 if (val == types.IOT_TYPE_GUN) {
                     this.init()
+                } else if (that.player) {
+                    that.player.pause()
                 }
             }
         },
@@ -68,13 +71,6 @@
                     return
                 }
                 const videoWrap = that.videoWrap
-                // var url = ''
-                // var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
-                // if (!displayType) {
-                //     url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl)
-                // } else {
-                //     url = that.videoUrl
-                // }
                 const url = that.videoUrl.replace(/http/, 'https')
                 const playerOptions = {
                     autoplay: true,
@@ -113,6 +109,8 @@
                     const w = parseInt(styles.width) || 0
                     const h = (12 / 16) * w
                     return { w, h }
+                } else {
+                    return { w: 0, h: 0 }
                 }
             }
         },

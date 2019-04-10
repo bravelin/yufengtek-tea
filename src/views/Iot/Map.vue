@@ -7,7 +7,6 @@
     import types from '@/store/constants/types'
     import config from '@/lib/config'
     import mapStyle from './mapStyleV1'
-    // import '@/lib/InfoBox_min'
     import '@/lib/MarkerClusterer_min'
     import '@/lib/TextIconOverlay_min'
     import { constants } from 'fs'
@@ -89,7 +88,7 @@
                     div.style.textAlign = 'center'
                     div.style.width = '40px'
                     div.style.borderRadius = '50%'
-                    div.style.backgroundColor = 'rgba(15, 71, 130, 1)'
+                    div.style.backgroundColor = 'rgba(15, 71, 130, 0.5)'
                     div.style.color = 'white'
                     div.style.fontSize = '12px'
                     // 绑定事件，点击一次恢复默认值
@@ -263,8 +262,6 @@
                                 (label5 == 'label5' ? "<li class='map-li' id=" + 'label5_' + num + "><image class='map-image' src='images/icon-FM2.png' /><span>监控FM2</span></li>" : '') + 
                                 (label6 == 'label6' ? "<li class='map-li' id=" + 'label6_' + num + "><image class='map-image' src='images/icon-360.png' /><span>云台摄像头</span></li>" : '') + "</ul>"
                                 + "</div>" + "<div class='boxStri'></div>"
-                
-                // that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                 data.onclick = function () {
                     if (that.infoWindow) {
                         that.infoWindow.close()
@@ -273,15 +270,14 @@
                     }
                 }
                 data.addEventListener('mouseover', (e) => {
-                    /* eslint-disable */
                     if (that.infoWindow) {
                        that.infoWindow.close()
                     }
-                    if(that.timer1 !=''){
+                    if (that.timer1 !='') {
                         clearTimeout(that.timer1)
                     }
                     
-                    if(!that.activeIcon){
+                    if (!that.activeIcon) {
                         that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                         that.infoWindow.open(marker)
                         that.activeIcon = true
@@ -334,7 +330,7 @@
                     that.timer1 = setTimeout(function(){
                         if(!that.otherActive){
                             that.infoWindow.close()
-                        }                           
+                        }          
                     }, 300)
                     if (that.activeIcon) {
                         that.activeIcon = false
@@ -345,7 +341,7 @@
             showInfo (data, type) {
                 var that = this
                 that.otherActive = false
-                for ( var k = 0; k < data.length;) {
+                for (let k = 0; k < data.length;) {
                     if (data[k].self.type == type) {
                         const log = data[k].self.address_gislong
                         const lat = data[k].self.address_gislatd
@@ -355,7 +351,7 @@
                         that.infoWindow.close()
                         const mapCenterPoint = new BMap.Point(log, lat) // 创建点坐标
                         that.map.centerAndZoom(mapCenterPoint, 20)
-                        break;
+                        break
                     } else {
                         k++
                     }
@@ -364,7 +360,7 @@
             // 创建标记
             createMarker (data) {
                 const that = this
-                var tip = ''
+                let tip = ''
                 switch (data.type) {
                     case 'IOT_TYPE_WF':
                     tip = '水肥一体化'
@@ -402,9 +398,9 @@
                 } else if (type == types.IOT_TYPE_360) {
                     icon = data.isActive ? photoIconActive : photoIconNormal
                 }
-                var opts = {
-                    offset: {width:10, height:20},
-                    boxStyle:{
+                let opts = {
+                    offset: { width: 10, height: 20 },
+                    boxStyle: {
                         width: "120px",
                         padding: '5px',
                         marginBottom: "5px",
@@ -451,76 +447,47 @@
                 if (data.isActive) { // 当前是选中的marker标记
                     return
                 }
-                if (data.type == types.IOT_TYPE_SPHERE) { // 弹出全景,展示图片
+                // 弹出全景,展示图片
+                if (data.type == types.IOT_TYPE_SPHERE) {
                     store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, {
                         fullStateName: 'photoViewerFullState', state: true
-                    })
-                    store.commit(`${moduleNameSpace}/${types.IOT_TYPE_OF_DISPLAY}`, {
-                        fullStateName: ''
                     })
                     store.dispatch(moduleNameSpace + '/' + types.CHANGE_PHOTO_VIEW_URL, data.em_devid)
                     return
                 }
+                // 360视频
                 if (data.type == types.IOT_TYPE_360) {
                     store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, {
-                        fullStateName: 'photoViewerFullState', state: true
-                    })
-                    store.commit(`${moduleNameSpace}/${types.IOT_TYPE_OF_DISPLAY}`, {
-                        fullStateName: 'camera'
+                        fullStateName: 'camera360FullState', state: true
                     })
                     store.dispatch(moduleNameSpace + '/' + types.GET_360_DATA, data)
                     return
                 }
-                // console.log('here')
+
                 // 其他标记切换active和normal状态
                 that.markerClusterer.removeMarker(that.markerActive) // 去除点红的标记
                 const markerActive1 = that.markerActive
                 markerActive1.self.isActive = false
                 that.markerClusterer.addMarker(that.createMarker(markerActive1.self))
+
                 // 标红新的标记
                 that.markerClusterer.removeMarker(marker)
                 const markerActive = marker
                 that.markerActive = markerActive
                 markerActive.self.isActive = true
                 that.markerClusterer.addMarker(that.createMarker(markerActive.self))
-                // const map = that.map
-                // const markers = that.markers
-                // const currActive = that.currActive
-                // let markerId = null
-                // let oldData = null
-                // let j = 1
-                // for (var i = 0; i < markers.length; i++) {
-                //     if (markers[i].self.isActive) {
-                //         // console.log(markers[0].self.isActive)
-                //         j = i
-                //     }
-                // }
-                // oldData = markers[j].self
-                // oldData.isActive = false
-                // data.isActive = true
-                // map.removeOverlay(markers[j])
-                // map.removeOverlay(markers[data.index])
-                // const obj1 = that.createMarker(oldData)
-                // const obj2 = that.createMarker(data)
-                // markers.splice(j, 1, obj1)
-                // markers.splice(data.index, 1, obj2)
                 store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, {
                     id: data.index, type: data.type
                 })
                 if (data.type == types.IOT_TYPE_FM1) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, data.sno)
-                    // store.dispatch(moduleNameSpace + '/' + types.GET_FM1_CHART_DATA)
                 } else if (data.type == types.IOT_TYPE_FM2) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, data.sno)
-                    // store.dispatch(moduleNameSpace + '/' + types.GET_FM2_CHART_DATA)
                 } else if (data.type == types.IOT_TYPE_WF) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_WF_DATA)
                     store.dispatch(moduleNameSpace + '/' + types.GET_WF_CHART_DATA)
                 } else if (data.type == types.IOT_TYPE_GUN) {
                     store.dispatch(moduleNameSpace + '/' + types.GET_GUN_DATA, data)
-                    // store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, {
-                    //     fullStateName: 'photoViewerFullState', state: true
-                    // })
                 }
             }
         }

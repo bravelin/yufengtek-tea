@@ -40,8 +40,8 @@
             changeIotDatas (value) {
                 const store = this.$store
                 this.activeIotItem = value
-                store.dispatch(moduleNameSpace + '/' + types.GET_IOT_DATA,value)
+                store.dispatch(moduleNameSpace + '/' + types.GET_IOT_DATA, value)
             }
-        },
+        }
     }
 </script>

@@ -10,6 +10,7 @@
         <Map></Map>
         <!--<Search></Search>-->
         <PhotoViewer v-show="photoViewerFullState"></PhotoViewer>
+        <Camera360 v-show="camera360FullState"></Camera360>
     </div>
 </template>
 <script>
@@ -21,6 +22,7 @@
     import FM2Charts from './FM2Charts'
     import WFCharts from './WFCharts'
     import CameraVideo from './CameraVideo'
+    import Camera360 from './Camera360'
     import Map from './Map'
     import Search from './Search'
     import PhotoViewer from './PhotoViewer'
@@ -30,10 +32,10 @@
     export default {
         name: 'iot-index',
         computed: {
-            ...thisMapState(['currActive', 'photoViewerFullState', 'fm1', 'fm2', 'mapSize'])
+            ...thisMapState(['currActive', 'photoViewerFullState', 'camera360FullState', 'fm1', 'fm2', 'mapSize'])
         },
         components: {
-            FM1Charts, FM2Charts, WFCharts, Map, CameraVideo, Amount, PhotoViewer
+            FM1Charts, FM2Charts, WFCharts, Map, CameraVideo, Amount, PhotoViewer, Camera360
         },
         data () {
             return {
@@ -66,6 +68,9 @@
             const store = this.$store
             store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, {
                 fullStateName: 'photoViewerFullState', state: false
+            })
+            store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, {
+                fullStateName: 'camera360FullState', state: false
             })
             store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, {
                     id: 0, type: types.IOT_TYPE_FM1

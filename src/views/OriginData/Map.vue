@@ -47,7 +47,6 @@
                 that.container = that.$refs.container
                 const datas = that.$store.state[moduleNameSpace][dataProp]
                 const copyDatas = [...datas]
-                // console.log(china)
                 if (datas.length && !that.chart) {
                     that.init(copyDatas)
                 }
@@ -75,27 +74,9 @@
                         backgroundColor: 'rgba(0, 159, 253, 0.9)'
                     },
                     bmap: {
-                        map: 'china',
                         center: [108.9462765501, 34.3474989219],
                         zoom: 5.5,
                         roam: true,
-                        // itemStyle: {
-                        //     normal: {
-                        //         borderColor: '#ffffff',
-                        //         borderWidth: 0,
-                        //         shadowColor: '#ffffff',
-                        //         shadowBlur: 1,
-                        //         areaColor: '#064f85',
-                        //     },
-                        //     emphasis: {
-                        //         areaColor: '#064f85'
-                        //     }
-                        // },
-                        // label: {
-                        //     emphasis: {
-                        //         show: false
-                        //     }
-                        // },
                         mapStyle: {
                             styleJson: MapStyleJson
                         }

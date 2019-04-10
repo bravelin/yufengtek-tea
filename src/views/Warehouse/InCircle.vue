@@ -85,7 +85,7 @@
                 return [
                     {
                         value: 78,
-                        label: { normal: { padding: [0, 0, 10], formatter: '入库\n\n\n', textStyle: { color: '#fff', fontSize: 15 } } }
+                        label: { normal: { padding: [0, 0, 10], formatter: '入库\n', textStyle: { color: '#fff', fontSize: 15 } } }
                     },
                     {
                         value: 25,

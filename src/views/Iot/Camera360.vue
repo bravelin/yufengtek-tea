@@ -1,9 +1,16 @@
 <template>
-    <div class="plane-content cameraCenter" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
-        <div class="video-container" ref="container">
-            <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
+    <Plane class="camera360" :full="camera360FullState">
+        <PlaneTitle>视频监控</PlaneTitle>
+        <div class="plane-content" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
+            <div class="video-container flv" ref="container">
+                <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
+            </div>
+            <div class="video-container hls" ref="proxyContainer" v-show="showProxyVideo">
+                <video ref="proxyVideoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
+            </div>
         </div>
-    </div>
+        <PlaneTools :full="camera360FullState" @change="doFullStateChange"></PlaneTools>
+    </Plane>
 </template>
 <script>
     import ns from '@/store/constants/ns'
@@ -11,15 +18,16 @@
     import { createNamespacedHelpers, mapState } from 'vuex'
     import config from '@/lib/config'
 
+    const fullProp = 'camera360FullState'
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl360`
-    const showProp = `$store.state.${moduleNameSpace}.photoViewerFullState`
+    const showProp = `$store.state.${moduleNameSpace}.camera360FullState`
 
     export default {
         name: 'Production360Video',
         computed: {
-            ...thisMapState(['videoUrl360'])
+            ...thisMapState(['videoUrl360', 'camera360FullState'])
         },
         created () {
             const that = this
@@ -29,27 +37,28 @@
             document.addEventListener('keyup', that.doHandleKeyUp)
         },
         watch: {
-            [dataVideo] (val) {
-                this.init()
-            },
             [showProp] (val) {
-                this.init()
-            },
+                const that = this
+                if (val) {
+                    that.init()
+                }
+            }
         },
         mounted () {
             const that = this
             that.$nextTick(() => {
-                that.videoWrap = that.$refs.videoPlayer
+                const refs = that.$refs
+                that.videoWrap = refs.videoPlayer
+                that.proxyVideoWrap = refs.proxyVideoPlayer
                 that.init()
             })
         },
         data () {
             return {
                 videoWrap: null,
-                ready: false,
+                proxyVideoWrap: null,
                 player: null,
-                width: 0,
-                height: 0,
+                proxyPlayer: null,
                 keyDown: false,
                 key: '',
                 displayType: false,
@@ -58,7 +67,7 @@
                 startY: '',
                 endX: '',
                 endY: '',
-                w: ''
+                showProxyVideo: true,
             }
         },
         methods: {
@@ -215,21 +224,38 @@
                 if (!that.videoUrl360) {
                     return
                 }
-                // const url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
-                // var url = ''
-                // var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|ios|SymbianOS)/i) // 判断是否是其他设备
-                // if (!displayType) {
-                //     url = `${config.proxyUrl}?url=` + encodeURIComponent(that.videoUrl360)
-                // } else {
-                //     url = that.videoUrl
-                // }
-                const url = that.videoUrl360.replace(/http:/, 'https:')
+                console.log('videoUrl360 init....', that.videoUrl360)
                 const videoWrap = that.videoWrap
+                const proxyVideoWrap = that.proxyVideoWrap
+                const url = that.videoUrl360.replace(/http:/, 'https:')
+                const proxyUrl = that.getProxyUrl(url)
                 const playerOptions = {
+                    autoplay: true,
+                    techOrder: ['html5', 'flvjs'],
+                    flvjs: {
+                        mediaDataSource: {
+                            isLive: true,
+                            cors: true,
+                            withCredentials: false,
+                        }
+                    },
+                    preload: 'auto',
+                    language: 'zh-CN',
+                    sources: [{ type: 'video/mp4', src: url }],
+                    notSupportedMessage: '暂时无法播放',
+                    html5: { hls: { withCredentials: false } },
+                    controlBar: {
+                        fullscreenToggle: true,
+                        remainingTimeDisplay: false,
+                        timeDivider: false,
+                        durationDisplay: false
+                    }
+                }
+                const proxyPlayerOptions = {
                     autoplay: true,
                     preload: 'auto',
                     language: 'zh-CN',
-                    sources: [{ type: 'application/x-mpegURL', src: url }],
+                    sources: [{ type: 'application/x-mpegURL', src: proxyUrl }],
                     notSupportedMessage: '暂时无法播放',
                     html5: { hls: { withCredentials: false } },
                     controlBar: {
@@ -243,13 +269,41 @@
                 that.height = h - 10
                 videoWrap.style.width = that.width + 'px'
                 videoWrap.style.height = that.height + 'px'
+                proxyVideoWrap.style.width = width + 'px'
+                proxyVideoWrap.style.height = height + 'px'
+                let player = that.player
+                let proxyPlayer = that.proxyPlayer
                 // videoWrap.style.objectFit = 'fill'
                 that.$nextTick(() => {
-                    if (that.player) {
-                        that.player.src(url)
-                        that.player.load()
+                    if (player) {
+                        player.reset()
+                        player.src({ src: url, type: 'video/x-flv' })
+                        player.load()
+                        setTimeout(() => { player.play() }, 100)
                     } else {
-                        that.player = videojs(videoWrap, playerOptions)
+                        player = that.player = videojs(videoWrap, playerOptions, () => {
+                            player.on('error', () => {
+                                player.src({ src: url, type: 'video/x-flv' })
+                                player.ready(() => {
+                                    player.load()
+                                    setTimeout(() => { player.play() }, 100)
+                                    setTimeout(() => {
+                                        that.showProxyVideo = false
+                                        console.log('切换成flv.........')
+                                        that.proxyPlayer && that.proxyPlayer.dispose()
+                                    }, 2000)
+                                })
+                            })
+                        })
+                        setTimeout(() => { player.play() }, 50)
+                    }
+
+                    // hls格式的视频
+                    if (that.proxyPlayer) {
+                        that.proxyPlayer.src(proxyUrl)
+                        that.proxyPlayer.load()
+                    } else {
+                        that.proxyPlayer = videojs(proxyVideoWrap, proxyPlayerOptions)
                     }
                 })
             },
@@ -263,13 +317,29 @@
                     const w = parseInt(styles.width) || 0
                     const h = parseInt(styles.height) || 0
                     return { w, h }
+                } else {
+                    return { w: 0, h: 0 }
                 }
+            },
+            doFullStateChange (payload) {
+                const that = this
+                that.$store.commit(moduleNameSpace + '/' + types.IOT_CHANGE_FULL_STATE, {
+                    fullStateName: fullProp,
+                    state: payload
+                })
+            },
+            getProxyUrl (url) {
+                const pos = url.lastIndexOf('/')
+                return 'https://hls01open.ys7.com/openlive/' + url.slice(pos + 1, -4) + '.m3u8'
             }
         },
         beforeDestroy() {
             const that = this
             if (that.player) {
                 that.player.dispose()
+            }
+            if (that.proxyPlayer) {
+                that.proxyPlayer.dispose()
             }
             document.removeEventListener('keydown', that.doHandleKeyDown)
             document.removeEventListener('keyup', that.doHandleKeyUp)

@@ -48,7 +48,6 @@
             that.$nextTick(() => {
                 that.container = that.$refs.container
                 const datas = that.$store.state[moduleNameSpace].totalData
-                console.log(datas)
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }

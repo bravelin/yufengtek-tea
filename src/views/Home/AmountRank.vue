@@ -161,7 +161,6 @@
                 var that = this
                 const titles = []
                 const values = []
-                console.log(that.amountRankFullState)
                 datas.forEach(item => {
                     titles.push(that.amountRankFullState ? item.town : item.town.substring(0, 4))
                     values.push(item.area)

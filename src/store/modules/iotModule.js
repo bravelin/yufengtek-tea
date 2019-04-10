@@ -63,6 +63,7 @@ export default {
             curveChartFullState: false, // 控制全屏状态
         },
         photoViewerFullState: false, // 全景的全屏状态
+        camera360FullState: false, // 360摄像头的全屏状态
         videoUrl: '', // 监控录像地址
         videoUrl360: '', // 球机摄像头地址
         display: '',

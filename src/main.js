@@ -11,7 +11,6 @@ import Plane from '@/components/Plane'
 import PlaneTitle from '@/components/PlaneTitle'
 import PlaneTools from '@/components/PlaneTools'
 import socket from '@/lib/socket'
-import videojs from 'video.js'
 
 Vue.config.productionTip = false
 Vue.prototype.$ajax = ajax
@@ -21,5 +20,4 @@ Vue.component('Plane', Plane)
 Vue.component('PlaneTitle', PlaneTitle)
 Vue.component('PlaneTools', PlaneTools)
 
-window.videojs = videojs
 new Vue({ router, store, render: h => h(App) }).$mount('#app')
