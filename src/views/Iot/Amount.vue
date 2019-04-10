@@ -23,11 +23,13 @@
     import { createNamespacedHelpers, mapState } from 'vuex'
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
+
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
+
     // 直接给数据
     export default {
-        name: 'app-iot',
+        name: 'IotAmount',
         computed: {
             ...thisMapState(['cameraAmount', 'monitorAmount', 'fertilizerAmount', 'waterFertilizerAmount'])
         },

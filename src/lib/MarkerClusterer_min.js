@@ -44,7 +44,6 @@
         return j
     };
     var e = BMapLib.MarkerClusterer = function (l, h) {
-        console.log(15658)
         if (!l) {
             return
         }
