@@ -12,6 +12,8 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
+    import { reg } from '@/lib/util'
+
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl`
@@ -43,7 +45,8 @@
         data () {
             return {
                 player: null,
-                containerHeight: 0
+                containerHeight: 0,
+                inProcessing: false
             }
         },
         methods: {
@@ -58,11 +61,18 @@
             },
             initVideo (w, h) {
                 const that = this
-                if (!that.videoUrl) {
+                const videoUrl = that.videoUrl
+                if (!videoUrl) {
                     return
                 }
+                if (that.inProcessing) { // 防止同时初始化
+                    return
+                }
+                that.inProcessing = true
+                setTimeout(() => { that.inProcessing = false }, 300)
                 const videoWrap = that.$refs.videoPlayer
-                const url = that.videoUrl.replace(/http/, 'https')
+                // ios下需要http协议的url才能播放
+                const url = reg.ios.test(navigator.userAgent) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
                 const playerOptions = {
                     autoplay: true,
                     preload: 'auto',

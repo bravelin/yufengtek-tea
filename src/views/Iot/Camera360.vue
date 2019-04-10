@@ -16,11 +16,14 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
+    import { reg } from '@/lib/util'
+
     const fullProp = 'camera360FullState'
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl360`
     const showProp = `$store.state.${moduleNameSpace}.camera360FullState`
+
     export default {
         name: 'Iot360Video',
         computed: {
@@ -243,12 +246,13 @@
             },
             initVideo (w, h) {
                 const that = this
-                if (!that.videoUrl360) {
+                const videoUrl = that.videoUrl360
+                if (!videoUrl) {
                     return
                 }
                 const videoWrap = that.videoWrap
                 const proxyVideoWrap = that.proxyVideoWrap
-                const url = that.videoUrl360.replace(/http:/, 'https:')
+                const url = reg.ios.test(navigator.userAgent) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
                 const proxyUrl = that.getProxyUrl(url)
                 const playerOptions = {
                     autoplay: true,
@@ -308,9 +312,11 @@
                                     player.load()
                                     setTimeout(() => { player.play() }, 100)
                                     setTimeout(() => {
-                                        that.showProxyVideo = false
-                                        console.log('切换成flv.........')
-                                        that.proxyPlayer && that.proxyPlayer.dispose()
+                                        if (!reg.ios.test(navigator.userAgent)) {
+                                            console.log('切换成flv.........')
+                                            that.showProxyVideo = false
+                                            that.proxyPlayer && that.proxyPlayer.dispose()
+                                        }
                                     }, 2000)
                                 })
                             })
@@ -347,7 +353,7 @@
             },
             getProxyUrl (url) {
                 const pos = url.lastIndexOf('/')
-                return 'https://hls01open.ys7.com/openlive/' + url.slice(pos + 1, -4) + '.m3u8'
+                return (reg.ios.test(navigator.userAgent) ? 'http' : 'https') + '://hls01open.ys7.com/openlive/' + url.slice(pos + 1, -4) + '.m3u8'
             }
         },
         beforeDestroy() {
