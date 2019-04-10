@@ -16,7 +16,6 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
-    import config from '@/lib/config'
 
     const fullProp = 'camera360FullState'
     const moduleNameSpace = ns.IOT
@@ -25,14 +24,13 @@
     const showProp = `$store.state.${moduleNameSpace}.camera360FullState`
 
     export default {
-        name: 'Production360Video',
+        name: 'Iot360Video',
         computed: {
             ...thisMapState(['videoUrl360', 'camera360FullState'])
         },
         created () {
             const that = this
             const store = that.$store
-            const displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
             document.addEventListener('keydown', that.doHandleKeyDown)
             document.addEventListener('keyup', that.doHandleKeyUp)
         },
@@ -61,7 +59,6 @@
                 proxyPlayer: null,
                 keyDown: false,
                 key: '',
-                displayType: false,
                 moveUp: false,
                 startX: '',
                 startY: '',
@@ -225,7 +222,6 @@
                 if (!that.videoUrl360) {
                     return
                 }
-                console.log('videoUrl360 init....', that.videoUrl360)
                 const videoWrap = that.videoWrap
                 const proxyVideoWrap = that.proxyVideoWrap
                 const url = that.videoUrl360.replace(/http:/, 'https:')

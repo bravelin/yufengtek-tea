@@ -26,16 +26,10 @@
                 this.doRefresh()
             }
         },
-        created() {
-            const displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i)
-            this.displayType = displayType ? 'block' : ''
-        },
         data () {
             return {
                 container: null,
                 viewer: null,
-                displayType: 'none',
-                types
             }
         },
         mounted () {

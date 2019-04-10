@@ -1,4 +1,4 @@
-const maxStars = 680
+const maxStars = 100
 function random (min, max) {
     if (arguments.length < 2) {
         max = min
@@ -31,7 +31,7 @@ export default class {
         this.orbitX = w / 2
         this.orbitY = h / 2
         this.timePassed = random(0, maxStars)
-        this.speed = random(this.orbitRadius) / 605000
+        this.speed = random(this.orbitRadius) / 800000
         this.alpha = random(2, 10) / 10
     }
     draw () {

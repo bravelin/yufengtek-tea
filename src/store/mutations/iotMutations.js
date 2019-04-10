@@ -57,6 +57,10 @@ export default {
         state.wf.time = val // val为 HOUR WEEK
     },
     [types.IOT_CHANGE_FULL_STATE] (state, payload) {
-        state[payload.fullStateName] = payload.state
+        if (payload.subModuleName) {
+            state[payload.subModuleName][payload.fullStateName] = payload.state
+        } else {
+            state[payload.fullStateName] = payload.state
+        }
     }
 }

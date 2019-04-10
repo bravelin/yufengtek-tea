@@ -32,6 +32,7 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import echarts from '@/lib/echarts'
+
     const moduleNameSpace = ns.IOT
     const fullProp = 'curveChartFullState'
     const dataProp = 'chartDatas'
@@ -92,7 +93,7 @@
                 }
                 store.commit(moduleNameSpace + '/' + types.SWITCH_FM1_TYPE, { value, name })
                 const sno = store.state[moduleNameSpace]['fm1'].sno
-                setTimeout(() => { store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, sno) }, 100)
+                store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, sno)
             },
             // 更改时刻数据/七天数据
             switchFmTimeType (val) {
@@ -192,6 +193,7 @@
                 const that = this
                 that.$store.commit(moduleNameSpace + '/' + types.IOT_CHANGE_FULL_STATE, {
                     fullStateName: fullProp,
+                    subModuleName: 'fm1',
                     state: payload
                 })
             }

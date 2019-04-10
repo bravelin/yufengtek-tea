@@ -2,7 +2,7 @@
     <Plane class="iot-container camera-video">
         <PlaneTitle>视频监控</PlaneTitle>
         <div class="plane-content">
-            <div id="containerVideo" class="video-container" ref="container" :style="{ height: containerHeight + 'px' }">
+            <div class="video-container" ref="container" :style="{ height: containerHeight + 'px' }">
                 <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
             </div>
         </div>
@@ -12,7 +12,6 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
-    import config from '@/lib/config'
 
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -20,7 +19,7 @@
     const showProp = `$store.state.${moduleNameSpace}.currActive.type`
 
     export default {
-        name: 'ProductionCameraVideo',
+        name: 'IotCameraVideo',
         computed: {
             ...thisMapState(['videoUrl'])
         },
@@ -40,17 +39,13 @@
         mounted () {
             const that = this
             that.$nextTick(() => {
-                that.videoWrap = that.$refs.videoPlayer
                 that.init()
             })
         },
         data () {
             return {
-                videoWrap: null,
                 player: null,
-                containerHeight: 0,
-                width: 0,
-                height: 0
+                containerHeight: 0
             }
         },
         methods: {
@@ -68,7 +63,7 @@
                 if (!that.videoUrl) {
                     return
                 }
-                const videoWrap = that.videoWrap
+                const videoWrap = that.$refs.videoPlayer
                 const url = that.videoUrl.replace(/http/, 'https')
                 const playerOptions = {
                     autoplay: true,
@@ -85,10 +80,10 @@
                     }
                 }
                 that.containerHeight = h
-                that.width = w - 10
-                that.height = h - 10
-                videoWrap.style.width = that.width + 'px'
-                videoWrap.style.height = that.height + 'px'
+                let width = w - 10
+                let height = h - 10
+                videoWrap.style.width = width + 'px'
+                videoWrap.style.height = height + 'px'
                 videoWrap.style.objectFit = 'fill'
                 that.$nextTick(() => {
                     if (that.player) {

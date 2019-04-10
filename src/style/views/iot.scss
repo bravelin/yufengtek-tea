@@ -21,8 +21,6 @@
     .map-container{
         width: calc(68% - 8px);
         margin-left: 16px;
-        border-radius: 6px;
-        overflow: hidden;
     }
     .map-ul{
         display: flex;
@@ -142,7 +140,6 @@
                 display: block;
             }
         }
-
         div.search-type{
             display: flex;
             flex-direction: row;
@@ -498,6 +495,35 @@
                 height: 100%;
             }
         }
+    }
+
+    .map-reset-btn{
+        cursor: pointer;
+        border: 1px solid gray;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        width: 40px;
+        border-radius: 50%;
+        background-color: rgba(15, 71, 130, 0.5);
+        color: white;
+        font-size: 12px;
+        transition: all 0.3s ease-out;
+        &:hover{
+            background-color: rgba(15, 71, 130, 0.8);
+            border-color: #fff;
+        }
+    }
+
+    .map-info-tip{
+        color: white;
+        background: rgba(15, 71, 130, 0.8);
+        border-radius: 4px;
+        padding: 10px;
+        font-size: 14px;
+        width: 114px !important;
+        text-align: center;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
     }
 }
 @media screen and (max-width: 1490px) {
