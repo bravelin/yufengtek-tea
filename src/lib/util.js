@@ -51,3 +51,7 @@ export function formatTime (date, format = 'yyyy-MM-dd hh:mm:ss') {
     }
     return format
 }
+
+export const reg = {
+    ios: /\(i[^;]+;( U;)? CPU.+Mac OS X/ // 判定IOS浏览器的正则
+}
