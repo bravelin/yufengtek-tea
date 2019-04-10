@@ -237,11 +237,13 @@
                 data.onclick = function () {
                     if (that.infoWindow) {
                         that.infoWindow.close()
+                        that.activeIcon = false
                         const mapCenterPoint = new BMap.Point(marker.point.lng, marker.point.lat) // 创建点坐标
                         that.map.centerAndZoom(mapCenterPoint, 20)
                     }
                 }
                 data.addEventListener('mouseover', (e) => {
+                    console.log('mouseover?')
                     if (that.infoWindow) {
                        that.infoWindow.close()
                     }
@@ -292,6 +294,7 @@
                         }
                         if (showLabel6) {
                             document.getElementById('label6_' + num).addEventListener('click', (e) => {
+                                console.log('maybe here')
                                 that.showInfo(sMarkers, 'IOT_TYPE_360')
                             })
                         }

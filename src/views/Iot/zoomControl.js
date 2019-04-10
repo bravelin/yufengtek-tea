@@ -9,7 +9,7 @@ ZoomControl.prototype.initialize = function (map) {
     // 创建一个DOM元素
     const div = document.createElement('div')
     div.innerHTML = '复位'
-        div.className = 'map-reset-btn'
+    div.className = 'map-reset-btn'
     // 绑定事件，点击一次恢复默认值
     div.onclick = function (e) {
         map.reset()
