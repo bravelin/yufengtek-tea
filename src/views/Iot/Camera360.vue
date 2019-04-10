@@ -16,13 +16,11 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
-
     const fullProp = 'camera360FullState'
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl360`
     const showProp = `$store.state.${moduleNameSpace}.camera360FullState`
-
     export default {
         name: 'Iot360Video',
         computed: {
@@ -268,10 +266,8 @@
                 videoWrap.style.height = height + 'px'
                 proxyVideoWrap.style.width = width + 'px'
                 proxyVideoWrap.style.height = height + 'px'
-
                 let player = that.player
                 let proxyPlayer = that.proxyPlayer
-
                 that.$nextTick(() => {
                     if (player) {
                         player.reset()
@@ -295,7 +291,6 @@
                         })
                         setTimeout(() => { player.play() }, 50)
                     }
-
                     // hls格式的视频
                     if (that.proxyPlayer) {
                         that.proxyPlayer.src(proxyUrl)

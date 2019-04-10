@@ -149,6 +149,7 @@
                 const widthObj = {} // 计算数值对应的圈圈宽度
                 let preKey = 0
                 const dataList = datas.map(item => item.value).sort((a, b) => { return a - b > 0 ? 1 : -1 }) // 从小到大排好序的数据
+                console.log(dataList)
                 dataList.forEach((item, index) => {
                     if (index === 0) {
                         widthObj[item] = 14 + item.toString().length * 2 // 根据最小值的位数决定最小宽度

@@ -60,7 +60,7 @@
             const that = this
             that.$nextTick(() => {
                 // 创建map实例
-                const map = new BMap.Map('map-container', { enableMapClick: false })
+                const map = new BMap.Map('map-container', { enableMapClick: false }) // 禁止弹出风景名胜弹框
                 const mapCenterPoint = new BMap.Point(config.iotMonitorMap.center[0], config.iotMonitorMap.center[1]) // 创建点坐标
                 map.centerAndZoom(mapCenterPoint, config.iotMonitorMap.zoom) // 初始化地图，设置中心点坐标和地图级别
                 map.enableScrollWheelZoom(true) // 开启鼠标滚动缩放
@@ -109,18 +109,22 @@
                     anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
                 })
                 that.map = map
-                map.addEventListener('zoomend', () => { // 地图缩放
+                map.addEventListener('zoomend', function () { // 地图缩放清除所有聚合标记同时重新绘制
                     that.markerClusterer.clearMarkers()
-                    that.infoWindow = null
+                    if (that.infoWindow) {
+                        that.infoWindow.close()
+                    }
                     that.addMarkers()
                 })
                 map.addEventListener('moveend', () => { // 地图拖拽结束
                     that.markerClusterer.clearMarkers()
                     that.addMarkers()
-                    that.infoWindow = null
+                    if (that.infoWindow) {
+                        that.infoWindow.close()
+                    }
                 })
                 let displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
-                if (displayType) {
+                if (displayType) { // 移动端必须禁止拖拽移动才能触发点击事件
                     map.disableDragging()
                     map.addEventListener('touchmove', function (e) {
                         map.enableDragging()
@@ -144,14 +148,16 @@
                     return
                 }
                 // 删除所有的Monitor标记
-                if (that.markers.length) {
-                    that.markers.forEach(item => {
-                        map.removeOverlay(item) // 移除标注物
-                    })
-                }
+                // if (that.markers.length) {
+                //     that.markers.forEach(item => {
+                //         map.removeOverlay(item) // 移除标注物
+                //     })
+                // }
                 if (that.markerClusterer) {
                     that.markerClusterer.clearMarkers()
-                    that.infoWindow = null
+                    if (that.infoWindow) {
+                        that.infoWindow.close()
+                    }
                 }
                 that.markers = that.iotDatas.map(item => that.createMarker(item))
                 const markerClusterer = new BMapLib.MarkerClusterer(that.map, { markers: that.iotDatas.map(item => that.createMarker(item)), maxZoom: 16 })

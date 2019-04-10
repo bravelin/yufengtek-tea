@@ -27,7 +27,6 @@
 
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const mapSiseProp = `$store.state.${moduleNameSpace}.mapSise`
 
     export default {
         name: 'iot-index',

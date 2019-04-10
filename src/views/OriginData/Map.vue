@@ -145,6 +145,8 @@
                 }
                 that.chart = echarts.init(container)
                 that.chart.setOption(options)
+                // 获取底图bmap对象
+                // const tt = that.chart.getModel().getComponent('bmap').getBMap()
             },
             // 刷新图表
             refresh (datas) {

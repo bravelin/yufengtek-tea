@@ -12,12 +12,10 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
-
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl`
     const showProp = `$store.state.${moduleNameSpace}.currActive.type`
-
     export default {
         name: 'IotCameraVideo',
         computed: {

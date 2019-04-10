@@ -47,6 +47,7 @@
         beforeDestroy () {
             const that = this
             const store = that.$store
+            store.commit(moduleNameSpace + '/' + types.WAREHOUSE_CHANGE_CURR_REGION, '')
             const fullProps = ['mapFullState', 'inCircleChartFullState', 'outCircleChartFullState', 'inLineChartFullState', 'outLineChartFullState', 'inConstrastFullState', 'outConstrastFullState']
             fullProps.forEach(prop => {
                 store.commit(moduleNameSpace + '/' + types.WAREHOUSE_CHANGE_FULL_STATE, {
