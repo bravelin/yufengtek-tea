@@ -11,6 +11,8 @@ export default {
     [types.GET_WINDOW_SIZE] (state) {
         state.winHeight = doc.documentElement.clientHeight || win.innerHeight
         state.winWidth = doc.documentElement.clientWidth || win.innerWidth
+        console.log(doc.documentElement.clientWidth)
+        console.log(win.innerWidth)
         doc.body.style.minHeight = state.winHeight + 'px'
         state.windowResizeState = state.windowResizeState + 1
     },

@@ -41,10 +41,8 @@ export default {
                 var year = new Date().getFullYear()
                 // if (repData.lastYearInStock.length != 0 && repData.lastYearInStock != []) {
                     var list1 = tempData
-                    console.log(1235)
                     historyInDatas.push({ year: year - 1, list: list1 })
                     historyInDatas.push({ year: year, list: repData.thisYearInStock })
-                    console.log(historyInDatas)
                     context.state.historyInDatas = historyInDatas.map(item => {
                         return {
                             year: item.year.toString(),

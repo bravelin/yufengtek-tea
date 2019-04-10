@@ -40,6 +40,7 @@
         beforeDestroy () {
             const that = this
             const store = that.$store
+            store.commit(moduleNameSpace + '/' + types.FARMING_CHANGE_CURR_REGION, '')
             const fullProps = ['plantFullState', 'protectionFullState', 'fertilizerFullState', 'mapFullState']
             fullProps.forEach(prop => {
                 store.commit(moduleNameSpace + '/' + types.FARMING_CHANGE_FULL_STATE, {

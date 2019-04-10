@@ -16,6 +16,7 @@
             }
         },
         created () {
+            console.log(win.requestAnimationFrame)
             win.requestAnimationFrame = win.requestAnimationFrame || win.webkitRequestAnimationFrame || win.mozRequestAnimationFrame || win.msRequestAnimationFrame
             win.cancelAnimationFrame = win.cancelAnimationFrame || win.webkitCancelAnimationFrame || win.mozCancelAnimationFrame || win.msCancelAnimationFrame
         },
@@ -55,7 +56,7 @@
                 gradient2.addColorStop(0.1, 'hsl(' + hue + ', 61%, 33%)')
                 gradient2.addColorStop(0.25, 'hsl(' + hue + ', 64%, 6%)')
                 gradient2.addColorStop(1, 'transparent')
-
+                // gradient2.addColorStop(1, 'red')
                 ctx2.fillStyle = gradient2
                 ctx2.beginPath()
                 ctx2.arc(half, half, half, 0, Math.PI * 2)

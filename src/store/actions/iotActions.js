@@ -244,6 +244,7 @@ export default {
             }
         })
     },
+    // 水肥一体化
     [types.GET_WF_DATA] (context) {
         const state = context.state
         const wf = state.wf
@@ -291,22 +292,15 @@ export default {
         }
     },
     [types.CHANGE_PHOTO_VIEW_URL] (context, payload) {
-        // console.log(context.state.photoViewUrl)
         ajax({ url: '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {
-            var tt = res.repData[11]
-            if (res.repData[11].substring(0, 5) == 'http:') {
-                tt = 'https' + res.repData[11].substring(4, res.repData[11].length)
-            }
+            var tt = res.repData[11].replace(/http/, 'https')
             context.state.photoViewUrl = tt || context.state.photoViewUrl // 防止未返回数据
-            // console.log(context.state.photoViewUrl)
             // context.state.photoViewUrl = 'https://stdag-image.oss-cn-beijing.aliyuncs.com/camera_one_image/20190329/31384703333230302d002800_1553855533-20190329183217716.jpg'
         })
     },
     [types.GET_GUN_DATA] (context, payload) {
         context.state.camera = payload
-        // console.log(payload)
         context.state.videoUrl = context.state.camera.camera_url
-        // console.log(context.state.videoUrl)
     },
     [types.GET_360_DATA] (context, payload) {
         context.state.camera = payload

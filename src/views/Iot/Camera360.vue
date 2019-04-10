@@ -58,6 +58,7 @@
                 startY: '',
                 endX: '',
                 endY: '',
+                w: ''
             }
         },
         methods: {
@@ -204,12 +205,13 @@
             init () {
                 const that = this
                 const { w, h } = that.getSize()
-                if (w > 500) {
+                if (w > 300) {
                     that.initVideo(w, h)
                 }
             },
             initVideo (w, h) {
                 const that = this
+                that.w = w
                 if (!that.videoUrl360) {
                     return
                 }
@@ -241,7 +243,7 @@
                 that.height = h - 10
                 videoWrap.style.width = that.width + 'px'
                 videoWrap.style.height = that.height + 'px'
-                videoWrap.style.objectFit = 'fill'
+                // videoWrap.style.objectFit = 'fill'
                 that.$nextTick(() => {
                     if (that.player) {
                         that.player.src(url)
@@ -256,6 +258,8 @@
                 const container = that.$refs.container.parentNode
                 if (container) {
                     const styles = getComputedStyle(container, null)
+                    // const w = parseInt(styles.height) * 4 / 3 || 0
+                    // const h = (12 / 16) * w
                     const w = parseInt(styles.width) || 0
                     const h = parseInt(styles.height) || 0
                     return { w, h }

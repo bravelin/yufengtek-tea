@@ -11,8 +11,6 @@
     import '@/lib/MarkerClusterer_min'
     import '@/lib/TextIconOverlay_min'
     import { constants } from 'fs'
-    // import { clearTimeout } from 'timers';
-    console.log()
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = `$store.state.${moduleNameSpace}.iotDatas`
@@ -57,7 +55,6 @@
                 this.map.reset()
             },
             [mapSiseProp] () {
-                console.log(156)
                 this.addMarkers()
             }
         },
@@ -65,7 +62,7 @@
             const that = this
             that.$nextTick(() => {
                 // 创建map实例
-                const map = new BMap.Map('map-container', { enableMapClick: false })
+                const map = new BMap.Map('map-container', { enableMapClick: false }) // 禁止弹出风景名胜弹框
                 const mapCenterPoint = new BMap.Point(config.iotMonitorMap.center[0], config.iotMonitorMap.center[1]) // 创建点坐标
                 map.centerAndZoom(mapCenterPoint, config.iotMonitorMap.zoom) // 初始化地图，设置中心点坐标和地图级别
                 map.enableScrollWheelZoom(true) // 开启鼠标滚动缩放
@@ -75,7 +72,7 @@
                 function ZoomControl () {
                     // 设置默认停靠位置和偏移量
                     /* eslint-disable */
-                    this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT
+                    this.defaultAnchor = BMAP_ANCHOR_BOTTOM_RIGHT // 右下角
                     this.defaultOffset = new BMap.Size(10, 10)
                 }
                 ZoomControl.prototype = new BMap.Control()
@@ -95,7 +92,7 @@
                     div.style.backgroundColor = 'rgba(15, 71, 130, 1)'
                     div.style.color = 'white'
                     div.style.fontSize = '12px'
-                    // 绑定事件，点击一次放大两级
+                    // 绑定事件，点击一次恢复默认值
                     div.onclick = function (e) {
                         map.reset()
                     }
@@ -147,18 +144,22 @@
                     anchor: new BMap.Size(10, 25), imageOffset: new BMap.Size(0, 0)
                 })
                 that.map = map
-                map.addEventListener('zoomend', function () { // 地图缩放
+                map.addEventListener('zoomend', function () { // 地图缩放清除所有聚合标记同时重新绘制
                     that.markerClusterer.clearMarkers()
-                    that.infoWindow = ''
+                    if (that.infoWindow) {
+                        that.infoWindow.close()
+                    }
                     that.addMarkers()
                 })
                 map.addEventListener('moveend', function showInfo () { // 地图拖拽结束
                     that.markerClusterer.clearMarkers()
                     that.addMarkers()
-                    that.infoWindow = ''
+                    if (that.infoWindow) {
+                        that.infoWindow.close()
+                    }
                 })
                 var displayType = !!navigator.userAgent.match(/(iPhone|iPod|iPad|Android|ios|SymbianOS)/i) // 判断是否是其他设备
-                that.displayType = displayType
+                that.displayType = displayType // 移动端必须禁止拖拽移动才能触发点击事件
                 if (displayType) {
                     map.disableDragging()
                     map.addEventListener('touchmove', function (e) {
@@ -184,16 +185,17 @@
                     return
                 }
                 // 删除所有的Monitor标记
-                if (that.markers.length) {
-                    that.markers.forEach(item => {
-                        map.removeOverlay(item) // 移除标注物
-                    })
-                }
+                // if (that.markers.length) {
+                //     that.markers.forEach(item => {
+                //         map.removeOverlay(item) // 移除标注物
+                //     })
+                // }
+                
                 if (that.markerClusterer) {
-                    // that.map.reset()
                     that.markerClusterer.clearMarkers()
-                    that.infoWindow = ''
-                    // that.addMarkers()
+                    if (that.infoWindow) {
+                        that.infoWindow.close()
+                    }
                 }
                 that.markers = that.iotDatas.map(item => that.createMarker(item))
                 /* eslint-disable */
@@ -202,20 +204,15 @@
                 that.markerClusterer = markerClusterer
                 var mk = markerClusterer._clusters
                 that.mk = mk
-                // console.log(mk)
+                // 处理聚合点标记
                 var oldmk = []
                 for (var i = 0; i < mk.length; i++) {
                     var mCount = mk[i]._markers.length
                     if (mCount < 2) continue
                     var options = []
                     mk[i]._clusterMarker.removeEventListener('mouseover')
-                    that.addMarkerClu(mk[i]._center, mk[i]._clusterMarker, mk[i]._markers, i+1)
+                    that.addMarkerClu(mk[i]._center, mk[i]._clusterMarker, mk[i]._markers, i + 1)
                 }
-                // that.camera.forEach(item => that.createMarker(item))
-                // console.log(that.markers)
-                // that.markers.push(that.emVos.forEach(item => that.createMarker(item)))
-                // that.markers.push(that.Fm1.map(item => that.createMarker(item)))
-                // that.markers.push(that.Fm2.map(item => that.createMarker(item)))
             },
             // 点聚合标记
             addMarkerClu (point, data, sMarkers, num) {
@@ -257,7 +254,6 @@
                         break
                     }
                 }
-                // console.log(label1)
                 var content = "<div class='boxContent' id=" + 'boxs_' + num + ">" +
                                 "查看该区域设备" + "<ul class='map-ul'>" + 
                                 (label1 == 'label1' ? "<li class='map-li' id=" + 'label1_' + num  + "><image class='map-image' src='images/icon-wf.png'></image><span>水肥一体化</span></li>" : '') +
@@ -334,36 +330,12 @@
                         }
                     }
                 })
-                // data.onmouseover = function() {
-                // console.log(4568)
-                // that.infoWindow = new BMapLib.InfoBox(that.map,content, opts);
-                // that.infoWindow.open(marker)
-                // }
-                // data.addEventListener('mouseout', (e) => {
-                //     // if (!that.activeIcon) {
-                //         console.log(1235)
-                //         // that.activeIcon = true
-                //         // console.log(that.map.getZoom())
-                //         // if(that.map.getZoom() > 18) {
-                //             console.log('get info?')
-                //             that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
-                //             // that.infoWindow.open(marker)
-                //         // }
-                //         // that.map.removeOverlay(that.markers[e.target.self.index])
-                //         // const tt = e.target.self
-                //         // tt.isActive = true
-                //         // const obj1 = that.createMarker(tt)
-                //         // that.markers.splice(e.target.self.index, 1, obj1)
-                //         // console.log(that.markers)
-                //     // }
-                // })
                 data.onmouseout = function() {
                     that.timer1 = setTimeout(function(){
                         if(!that.otherActive){
                             that.infoWindow.close()
                         }                           
                     }, 300)
-                    console.log(that.timer)
                     if (that.activeIcon) {
                         that.activeIcon = false
                     }

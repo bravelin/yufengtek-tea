@@ -74,28 +74,28 @@
                         formatter (params) { return params.name + '：' + params.value[2] },
                         backgroundColor: 'rgba(0, 159, 253, 0.9)'
                     },
-                    geo: {
+                    bmap: {
                         map: 'china',
                         center: [108.9462765501, 34.3474989219],
-                        zoom: 1.5,
+                        zoom: 5.5,
                         roam: true,
-                        itemStyle: {
-                            normal: {
-                                borderColor: '#ffffff',
-                                borderWidth: 0,
-                                shadowColor: '#ffffff',
-                                shadowBlur: 1,
-                                areaColor: '#064f85',
-                            },
-                            emphasis: {
-                                areaColor: '#064f85'
-                            }
-                        },
-                        label: {
-                            emphasis: {
-                                show: false
-                            }
-                        },
+                        // itemStyle: {
+                        //     normal: {
+                        //         borderColor: '#ffffff',
+                        //         borderWidth: 0,
+                        //         shadowColor: '#ffffff',
+                        //         shadowBlur: 1,
+                        //         areaColor: '#064f85',
+                        //     },
+                        //     emphasis: {
+                        //         areaColor: '#064f85'
+                        //     }
+                        // },
+                        // label: {
+                        //     emphasis: {
+                        //         show: false
+                        //     }
+                        // },
                         mapStyle: {
                             styleJson: MapStyleJson
                         }
@@ -103,7 +103,7 @@
                     series: [
                         {
                             type: 'scatter',
-                            coordinateSystem: 'geo',
+                            coordinateSystem: 'bmap',
                             data: datas,
                             symbolSize (val) {
                                 var size1 = val[2] / 20
@@ -130,7 +130,7 @@
                         },
                         {
                             type: 'effectScatter',
-                            coordinateSystem: 'geo',
+                            coordinateSystem: 'bmap',
                             data: datas.sort((a, b) => { return b.value - a.value }).slice(0, 5),
                             symbolSize (val) {
                                 var size1 = val[2] / 20
@@ -164,13 +164,8 @@
                 }
                 that.chart = echarts.init(container)
                 that.chart.setOption(options)
-                console.log(that.chart.getModel().getComponent('bmap').getBMap())
-                const tt = that.chart.getModel().getComponent('bmap').getBMap()
-                console.log(tt)
-                tt.addEventListener('dragend', function () {
-                    console.log(123)
-                    // alert('缩放等级:' + bmap.getZoom())
-                })
+                // 获取底图bmap对象
+                // const tt = that.chart.getModel().getComponent('bmap').getBMap()
             },
             // 刷新图表
             refresh (datas) {
