@@ -63,14 +63,56 @@
                 endX: '',
                 endY: '',
                 showProxyVideo: true,
+                eE: '',
+                key1: ''
             }
         },
         methods: {
             doHandleKeyDown (e) {
                 e.preventDefault()
-                console.log(e)
                 const that = this
                 const store = that.$store
+                if (that.eE == '') {
+                    that.eE = e.key
+                    that.changeDirect(e)
+                    if (typeof that.key == 'number') {
+                        if (store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
+                            that.keyDown = true
+                            store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, that.key)
+                        }
+                    }
+                } else {
+                    if (that.eE == e.key) {
+                        console.log('保持不变')
+                    } else {
+                        if (that.key1 == '') {
+                        if ((that.eE == 2 && e.key == 4) || (that.eE == 4 && e.key == 2)) { that.key1 = 5 }
+                        if ((that.eE == 2 && e.key == 6) || (that.eE == 6 && e.key == 4)) { that.key1 = 7 }
+                        if ((that.eE == 8 && e.key == 4) || (that.eE == 4 && e.key == 8)) { that.key1 = 4 }
+                        if ((that.eE == 8 && e.key == 6) || (that.eE == 6 && e.key == 8)) { that.key1 = 6 }
+                        if (that.key1 != '' && that.keyDown) {
+                            that.key = that.key1
+                            store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
+                            store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, that.key)
+                        }
+                        }
+                    }
+                }
+            },
+            doHandleKeyUp (e) {
+                let key = e.key
+                const that = this
+                const store = that.$store
+                if (typeof that.key == 'number') {
+                    if (that.keyDown) {
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
+                        that.keyDown = false
+                        that.eE = ''
+                        that.key1 = ''
+                    }
+                }
+            },
+            changeDirect (e) {
                 let key = e.key
                 switch (e.key) {
                     case '1':
@@ -122,24 +164,7 @@
                         key = 9 // 缩小
                         break
                 }
-                if (typeof key == 'number') {
-                    if (store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
-                        that.keyDown = true
-                        that.key = key
-                        // store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
-                    }
-                }
-            },
-            doHandleKeyUp (e) {
-                let key = e.key
-                const that = this
-                const store = that.$store
-                if (typeof that.key == 'number') {
-                    if (that.keyDown) {
-                        // store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
-                        that.keyDown = false
-                    }
-                }
+                this.key = key
             },
             touchStart (e) {
                 this.startX = e.touches[0].clientX
