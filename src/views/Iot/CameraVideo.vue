@@ -2,7 +2,7 @@
     <Plane class="iot-container camera-video">
         <PlaneTitle>视频监控</PlaneTitle>
         <div class="plane-content">
-            <div id="containerVideo" class="video-container" ref="container" :style="{ height: containerHeight + 'px'}">
+            <div id="containerVideo" class="video-container" ref="container" :style="{ height: containerHeight + 'px' }">
                 <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
             </div>
         </div>
@@ -13,12 +13,10 @@
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
     import config from '@/lib/config'
-
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl`
     const showProp = `$store.state.${moduleNameSpace}.currActive.type`
-
     export default {
         name: 'ProductionCameraVideo',
         computed: {
@@ -56,14 +54,12 @@
         methods: {
             init () {
                 const that = this
-                const { w, h } = that.getSize()
-                if (h < 200) {
-                    that.timer = setTimeout(() => { that.init() }, 1000)
-                } else {
+                that.$nextTick(() => {
+                    const { w, h } = that.getSize()
                     if (h >= 200) {
                         that.initVideo(w, h)
                     }
-                }
+                })
             },
             initVideo (w, h) {
                 const that = this
@@ -91,7 +87,7 @@
                 that.height = h - 10
                 videoWrap.style.width = that.width + 'px'
                 videoWrap.style.height = that.height + 'px'
-                // videoWrap.style.objectFit = 'fill'
+                videoWrap.style.objectFit = 'fill'
                 that.$nextTick(() => {
                     if (that.player) {
                         that.player.src(url)
@@ -118,7 +114,6 @@
             const that = this
             if (that.player) {
                 that.player.dispose()
-                console.log(that.player.dispose())
             }
         }
     }

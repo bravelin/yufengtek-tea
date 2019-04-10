@@ -17,13 +17,11 @@
     import types from '@/store/constants/types'
     import { createNamespacedHelpers, mapState } from 'vuex'
     import config from '@/lib/config'
-
     const fullProp = 'camera360FullState'
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataVideo = `$store.state.${moduleNameSpace}.videoUrl360`
     const showProp = `$store.state.${moduleNameSpace}.camera360FullState`
-
     export default {
         name: 'Production360Video',
         computed: {
@@ -213,14 +211,15 @@
             },
             init () {
                 const that = this
-                const { w, h } = that.getSize()
-                if (w > 300) {
-                    that.initVideo(w, h)
-                }
+                that.$nextTick(() => {
+                    const { w, h } = that.getSize()
+                    if (w > 500) {
+                        that.initVideo(w, h)
+                    }
+                })
             },
             initVideo (w, h) {
                 const that = this
-                that.w = w
                 if (!that.videoUrl360) {
                     return
                 }
@@ -265,15 +264,14 @@
                         durationDisplay: false
                     }
                 }
-                that.width = w - 10
-                that.height = h - 10
-                videoWrap.style.width = that.width + 'px'
-                videoWrap.style.height = that.height + 'px'
+                const width = w - 10
+                const height = h - 10
+                videoWrap.style.width = width + 'px'
+                videoWrap.style.height = height + 'px'
                 proxyVideoWrap.style.width = width + 'px'
                 proxyVideoWrap.style.height = height + 'px'
                 let player = that.player
                 let proxyPlayer = that.proxyPlayer
-                // videoWrap.style.objectFit = 'fill'
                 that.$nextTick(() => {
                     if (player) {
                         player.reset()
@@ -297,7 +295,6 @@
                         })
                         setTimeout(() => { player.play() }, 50)
                     }
-
                     // hls格式的视频
                     if (that.proxyPlayer) {
                         that.proxyPlayer.src(proxyUrl)
@@ -312,8 +309,6 @@
                 const container = that.$refs.container.parentNode
                 if (container) {
                     const styles = getComputedStyle(container, null)
-                    // const w = parseInt(styles.height) * 4 / 3 || 0
-                    // const h = (12 / 16) * w
                     const w = parseInt(styles.width) || 0
                     const h = parseInt(styles.height) || 0
                     return { w, h }
