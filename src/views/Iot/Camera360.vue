@@ -68,6 +68,7 @@
         methods: {
             doHandleKeyDown (e) {
                 e.preventDefault()
+                console.log(e)
                 const that = this
                 const store = that.$store
                 let key = e.key
@@ -125,7 +126,7 @@
                     if (store.state[moduleNameSpace].camera.camera_type == '2' && !that.keyDown) {
                         that.keyDown = true
                         that.key = key
-                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
+                        // store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, key)
                     }
                 }
             },
@@ -135,7 +136,7 @@
                 const store = that.$store
                 if (typeof that.key == 'number') {
                     if (that.keyDown) {
-                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
+                        // store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
                         that.keyDown = false
                     }
                 }
