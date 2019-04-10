@@ -201,6 +201,7 @@
                 var markerClusterer = new BMapLib.MarkerClusterer(that.map, { markers: that.iotDatas.map(item => that.createMarker(item)),
                 maxZoom: 16 })
                 that.markerClusterer = markerClusterer
+                console.log(markerClusterer)
                 var mk = markerClusterer._clusters
                 that.mk = mk
                 // 处理聚合点标记
@@ -265,11 +266,13 @@
                 data.onclick = function () {
                     if (that.infoWindow) {
                         that.infoWindow.close()
+                        that.activeIcon = false
                         const mapCenterPoint = new BMap.Point(marker.point.lng, marker.point.lat) // 创建点坐标
                         that.map.centerAndZoom(mapCenterPoint, 20)
                     }
                 }
                 data.addEventListener('mouseover', (e) => {
+                    console.log('mouseover?')
                     if (that.infoWindow) {
                        that.infoWindow.close()
                     }
@@ -321,6 +324,7 @@
                         }
                         if (label6) {
                             document.getElementById('label6_' + num).addEventListener('click', (e) => {
+                                console.log('maybe here')
                                 that.showInfo(sMarkers, 'IOT_TYPE_360')
                             })
                         }
