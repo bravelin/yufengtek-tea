@@ -11,6 +11,7 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.totalData`
@@ -85,15 +86,23 @@
                 let textColor = '#87d0f6'
                 const centerXArr = ['17%', '50%', '83%']
                 let fontSizeArr = [15, 21]
-                if (that[fullProp]) {
-                    fontSizeArr = [20, 28]
-                } else if (miniScreen) {
-                    fontSizeArr = [13, 18]
+                let paddingArr = [20, 5, 10]
+                if (!miniScreen) {
+                    if (that[fullProp]) {
+                        fontSizeArr = [32, 48]
+                        paddingArr = [80, 5, 50]
+                    }
+                } else {
+                    fontSizeArr = [12, 18]
+                    if (that[fullProp]) {
+                        fontSizeArr = [24, 38]
+                        paddingArr = [80, 5, 50]
+                    }
                 }
                 let containerHeight = parseInt(window.getComputedStyle(that.$refs.container, null)['height'])
                 let pieRadiusArr = ['53%', '60%']
                 if (!isNaN(containerHeight)) {
-                    if (containerHeight > 223) {
+                    if (containerHeight > 223 || that[fullProp]) {
                         pieRadiusArr = ['49%', '56%']
                     } else if (containerHeight < 180) {
                         pieRadiusArr = ['60%', '67%']
@@ -113,15 +122,15 @@
                         data: [
                             {
                                 value: 75,
-                                label: { normal: { padding: [0, 0, 25], formatter: `${item.label}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                                label: { normal: { padding: [0, 0, paddingArr[0]], formatter: `${item.label}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             },
                             {
                                 value: 25,
-                                label: { normal: { padding: [0, 0, 10], formatter: `${item.data}`, textStyle: { color: textColor, fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
+                                label: { normal: { padding: [paddingArr[1], 0, 0], formatter: `${item.data}`, textStyle: { color: textColor, fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
                             },
                             {
                                 value: 0,
-                                label: { normal: { formatter: `${item.unit}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                                label: { normal: { padding: [paddingArr[2], 0, 0], formatter: `${item.unit}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             }
                         ]
                     })
@@ -132,7 +141,6 @@
             refresh (datas) {
                 const that = this
                 const chart = that.chart
-                const currOption = chart.getOption()
                 const series = that.getSerials(datas)
                 chart.setOption({ series })
                 setTimeout(() => { chart.resize() }, 200)

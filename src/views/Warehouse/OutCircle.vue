@@ -22,7 +22,10 @@
     export default {
         name: 'warehouse-out-circle',
         computed: {
-            ...thisMapState([dataProp, fullProp])
+            ...thisMapState([dataProp, fullProp]),
+            miniScreen () {
+                return this.$store.state.winWidth < 1380
+            }
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
@@ -82,18 +85,29 @@
                 that.chart.setOption(options)
             },
             getDataLabels (data) {
+                const that = this
+                const miniScreen = that.miniScreen
+                let paddingArr = [30, 10, 20]
+                let fontSizeArr = [18, 25]
+                if (that[fullProp]) {
+                    fontSizeArr = [32, 48]
+                    paddingArr = [80, 5, 50]
+                } else if (miniScreen) {
+                    paddingArr = [20, 5, 10]
+                    fontSizeArr = [15, 21]
+                }
                 return [
                     {
-                        value: 78,
-                        label: { normal: { padding: [0, 0, 10], formatter: '出库\n', textStyle: { color: '#fff', fontSize: 15 } } }
+                        value: 75,
+                        label: { normal: { padding: [0, 0, paddingArr[0]], formatter: '出库', textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                     },
                     {
                         value: 25,
-                        label: { normal: { formatter: `${data}`, textStyle: { color: '#87d0f6', fontSize: 24, fontWeight: 'bold' } } }
+                        label: { normal: { padding: [paddingArr[1], 0, 10], formatter: `${data}`, textStyle: { color: '#87d0f6', fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
                     },
                     {
                         value: 0,
-                        label: { normal: { formatter: '\n\n\n吨', textStyle: { color: '#fff', fontSize: 15 } } }
+                        label: { normal: { padding: [paddingArr[2], 0, 10], formatter: '吨', textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                     }
                 ]
             },
@@ -102,12 +116,6 @@
                 const that = this
                 const chart = that.chart
                 const dataLabels = that.getDataLabels(data)
-                if (that[fullProp]) {
-                    dataLabels[0].label.normal.padding = [0, 0, 28]
-                    dataLabels[0].label.normal.textStyle.fontSize = 20
-                    dataLabels[1].label.normal.textStyle.fontSize = 32
-                    dataLabels[2].label.normal.textStyle.fontSize = 20
-                }
                 const options = {
                     series: [{ data: dataLabels }]
                 }
