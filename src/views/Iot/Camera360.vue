@@ -89,15 +89,26 @@
                         console.log('保持不变')
                     } else {
                         if (that.key1 == '') {
-                        if ((that.eE == 2 && e.key == 4) || (that.eE == 4 && e.key == 2)) { that.key1 = 5 }
-                        if ((that.eE == 2 && e.key == 6) || (that.eE == 6 && e.key == 4)) { that.key1 = 7 }
-                        if ((that.eE == 8 && e.key == 4) || (that.eE == 4 && e.key == 8)) { that.key1 = 4 }
-                        if ((that.eE == 8 && e.key == 6) || (that.eE == 6 && e.key == 8)) { that.key1 = 6 }
-                        if (that.key1 != '' && that.keyDown) {
-                            that.key = that.key1
-                            store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
-                            store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, that.key)
-                        }
+                            if ((that.eE == 2 && e.key == 4) || (that.eE == 4 && e.key == 2)) { that.key1 = 5 }
+                            if ((that.eE == 2 && e.key == 6) || (that.eE == 6 && e.key == 2)) { that.key1 = 7 }
+                            if ((that.eE == 8 && e.key == 4) || (that.eE == 4 && e.key == 8)) { that.key1 = 4 }
+                            if ((that.eE == 8 && e.key == 6) || (that.eE == 6 && e.key == 8)) { that.key1 = 6 }
+
+                            if ((that.eE == 'ArrowDown' && e.key == 'ArrowLeft') || (that.eE == 'ArrowLeft' && e.key == 'ArrowDown')) { that.key1 = 5 }
+                            if ((that.eE == 'ArrowDown' && e.key == 'ArrowRight') || (that.eE == 'ArrowRight' && e.key == 'ArrowDown')) { that.key1 = 7 }
+                            if ((that.eE == 'ArrowUp' && e.key == 'ArrowLeft') || (that.eE == 'ArrowLeft' && e.key == 'ArrowUp')) { that.key1 = 4 }
+                            if ((that.eE == 'ArrowUp' && e.key == 'ArrowRight') || (that.eE == 'ArrowRight' && e.key == 'ArrowUp')) { that.key1 = 6 }
+                            if (that.key1 != '' && that.keyDown) {
+                                that.key = that.key1
+                                var p = new Promise(function (resolve, reject) {
+                                    store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
+                                    resolve('ok')
+                                })
+                                p.then(function (e) {
+                                    console.log(e)
+                                    store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, that.key)
+                                })
+                            }
                         }
                     }
                 }

@@ -8,7 +8,7 @@ socket.onopen = function (e) {
     console.log('web socket open...')
 }
 socket.onmessage = function (e) {
-    console.log('on message....', e)
+    // console.log('on message....', e)
     // 选定时间时不插入数据
     const type = typeof e.data
     const state = store.state[ns.ORIGIN] // 溯源数据
