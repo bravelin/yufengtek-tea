@@ -85,7 +85,7 @@
                 return [
                     {
                         value: 78,
-                        label: { normal: { padding: [0, 0, 10], formatter: '出库\n', textStyle: { color: '#fff', fontSize: 15 } } }
+                        label: { normal: { padding: [0, 0, 50], formatter: '出库', textStyle: { color: '#fff', fontSize: 15 } } }
                     },
                     {
                         value: 25,
@@ -93,7 +93,7 @@
                     },
                     {
                         value: 0,
-                        label: { normal: { formatter: '\n\n\n吨', textStyle: { color: '#fff', fontSize: 15 } } }
+                        label: { normal: { padding: [50, 0, 0], formatter: '吨', textStyle: { color: '#fff', fontSize: 15 } } }
                     }
                 ]
             },

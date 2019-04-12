@@ -113,15 +113,15 @@
                         data: [
                             {
                                 value: 75,
-                                label: { normal: { padding: [0, 0, 25], formatter: `${item.label}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                                label: { normal: { padding: [0, 0, 40], formatter: `${item.label}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             },
                             {
                                 value: 25,
-                                label: { normal: { padding: [0, 0, 10], formatter: `${item.data}`, textStyle: { color: textColor, fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
+                                label: { normal: { padding: [0, 0, 0], formatter: `${item.data}`, textStyle: { color: textColor, fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
                             },
                             {
                                 value: 0,
-                                label: { normal: { formatter: `${item.unit}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                                label: { normal: { padding: [40, 0, 0], formatter: `${item.unit}`, textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                             }
                         ]
                     })

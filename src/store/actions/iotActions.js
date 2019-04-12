@@ -310,11 +310,11 @@ export default {
         const sno = context.state.camera.camera_sno
         if (payload == 'up') {
             ajax({ url: '/data/momitor/CameraStop?sno=' + sno, method: 'post' }).then(res => {
-                console.log(res)
+                // console.log(res)
             })
         } else {
             ajax({ url: '/data/momitor/CameraRun?sno=' + sno + '&direction=' + parseInt(payload), method: 'post' }).then(res => {
-                console.log(res)
+                // console.log(res)
             })
         }
     }

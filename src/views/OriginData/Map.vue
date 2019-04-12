@@ -89,9 +89,9 @@
                             symbolSize (val) {
                                 var size1 = val[2] / 20
                                 if (val[2] / 20 < 3) {
-                                    size1 = 3
+                                    size1 = 4
                                 } else if (val[2] / 20 > 18) {
-                                    size1 = 18
+                                    size1 = 20
                                 }
                                 return size1
                             },
@@ -116,9 +116,9 @@
                             symbolSize (val) {
                                 var size1 = val[2] / 20
                                 if (val[2] / 20 < 3) {
-                                    size1 = 3
+                                    size1 = 5
                                 } else if (val[2] / 20 > 18) {
-                                    size1 = 18
+                                    size1 = 21
                                 }
                                 return size1
                             },
@@ -155,7 +155,7 @@
                 const currOption = chart.getOption()
                 const series = currOption.series
                 series[0].data = datas
-                series[1].data = datas.sort((a, b) => { return b.value - a.value }).slice(0, 6)
+                series[1].data = datas.sort((a, b) => { return b.value - a.value }).slice(0, 5)
                 chart.setOption({ series })
                 setTimeout(() => { chart.resize() }, 200)
             },

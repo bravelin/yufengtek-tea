@@ -54,7 +54,7 @@ export default {
                         }
                     })
                 // }
-                if (repData.lastYearOutStock.length != 0 && repData.lastYearOutStock != []) {
+                // if (repData.lastYearOutStock.length != 0 && repData.lastYearOutStock != []) {
                     historyOutDatas.push({ year: year - 1, list: list1 })
                     historyOutDatas.push({ year: year, list: repData.thisYearOutStock })
                     context.state.historyOutDatas = historyOutDatas.map(item => {
@@ -67,7 +67,7 @@ export default {
                             })
                         }
                     })
-                }
+                // }
             }
         })
     },

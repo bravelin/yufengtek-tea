@@ -41,7 +41,8 @@
                 markerClusterer: '', // 是否被聚合
                 mk: '', // 聚合的标记
                 markerActive: '', // 选中的标记
-                timer: ''
+                timer: '',
+                activeLabel: true
             }
         },
         computed: {
@@ -160,6 +161,7 @@
                     }
                 }
                 that.markers = that.iotDatas.map(item => that.createMarker(item))
+                // 将所有的图标聚合，自动生成marker标记，可直接用marker方法
                 const markerClusterer = new BMapLib.MarkerClusterer(that.map, { markers: that.iotDatas.map(item => that.createMarker(item)), maxZoom: 16 })
                 that.markerClusterer = markerClusterer
                 const mk = markerClusterer._clusters
@@ -225,7 +227,7 @@
                 const content = `<div class='boxContent' id='boxs_${num}'>
                                     查看该区域设备
                                     <ul class='map-ul'>
-                                        ${showLabel1 ? `<li class='map-li' id='label1_${num}'><image class='map-image' src='images/icon-wf.png'></image><span>水肥一体化</span></li>` : ''}
+                                        ${showLabel1 ? `<li class='map-li' id='label1_${num}' :class='activeLabel:${this.activeLabel}'><image class='map-image' src='images/icon-wf.png'></image><span>水肥一体化</span></li>` : ''}
                                         ${showLabel2 ? `<li class='map-li' id='label2_${num}'><image class='map-image' src='images/icon-sphere.png'></image><span>全景摄像头</span></li>` : ''}
                                         ${showLabel3 ? `<li class='map-li' id='label3_${num}'><image class='map-image' src='images/icon-FM1.png'></image><span>监控FM1</span></li>` : ''}
                                         ${showLabel4 ? `<li class='map-li' id='label4_${num}'><image class='map-image' src='images/icon-gun.png'></image><span>普通摄像头</span></li>` : ''}
@@ -243,13 +245,10 @@
                     }
                 }
                 data.addEventListener('mouseover', (e) => {
-                    console.log('mouseover?')
                     if (that.infoWindow) {
                        that.infoWindow.close()
                     }
-                    if (that.timer) {
-                        clearTimeout(that.timer)
-                    }
+                    clearTimeout(that.timer)
                     if (!that.activeIcon) {
                         that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                         that.infoWindow.open(marker)
@@ -273,29 +272,59 @@
                             })
                         }
                         if (showLabel2) {
+                            // document.getElementById('label2_' + num).addEventListener('click', that.showInfo(sMarkers, 'IOT_TYPE_SPHERE'), false)
                             document.getElementById('label2_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_SPHERE')
+                            })
+                            document.getElementById('label2_' + num).addEventListener('mouseover', (e) => {
+                                document.getElementById('label2_' + num).className = 'map-li activeLabel'
+                            })
+                            document.getElementById('label2_' + num).addEventListener('mouseleave', (e) => {
+                                document.getElementById('label2_' + num).classList.remove('activeLabel')
                             })
                         }
                         if (showLabel3) {
                             document.getElementById('label3_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_FM1')
                             })
+                            document.getElementById('label3_' + num).addEventListener('mouseover', (e) => {
+                                document.getElementById('label3_' + num).className = 'map-li activeLabel'
+                            })
+                            document.getElementById('label3_' + num).addEventListener('mouseleave', (e) => {
+                                document.getElementById('label3_' + num).classList.remove('activeLabel')
+                            })
                         }
                         if (showLabel4) {
                             document.getElementById('label4_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_GUN')
+                            })
+                            document.getElementById('label4_' + num).addEventListener('mouseover', (e) => {
+                                document.getElementById('label4_' + num).className = 'map-li activeLabel'
+                            })
+                            document.getElementById('label4_' + num).addEventListener('mouseleave', (e) => {
+                                document.getElementById('label4_' + num).classList.remove('activeLabel')
                             })
                         }
                         if (showLabel5) {
                             document.getElementById('label5_' + num).addEventListener('click', (e) => {
                                 that.showInfo(sMarkers, 'IOT_TYPE_FM2')
                             })
+                            document.getElementById('label5_' + num).addEventListener('mouseover', (e) => {
+                                document.getElementById('label5_' + num).className = 'map-li activeLabel'
+                            })
+                            document.getElementById('label5_' + num).addEventListener('mouseleave', (e) => {
+                                document.getElementById('label5_' + num).classList.remove('activeLabel')
+                            })
                         }
                         if (showLabel6) {
                             document.getElementById('label6_' + num).addEventListener('click', (e) => {
-                                console.log('maybe here')
                                 that.showInfo(sMarkers, 'IOT_TYPE_360')
+                            })
+                            document.getElementById('label6_' + num).addEventListener('mouseover', (e) => {
+                                document.getElementById('label6_' + num).className = 'map-li activeLabel'
+                            })
+                            document.getElementById('label6_' + num).addEventListener('mouseleave', (e) => {
+                                document.getElementById('label6_' + num).classList.remove('activeLabel')
                             })
                         }
                     }
@@ -394,14 +423,18 @@
                     }
                 })
                 marker.addEventListener('mouseover', (e) => {
+                    clearTimeout(that.timer)
+                    if (that.infoWindow) {
+                        that.infoWindow.close()
+                    }
                     if (!e.target.self.isActive) {
                         /* eslint-disable */
-                        that.infoWindow = new BMapLib.InfoBox(that.map,content,opts);
+                        that.infoWindow = new BMapLib.InfoBox(that.map, content, opts)
                         that.infoWindow.open(marker)
                     }
                 })
                 marker.addEventListener('mouseout', (e) => {
-                    if(that.infoWindow){
+                    if (that.infoWindow) {
                         that.infoWindow.close()
                     }
                 })
@@ -428,14 +461,24 @@
                     that.markerClusterer.removeMarker(that.markerActive) // 去除点红的标记
                     const markerActive1 = that.markerActive
                     markerActive1.self.isActive = false
-                    that.markerClusterer.addMarker(that.createMarker(markerActive1.self))
-
+                    that.markerClusterer.addMarker(that.createMarker(markerActive1.self)) 
                     // 标红新的标记
                     that.markerClusterer.removeMarker(marker)
                     const markerActive = marker
                     that.markerActive = markerActive
                     markerActive.self.isActive = true
                     that.markerClusterer.addMarker(that.createMarker(markerActive.self))
+                    const mk = that.markerClusterer._clusters
+                    that.mk = mk
+                    let mCount
+                    for (let i = 0; i < mk.length; i++) {
+                        mCount = mk[i]._markers.length
+                        if (mCount < 2) {
+                            continue
+                        }
+                        mk[i]._clusterMarker.removeEventListener('mouseover')
+                        that.addMarkerClu(mk[i]._center, mk[i]._clusterMarker, mk[i]._markers, i + 1)
+                    }
                     store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, { id: data.index, type: data.type })
                     if (data.type == types.IOT_TYPE_FM1) {
                         store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, data.sno)
