@@ -70,11 +70,23 @@
                 const container = that.container
                 const { values, titles } = that.handleChartData(datas)
                 const miniScreen = that.miniScreen
+                // 求得 min、max、interval,4个间隔
+                const min = 0
+                let max = 0
+                values.forEach(item => {
+                    if (item > max) {
+                        max = item
+                    }
+                })
+                let interval = Math.ceil((max - min) / 4)
+                let gap = Math.pow(10, (interval + '').length - 1)
+                interval = Math.ceil(interval / gap) * gap
+                max = 4 * interval
                 const options = {
-                    grid: { top: 16, left: 0, right: 5, bottom: 0, containLabel: true },
+                    grid: { top: 15, left: 8, right: 8, bottom: 5, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
-                        formatter: '{b}月：{c}' + 'kg',
+                        formatter: '{b}：{c}' + 'kg',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: {
                             lineStyle: {
@@ -93,6 +105,9 @@
                     }],
                     yAxis: [{
                         show: true,
+                        min,
+                        max,
+                        interval,
                         splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.3)' } },
                         axisTick: { show: true },
                         axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
@@ -103,15 +118,21 @@
                     {
                         smooth: true,
                         type: 'line',
-                        symbol: 'circle',
-                        symbolSize: 0.02,
+                        symbolSize: 45,
+                        symbol: 'pin',
+                        itemStyle: {
+                            normal: {
+                                color: 'rgba(0, 159, 253, 0.3)',
+                                barBorderRadius: 0,
+                                label: {
+                                    show: true,
+                                    position: 'inside',
+                                    fontSize: 9
+                                }
+                            }
+                        },
                         data: values,
                         lineStyle: { type: 'dotted', width: 1, color: 'rgba(0, 159, 253, 0.65)' },
-                        areaStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(71, 117, 183, 0.3)' }, { offset: 0.85, color: 'rgba(71, 117, 183, 0.1)' }], false)
-                            }
-                        }
                     }]
                 }
                 that.chart = echarts.init(container)
@@ -126,15 +147,39 @@
                 if (that[fullProp]) {
                     options = {
                         grid: { top: 32, left: 20, right: 20, bottom: 20 },
-                        series: [{ data: values }],
+                        series: [
+                            {
+                                data: values,
+                                symbolSize: 60,
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            fontSize: 12
+                                        }
+                                    }
+                                }
+                            }
+                        ],
                         xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
                         yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
                         tooltip: { textStyle: { fontSize: 18 } },
                     }
                 } else {
                     options = {
-                        grid: { top: 10, left: 0, right: 5, bottom: 0 },
-                        series: [{ data: values }],
+                        grid: { top: 15, left: 8, right: 8, bottom: 5 },
+                        series: [
+                            {
+                                data: values,
+                                symbolSize: 45,
+                                itemStyle: {
+                                    normal: {
+                                        label: {
+                                            fontSize: 9
+                                        }
+                                    }
+                                }
+                            }
+                        ],
                         xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
                         yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } }
@@ -146,46 +191,11 @@
             // 数据加工
             handleChartData (datas) {
                 const that = this
-                const widthObj = {} // 计算数值对应的圈圈宽度
-                let preKey = 0
-                const dataList = datas.map(item => item.value).sort((a, b) => { return a - b > 0 ? 1 : -1 }) // 从小到大排好序的数据
-                dataList.forEach((item, index) => {
-                    if (index === 0) {
-                        widthObj[item] = 14 + item.toString().length * 2 // 根据最小值的位数决定最小宽度
-                        preKey = item
-                    } else if (dataList[index - 1] !== item) {
-                        widthObj[item] = widthObj[preKey] + 3
-                        preKey = item
-                    }
-                })
                 const titles = []
                 const values = []
-                let w = 0
-                const maxWidth = that[fullProp] ? 42 : 28
                 datas.forEach(item => {
-                    titles.push(item.label + '月') // date data
-                    w = widthObj[item.value]
-                    w = w > maxWidth ? maxWidth : w
-                    values.push({
-                        name: item.label,
-                        value: item.value.toFixed(2),
-                        emphasis: { label: true },
-                        label: {
-                            show: true,
-                            padding: 0,
-                            borderWidth: that[fullProp] ? 2 : 1,
-                            borderColor: 'rgba(0, 159, 253, 0.3)',
-                            borderRadius: w,
-                            verticalAlign: 'middle',
-                            align: 'center',
-                            width: w,
-                            height: w,
-                            lineHeight: w,
-                            fontSize: that[fullProp] ? 14 : 9,
-                            color: '#fff',
-                            rich: {}
-                        }
-                    })
+                    titles.push(item.label + '月')
+                    values.push(item.value.toFixed(0) - 0)
                 })
                 return { titles, values }
             },
