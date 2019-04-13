@@ -75,7 +75,7 @@
                 // 求得 min、max、interval,4个间隔
                 const { min, max, interval } = computedChartDataInterval(values, 4)
                 const options = {
-                    grid: { top: 15, left: 8, right: 8, bottom: 5, containLabel: true },
+                    grid: { top: 15, left: 8, right: 8, bottom: 2, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
                         formatter: '{b}：{c}' + 'kg',
@@ -158,7 +158,7 @@
                     }
                 } else {
                     options = {
-                        grid: { top: 15, left: 8, right: 8, bottom: 5 },
+                        grid: { top: 15, left: 8, right: 8, bottom: 2 },
                         series: [
                             {
                                 data: values,
