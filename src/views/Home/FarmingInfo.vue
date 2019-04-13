@@ -73,15 +73,21 @@
                 // 求得 min、max、interval,4个间隔
                 const min = 0
                 let max = 0
+                let interval = 0
                 values.forEach(item => {
                     if (item > max) {
                         max = item
                     }
                 })
-                let interval = Math.ceil((max - min) / 4)
-                let gap = Math.pow(10, (interval + '').length - 1)
-                interval = Math.ceil(interval / gap) * gap
-                max = 4 * interval
+                if (max == min) {
+                    max = 8
+                    interval = 2
+                } else {
+                    interval = Math.ceil((max - min) / 4)
+                    let gap = Math.pow(10, (interval + '').length - 1)
+                    interval = Math.ceil(interval / gap + 0.2) * gap
+                    max = 4 * interval
+                }
                 const options = {
                     grid: { top: 15, left: 8, right: 8, bottom: 5, containLabel: true },
                     tooltip: {
