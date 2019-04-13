@@ -47,13 +47,14 @@
                 const h = parseInt(elStyle.height)
                 if (isNaN(w) || isNaN(h)) { // 未获取到尺寸，1s之后重新获取
                     setTimeout(() => { that.init() }, 1000)
-                } else {
+                } else if (that.photoViewUrl) {
                     that.viewer = new PhotoSphereViewer({
                         panorama: that.photoViewUrl,
                         container: that.container,
                         time_anim: false,
-                        navbar: true,
-                        default_fov: 90
+                        navbar: ['autorotate', 'zoom', 'download', 'gyroscope', 'stereo', 'fullscreen'],
+                        default_fov: 90,
+                        anim_speed: '0.8rpm'
                     })
                 }
             },
@@ -61,8 +62,9 @@
                 const that = this
                 const store = that.$store
                 if (that.viewer) {
-                    const photoViewUrl = store.state[moduleNameSpace]['photoViewUrl']
                     that.viewer.setPanorama(that.photoViewUrl)
+                } else {
+                    that.init()
                 }
             },
             // full state change

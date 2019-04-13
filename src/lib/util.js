@@ -52,6 +52,22 @@ export function formatTime (date, format = 'yyyy-MM-dd hh:mm:ss') {
     return format
 }
 
+export function computedChartDataInterval (dataList, gapNum) {
+    const min = 0
+    let max = Math.max(...dataList)
+    let interval = 0
+    if (max == min) {
+        interval = 2
+        max = interval * gapNum
+    } else {
+        interval = Math.ceil((max - min) / 4)
+        let gap = Math.pow(10, (interval + '').length - 1)
+        interval = Math.ceil(interval / gap + 0.1) * gap
+        max = gapNum * interval
+    }
+    return { min, max, interval }
+}
+
 export const reg = {
     ios: /\(i[^;]+;( U;)? CPU.+Mac OS X/ // 判定IOS浏览器的正则
 }

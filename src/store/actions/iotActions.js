@@ -293,9 +293,8 @@ export default {
     },
     [types.CHANGE_PHOTO_VIEW_URL] (context, payload) {
         ajax({ url: '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {
-            var tt = res.repData[11].replace(/http/, 'https')
-            context.state.photoViewUrl = tt || context.state.photoViewUrl // 防止未返回数据
-            // context.state.photoViewUrl = 'https://stdag-image.oss-cn-beijing.aliyuncs.com/camera_one_image/20190329/31384703333230302d002800_1553855533-20190329183217716.jpg'
+            const url = res.repData[11].replace(/http/, 'https')
+            context.state.photoViewUrl = url || context.state.photoViewUrl // 防止未返回数据
         })
     },
     [types.GET_GUN_DATA] (context, payload) {

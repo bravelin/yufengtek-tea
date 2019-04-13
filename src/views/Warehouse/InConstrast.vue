@@ -11,6 +11,7 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+    import { computedChartDataInterval } from '@/lib/util'
 
     const moduleNameSpace = ns.WAREHOUSE
     const dataProp = 'historyInDatas'
@@ -67,6 +68,7 @@
                 const that = this
                 const container = that.container
                 const { titles, lineDatas, legends } = that.handleChartData(datas)
+                const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 5)
                 const options = {
                     grid: { top: 45, left: 0, right: 5, bottom: 0, containLabel: true },
                     legend: {
@@ -105,6 +107,9 @@
                     color: ['rgb(4, 165, 252)', '#91acd4'],
                     yAxis: [{
                         show: true,
+                        min,
+                        max,
+                        interval,
                         splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.3)' } },
                         axisTick: { show: true },
                         axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },

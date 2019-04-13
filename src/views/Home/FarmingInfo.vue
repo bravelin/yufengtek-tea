@@ -11,6 +11,8 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+    import { computedChartDataInterval } from '@/lib/util'
+
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'farmingActdatas'
@@ -71,23 +73,7 @@
                 const { values, titles } = that.handleChartData(datas)
                 const miniScreen = that.miniScreen
                 // 求得 min、max、interval,4个间隔
-                const min = 0
-                let max = 0
-                let interval = 0
-                values.forEach(item => {
-                    if (item > max) {
-                        max = item
-                    }
-                })
-                if (max == min) {
-                    max = 8
-                    interval = 2
-                } else {
-                    interval = Math.ceil((max - min) / 4)
-                    let gap = Math.pow(10, (interval + '').length - 1)
-                    interval = Math.ceil(interval / gap + 0.2) * gap
-                    max = 4 * interval
-                }
+                const { min, max, interval } = computedChartDataInterval(values, 4)
                 const options = {
                     grid: { top: 15, left: 8, right: 8, bottom: 5, containLabel: true },
                     tooltip: {

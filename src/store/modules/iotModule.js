@@ -13,7 +13,7 @@ export default {
         emVos: [],
         Fm1: [],
         Fm2: [],
-        photoViewUrl: './360/01.jpg',
+        photoViewUrl: '',
         currActive: {
             type: types.IOT_TYPE_FM1,
             id: 0
