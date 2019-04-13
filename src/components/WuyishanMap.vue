@@ -76,7 +76,7 @@
                                 { start: 10, end: 10, color: 'rgba(71, 120, 190, 0.7)' },
                                 { start: 20, end: 20, color: 'rgba(75, 147, 250, 0.7)' },
                                 { start: 30, end: 30, color: 'rgba(134, 184, 255, 0.7)' },
-                                { start: SPLITVALUE, end: SPLITVALUE, color: 'rgba(44, 133, 152, 0.8)' } // 选中的区块颜色
+                                { start: SPLITVALUE, end: SPLITVALUE, color: 'rgba(135, 208, 246, 0.8)' } // 选中的区块颜色
                             ]
                         },
                         series: [
@@ -84,7 +84,7 @@
                                 type: 'map',
                                 mapType: 'wuyishan',
                                 itemStyle: {
-                                    emphasis: { areaColor: 'rgba(44, 133, 152, 0.7)', borderWidth: 0 },
+                                    emphasis: { areaColor: 'rgba(135, 208, 246, 0.7)', borderWidth: 0 },
                                     normal: { areaColor: '#1f5096', borderColor: '#3B5077', borderWidth: 0 }
                                 },
                                 label: {
