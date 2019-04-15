@@ -86,11 +86,11 @@
                 let textColor = '#87d0f6'
                 const centerXArr = ['17%', '50%', '83%']
                 let fontSizeArr = [15, 21]
-                let paddingArr = [20, 5, 10]
+                let paddingArr = [40, 5, 50]
                 if (!miniScreen) {
                     if (that[fullProp]) {
                         fontSizeArr = [32, 48]
-                        paddingArr = [80, 5, 50]
+                        paddingArr = [80, 5, 80]
                     }
                 } else {
                     fontSizeArr = [12, 18]

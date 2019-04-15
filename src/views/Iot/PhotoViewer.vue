@@ -61,7 +61,9 @@
             doRefresh () {
                 const that = this
                 const store = that.$store
+                console.log(that.photoViewUrl)
                 if (that.viewer) {
+                    console.log()
                     that.viewer.setPanorama(that.photoViewUrl)
                 } else {
                     that.init()

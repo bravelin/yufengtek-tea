@@ -87,13 +87,13 @@
             getDataLabels (data) {
                 const that = this
                 const miniScreen = that.miniScreen
-                let paddingArr = [30, 10, 20]
+                let paddingArr = [50, 0, 50]
                 let fontSizeArr = [18, 25]
                 if (that[fullProp]) {
                     fontSizeArr = [32, 48]
-                    paddingArr = [80, 5, 50]
+                    paddingArr = [80, 5, 80]
                 } else if (miniScreen) {
-                    paddingArr = [20, 5, 10]
+                    // paddingArr = [20, 5, 10]
                     fontSizeArr = [15, 21]
                 }
                 return [
@@ -103,11 +103,11 @@
                     },
                     {
                         value: 25,
-                        label: { normal: { padding: [paddingArr[1], 0, 10], formatter: `${data}`, textStyle: { color: '#87d0f6', fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
+                        label: { normal: { padding: [paddingArr[1], 0, 0], formatter: `${data}`, textStyle: { color: '#87d0f6', fontSize: fontSizeArr[1], fontWeight: 'bold' } } }
                     },
                     {
                         value: 0,
-                        label: { normal: { padding: [paddingArr[2], 0, 10], formatter: '吨', textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
+                        label: { normal: { padding: [paddingArr[2], 0, 0], formatter: '吨', textStyle: { color: '#fff', fontSize: fontSizeArr[0] } } }
                     }
                 ]
             },
