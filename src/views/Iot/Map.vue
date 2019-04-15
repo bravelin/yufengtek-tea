@@ -155,6 +155,11 @@
                 //     })
                 // }
                 if (that.markerClusterer) {
+                    // 清除
+                    const mk = that.markerClusterer._clusters
+                    for (var i = 0; i < mk.length; i++) {
+                        mk[i]._clusterMarker.removeEventListener('mouseover')
+                    }
                     that.markerClusterer.clearMarkers()
                     if (that.infoWindow) {
                         that.infoWindow.close()

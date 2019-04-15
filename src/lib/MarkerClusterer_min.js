@@ -304,7 +304,7 @@
         var k = this._map;
         var h = this.getBounds();
         this._clusterMarker.addEventListener("click", function (i) {
-            k.centerAndZoom(h, 20)
+            k.centerAndZoom(h, 20) // 调成放大到最大
             // k.setViewport(h)
         })
     };
