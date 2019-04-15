@@ -6,7 +6,20 @@
 </template>
 <script>
     import echarts from '@/lib/echarts'
-    const SPLITVALUE = 10
+    const SPLITVALUE = 200
+    const mapColors = {
+        '星村镇': 0,
+        '兴田镇': 30,
+        '洋庄乡': 10,
+        '五夫镇': 20,
+        '上梅乡': 0,
+        '岚谷乡': 0,
+        '吴屯乡': 20,
+        '新丰街道': 30,
+        '崇安街道': 0,
+        '武夷街道': 20
+    }
+
     export default {
         name: 'WuyishanMap',
         props: {
@@ -30,18 +43,9 @@
             return {
                 chart: null,
                 currSelectedRegion: '',
-                mapDatas: [
-                    { name: '星村镇', value: 0 },
-                    { name: '兴田镇', value: 0 },
-                    { name: '洋庄乡', value: 0 },
-                    { name: '五夫镇', value: 0 },
-                    { name: '上梅乡', value: 0 },
-                    { name: '岚谷乡', value: 0 },
-                    { name: '吴屯乡', value: 0 },
-                    { name: '新丰街道', value: 0 },
-                    { name: '崇安街道', value: 0 },
-                    { name: '武夷街道', value: 0 }
-                ]
+                mapDatas: Object.keys(mapColors).map(key => {
+                    return { name: key, value: mapColors[key] }
+                })
             }
         },
         created () {
@@ -68,8 +72,11 @@
                             x: 'left',
                             y: 'bottom',
                             splitList: [
-                                { start: 0, end: 0, color: '#15467d' },
-                                { start: SPLITVALUE, end: SPLITVALUE, color: '#389BB7' } // 选中的区块颜色
+                                { start: 0, end: 0, color: 'rgba(31, 80, 150, 0.7)' },
+                                { start: 10, end: 10, color: 'rgba(71, 120, 190, 0.7)' },
+                                { start: 20, end: 20, color: 'rgba(75, 147, 250, 0.7)' },
+                                { start: 30, end: 30, color: 'rgba(134, 184, 255, 0.7)' },
+                                { start: SPLITVALUE, end: SPLITVALUE, color: 'rgba(135, 208, 246, 0.8)' } // 选中的区块颜色
                             ]
                         },
                         series: [
@@ -77,8 +84,8 @@
                                 type: 'map',
                                 mapType: 'wuyishan',
                                 itemStyle: {
-                                    emphasis: { areaColor: 'rgba(56,155,183, 0.5)', borderWidth: 0 },
-                                    normal: { areaColor: '#15467d', borderColor: '#2f90cd', borderWidth: 1 }
+                                    emphasis: { areaColor: 'rgba(135, 208, 246, 0.7)', borderWidth: 0 },
+                                    normal: { areaColor: '#1f5096', borderColor: '#3B5077', borderWidth: 0 }
                                 },
                                 label: {
                                     emphasis: {
@@ -111,7 +118,7 @@
                 const chart = that.chart
                 const currOption = chart.getOption()
                 that.mapDatas.forEach(item => {
-                    item.value = (item.name == place ? SPLITVALUE : 0)
+                    item.value = (item.name == place ? SPLITVALUE : mapColors[item.name])
                 })
                 const series = currOption.series
                 series[0].data = that.mapDatas
