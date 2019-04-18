@@ -41,8 +41,10 @@
         methods: {
             changeIotDatas (value) {
                 const store = this.$store
-                this.activeIotItem = value
-                store.dispatch(moduleNameSpace + '/' + types.GET_IOT_DATA, value)
+                if (this.activeIotItem != value) {
+                    this.activeIotItem = value
+                    store.dispatch(moduleNameSpace + '/' + types.GET_IOT_DATA, value)
+                }
             }
         }
     }

@@ -22,14 +22,20 @@
             ...thisMapState(['photoViewerFullState', 'photoViewUrl', 'currActive'])
         },
         watch: {
-            [viewUrlProp] () {
-                this.doRefresh()
+            [viewUrlProp] (val, oldval) {
+                if (oldval == '') {
+                    clearTimeout(this.timer)
+                    this.init()
+                } else {
+                    this.doRefresh()
+                }
             }
         },
         data () {
             return {
                 container: null,
                 viewer: null,
+                timer: null
             }
         },
         mounted () {
@@ -46,7 +52,7 @@
                 const w = parseInt(elStyle.width)
                 const h = parseInt(elStyle.height)
                 if (isNaN(w) || isNaN(h)) { // 未获取到尺寸，1s之后重新获取
-                    setTimeout(() => { that.init() }, 1000)
+                    that.timer = setTimeout(() => { that.init() }, 1000)
                 } else if (that.photoViewUrl) {
                     that.viewer = new PhotoSphereViewer({
                         panorama: that.photoViewUrl,
@@ -61,12 +67,8 @@
             doRefresh () {
                 const that = this
                 const store = that.$store
-                console.log(that.photoViewUrl)
                 if (that.viewer) {
-                    console.log()
                     that.viewer.setPanorama(that.photoViewUrl)
-                } else {
-                    that.init()
                 }
             },
             // full state change

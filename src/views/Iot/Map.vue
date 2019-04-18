@@ -174,6 +174,7 @@
                 const oldmk = []
                 let mCount
                 let options
+                console.log(mk)
                 for (let i = 0; i < mk.length; i++) {
                     mCount = mk[i]._markers.length
                     if (mCount < 2) {
@@ -354,7 +355,7 @@
                         const log = data[k].self.address_gislong
                         const lat = data[k].self.address_gislatd
                         if (!data[k].self.isActive) {
-                            that.doHandlerClickMarker(data[k].self, data[k])
+                            that.doHandlerClickMarker(data[k].self, data[k]) // 标红选中的第一个
                         }
                         that.infoWindow.close()
                         const mapCenterPoint = new BMap.Point(log, lat) // 创建点坐标

@@ -3,10 +3,10 @@
         <PlaneTitle>视频监控</PlaneTitle>
         <div class="plane-content" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
             <div class="video-container flv" ref="container">
-                <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
+                <video class="video-js vjs-default-skin video-wrap" controls></video>
             </div>
             <div class="video-container hls" ref="proxyContainer" v-show="showProxyVideo">
-                <video ref="proxyVideoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
+                <video class="video-js vjs-default-skin video-wrap" controls></video>
             </div>
         </div>
         <PlaneTools :full="camera360FullState" @change="doFullStateChange"></PlaneTools>
@@ -40,6 +40,20 @@
                 const that = this
                 if (val) {
                     that.init()
+                } else {
+                    if (that.player) {
+                        that.player.dispose()
+                    }
+                    that.player = null
+                    that.proxyPlayer = null
+                    that.showProxyVideo = true
+                    const refs = that.$refs
+                    refs.container.innerHTML = `<video class="video-js vjs-default-skin video-wrap" controls></video>`
+                    refs.proxyContainer.innerHTML = `<video class="video-js vjs-default-skin video-wrap" controls></video>`
+                    setTimeout(() => {
+                        that.videoWrap = refs.container.querySelector('video')
+                        that.proxyVideoWrap = refs.proxyContainer.querySelector('video')
+                    }, 50)
                 }
             }
         },
@@ -47,8 +61,8 @@
             const that = this
             that.$nextTick(() => {
                 const refs = that.$refs
-                that.videoWrap = refs.videoPlayer
-                that.proxyVideoWrap = refs.proxyVideoPlayer
+                that.videoWrap = refs.container.querySelector('video')
+                that.proxyVideoWrap = refs.proxyContainer.querySelector('video')
                 that.init()
             })
         },

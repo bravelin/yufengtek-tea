@@ -15,6 +15,7 @@ socket.onmessage = function (e) {
     if (type == 'string') {
         try {
             const data = JSON.parse(e.data)
+            store.dispatch(ns.ORIGIN + '/' + types.GET_ORIGIN_DATA)
             if (state.addressList[0] && data.date == state.addressList[0].date) {
                 store.commit(ns.ORIGIN + '/' + types.ORIGIN_REAL_TIME_DATA, {
                     type: 1, data
