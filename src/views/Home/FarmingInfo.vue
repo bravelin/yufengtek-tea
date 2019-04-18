@@ -73,7 +73,7 @@
                 const { values, titles } = that.handleChartData(datas)
                 const miniScreen = that.miniScreen
                 // 求得 min、max、interval,4个间隔
-                const { min, max, interval } = computedChartDataInterval(values, 4)
+                const { min, max, interval } = computedChartDataInterval(values, 4, 0.1)
                 const options = {
                     grid: { top: 15, left: 8, right: 8, bottom: 2, containLabel: true },
                     tooltip: {
@@ -135,6 +135,7 @@
                 const that = this
                 const chart = that.chart
                 const { titles, values } = that.handleChartData(datas)
+                const { min, max, interval } = computedChartDataInterval(values, 4, 0.1)
                 let options = null
                 if (that[fullProp]) {
                     options = {
@@ -153,7 +154,7 @@
                             }
                         ],
                         xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
-                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
                         tooltip: { textStyle: { fontSize: 18 } },
                     }
                 } else {
@@ -173,7 +174,7 @@
                             }
                         ],
                         xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
-                        yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } }
                     }
                 }

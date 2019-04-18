@@ -11,6 +11,8 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+    import { computedChartDataInterval } from '@/lib/util'
+
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'amountRankDatas'

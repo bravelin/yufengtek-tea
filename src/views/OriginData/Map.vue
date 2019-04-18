@@ -87,13 +87,13 @@
                             coordinateSystem: 'bmap',
                             data: datas,
                             symbolSize (val) {
-                                var size1 = val[2] / 20
-                                if (val[2] / 20 < 3) {
-                                    size1 = 4
-                                } else if (val[2] / 20 > 18) {
+                                let size = val[2] / 20
+                                if (size < 3) {
+                                    size = 4
+                                } else if (size > 18) {
                                     size1 = 20
                                 }
-                                return size1
+                                return size
                             },
                             label: {
                                 normal: {
@@ -114,13 +114,13 @@
                             coordinateSystem: 'bmap',
                             data: datas.sort((a, b) => { return b.value - a.value }).slice(0, 5),
                             symbolSize (val) {
-                                var size1 = val[2] / 20
+                                let size = val[2] / 20
                                 if (val[2] / 20 < 3) {
-                                    size1 = 5
-                                } else if (val[2] / 20 > 18) {
-                                    size1 = 21
+                                    size = 5
+                                } else if (size > 18) {
+                                    size = 21
                                 }
-                                return size1
+                                return size
                             },
                             showEffectOn: 'render',
                             rippleEffect: { brushType: 'stroke' },

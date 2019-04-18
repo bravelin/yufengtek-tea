@@ -68,7 +68,6 @@
                 const that = this
                 const container = that.container
                 const { titles, lineDatas, legends } = that.handleChartData(datas)
-                console.log('...lineDatas...', lineDatas)
                 const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 5)
                 const options = {
                     grid: { top: 45, left: 0, right: 5, bottom: 0, containLabel: true },
@@ -148,13 +147,14 @@
                 const that = this
                 const chart = that.chart
                 const { titles, lineDatas, legends } = that.handleChartData(datas)
+                const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 5)
                 const series = that.getSeries(lineDatas)
                 let options = null
                 if (that[fullProp]) {
                     options = {
                         grid: { top: 65, left: 20, right: 20, bottom: 20 },
                         xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
-                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
                         tooltip: { textStyle: { fontSize: 18 } },
                         series,
                         legend: { data: legends, top: 25, right: 15, textStyle: { fontSize: 15, padding: [5, 0, 0, 5] } }
@@ -163,7 +163,7 @@
                     options = {
                         grid: { top: 45, left: 0, right: 5, bottom: 0 },
                         xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
-                        yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } },
                         series,
                         legend: { data: legends, top: 15, right: 0, textStyle: { fontSize: 12, padding: [2, 0, 0, 2] } }

@@ -147,13 +147,14 @@
                 const that = this
                 const chart = that.chart
                 const { titles, lineDatas, legends } = that.handleChartData(datas)
+                const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 5)
                 const series = that.getSeries(lineDatas)
                 let options = null
                 if (that[fullProp]) {
                     options = {
                         grid: { top: 65, left: 20, right: 20, bottom: 20 },
                         xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
-                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
                         tooltip: { textStyle: { fontSize: 18 } },
                         series,
                         legend: { data: legends, top: 25, right: 15, textStyle: { fontSize: 15, padding: [5, 0, 0, 5] } }
