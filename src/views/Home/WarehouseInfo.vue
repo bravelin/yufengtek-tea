@@ -11,6 +11,8 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+    import { computedChartDataInterval } from '@/lib/util'
+
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'warehouseDatas'
@@ -70,6 +72,7 @@
                 const that = this
                 const container = that.container
                 const { titles, values } = that.handleChartData(datas)
+                const { min, max, interval } = computedChartDataInterval([...values[0], ...values[1]], 5)
                 const miniScreen = that.miniScreen
                 const options = {
                     tooltip: {
@@ -98,7 +101,7 @@
                         }
                     },
                     grid: {
-                        top: 48,
+                        top: 50,
                         bottom: 2,
                         left: 5,
                         right: 5,
@@ -110,6 +113,9 @@
                         axisLabel: { margin: 8, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
                     },
                     yAxis: [{
+                        min,
+                        max,
+                        interval,
                         axisLine: { lineStyle: { color: '#0c3b71' } },
                         axisLabel: { margin: 8, interval: 0, color: '#fff', fontSize: 12 },
                         splitLine: {
@@ -149,12 +155,13 @@
                 const chart = that.chart
                 const miniScreen = that.miniScreen
                 const { titles, values } = that.handleChartData(datas)
+                const { min, max, interval } = computedChartDataInterval([...values[0], ...values[1]], 5)
                 let config = null
                 if (that[fullProp]) {
                     config = {
                         tooltip: { textStyle: { fontSize: 18 } },
                         xAxis: [{ data: titles, axisLabel: { margin: 12, fontSize: 15 } }],
-                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
                         grid: { top: 58, bottom: 20, left: 25, right: 25 },
                         series: [{ barWidth: 20, data: values[0] }, { barWidth: 20, data: values[1] }],
                         legend: { itemGap: 15, right: 20, textStyle: { fontSize: 16, padding: [2, 0, 0, 2] } }
@@ -163,8 +170,8 @@
                     config = {
                         tooltip: { textStyle: { fontSize: 14 } },
                         xAxis: [{ data: titles, axisLabel: { margin: 8, fontSize: 12 } }],
-                        yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
-                        grid: { top: 48, bottom: 2, left: 5, right: 5 },
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
+                        grid: { top: 50, bottom: 2, left: 5, right: 5 },
                         series: [{ barWidth: miniScreen ? 8 : 10, data: values[0] }, { barWidth: 10, data: values[1] }],
                         legend: { itemGap: miniScreen ? 5 : 15, right: 0, textStyle: { fontSize: miniScreen ? 12 : 14, padding: [2, 0, 0, miniScreen ? 0 : 2] } }
                     }

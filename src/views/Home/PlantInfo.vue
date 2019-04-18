@@ -10,6 +10,7 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import WuyishanMap from '@/components/WuyishanMap'
+
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const fullProp = 'mapFullState'

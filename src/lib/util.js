@@ -52,7 +52,7 @@ export function formatTime (date, format = 'yyyy-MM-dd hh:mm:ss') {
     return format
 }
 
-export function computedChartDataInterval (dataList, gapNum) {
+export function computedChartDataInterval (dataList, gapNum, ratio = 0) {
     const min = 0
     let max = Math.max(...dataList)
     let interval = 0
@@ -60,9 +60,9 @@ export function computedChartDataInterval (dataList, gapNum) {
         interval = 2
         max = interval * gapNum
     } else {
-        interval = Math.ceil((max - min) / 4)
+        interval = Math.ceil((max - min) / gapNum)
         let gap = Math.pow(10, (interval + '').length - 1)
-        interval = Math.ceil(interval / gap + 0.1) * gap
+        interval = Math.ceil(interval / gap + ratio) * gap
         max = gapNum * interval
     }
     return { min, max, interval }
