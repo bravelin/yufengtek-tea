@@ -68,6 +68,7 @@
                 const that = this
                 const container = that.container
                 const { titles, values } = that.handleChartData(datas)
+                const { max, min, interval } = computedChartDataInterval(values, 4)
                 const options = {
                     grid: {
                         top: 14, left: 5, right: 10, bottom: 0, containLabel: true
@@ -87,6 +88,9 @@
                     },
                     yAxis: [{
                         show: true,
+                        min,
+                        max,
+                        interval,
                         splitLine: {
                             show: true,
                             lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
@@ -137,12 +141,13 @@
                 const that = this
                 const chart = that.chart
                 const { titles, values } = that.handleChartData(datas)
+                const { max, min, interval } = computedChartDataInterval(values, 4)
                 let options = null
                 if (that[fullProp]) {
                     options = {
                         grid: { top: 25, left: 20, right: 20, bottom: 20 },
                         xAxis: { axisLabel: { margin: 12, fontSize: 15 }, data: titles },
-                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
                         tooltip: { textStyle: { fontSize: 18 } },
                         series: [{ barWidth: 20, data: values }]
                     }
@@ -150,7 +155,7 @@
                     options = {
                         grid: { top: 14, left: 5, right: 10, bottom: 0 },
                         xAxis: { axisLabel: { margin: 5, fontSize: 12 }, data: titles },
-                        yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } },
                         series: [{ barWidth: 10, data: values }]
                     }
