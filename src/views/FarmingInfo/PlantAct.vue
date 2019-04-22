@@ -1,7 +1,7 @@
 <!--种植活动-->
 <template>
     <Plane class="plant-act-wrap act-wrap" :full="plantFullState">
-        <PlaneTitle>种植活动</PlaneTitle>
+        <PlaneTitle>种植活动<div class="unit">单位：亩</div></PlaneTitle>
         <div class="plane-content">
             <PlantActPie></PlantActPie>
             <PlantActLine></PlantActLine>

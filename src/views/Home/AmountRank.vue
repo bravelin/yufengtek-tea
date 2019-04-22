@@ -1,7 +1,7 @@
 <!--茶树排行-->
 <template>
     <Plane class="amount-rank-wrap" :full="amountRankFullState">
-        <PlaneTitle>茶树排行</PlaneTitle>
+        <PlaneTitle>茶树排行<div class="unit">单位：亩</div></PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <PlaneTools :full="amountRankFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
@@ -70,7 +70,7 @@
                 const { titles, values } = that.handleChartData(datas)
                 const options = {
                     grid: {
-                        top: 10, left: 5, right: 10, bottom: 0, containLabel: true
+                        top: 14, left: 5, right: 10, bottom: 0, containLabel: true
                     },
                     tooltip: {
                         trigger: 'axis',
@@ -148,7 +148,7 @@
                     }
                 } else {
                     options = {
-                        grid: { top: 10, left: 5, right: 10, bottom: 0 },
+                        grid: { top: 14, left: 5, right: 10, bottom: 0 },
                         xAxis: { axisLabel: { margin: 5, fontSize: 12 }, data: titles },
                         yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } },

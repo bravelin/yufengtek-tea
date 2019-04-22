@@ -1,7 +1,7 @@
 <!--施肥活动-->
 <template>
     <Plane class="fertilizer-act-wrap act-wrap" :full="fertilizerFullState">
-        <PlaneTitle>施肥活动</PlaneTitle>
+        <PlaneTitle>施肥活动<div class="unit">单位：吨</div></PlaneTitle>
         <div class="plane-content">
             <FertilizerActPie></FertilizerActPie>
             <FertilizerActLine></FertilizerActLine>

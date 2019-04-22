@@ -87,13 +87,13 @@
             getDataLabels (data) {
                 const that = this
                 const miniScreen = that.miniScreen
-                let paddingArr = [50, 0, 50]
+                let paddingArr = [60, 0, 60]
                 let fontSizeArr = [18, 25]
                 if (that[fullProp]) {
                     fontSizeArr = [32, 48]
-                    paddingArr = [80, 5, 80]
+                    paddingArr = [130, 0, 130]
                 } else if (miniScreen) {
-                    // paddingArr = [20, 5, 10]
+                    paddingArr = [50, 0, 50]
                     fontSizeArr = [15, 21]
                 }
                 return [

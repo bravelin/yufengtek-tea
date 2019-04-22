@@ -1,7 +1,7 @@
 <!--植保活动-->
 <template>
     <Plane class="protection-act-wrap act-wrap" :full="protectionFullState">
-        <PlaneTitle>植保活动</PlaneTitle>
+        <PlaneTitle>植保活动<div class="unit">单位：亩</div></PlaneTitle>
         <div class="plane-content">
             <ProtectionActPie></ProtectionActPie>
             <ProtectionActLine></ProtectionActLine>

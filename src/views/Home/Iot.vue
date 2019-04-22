@@ -1,7 +1,7 @@
 <!--物联监控-->
 <template>
     <Plane class="iot-wrap">
-        <PlaneTitle>物联监控</PlaneTitle>
+        <PlaneTitle>物联监控<div class="unit">单位：台</div></PlaneTitle>
         <router-link class="plane-container" tag="div" :to="{ name: 'iot' }">
             <div class="iot-item">
                 <div><i class="iconfont">&#xe62e;</i><div>摄像头</div></div>

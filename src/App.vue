@@ -9,7 +9,6 @@
 
 <script>
     import Spinner from '@/components/Spinner'
-    import Api from '@/lib/api'
     import { mapState } from 'vuex'
     import types from '@/store/constants/types'
     import NavMenu from '@/views/NavMenu'

@@ -1,6 +1,6 @@
 <template>
     <Plane class="count-stat-wrap" :full="countStateFullState">
-        <PlaneTitle>溯源次数统计</PlaneTitle>
+        <PlaneTitle>溯源次数统计<div class="unit">单位：次</div></PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <PlaneTools :full="countStateFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
@@ -67,7 +67,7 @@
                 const container = that.container
                 const { titles, lineDatas } = that.handleChartData(datas)
                 const options = {
-                    grid: { top: 10, left: 0, right: 10, bottom: 0, containLabel: true },
+                    grid: { top: 13, left: 0, right: 10, bottom: 0, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
                         formatter: '{b}：{c}次',
@@ -129,7 +129,7 @@
                     }
                 } else {
                     options = {
-                        grid: { top: 10, left: 0, right: 10, bottom: 0 },
+                        grid: { top: 13, left: 0, right: 10, bottom: 0 },
                         xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
                         yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } },

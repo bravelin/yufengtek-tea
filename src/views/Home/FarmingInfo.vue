@@ -1,7 +1,7 @@
 <!--农事信息-->
 <template>
     <Plane class="farming-info-wrap" :full="farmingInfoFullState">
-        <PlaneTitle>施肥信息</PlaneTitle>
+        <PlaneTitle>施肥信息<div class="unit">单位：kg</div></PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <PlaneTools :full="farmingInfoFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>

@@ -68,7 +68,7 @@
                     grid: { top: 10, left: 0, right: 0, bottom: 0, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
-                        formatter: '{b}：{c}' + '吨',
+                        formatter: '{b}：{c}' + '亩',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: {
                             lineStyle: {

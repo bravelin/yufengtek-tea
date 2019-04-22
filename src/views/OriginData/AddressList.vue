@@ -1,7 +1,7 @@
 <template>
     <Plane class="address-list-wrap">
         <PlaneTitle>溯源地址</PlaneTitle>
-        <DatePicker type="date" v-model="currSelectedDate" @change="doDatePickerChange" :picker-options="pickerOptions1"></DatePicker>
+        <DatePicker type="date" v-model="currSelectedDate" @change="doDatePickerChange" :picker-options="pickerOptions"></DatePicker>
         <div class="iconfont">&#xe650;</div>
         <span v-show="currSelectedDate">{{ currSelectedDate }}<i class="iconfont" @click="doClearDate">&#xe61c;</i></span>
         <div class="plane-content" ref="text">
@@ -19,7 +19,6 @@
                 </ul>
             </vue-scroll>
         </div>
-
     </Plane>
 </template>
 <script>
@@ -34,7 +33,6 @@
     const addrList = 'addressList'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const addressDataProp = `$store.state.${moduleNameSpace}.addressList`
-    const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
         name: 'origin-address-list',
@@ -46,9 +44,9 @@
             [addressDataProp] () {
                 const that = this
                 const data = that.$store.state[moduleNameSpace][addrList]
-                this.addr = data
-                this.$nextTick(() => {
-                    this.ulHeight = this.$refs.ul.offsetHeight
+                that.addr = data
+                that.$nextTick(() => {
+                    that.ulHeight = that.$refs.ul.offsetHeight
                 })
             },
         },
@@ -61,46 +59,44 @@
                         zooming: false,
                     },
                     bar: {
-                        background: 'rgba(1, 187, 190, 0.7)'
+                        background: 'rgba(46, 115, 215, 0.8)'
                     },
                 },
                 ulHeight: '',
                 divHeight: '',
-                pickerOptions1: {
-                    disabledDate(time) {
+                pickerOptions: {
+                    disabledDate (time) {
                         return time.getTime() > Date.now()
-                    },
-                },
-
+                    }
+                }
             }
         },
         mounted() {
             const that = this
             that.$nextTick(() => {
-                this.divHeight = this.$refs.text.offsetHeight
+                that.divHeight = that.$refs.text.offsetHeight
             })
         },
         methods: {
-            handleScroll(vertical, horizontal, nativeEvent) {
-                if (this.currentPage < this.totalPage) {
-                    const addr = this.ulHeight - this.divHeight
-                    const that = this
-                    const currSelectedDate = this.currSelectedDate || ''
+            handleScroll (vertical, horizontal, nativeEvent) {
+                const that = this
+                if (that.currentPage < that.totalPage) {
+                    const addr = that.ulHeight - that.divHeight
+                    const currSelectedDate = that.currSelectedDate || ''
                     if (vertical.scrollTop == addr) {
                         that.$store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_LIST_DATA, {
-                        currentPage: this.currentPage + 1,
-                        originDate: currSelectedDate
-                    })
+                            currentPage: that.currentPage + 1,
+                            originDate: currSelectedDate
+                        })
                     }
                 }
             },
             doDatePickerChange (date) {
                 const that = this
                 that.currSelectedDate = formatTime(date, 'yyyy-MM-dd')
-                var currSelectedDate = that.currSelectedDate
-                this.$store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_LIST_DATA, {
+                that.$store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_LIST_DATA, {
                     currentPage: 1,
-                    originDate: currSelectedDate
+                    originDate: that.currSelectedDate
                 })
             },
             // 清除当前日期筛选

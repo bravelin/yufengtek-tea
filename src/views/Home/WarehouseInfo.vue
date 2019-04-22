@@ -1,7 +1,7 @@
 <!--入库出库-->
 <template>
     <Plane class="warehouse-info-wrap" :full="warehouseFullState">
-        <PlaneTitle>入库出库</PlaneTitle>
+        <PlaneTitle>入库出库<div class="unit">单位：吨</div></PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <PlaneTools :full="warehouseFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
@@ -91,8 +91,8 @@
                     legend: {
                         show: true,
                         data: ['入库', '出库'],
-                        right: 0,
-                        top: 18,
+                        right: 67,
+                        top: 19,
                         itemGap: miniScreen ? 5 : 15,
                         textStyle: {
                             color: '#d0d0d0',
@@ -164,7 +164,7 @@
                         yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
                         grid: { top: 58, bottom: 20, left: 25, right: 25 },
                         series: [{ barWidth: 20, data: values[0] }, { barWidth: 20, data: values[1] }],
-                        legend: { itemGap: 15, right: 20, textStyle: { fontSize: 16, padding: [2, 0, 0, 2] } }
+                        legend: { itemGap: 15, right: 90, top: 28, textStyle: { fontSize: 15, padding: [2, 0, 0, 2] } }
                     }
                 } else {
                     config = {
@@ -173,7 +173,7 @@
                         yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
                         grid: { top: 50, bottom: 2, left: 5, right: 5 },
                         series: [{ barWidth: miniScreen ? 8 : 10, data: values[0] }, { barWidth: 10, data: values[1] }],
-                        legend: { itemGap: miniScreen ? 5 : 15, right: 0, textStyle: { fontSize: miniScreen ? 12 : 14, padding: [2, 0, 0, miniScreen ? 0 : 2] } }
+                        legend: { itemGap: miniScreen ? 5 : 15, right: 67, top: 19, textStyle: { fontSize: miniScreen ? 12 : 14, padding: [2, 0, 0, miniScreen ? 0 : 2] } }
                     }
                 }
                 chart.setOption(config)

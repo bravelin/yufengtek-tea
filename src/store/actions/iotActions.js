@@ -1,6 +1,5 @@
 import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
-import api from '@/lib/api'
 
 export default {
     [types.GET_IOT_DATA] (context, payload) { // 获取IOT物联设备数据
@@ -77,33 +76,28 @@ export default {
         context.state.fm1.sno = payload || context.state.fm1.sno
         ajax({ url: '/data/monitor/getflddata?sno=' + context.state.fm1.sno, method: 'post' }).then(res => {
             if (timeType == 'HOUR') {
-                const length = res.repData.todayData.length - 1
-                // fm1.data.temperature = res.repData.todayData[length].flddata_temp
-                // fm1.data.humidity = res.repData.todayData[length].flddata_humid
-                // fm1.data.light = res.repData.todayData[length].flddata_sunlux
-                // fm1.data.pressure = res.repData.todayData[length].flddata_pa
                 const total = []
                 if (type == 'temperature') {
                     res.repData.todayData.forEach(item => {
-                        total.push({ title: item.flddata_txtime, data: item.flddata_temp })
+                        total.push({ title: item.flddata_txtime, data: item.flddata_temp.toFixed(2) })
                         return total
                     })
                     state.fm1.chartDatas = total
                 } else if (type == 'humidity') {
                     res.repData.todayData.forEach(item => {
-                        total.push({ title: item.flddata_txtime, data: item.flddata_humid })
+                        total.push({ title: item.flddata_txtime, data: item.flddata_humid.toFixed(2) })
                         return total
                     })
                     state.fm1.chartDatas = total
                 } else if (type == 'light') {
                     res.repData.todayData.forEach(item => {
-                        total.push({ title: item.flddata_txtime, data: item.flddata_sunlux })
+                        total.push({ title: item.flddata_txtime, data: item.flddata_sunlux.toFixed(2) })
                         return total
                     })
                     state.fm1.chartDatas = total
                 } else if (type == 'pressure') {
                     res.repData.todayData.forEach(item => {
-                        total.push({ title: item.flddata_txtime, data: item.flddata_pa })
+                        total.push({ title: item.flddata_txtime, data: item.flddata_pa.toFixed(2) })
                         return total
                     })
                     state.fm1.chartDatas = total
@@ -149,11 +143,10 @@ export default {
         const timeType = state.fm1.time
         ajax({ url: '/data/momitor/getflddataLast?sno=' + context.state.fm1.sno, method: 'post' }).then(res => {
             if (timeType == 'HOUR') {
-                // const length = res.repData.todayData.length - 1
-                fm1.data.temperature = res.repData.data.flddata_temp
-                fm1.data.humidity = res.repData.data.flddata_humid
-                fm1.data.light = res.repData.data.flddata_sunlux
-                fm1.data.pressure = res.repData.data.flddata_pa
+                fm1.data.temperature = res.repData.data.flddata_temp.toFixed(2)
+                fm1.data.humidity = res.repData.data.flddata_humid.toFixed(2)
+                fm1.data.light = res.repData.data.flddata_sunlux.toFixed(2)
+                fm1.data.pressure = res.repData.data.flddata_pa.toFixed(2)
             }
         })
     },
@@ -254,42 +247,6 @@ export default {
             wf.data.water = (5000 * Math.random()).toFixed(1)
             wf.data.fertilizer = (3000 * Math.random()).toFixed(1)
         }, 1200)
-    },
-    [types.GET_WF_CHART_DATA] (context) {
-        const state = context.state
-        const timeType = state.wf.time
-        const type = state.wf.type
-        let baseData = 50
-        if (type == 'ec') {
-            baseData = 2000
-        } else if (type == 'ph') {
-            baseData = 14
-        } else if (type == 'water') {
-            baseData = 5000
-        } else if (type == 'fertilizer') {
-            baseData = 3000
-        }
-        if (timeType == 'HOUR') {
-            ajax({ url: api.getFmsHourChartData }).then(res => {
-                // state.chartUnit = res.unitContent
-                const list = res.todayBrokenLineList || []
-                state.wf.chartDatas = list.map(item => {
-                    return {
-                        title: (type == 'water' || type == 'fertilizer') ? item.month : item.template_txdate, data: parseInt(baseData * Math.random())
-                    }
-                })
-            })
-        } else if (timeType == 'WEEK') {
-            ajax({ url: api.getFmsWeekChartData }).then(res => {
-                // state.chartUnit = res.unitContent
-                const list = res.weekDayBrokenLineList || []
-                state.wf.chartDatas = list.map(item => {
-                    return {
-                        title: (type == 'water' || type == 'fertilizer') ? item.month : item.template_txdate, data: parseInt(baseData * Math.random())
-                    }
-                })
-            })
-        }
     },
     [types.CHANGE_PHOTO_VIEW_URL] (context, payload) {
         ajax({ url: '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {

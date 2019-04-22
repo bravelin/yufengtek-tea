@@ -1,7 +1,7 @@
 <!--历史入库对比-->
 <template>
     <Plane class="in-constrast-wrap" :full="inConstrastFullState">
-        <PlaneTitle>历史入库对比</PlaneTitle>
+        <PlaneTitle>历史入库对比<div class="unit">单位：吨</div></PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <PlaneTools :full="inConstrastFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
@@ -73,8 +73,8 @@
                     grid: { top: 45, left: 0, right: 5, bottom: 0, containLabel: true },
                     legend: {
                         data: legends,
-                        right: 0,
-                        top: 15,
+                        right: 60,
+                        top: 16,
                         itemGap: 10,
                         textStyle: {
                             color: '#d0d0d0',
@@ -152,12 +152,12 @@
                 let options = null
                 if (that[fullProp]) {
                     options = {
-                        grid: { top: 65, left: 20, right: 20, bottom: 20 },
+                        grid: { top: 70, left: 20, right: 20, bottom: 20 },
                         xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
                         yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
                         tooltip: { textStyle: { fontSize: 18 } },
                         series,
-                        legend: { data: legends, top: 25, right: 15, textStyle: { fontSize: 15, padding: [5, 0, 0, 5] } }
+                        legend: { data: legends, top: 21, right: 90, textStyle: { fontSize: 15, padding: [5, 0, 0, 5] } }
                     }
                 } else {
                     options = {
@@ -166,7 +166,7 @@
                         yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } },
                         series,
-                        legend: { data: legends, top: 15, right: 0, textStyle: { fontSize: 12, padding: [2, 0, 0, 2] } }
+                        legend: { data: legends, top: 16, right: 60, textStyle: { fontSize: 12, padding: [2, 0, 0, 2] } }
                     }
                 }
                 chart.setOption(options)

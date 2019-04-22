@@ -112,6 +112,7 @@
             flex-direction: row;
             padding: 8px;
             box-sizing: border-box;
+            cursor: pointer;
             // border: 1px solid #0f0;
             >div{
                 display: flex;
@@ -133,13 +134,19 @@
                     }
                 }
                 &:nth-of-type(2){
+                    display: flex;
                     flex: 1;
                     font-size: 28px;
                     letter-spacing: 2px;
                     color: #d0d0d0;
+                    align-items: center;
+                    justify-content: center;
                     border-left: 1px dotted rgba(255, 255, 255, 0.1);
                 }
             }
+        }
+        .plane-title .unit{
+            top: 8px;
         }
     }
     .pick-info-wrap{

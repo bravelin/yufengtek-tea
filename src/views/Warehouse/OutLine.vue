@@ -1,7 +1,7 @@
 <!--出库信息-->
 <template>
     <Plane class="out-line-wrap" :full="outLineChartFullState">
-        <PlaneTitle>今年出库信息</PlaneTitle>
+        <PlaneTitle>今年出库信息<div class="unit">单位：吨</div></PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <PlaneTools :full="outLineChartFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
@@ -70,7 +70,7 @@
                 const { titles, lineDatas } = that.handleChartData(datas)
                 const { min, max, interval } = computedChartDataInterval(lineDatas, 5)
                 const options = {
-                    grid: { top: 10, left: 0, right: 5, bottom: 0, containLabel: true },
+                    grid: { top: 12, left: 0, right: 5, bottom: 0, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
                         formatter: '{b}：{c}' + '吨',
@@ -136,7 +136,7 @@
                     }
                 } else {
                     options = {
-                        grid: { top: 10, left: 5, right: 10, bottom: 0 },
+                        grid: { top: 12, left: 5, right: 10, bottom: 0 },
                         xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
                         yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } },

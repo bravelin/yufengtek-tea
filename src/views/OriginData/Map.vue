@@ -91,7 +91,7 @@
                                 if (size < 3) {
                                     size = 4
                                 } else if (size > 18) {
-                                    size1 = 20
+                                    size = 20
                                 }
                                 return size
                             },
