@@ -72,6 +72,7 @@
                     },
                     series: [{
                         type: 'pie',
+                        silent: true,
                         radius: ['80%', '90%'],
                         center: ['50%', '55%'],
                         startAngle: 225,

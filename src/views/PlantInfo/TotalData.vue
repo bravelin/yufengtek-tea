@@ -113,6 +113,7 @@
                     series.push({
                         name: item.label,
                         type: 'pie',
+                        silent: true,
                         radius: pieRadiusArr,
                         center: [centerX, centerY],
                         startAngle: 225,
