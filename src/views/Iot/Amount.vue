@@ -36,10 +36,11 @@
         },
         methods: {
             changeIotDatas (value) {
-                const store = this.$store
-                if (this.activeIotItem != value) {
-                    this.activeIotItem = value
-                    store.dispatch(moduleNameSpace + '/' + types.GET_IOT_DATA, value)
+                const that = this
+                const store = that.$store
+                if (that.activeIotItem != value) {
+                    that.activeIotItem = value
+                    store.dispatch(moduleNameSpace + '/' + types.CHANGE_ACTIVE_IOT_TYPE, value)
                 }
             }
         }
