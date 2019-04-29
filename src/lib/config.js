@@ -31,10 +31,10 @@ export default {
     proxyUrl: 'https://proxy.yufengtek.com/',
     // 生产环境
     // baseUrl: 'http://192.168.0.148:8080/tea_IIS_Web_war',
-    baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
+    // baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
     socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 
     // 开发环境下
-    // baseUrl: '',
+    baseUrl: '',
     // socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 }

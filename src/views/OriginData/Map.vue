@@ -11,6 +11,7 @@
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
     import MapStyleJson from './mapStyle'
+
     const moduleNameSpace = ns.ORIGIN
     const dataProp = 'mapDatas'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -77,9 +78,7 @@
                         center: [108.9462765501, 34.3474989219],
                         zoom: 5.5,
                         roam: true,
-                        mapStyle: {
-                            styleJson: MapStyleJson
-                        }
+                        mapStyle: { styleJson: MapStyleJson }
                     },
                     series: [
                         {
@@ -96,17 +95,11 @@
                                 return size
                             },
                             label: {
-                                normal: {
-                                    formatter: '{b}', position: 'right', show: false
-                                },
-                                emphasis: {
-                                    show: true
-                                }
+                                normal: { formatter: '{b}', position: 'right', show: false },
+                                emphasis: { show: true }
                             },
                             itemStyle: {
-                                normal: {
-                                    color: 'rgba(8, 175, 156, 0.75)'
-                                }
+                                normal: { color: 'rgba(8, 175, 156, 0.75)' }
                             }
                         },
                         {
@@ -126,18 +119,10 @@
                             rippleEffect: { brushType: 'stroke' },
                             hoverAnimation: true,
                             label: {
-                                normal: {
-                                    formatter: '{b}',
-                                    position: 'right',
-                                    show: true
-                                }
+                                normal: { formatter: '{b}', position: 'right', show: true }
                             },
                             itemStyle: {
-                                normal: {
-                                    color: 'rgba(8, 175, 156, 0.75)',
-                                    shadowBlur: 5,
-                                    shadowColor: '#333'
-                                }
+                                normal: { color: 'rgba(8, 175, 156, 0.75)', shadowBlur: 5, shadowColor: '#333' }
                             },
                             zlevel: 1
                         }
@@ -145,8 +130,6 @@
                 }
                 that.chart = echarts.init(container)
                 that.chart.setOption(options)
-                // 获取底图bmap对象
-                // const tt = that.chart.getModel().getComponent('bmap').getBMap()
             },
             // 刷新图表
             refresh (datas) {

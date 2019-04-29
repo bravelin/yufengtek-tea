@@ -28,6 +28,7 @@
     import AmountRank from './AmountRank'
     import PickInfo from './PickInfo'
     import LevelInfo from './LevelInfo'
+
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
 
@@ -41,12 +42,6 @@
             const store = that.$store
             store.commit(types.SWITCH_LOADING, false)
             store.dispatch(moduleNameSpace + '/' + types.HOME_GET_AMOUNT_RANK_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.HOME_GET_FARMING_ACT_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.HOME_GET_PICK_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.HOME_GET_WAREHOUSE_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.HOME_GET_CITY_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.HOME_GET_MONITOR_AMOUNT)
-            // store.dispatch(moduleNameSpace + '/' + types.HOME_GET_TEA_LEVEL_DATA)
         },
         beforeDestroy () {
             const that = this

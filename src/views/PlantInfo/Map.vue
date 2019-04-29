@@ -10,6 +10,7 @@
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import WuyishanMap from '@/components/WuyishanMap'
+
     const fullProp = 'mapFullState'
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -28,10 +29,6 @@
                 const store = that.$store
                 store.commit(moduleNameSpace + '/' + types.PLANT_CHANGE_CURR_REGION, place)
                 store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_STAT_DATA, place)
-                // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TREE_AGE_DATA)
-                // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_FARM_DATA)
-                // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_VARIETIES_DATA)
-                // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_AMOUNT_RANK)
             },
             doFullStateChange (payload) {
                 const that = this

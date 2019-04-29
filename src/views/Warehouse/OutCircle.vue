@@ -11,6 +11,7 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+
     const moduleNameSpace = ns.WAREHOUSE
     const dataProp = 'toDayOutAmount'
     const fullProp = 'outCircleChartFullState'
@@ -67,9 +68,7 @@
                 const that = this
                 const container = that.container
                 const options = {
-                    grid: {
-                        top: 15, left: 5, right: 5, bottom: 0
-                    },
+                    grid: { top: 15, left: 5, right: 5, bottom: 0 },
                     series: [{
                         type: 'pie',
                         silent: true,

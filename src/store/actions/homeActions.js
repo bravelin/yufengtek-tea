@@ -5,34 +5,31 @@ export default {
     // 获取茶树排行数据
     [types.HOME_GET_AMOUNT_RANK_DATA] (context, payload) {
         const data = payload ? { addr: payload || '' } : ''
-        ajax({ url: '/bigdata/home/detail', method: 'post', data: data }).then(res => {
-            // 茶树排行
-            context.state.amountRankDatas = res.repData.planting.sort((a, b) => { return a.area > b.area ? 1 : -1 })
-            // 获取施肥比例数据
-            context.state.farmingActdatas = res.repData.fertiliz.map(item => {
-                return { label: item.month, value: item.weight }
-            })
-            // 获取采摘数据
-            let data = 0
-            context.state.pickDatas = res.repData.picking.map(item => {
-                data = item.amount
-                return { label: item.classify, value: data }
-            })
-            context.state.teaTotalAmount = (res.repData.totalPicking == null || res.repData.totalPicking.length == 0) ? context.state.teaTotalAmount : res.repData.totalPicking
-            // 获取出库入库数据
-            let warehouseDatas = {}
-            warehouseDatas.in = (res.repData.inStock.length == 0) ? context.state.warehouseDatas.in : res.repData.inStock
-            warehouseDatas.out = (res.repData.inStock.length == 0) ? context.state.warehouseDatas.out : res.repData.outStock
-            context.state.warehouseDatas = warehouseDatas
-            // 城市溯源排行
-            var result = res.repData.origin.map(item => { return { value: item.counts, name: item.cityname } })
-            context.state.cityDatas = result
-            // 获取监控设备数据
-            context.state.cameraAmount = res.repData.cameraCount.count
-            context.state.monitorAmount = res.repData.fielddstation.count
-            context.state.waterFertilizerAmount = 0
-            // 获取制茶等级数据
-            context.state.levelDatas = res.repData.craft
+        const state = context.state
+        ajax({ url: '/bigdata/home/detail', method: 'post', data }).then(res => {
+            if (res.code == 200) {
+                const resData = res.repData
+                // 茶树排行
+                state.amountRankDatas = resData.planting.sort((a, b) => { return a.area > b.area ? 1 : -1 })
+                // 获取施肥比例数据
+                state.farmingActdatas = resData.fertiliz.map(item => { return { label: item.month, value: item.weight } })
+                // 获取采摘数据
+                state.pickDatas = res.repData.picking.map(item => { return { label: item.classify, value: item.amount } })
+                state.teaTotalAmount = (resData.totalPicking == null || resData.totalPicking.length == 0) ? state.teaTotalAmount : resData.totalPicking
+                // 获取出库入库数据
+                let warehouseDatas = {}
+                warehouseDatas.in = (resData.inStock.length == 0) ? state.warehouseDatas.in : resData.inStock
+                warehouseDatas.out = (resData.inStock.length == 0) ? state.warehouseDatas.out : resData.outStock
+                state.warehouseDatas = warehouseDatas
+                // 城市溯源排行
+                state.cityDatas = resData.origin.map(item => { return { value: item.counts, name: item.cityname } })
+                // 获取监控设备数据
+                state.cameraAmount = resData.cameraCount.count
+                state.monitorAmount = resData.fielddstation.count
+                state.waterFertilizerAmount = 0
+                // 获取制茶等级数据
+                state.levelDatas = resData.craft
+            }
         })
     },
 }

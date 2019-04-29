@@ -76,11 +76,7 @@
                         right: 60,
                         top: 16,
                         itemGap: 10,
-                        textStyle: {
-                            color: '#d0d0d0',
-                            fontSize: 12,
-                            padding: [2, 0, 0, 2]
-                        }
+                        textStyle: { color: '#d0d0d0', fontSize: 12, padding: [2, 0, 0, 2] }
                     },
                     tooltip: {
                         trigger: 'axis',
@@ -90,11 +86,7 @@
                             }).join('<br/>')
                         },
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
-                        axisPointer: {
-                            lineStyle: {
-                                color: 'rgba(238,238,238,0.4)'
-                            }
-                        }
+                        axisPointer: { lineStyle: { color: 'rgba(238,238,238,0.4)' } }
                     },
                     xAxis: [{
                         type: 'category',
@@ -184,7 +176,7 @@
                 var titles = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
                 if (datas[0].list.length != 12) {
                     var ss = datas[0].list[0].label
-                    for (var j = 1; j < ss; j++) {
+                    for (let j = 1; j < ss; j++) {
                         datas[0].list.unshift({ label: j, value: 0 })
                     }
                 }
@@ -194,12 +186,10 @@
                     legends.push(item.year)
                     for (let j = 0; j < item.list.length; j++) {
                         dataItem = item.list[j]
-                        // titleObjs[dataItem.label] = true
                         lineObj.list.push(dataItem.value)
                     }
                     lineDatas.push(lineObj)
                 }
-                // const titles = Object.keys(titleObjs)
                 return { titles, lineDatas, legends }
             },
             doFullStateChange (payload) {

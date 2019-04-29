@@ -4,14 +4,16 @@ import ajax from '@/lib/ajax'
 export default {
     [types.FARMING_GET_PLANT_ACT_DATA] (context, payload) {
         const data = payload ? { address_country: '', address_town: payload || '' } : { address_country: '', address_town: '' }
-        ajax({ url: '/data/farm/getData', method: 'post', data: data }).then(res => {
+        const state = context.state
+        ajax({ url: '/data/farm/getData', method: 'post', data }).then(res => {
             if (res.code == 200) {
-                context.state.plantActPieDatas = res.repData.yearPlant
-                context.state.plantActLineDatas = res.repData.monthPlant
-                context.state.fertilizerActPieDatas = res.repData.yearFaramA
-                context.state.fertilizerActLineDatas = res.repData.monthFaramA
-                context.state.protectionActPieDatas = res.repData.yearFaramB
-                context.state.protectionActLineDatas = res.repData.monthFaramB
+                const resData = res.repData
+                state.plantActPieDatas = resData.yearPlant
+                state.plantActLineDatas = resData.monthPlant
+                state.fertilizerActPieDatas = resData.yearFaramA
+                state.fertilizerActLineDatas = resData.monthFaramA
+                state.protectionActPieDatas = resData.yearFaramB
+                state.protectionActLineDatas = resData.monthFaramB
             }
         })
     }

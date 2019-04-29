@@ -28,9 +28,6 @@
         components: {
             Map, AddressList, CityRank, CountStat
         },
-        computed: {
-            ...mapState(['screenFullState'])
-        },
         created () {
             const that = this
             const store = that.$store

@@ -70,31 +70,20 @@
                 const { titles, values } = that.handleChartData(datas)
                 const { max, min, interval } = computedChartDataInterval(values, 4)
                 const options = {
-                    grid: {
-                        top: 14, left: 5, right: 10, bottom: 0, containLabel: true
-                    },
+                    grid: { top: 14, left: 5, right: 10, bottom: 0, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
                         formatter: '{b}：{c}' + ' 亩',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
-                        axisPointer: {
-                            lineStyle: {
-                                color: 'rgba(238,238,238,0.4)'
-                            }
-                        },
-                        textStyle: {
-                            fontSize: 14
-                        }
+                        axisPointer: { lineStyle: { color: 'rgba(238,238,238,0.4)' } },
+                        textStyle: { fontSize: 14 }
                     },
                     yAxis: [{
                         show: true,
                         min,
                         max,
                         interval,
-                        splitLine: {
-                            show: true,
-                            lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
-                        },
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 } },
                         axisLine: { lineStyle: { color: '#0c3b71' } },
                         axisLabel: { margin: 8, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
                     }],
@@ -102,22 +91,14 @@
                         show: true,
                         data: titles,
                         inverse: true,
-                        axisLine: {
-                            lineStyle: { color: '#0c3b71' }
-                        },
-                        splitLine: {
-                            show: false
-                        },
-                        axisTick: {
-                            show: false
-                        },
+                        axisLine: { lineStyle: { color: '#0c3b71' } },
+                        splitLine: { show: false },
+                        axisTick: { show: false },
                         axisLabel: {
                             color: '#fff',
                             fontSize: 12,
                             margin: 5,
-                            formatter (params) {
-                                return params.split('').join('\n')
-                            }
+                            formatter (params) { return params.split('').join('\n') }
                         }
                     },
                     series: [{
@@ -126,10 +107,7 @@
                         data: values,
                         barWidth: 10,
                         itemStyle: {
-                            normal: {
-                                barBorderRadius: 30,
-                                color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{ offset: 0, color: '#2663bc' }, { offset: 1, color: '#003366' }])
-                            }
+                            normal: { barBorderRadius: 30, color: new echarts.graphic.LinearGradient(0, 0, 1, 1, [{ offset: 0, color: '#2663bc' }, { offset: 1, color: '#003366' }]) }
                         }
                     }]
                 }

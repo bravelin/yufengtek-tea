@@ -4,10 +4,8 @@ import config from '@/lib/config'
 const Qs = require('qs')
 
 axios.defaults.baseURL = ''
-// axios.setRequestHeader("Content-Type", "application/x-www-form-urlencoded")
 // 请求发送之前的拦截器
 axios.interceptors.request.use(config => {
-    // ========
     return config
 }, error => {
     return Promise.reject(error)
@@ -17,7 +15,6 @@ axios.interceptors.request.use(config => {
 axios.interceptors.response.use(res => {
     return Promise.resolve(res)
 }, error => {
-    // console.log('ajax error', error)
     return Promise.reject(error)
 })
 

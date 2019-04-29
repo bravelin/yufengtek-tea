@@ -80,11 +80,7 @@
                         trigger: 'axis',
                         formatter: '{b}：{c}' + 'kg',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
-                        axisPointer: {
-                            lineStyle: {
-                                color: 'rgba(238, 238, 238, 0.4)'
-                            }
-                        },
+                        axisPointer: { lineStyle: { color: 'rgba(238, 238, 238, 0.4)' } },
                         textStyle: { fontSize: 14 }
                     },
                     xAxis: [{
@@ -116,11 +112,7 @@
                             normal: {
                                 color: 'rgba(0, 159, 253, 0.3)',
                                 barBorderRadius: 0,
-                                label: {
-                                    show: true,
-                                    position: 'inside',
-                                    fontSize: 9
-                                }
+                                label: { show: true, position: 'inside', fontSize: 9 }
                             }
                         },
                         data: values,
@@ -165,11 +157,7 @@
                                 data: values,
                                 symbolSize: 45,
                                 itemStyle: {
-                                    normal: {
-                                        label: {
-                                            fontSize: 9
-                                        }
-                                    }
+                                    normal: { label: { fontSize: 9 } }
                                 }
                             }
                         ],

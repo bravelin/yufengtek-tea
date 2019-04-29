@@ -81,32 +81,16 @@
                         right: 0,
                         top: 0,
                         itemGap: miniScreen ? 5 : 10,
-                        textStyle: {
-                            color: '#d0d0d0',
-                            fontSize: 12,
-                            padding: [2, 0, 0, 2]
-                        }
+                        textStyle: { color: '#d0d0d0', fontSize: 12, padding: [2, 0, 0, 2] }
                     },
                     series: [{
                         type: 'pie',
                         radius: ['40%', '80%'],
                         center: ['36%', '50%'],
-                        label: {
-                            show: true,
-                            position: 'inside',
-                            formatter: '{d}%',
-                            fontSize: 12
-                        },
-                        // color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
+                        label: { show: true, position: 'inside', formatter: '{d}%', fontSize: 12 },
                         color: ['#15467d', '#87d0f6', '#4775b7', '#91acd4', '#2663bc'],
                         data: seriesData,
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
+                        itemStyle: { emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } }
                     }]
                 }
                 that.chart = echarts.init(container)

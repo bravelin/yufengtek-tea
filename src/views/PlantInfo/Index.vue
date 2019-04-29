@@ -40,10 +40,6 @@
             store.commit(types.SWITCH_SCREEN_FULL, true)
             store.commit(types.SWITCH_LOADING, false)
             store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_STAT_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TREE_AGE_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_FARM_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_TEA_VARIETIES_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_AMOUNT_RANK)
         },
         beforeDestroy () {
             const that = this

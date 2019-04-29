@@ -76,11 +76,7 @@
                         right: 60,
                         top: 16,
                         itemGap: 10,
-                        textStyle: {
-                            color: '#d0d0d0',
-                            fontSize: 12,
-                            padding: [2, 0, 0, 2]
-                        }
+                        textStyle: { color: '#d0d0d0', fontSize: 12, padding: [2, 0, 0, 2] }
                     },
                     tooltip: {
                         trigger: 'axis',
@@ -90,11 +86,7 @@
                             }).join('<br/>')
                         },
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
-                        axisPointer: {
-                            lineStyle: {
-                                color: 'rgba(238,238,238,0.4)'
-                            }
-                        }
+                        axisPointer: { lineStyle: { color: 'rgba(238,238,238,0.4)' } }
                     },
                     xAxis: [{
                         type: 'category',

@@ -81,25 +81,6 @@
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         textStyle: { fontSize: 14 }
                     },
-                    // graphic: [{
-                    //     type: 'text',
-                    //     left: '36.5%',
-                    //     top: '40.5%',
-                    //     style: {
-                    //         text: '茶叶总产量',
-                    //         fill: '#d0d0d0',
-                    //         font: 'normal 14px "Microsoft YaHei", sans-serif'
-                    //     }
-                    // }, {
-                    //     type: 'text',
-                    //     left: '36.5%',
-                    //     top: '50.5%',
-                    //     style: {
-                    //         text: `${that.teaTotalAmount} 吨`,
-                    //         fill: '#dfdfdf',
-                    //         font: 'normal bold 16px "Microsoft YaHei", sans-serif'
-                    //     }
-                    // }],
                     legend: {
                         show: true,
                         data: legendData,
@@ -123,7 +104,6 @@
                             formatter: '{d}%',
                             fontSize: 12
                         },
-                        // color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
                         color: ['#43517c', '#87d0f6', '#4775b7', '#91acd4', '#15467d'],
                         data: seriesData,
                         itemStyle: {
@@ -150,34 +130,12 @@
                         tooltip: { textStyle: { fontSize: 18 } },
                         series: [{ center: [miniScreen ? '38%' : '44%', '50%'], radius: ['45%', '88%'], data: seriesData, label: { fontSize: 16 } }],
                         legend: { data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
-                        // graphic: [
-                        //     { left: '40.5%', top: '40.5%', style: { font: 'normal 20px "Microsoft YaHei", sans-serif' } },
-                        //     {
-                        //         left: '41%',
-                        //         top: '50.5%',
-                        //         style: {
-                        //             text: `${that.teaTotalAmount} 吨`,
-                        //             font: 'normal bold 25px "Microsoft YaHei", sans-serif'
-                        //         }
-                        //     }
-                        // ]
                     }
                 } else {
                     options = {
                         tooltip: { textStyle: { fontSize: 14 } },
                         series: [{ center: [miniScreen ? '38%' : '44%', '50%'], radius: ['45%', miniScreen ? '80%' : '88%'], data: seriesData, label: { fontSize: 12 } }],
                         legend: { data: legendData, right: miniScreen ? 0 : '3%', itemGap: miniScreen ? 5 : 15, top: 10, textStyle: { fontSize: miniScreen ? 12 : 14, padding: [2, 0, 0, miniScreen ? 0 : 4] } },
-                        // graphic: [
-                        //     { left: '36.5%', top: '40.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } },
-                        //     {
-                        //         left: '36.5%',
-                        //         top: '50.5%',
-                        //         style: {
-                        //             text: `${that.teaTotalAmount} 吨`,
-                        //             font: 'normal bold 16px "Microsoft YaHei", sans-serif'
-                        //         }
-                        //     }
-                        // ]
                     }
                 }
                 chart.setOption(options)

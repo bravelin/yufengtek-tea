@@ -15,6 +15,7 @@
     import FertilizerActLine from './FertilizerActLine'
     import types from '@/store/constants/types'
     import ns from '@/store/constants/ns'
+
     const moduleNameSpace = ns.FARMING
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const fullProp = 'fertilizerFullState'

@@ -11,6 +11,7 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'levelDatas'
@@ -101,7 +102,6 @@
                             formatter: '{d}%',
                             fontSize: 12
                         },
-                        // color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
                         color: ['#43517c', '#87d0f6', '#4775b7', '#91acd4', '#15467d'],
                         data: seriesData,
                         itemStyle: {

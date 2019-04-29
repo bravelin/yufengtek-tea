@@ -69,9 +69,7 @@
                 const that = this
                 const container = that.container
                 const options = {
-                    grid: {
-                        top: 0, left: 5, right: 5, bottom: 0
-                    },
+                    grid: { top: 0, left: 5, right: 5, bottom: 0 },
                     series: that.getSerials(datas)
                 }
                 that.chart = echarts.init(container)

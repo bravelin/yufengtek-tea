@@ -11,6 +11,7 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'amountRankDatas'
@@ -71,15 +72,10 @@
                 const { titles, values } = that.handleChartData(datas)
                 const miniScreen = that.miniScreen
                 const options = {
-                    grid: {
-                        top: 0, left: 3, right: 16, bottom: 5, containLabel: true
-                    },
+                    grid: { top: 0, left: 3, right: 16, bottom: 5, containLabel: true },
                     xAxis: {
                         show: true,
-                        splitLine: {
-                            show: true,
-                            lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
-                        },
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 } },
                         axisLine: { lineStyle: { color: 'rgba(0,0,0,0)' } },
                         axisLabel: { margin: 8, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
                     },
@@ -87,20 +83,10 @@
                         show: true,
                         data: titles,
                         inverse: true,
-                        axisLine: {
-                            show: false
-                        },
-                        splitLine: {
-                            show: false
-                        },
-                        axisTick: {
-                            show: false
-                        },
-                        axisLabel: {
-                            color: '#fff',
-                            fontSize: 12,
-                            margin: 8
-                        }
+                        axisLine: { show: false },
+                        splitLine: { show: false },
+                        axisTick: { show: false },
+                        axisLabel: { color: '#fff', fontSize: 12, margin: 8 }
                     }],
                     series: [{
                         type: 'bar',
@@ -117,9 +103,7 @@
                             normal: {
                                 show: true,
                                 position: 'insideLeft',
-                                formatter (item) {
-                                    return `${item.value} 亩`
-                                },
+                                formatter (item) { return `${item.value} 亩` },
                                 color: '#fff',
                                 fontSize: miniScreen ? 12 : 14,
                                 offset: [0, 2]

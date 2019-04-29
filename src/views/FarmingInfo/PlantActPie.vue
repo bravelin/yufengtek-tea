@@ -81,11 +81,7 @@
                         right: 0,
                         top: 0,
                         itemGap: miniScreen ? 5 : 10,
-                        textStyle: {
-                            color: '#d0d0d0',
-                            fontSize: 12,
-                            padding: [2, 0, 0, 2]
-                        }
+                        textStyle: { color: '#d0d0d0', fontSize: 12, padding: [2, 0, 0, 2] }
                     },
                     series: [{
                         type: 'pie',
@@ -101,30 +97,15 @@
                             normal: {
                                 show: true,
                                 position: 'inside',
-                                textStyle: {
-                                    color: 'rgba(255, 255, 255, 1)'
-                                },
+                                textStyle: { color: 'rgba(255, 255, 255, 1)' },
                                 formatter: '{d}%',
                             },
-                            // emphasis: {
-                            //     show: true,
-                            //     textStyle: {
-                            //         fontSize: '18',
-                            //         fontWeight: 'bold'
-                            //     }
-                            // },
                             formatter: '{d}%',
-                            // fontSize: 12
                         },
-                        // color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
                         color: ['#15467d', '#87d0f6', '#4775b7', '#91acd4', '#2663bc'],
                         data: seriesData,
                         itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
+                            emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' }
                         }
                     }]
                 }

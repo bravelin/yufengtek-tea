@@ -12,6 +12,7 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'varietiesDatas'
@@ -92,47 +93,15 @@
                             padding: [2, 0, 0, miniScreen ? 0 : 4]
                         }
                     },
-                    // graphic: [{
-                    //     type: 'text',
-                    //     left: '37.5%',
-                    //     top: '40.5%',
-                    //     position: [-20, 0],
-                    //     style: {
-                    //         x: 20,
-                    //         text: '品种比例',
-                    //         textAlign: 'center',
-                    //         fill: '#d0d0d0',
-                    //         font: 'normal 14px "Microsoft YaHei", sans-serif'
-                    //     }
-                    // }, {
-                    //     type: 'text',
-                    //     left: '37%',
-                    //     top: '50.5%',
-                    //     style: {
-                    //         text: `${that.varietiesTotalData} 吨`,
-                    //         fill: '#dfdfdf',
-                    //         font: 'normal bold 16px "Microsoft YaHei", sans-serif'
-                    //     }
-                    // }],
                     series: [{
                         type: 'pie',
                         radius: ['45%', '88%'],
                         center: ['44%', '50%'],
-                        label: {
-                            show: true,
-                            position: 'inside',
-                            formatter: '{d}%',
-                            fontSize: 12
-                        },
-                        // color: ['#86D560', '#AF89D6', '#59ADF3', '#FF999A', '#FFCC67'],
+                        label: { show: true, position: 'inside', formatter: '{d}%', fontSize: 12 },
                         color: ['#15467d', '#43517c', '#87d0f6', '#4775b7', '#91acd4'],
                         data: seriesData,
                         itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
+                            emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' }
                         }
                     }]
                 }
@@ -151,34 +120,12 @@
                         tooltip: { textStyle: { fontSize: 18 } },
                         series: [{ data: seriesData, label: { fontSize: 16 } }],
                         legend: { padding: [2, 0, 0, 4], data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
-                        // graphic: [
-                        //     { left: '41.5%', top: '40.5%', style: { font: 'normal 20px "Microsoft YaHei", sans-serif' } },
-                        //     {
-                        //         left: '41.3%',
-                        //         top: '50.5%',
-                        //         style: {
-                        //             text: `${that.varietiesTotalData} 吨`,
-                        //             font: 'normal bold 25px "Microsoft YaHei", sans-serif'
-                        //         }
-                        //     }
-                        // ]
                     }
                 } else {
                     options = {
                         tooltip: { textStyle: { fontSize: 14 } },
                         series: [{ data: seriesData, label: { fontSize: 12 } }],
                         legend: { padding: [2, 0, 0, miniScreen ? 0 : 4], data: legendData, right: '3%', itemGap: miniScreen ? 5 : 15, top: 10, textStyle: { fontSize: miniScreen ? 12 : 14 } },
-                        // graphic: [
-                        //     { left: '36.5%', top: '40.5%', style: { font: 'normal 14px "Microsoft YaHei", sans-serif' } },
-                        //     {
-                        //         left: '36.5%',
-                        //         top: '50.5%',
-                        //         style: {
-                        //             text: `${that.varietiesTotalData} 吨`,
-                        //             font: 'normal bold 16px "Microsoft YaHei", sans-serif'
-                        //         }
-                        //     }
-                        // ]
                     }
                 }
                 chart.setOption(options)

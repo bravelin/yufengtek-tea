@@ -76,9 +76,7 @@
                         show: true,
                         formatter: '{b}：{c}',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
-                        textStyle: {
-                            fontSize: 14
-                        }
+                        textStyle: { fontSize: 14 }
                     },
                     series: [{
                         type: 'wordCloud',
@@ -86,10 +84,7 @@
                         sizeRange: miniScreen ? [12, 24] : [14, 40],
                         rotationRange: [0, 0],
                         shape: 'circle',
-                        autoSize: {
-                            enable: true,
-                            minSize: 12
-                        },
+                        autoSize: { enable: true, minSize: 12 },
                         data: datas,
                         textStyle: {
                             normal: {
@@ -102,10 +97,7 @@
                                     ].join(',') + ')'
                                 }
                             },
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowColor: '#333'
-                            }
+                            emphasis: { shadowBlur: 10, shadowColor: '#333' }
                         }
                     }]
                 }

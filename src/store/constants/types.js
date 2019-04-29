@@ -8,7 +8,6 @@ const types = [
     'CHANGE_ACTIVE_MARKER', // 更改当前active状态的marker
 
     'GET_FM1_DATA', // 获取fm数据
-    'GET_FM1_CHART_DATA', // 获取fm1图表数据
     'SWITCH_FM1_TYPE', // 更改FM1类型
     'SWITCH_FM1_TIME_TYPE', // 更改fm1的数据类型，时刻数据/七天数据
 
@@ -17,8 +16,6 @@ const types = [
     'SWITCH_FM2_TYPE', // 更改FM2类型
     'SWITCH_FM2_TIME_TYPE', // 更改fm2的数据类型，时刻数据/七天数据
 
-    'GET_WF_DATA', // 获取WF数据
-    'GET_WF_CHART_DATA', // 获取WF图表数据
     'SWITCH_WF_TYPE', // 更改WF类型
     'SWITCH_WF_TIME_TYPE', // 更改WF的数据类型，时刻数据/七天数据
 

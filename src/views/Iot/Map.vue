@@ -490,9 +490,6 @@
                         store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, data.sno)
                     } else if (data.type == types.IOT_TYPE_FM2) {
                         store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, data.sno)
-                    } else if (data.type == types.IOT_TYPE_WF) {
-                        store.dispatch(moduleNameSpace + '/' + types.GET_WF_DATA)
-                        store.dispatch(moduleNameSpace + '/' + types.GET_WF_CHART_DATA)
                     } else if (data.type == types.IOT_TYPE_GUN) {
                         store.dispatch(moduleNameSpace + '/' + types.GET_GUN_DATA, data)
                     }

@@ -51,7 +51,7 @@
                 let bool = (that.currActive.type == 'IOT_TYPE_FM1' && that.fm1.time == 'HOUR') || (that.currActive.type == 'IOT_TYPE_FM2' && that.fm2.time == 'HOUR')
                 let mimute = new Date().getMinutes()
                 if (bool) {
-                    store.dispatch(moduleNameSpace + '/' + (that.currActive.type == 'IOT_TYPE_FM1' ? types.GET_FM1_CHART_DATA : types.GET_FM2_CHART_DATA))
+                    store.dispatch(moduleNameSpace + '/' + (that.currActive.type == 'IOT_TYPE_FM1' ? types.GET_FM1_DATA : types.GET_FM2_DATA))
                     if (mimute == 31 || mimute == 1) {
                         store.dispatch(moduleNameSpace + '/' + (that.currActive.type == 'IOT_TYPE_FM1' ? types.GET_FM1_DATA : types.GET_FM2_DATA))
                     }

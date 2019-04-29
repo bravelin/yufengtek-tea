@@ -116,11 +116,7 @@
                     tooltip: {
                         trigger: 'axis',
                         backgroundColor: 'rgba(0, 159, 253, 0.5)',
-                        axisPointer: {
-                            lineStyle: {
-                                color: 'rgba(238,238,238,0.4)'
-                            }
-                        },
+                        axisPointer: { lineStyle: { color: 'rgba(238,238,238,0.4)' } },
                         formatter (params) {
                             return `时间：${params[0].name}<br/>${that.fm1.name}：${params[0].data.value} ${that.fm1.chartUnit}`
                         }
@@ -151,9 +147,7 @@
                         showSymbol: true,
                         smooth: true,
                         areaStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(67, 81, 124, 0.3)' }, { offset: 1, color: 'rgba(67, 81, 124, 0.1)' }], false)
-                            }
+                            normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(67, 81, 124, 0.3)' }, { offset: 1, color: 'rgba(67, 81, 124, 0.1)' }], false) }
                         }
                     }]
                 }

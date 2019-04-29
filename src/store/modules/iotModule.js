@@ -11,24 +11,16 @@ export default {
         iotDatas: [], // 设备数据
         camera: [],
         emVos: [],
-        Fm1: [],
-        Fm2: [],
+        fm1List: [],
+        fm2List: [],
         photoViewUrl: '',
-        currActive: {
-            type: types.IOT_TYPE_FM1,
-            id: 0
-        }, // 默认为FM1
+        currActive: { type: types.IOT_TYPE_FM1, id: 0 },
         fm1: {
             type: 'temperature', // temperature humidity light pressure
             name: '温度',
             chartUnit: '℃',
             time: 'HOUR', // HOUR WEEK 数据时间类型
-            data: {
-                temperature: '12.13',
-                humidity: '52.7',
-                light: '9987.0',
-                pressure: '988.51'
-            },
+            data: { temperature: '-', humidity: '-', light: '-', pressure: '-' },
             sno: '',
             chartDatas: [], // 时刻/七天图表数据
             curveChartFullState: false, // 控制全屏状态
@@ -38,12 +30,7 @@ export default {
             name: '风速',
             chartUnit: 'm/s',
             time: 'HOUR', // HOUR WEEK 数据时间类型
-            data: {
-                wind: '12',
-                rain: '52',
-                temperature: '17',
-                humidity: '16'
-            },
+            data: { wind: '-', rain: '-', temperature: '-', humidity: '-' },
             sno: '',
             chartDatas: [], // 时刻/七天图表数据
             curveChartFullState: false, // 控制全屏状态
@@ -53,12 +40,7 @@ export default {
             name: 'EC',
             chartUnit: 'mS/cm', // L kg
             time: 'HOUR', // HOUR WEEK 数据时间类型
-            data: {
-                ec: '12',
-                ph: '7',
-                water: '17',
-                fertilizer: '16'
-            },
+            data: { ec: '-', ph: '-', water: '-', fertilizer: '-' },
             chartDatas: [], // 时刻/七天图表数据
             curveChartFullState: false, // 控制全屏状态
         },
@@ -66,7 +48,6 @@ export default {
         camera360FullState: false, // 360摄像头的全屏状态
         videoUrl: '', // 监控录像地址
         videoUrl360: '', // 球机摄像头地址
-        display: '',
         mapSise: 14, // 地图处于的放大等级
     },
     actions,

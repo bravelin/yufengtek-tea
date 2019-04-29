@@ -85,8 +85,7 @@
                     const currSelectedDate = that.currSelectedDate || ''
                     if (vertical.scrollTop == addr) {
                         that.$store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_LIST_DATA, {
-                            currentPage: that.currentPage + 1,
-                            originDate: currSelectedDate
+                            currentPage: that.currentPage + 1, originDate: currSelectedDate
                         })
                     }
                 }
@@ -95,8 +94,7 @@
                 const that = this
                 that.currSelectedDate = formatTime(date, 'yyyy-MM-dd')
                 that.$store.dispatch(moduleNameSpace + '/' + types.GET_ORIGIN_LIST_DATA, {
-                    currentPage: 1,
-                    originDate: that.currSelectedDate
+                    currentPage: 1, originDate: that.currSelectedDate
                 })
             },
             // 清除当前日期筛选

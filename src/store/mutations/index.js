@@ -12,7 +12,9 @@ export default {
         state.winHeight = doc.documentElement.clientHeight || win.innerHeight
         state.winWidth = doc.documentElement.clientWidth || win.innerWidth
         doc.body.style.minHeight = state.winHeight + 'px'
-        state.windowResizeState = state.windowResizeState + 1
+        let count = state.windowResizeState + 1
+        count = (count > 99999) ? 1 : count // 防止无限增大
+        state.windowResizeState = count
     },
     [types.SET_CURR_ROUTER] (state, payload) {
         const currRouter = state.currRouter

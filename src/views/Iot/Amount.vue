@@ -12,10 +12,6 @@
                 <div><i class="iconfont">&#xe61b;</i><div>监测站</div></div>
                 <div>{{ monitorAmount }}</div>
             </div>
-            <!--<div class="iot-item">
-                <div><i class="iconfont">&#xe60c;</i><div>水肥设备</div></div>
-                <div>{{ waterFertilizerAmount }}</div>
-            </div>-->
         </Plane>
     </div>
 </template>

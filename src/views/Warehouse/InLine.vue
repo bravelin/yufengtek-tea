@@ -76,9 +76,7 @@
                         formatter: '{b}：{c}' + '吨',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: {
-                            lineStyle: {
-                                color: 'rgba(238,238,238,0.4)'
-                            }
+                            lineStyle: { color: 'rgba(238,238,238,0.4)' }
                         },
                         textStyle: { fontSize: 14 }
                     },
@@ -110,9 +108,7 @@
                         symbolSize: 6,
                         showSymbol: true,
                         areaStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(67, 81, 124, 0.3)' }, { offset: 0.85, color: 'rgba(67, 81, 124, 0.1)' }], false)
-                            }
+                            normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(67, 81, 124, 0.3)' }, { offset: 0.85, color: 'rgba(67, 81, 124, 0.1)' }], false) }
                         }
                     }]
                 }

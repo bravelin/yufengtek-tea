@@ -113,11 +113,7 @@
                     tooltip: {
                         trigger: 'axis',
                         backgroundColor: 'rgba(0, 159, 253, 0.5)',
-                        axisPointer: {
-                            lineStyle: {
-                                color: 'rgba(238,238,238,0.4)'
-                            }
-                        },
+                        axisPointer: { lineStyle: { color: 'rgba(238,238,238,0.4)' } },
                         formatter (params) {
                             return `时间：${params[0].name}<br/>${that.fm2.name}：${params[0].data.value} ${that.fm2.chartUnit}`
                         }
@@ -148,9 +144,7 @@
                         symbol: that.fm2.type == 'wind' ? `image://${location.origin}/images/arrow.png` : 'circle',
                         symbolSize: that.fm2.type == 'wind' ? 20 : 6,
                         areaStyle: {
-                            normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(67, 81, 124, 0.3)' }, { offset: 1, color: 'rgba(67, 81, 124, 0.1)' }], false)
-                            }
+                            normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(67, 81, 124, 0.3)' }, { offset: 1, color: 'rgba(67, 81, 124, 0.1)' }], false) }
                         }
                     }]
                 }
@@ -191,8 +185,7 @@
                     barDatas.push({ name: item.title, value: item.data })
                     obj = { name: item.title, value: item.data }
                     if (that.fm2.type == 'wind') {
-                        // 风向旋转角度
-                        obj.symbolRotate = item.rotate
+                        obj.symbolRotate = item.rotate // 风向旋转角度
                     }
                     lineDatas.push(obj)
                 })
@@ -202,9 +195,7 @@
             doFullStateChange (payload) {
                 const that = this
                 that.$store.commit(moduleNameSpace + '/' + types.IOT_CHANGE_FULL_STATE, {
-                    fullStateName: fullProp,
-                    subModuleName: 'fm2',
-                    state: payload
+                    fullStateName: fullProp, subModuleName: 'fm2', state: payload
                 })
             }
         }

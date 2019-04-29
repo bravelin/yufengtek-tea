@@ -34,8 +34,6 @@
             store.commit(types.SWITCH_SCREEN_FULL, true)
             store.commit(types.SWITCH_LOADING, false)
             store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PLANT_ACT_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_FERTILIZER_ACT_DATA)
-            // store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PROTECTION_ACT_DATA)
         },
         beforeDestroy () {
             const that = this

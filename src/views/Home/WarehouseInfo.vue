@@ -196,8 +196,7 @@
             doFullStateChange (payload) {
                 const that = this
                 that.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
-                    fullStateName: fullProp,
-                    state: payload
+                    fullStateName: fullProp, state: payload
                 })
             }
         }
