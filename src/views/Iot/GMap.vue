@@ -16,11 +16,11 @@
     const modulePrefix = `$store.state.${moduleNameSpace}`
     const dataProp = `${modulePrefix}.iotDatas`
     const iotTypeObj = {
-        [types.IOT_TYPE_SPHERE]: '云台摄像头',
+        [types.IOT_TYPE_SPHERE]: '全景摄像头',
         [types.IOT_TYPE_FM1]: 'FM1监控设备',
         [types.IOT_TYPE_FM2]: 'FM2监控设备',
         [types.IOT_TYPE_GUN]: '普通摄像头',
-        [types.IOT_TYPE_360]: '全景摄像头'
+        [types.IOT_TYPE_360]: '云台摄像头'
     }
 
     export default {
@@ -67,16 +67,20 @@
                     ]
                 })
                 that.map.addListener('zoom_changed', () => {
-                    that.showResetBtn = true
-                    setTimeout(() => { that.refreshMarkerTips() }, 1000)
+                    that.doRefreshTips()
                 })
                 that.map.addListener('center_changed', () => {
-                    that.showResetBtn = true
-                    setTimeout(() => { that.refreshMarkerTips() }, 1000)
+                    that.doRefreshTips()
                 })
                 if (that.iotDatas.length) {
                     that.addMarkers()
                 }
+            },
+            doRefreshTips () {
+                const that = this
+                that.showResetBtn = true
+                setTimeout(() => { that.refreshMarkerTips() }, 1000)
+                setTimeout(() => { that.refreshMarkerTips() }, 3000)
             },
             // 在地图上添加标记
             addMarkers () {

@@ -65,11 +65,11 @@
  */
 
 const IotTypeObj = {
-    IOT_TYPE_SPHERE: '云台摄像头',
+    IOT_TYPE_SPHERE: '全景摄像头',
     IOT_TYPE_FM1: 'FM1监控设备',
     IOT_TYPE_FM2: 'FM2监控设备',
     IOT_TYPE_GUN: '普通摄像头',
-    IOT_TYPE_360: '全景摄像头'
+    IOT_TYPE_360: '云台摄像头'
 }
 
 function MarkerClusterer(map, opt_markers, opt_options) {
