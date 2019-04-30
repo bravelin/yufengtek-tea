@@ -21,6 +21,10 @@
     .map-container{
         width: calc(68% - 8px);
         margin-left: 16px;
+        >div.map-wrap{
+            width: 100%;
+            height: 100%;
+        }
     }
     .map-ul{
         display: flex;
@@ -503,20 +507,21 @@
     }
 
     .map-reset-btn{
+        position: absolute;
+        top: 60px;
+        right: 10px;
         cursor: pointer;
-        border: 1px solid gray;
         height: 40px;
         line-height: 40px;
         text-align: center;
         width: 40px;
-        border-radius: 50%;
-        background-color: rgba(15, 71, 130, 0.5);
-        color: white;
-        font-size: 12px;
+        border-radius: 2px;;
+        background-color: rgba(255, 255, 255, 0.6);
+        color: rgba(#4d4d4d, 0.8);
+        font-size: 20px;
         transition: all 0.3s ease-out;
         &:hover{
-            background-color: rgba(15, 71, 130, 0.8);
-            border-color: #fff;
+            color: #000;
         }
     }
 
@@ -535,6 +540,102 @@
         overflow: hidden;
     }
 }
+
+/* google map marker styles */
+div.google-map-cluster{
+    >div{
+        display: none;
+        position: absolute;
+        background: rgba(12, 24, 56, 0.9);
+        color: #ccc;
+        line-height: 1.8;
+        padding: 8px 12px 8px;
+        border-radius: 4px;
+        width: 250px;
+        text-align: left;
+        letter-spacing: 1px;
+        z-index: 999;
+        >div{
+            line-height: 1.6;
+            font-size: 15px;
+            border-bottom: 1px dotted rgba(#aaa, 0.4);
+            margin-bottom: 7px;
+        }
+        >ul{
+            display: flex;
+            flex-wrap: wrap;
+            >li{
+                width: 50%;
+                flex: none;
+                display: flex;
+                align-items: center;
+                transition: all 0.3s ease-out;
+                cursor: pointer;
+                &:hover{
+                    color: #f99;
+                    text-decoration: underline;
+                }
+                &:before{
+                    content: "";
+                    display: block;
+                    width: 12px;
+                    height: 12px;
+                    background-size: 100% 100%;
+                    margin-right: 5px;
+                    margin-top: -1px;
+                }
+                &.icon-IOT_TYPE_FM1::before{
+                    background-image: url('../../assets/images/icon-FM1.png');
+                }
+                &.icon-IOT_TYPE_FM2::before{
+                    background-image: url('../../assets/images/icon-FM2.png');
+                }
+                &.icon-IOT_TYPE_GUN::before{
+                    background-image: url('../../assets/images/icon-gun.png');
+                }
+                &.icon-IOT_TYPE_360::before{
+                    background-image: url('../../assets/images/icon-360.png');
+                }
+                &.icon-IOT_TYPE_SPHERE::before{
+                    background-image: url('../../assets/images/icon-sphere.png');
+                }
+            }
+        }
+    }
+    &:hover{
+        >div{
+            display: block;
+        }
+    }
+}
+div[data-title^="IOT"]{
+    opacity: 1 !important;
+    div{
+        display: none;
+        position: absolute;
+        width: auto;
+        white-space: nowrap;
+        padding: 0 8px;
+        height: 35px;
+        top: -40px;
+        transform: translateX(-50%);
+        left: 50%;
+        line-height: 35px;
+        opacity: 1;
+        letter-spacing: 1px;
+        border-radius: 4px;
+        opacity: 0;
+        color: #ccc;
+        transition: all 0.3s ease-out;
+    }
+    &:hover{
+        div{
+            display: block;
+            opacity: 1;
+        }
+    }
+}
+
 @media screen and (max-width: 1490px) {
     .iot-page{
         .iot-container > ul.data-list{
@@ -554,6 +655,7 @@
             width: calc(39% - 4px);
         }
         .map-container{
+            position: relative;
             margin-left: 8px;
             width: calc(61% - 4px);
         }

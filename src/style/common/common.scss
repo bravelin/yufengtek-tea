@@ -322,6 +322,18 @@
     background: rgba(#102d56, 1) !important;
     color: #666 !important
 }
+
+/*google map style*/
+.gmnoprint, .gm-style-cc{
+    display: none;
+}
+.gm-fullscreen-control{ 
+    background: rgba(255, 255, 255, 0.6) !important;
+}
+.gm-style.gm-china>div:nth-of-type(2){
+    display: none;
+}
+
 @media screen and (max-width: 1490px) {
     .page, .nav-menu{
         margin-left: 10px;

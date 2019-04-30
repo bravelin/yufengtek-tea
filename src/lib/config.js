@@ -25,16 +25,16 @@ export default {
         active: './images/360_active.png'
     },
     iotMonitorMap: {
-        center: [117.8689366, 27.658368], // 物联监控地图中心点
-        zoom: 14
+        center: [117.9289366, 27.659368], // 物联监控地图中心点，武夷山市
+        zoom: 13
     },
     proxyUrl: 'https://proxy.yufengtek.com/',
     // 生产环境
     // baseUrl: 'http://192.168.0.148:8080/tea_IIS_Web_war',
-    baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
+    // baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
     socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 
     // 开发环境下
-    // baseUrl: '',
+    baseUrl: '',
     // socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
 }

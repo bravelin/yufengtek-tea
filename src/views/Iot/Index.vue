@@ -7,7 +7,7 @@
             <WFCharts v-show="currActive.type == types.IOT_TYPE_WF"></WFCharts>
             <CameraVideo v-show="currActive.type == types.IOT_TYPE_GUN"></CameraVideo>
         </div>
-        <Map></Map>
+        <GMap></GMap>
         <PhotoViewer v-show="photoViewerFullState"></PhotoViewer>
         <Camera360 v-show="camera360FullState"></Camera360>
     </div>
@@ -22,7 +22,7 @@
     import WFCharts from './WFCharts'
     import CameraVideo from './CameraVideo'
     import Camera360 from './Camera360'
-    import Map from './Map'
+    import GMap from './GMap'
     import PhotoViewer from './PhotoViewer'
 
     const moduleNameSpace = ns.IOT
@@ -34,7 +34,7 @@
             ...thisMapState(['currActive', 'photoViewerFullState', 'camera360FullState', 'fm1', 'fm2'])
         },
         components: {
-            FM1Charts, FM2Charts, WFCharts, Map, CameraVideo, Amount, PhotoViewer, Camera360
+            FM1Charts, FM2Charts, WFCharts, GMap, CameraVideo, Amount, PhotoViewer, Camera360
         },
         data () {
             return {
@@ -73,7 +73,7 @@
                     fullStateName: item.state, state: false, subModuleName: item.subModuleName
                 })
             })
-            store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, { id: 0, type: types.IOT_TYPE_FM1 })
+            store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, { index: 0, type: types.IOT_TYPE_FM1 })
             that.timer && clearInterval(that.timer)
         }
     }

@@ -6,24 +6,24 @@ export default {
         const state = context.state
         const iotDatas = state.iotDatas
         if (payload == 'camera') {
-            let id = 0
+            let index = 0
             let cameraObj = null
             for (let i = 0; i < iotDatas.length; i++) {
                 cameraObj = iotDatas[i]
                 if (cameraObj.camera_type == '1') {
-                    id = i
+                    index = i
                     break
                 }
             }
             if (cameraObj) {
                 context.state.camera = cameraObj
-                context.commit(types.CHANGE_ACTIVE_MARKER, { id, type: types.IOT_TYPE_GUN })
+                context.commit(types.CHANGE_ACTIVE_MARKER, { index, type: types.IOT_TYPE_GUN })
                 context.dispatch(types.GET_GUN_DATA, cameraObj)
             }
         } else {
             if (iotDatas.length) {
                 context.dispatch(types.GET_FM1_DATA, iotDatas[0].sno)
-                context.commit(types.CHANGE_ACTIVE_MARKER, { id: 0, type: types.IOT_TYPE_FM1 })
+                context.commit(types.CHANGE_ACTIVE_MARKER, { index: 0, type: types.IOT_TYPE_FM1 })
             }
         }
     },
@@ -62,13 +62,13 @@ export default {
                             }
                         }
                         context.state.camera = resData.cameraVos[id]
-                        context.commit(types.CHANGE_ACTIVE_MARKER, { id, type: types.IOT_TYPE_GUN })
+                        context.commit(types.CHANGE_ACTIVE_MARKER, { index: id, type: types.IOT_TYPE_GUN })
                         context.dispatch(types.GET_GUN_DATA, resData.cameraVos[id])
                     } else {
                         iotDatas = resData.Fm1.concat(resData.emVos).concat(resData.Fm2)
                         iotDatas.forEach((item, index) => { item.index = index })
                         context.dispatch(types.GET_FM1_DATA, iotDatas[0].sno)
-                        context.commit(types.CHANGE_ACTIVE_MARKER, { id: 0, type: types.IOT_TYPE_FM1 })
+                        context.commit(types.CHANGE_ACTIVE_MARKER, { index: 0, type: types.IOT_TYPE_FM1 })
                     }
                 } else {
                     iotDatas = resData.Fm1.concat(resData.emVos).concat(resData.Fm2).concat(resData.cameraVos)

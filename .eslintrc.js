@@ -36,9 +36,10 @@ module.exports = {
     },
     globals: {
         BMap: true,
-        EZUIPlayer: true,
         videojs: true,
         BMapLib: true,
+        google: true,
+        MarkerClusterer: true,
     },
     parserOptions: {
         parser: 'babel-eslint'

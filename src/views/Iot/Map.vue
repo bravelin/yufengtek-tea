@@ -14,7 +14,6 @@
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = `$store.state.${moduleNameSpace}.iotDatas`
-    const mapSiseProp = `$store.state.${moduleNameSpace}.mapSise`
 
     let fm1IconNormal = null // 正常
     let fm1IconActive = null // 选中
@@ -52,9 +51,6 @@
             [dataProp] () {
                 this.addMarkers()
                 this.map.reset()
-            },
-            [mapSiseProp] () {
-                this.addMarkers()
             }
         },
         mounted () {
@@ -485,7 +481,7 @@
                         mk[i]._clusterMarker.removeEventListener('mouseover')
                         that.addMarkerClu(mk[i]._center, mk[i]._clusterMarker, mk[i]._markers, i + 1)
                     }
-                    store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, { id: data.index, type: data.type })
+                    store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, { index: data.index, type: data.type })
                     if (data.type == types.IOT_TYPE_FM1) {
                         store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, data.sno)
                     } else if (data.type == types.IOT_TYPE_FM2) {

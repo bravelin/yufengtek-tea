@@ -2,8 +2,13 @@ import types from '@/store/constants/types'
 export default {
     [types.CHANGE_ACTIVE_MARKER] (state, payload) {
         const currActive = state.currActive
-        currActive.id = payload.id
+        const lastActiveObj = state.iotDatas[currActive.index]
+        if (lastActiveObj) {
+            lastActiveObj.isActive = false
+        }
+        currActive.index = payload.index
         currActive.type = payload.type
+        state.iotDatas[currActive.index].isActive = true
     },
     [types.SWITCH_FM1_TYPE] (state, payload) {
         const fm1 = state.fm1

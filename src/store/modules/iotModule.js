@@ -14,7 +14,7 @@ export default {
         fm1List: [],
         fm2List: [],
         photoViewUrl: '',
-        currActive: { type: types.IOT_TYPE_FM1, id: 0 },
+        currActive: { type: types.IOT_TYPE_FM1, index: 0 },
         fm1: {
             type: 'temperature', // temperature humidity light pressure
             name: '温度',
@@ -48,7 +48,6 @@ export default {
         camera360FullState: false, // 360摄像头的全屏状态
         videoUrl: '', // 监控录像地址
         videoUrl360: '', // 球机摄像头地址
-        mapSise: 14, // 地图处于的放大等级
     },
     actions,
     mutations
