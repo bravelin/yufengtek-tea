@@ -1,9 +1,10 @@
 <!--历史出库对比-->
 <template>
     <Plane class="out-constrast-wrap" :full="outConstrastFullState">
-        <PlaneTitle>历史出库对比<div class="unit">单位：吨</div></PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="outConstrastFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTitle>历史出库对比<div class="unit" v-show="historyOutDatas.length">单位：吨</div></PlaneTitle>
+        <div class="plane-content" ref="container" :class="{ hide: !historyOutDatas.length }"></div>
+        <PlaneTools :full="outConstrastFullState" @change="doFullStateChange" v-show="historyOutDatas.length"></PlaneTools>
+        <div v-show="!historyOutDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -24,7 +25,7 @@
     export default {
         name: 'warehouse-out-constrast',
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp, dataProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表

@@ -2,8 +2,9 @@
 <template>
     <Plane class="plant-rank-wrap" :full="plantRankFullState">
         <PlaneTitle>种植排行</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="plantRankFullState" @change="doFullStateChange"></PlaneTools>
+        <div class="plane-content" ref="container" :class="{ hide: !amountRankDatas.length }"></div>
+        <PlaneTools v-show="amountRankDatas.length" :full="plantRankFullState" @change="doFullStateChange"></PlaneTools>
+        <div v-show="!amountRankDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -23,7 +24,7 @@
     export default {
         name: 'plant-amount-rank',
         computed: {
-            ...thisMapState(['amountRankUnit', fullProp]),
+            ...thisMapState(['amountRankUnit', fullProp, dataProp]),
             miniScreen () {
                 return this.$store.state.winWidth < 1300
             }
@@ -72,7 +73,7 @@
                 const { titles, values } = that.handleChartData(datas)
                 const miniScreen = that.miniScreen
                 const options = {
-                    grid: { top: 0, left: 3, right: 16, bottom: 5, containLabel: true },
+                    grid: { top: 0, left: 3, right: 20, bottom: 5, containLabel: true },
                     xAxis: {
                         show: true,
                         splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 } },
@@ -105,8 +106,8 @@
                                 position: 'insideLeft',
                                 formatter (item) { return `${item.value} 亩` },
                                 color: '#fff',
-                                fontSize: miniScreen ? 12 : 14,
-                                offset: [0, 2]
+                                fontSize: miniScreen ? 11 : 12,
+                                offset: [10, 1]
                             }
                         }
                     }]
@@ -131,7 +132,7 @@
                 } else {
                     options = {
                         grid: { top: 0, left: 3, right: 16, bottom: 5 },
-                        series: [{ data: values, barWidth: 18, label: { normal: { fontSize: miniScreen ? 12 : 14 } } }],
+                        series: [{ data: values, barWidth: 18, label: { normal: { fontSize: miniScreen ? 11 : 12 } } }],
                         yAxis: [{ data: titles, axisLabel: { margin: 8, fontSize: 12 } }],
                         xAxis: { axisLabel: { margin: 8, fontSize: 12 } }
                     }

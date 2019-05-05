@@ -2,11 +2,12 @@
 <template>
     <Plane class="pick-info-wrap" :full="pickInfoFullState">
         <PlaneTitle>采摘信息</PlaneTitle>
-        <div class="plane-content">
+        <div class="plane-content" :class="{ hide: !pickDatas.length }">
             <div ref="container" class="chart-container"></div>
-            <div class="chart-title"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}<span>吨</span></div></div>
+            <div class="chart-title" v-show="pickDatas.length"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}<span>吨</span></div></div>
         </div>
-        <PlaneTools :full="pickInfoFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTools v-show="pickDatas.length" :full="pickInfoFullState" @change="doFullStateChange"></PlaneTools>
+        <div v-show="!pickDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -25,7 +26,7 @@
     export default {
         name: 'home-pick-info',
         computed: {
-            ...thisMapState(['teaTotalAmount', fullProp]),
+            ...thisMapState(['teaTotalAmount', fullProp, 'pickDatas']),
             miniScreen () {
                 return this.$store.state.winWidth < 1300
             }

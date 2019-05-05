@@ -2,8 +2,9 @@
 <template>
     <Plane class="origin-wrap" :full="originDataFullState">
         <PlaneTitle>溯源排行</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="originDataFullState" @change="doFullStateChange"></PlaneTools>
+        <div class="plane-content" ref="container" :class="{ hide: !cityDatas.length }"></div>
+        <PlaneTools v-show="cityDatas.length" :full="originDataFullState" @change="doFullStateChange"></PlaneTools>
+        <div v-show="!cityDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -24,7 +25,7 @@
     export default {
         name: 'home-origin-data',
         computed: {
-            ...thisMapState([fullProp]),
+            ...thisMapState([fullProp, dataProp]),
             miniScreen () {
                 return this.$store.state.winWidth < 1300
             }

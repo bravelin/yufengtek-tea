@@ -1,12 +1,13 @@
 <!--植保活动-->
 <template>
     <Plane class="protection-act-wrap act-wrap" :full="protectionFullState">
-        <PlaneTitle>植保活动<div class="unit">单位：亩</div></PlaneTitle>
-        <div class="plane-content">
+        <PlaneTitle>植保活动<div class="unit" v-show="protectionActLineDatas.length && protectionActPieDatas.length">单位：亩</div></PlaneTitle>
+        <div class="plane-content" :class="{ hide: !protectionActLineDatas.length || !protectionActPieDatas.length }">
             <ProtectionActPie></ProtectionActPie>
             <ProtectionActLine></ProtectionActLine>
         </div>
-        <PlaneTools :full="protectionFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTools :full="protectionFullState" @change="doFullStateChange" v-show="protectionActLineDatas.length && protectionActPieDatas.length"></PlaneTools>
+        <div v-show="!protectionActLineDatas.length || !protectionActPieDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -19,6 +20,8 @@
     const moduleNameSpace = ns.FARMING
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const fullProp = 'protectionFullState'
+    const dataProp1 = 'protectionActLineDatas'
+    const dataProp2 = 'protectionActPieDatas'
 
     export default {
         name: 'farming-fertilizer-act',
@@ -26,7 +29,7 @@
             ProtectionActPie, ProtectionActLine
         },
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp, dataProp1, dataProp2])
         },
         methods: {
             // full state change

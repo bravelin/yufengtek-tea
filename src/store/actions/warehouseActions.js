@@ -39,6 +39,13 @@ export default {
                         list: item.list.map(dataItem => { return { label: dataItem.omonth, value: dataItem.weight } })
                     }
                 })
+            } else {
+                state.toDayInAmount = '-'
+                state.toDayOutAmount = '-'
+                state.thisYearInDatas = []
+                state.thisYearOutDatas = []
+                state.historyInDatas = []
+                state.historyOutDatas = []
             }
         })
     },

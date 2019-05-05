@@ -26,9 +26,19 @@ export default {
                 // 获取监控设备数据
                 state.cameraAmount = resData.cameraCount.count
                 state.monitorAmount = resData.fielddstation.count
-                state.waterFertilizerAmount = 0
                 // 获取制茶等级数据
                 state.levelDatas = resData.craft
+            } else {
+                state.amountRankDatas = []
+                state.farmingActdatas = []
+                state.pickDatas = []
+                state.teaTotalAmount = '-'
+                state.warehouseDatas.in = []
+                state.warehouseDatas.out = []
+                state.cityDatas = []
+                state.cameraAmount = '-'
+                state.monitorAmount = '-'
+                state.levelDatas = []
             }
         })
     }

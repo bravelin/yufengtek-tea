@@ -1,9 +1,10 @@
 <!--农事信息-->
 <template>
     <Plane class="farming-info-wrap" :full="farmingInfoFullState">
-        <PlaneTitle>施肥信息<div class="unit">单位：kg</div></PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="farmingInfoFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTitle>施肥信息<div class="unit" v-show="farmingActdatas.length">单位：kg</div></PlaneTitle>
+        <div :class="{ hide: !farmingActdatas.length }" class="plane-content" ref="container"></div>
+        <PlaneTools v-show="farmingActdatas.length" :full="farmingInfoFullState" @change="doFullStateChange"></PlaneTools>
+        <div v-show="!farmingActdatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -24,7 +25,7 @@
     export default {
         name: 'app-farming-info',
         computed: {
-            ...thisMapState([fullProp]),
+            ...thisMapState([fullProp, dataProp]),
             miniScreen () {
                 return this.$store.state.winWidth < 1300
             }
@@ -73,7 +74,7 @@
                 const { values, titles } = that.handleChartData(datas)
                 const miniScreen = that.miniScreen
                 // 求得 min、max、interval,4个间隔
-                const { min, max, interval } = computedChartDataInterval(values, 4, 0.1)
+                const { min, max, interval } = computedChartDataInterval(values, 4, 0.5)
                 const options = {
                     grid: { top: 15, left: 8, right: 8, bottom: 2, containLabel: true },
                     tooltip: {
@@ -127,7 +128,7 @@
                 const that = this
                 const chart = that.chart
                 const { titles, values } = that.handleChartData(datas)
-                const { min, max, interval } = computedChartDataInterval(values, 4, 0.1)
+                const { min, max, interval } = computedChartDataInterval(values, 4, 0.5)
                 let options = null
                 if (that[fullProp]) {
                     options = {

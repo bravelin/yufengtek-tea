@@ -2,8 +2,9 @@
 <template>
     <Plane class="tree-age-wrap" :full="treeAgeFullState">
         <PlaneTitle>树龄分布</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="treeAgeFullState" @change="doFullStateChange"></PlaneTools>
+        <div :class="{ hide: !treeAgeDistributeDatas.length }" class="plane-content" ref="container"></div>
+        <PlaneTools v-show="treeAgeDistributeDatas.length" :full="treeAgeFullState" @change="doFullStateChange"></PlaneTools>
+        <div v-show="!treeAgeDistributeDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -23,7 +24,7 @@
     export default {
         name: 'plant-tree-age',
         computed: {
-            ...thisMapState(['treeAgeDistributeUnit', fullProp]),
+            ...thisMapState(['treeAgeDistributeUnit', fullProp, dataProp]),
             miniScreen () {
                 return this.$store.state.winWidth < 1300
             }
@@ -72,7 +73,7 @@
                 const { titles, values } = that.handleChartData(datas)
                 const miniScreen = that.miniScreen
                 const options = {
-                    grid: { top: 0, left: 3, right: 16, bottom: 5, containLabel: true },
+                    grid: { top: 0, left: 3, right: 20, bottom: 5, containLabel: true },
                     xAxis: {
                         show: true,
                         splitLine: {
@@ -108,8 +109,8 @@
                                 position: 'insideLeft',
                                 formatter (item) { return `${item.value} 亩` },
                                 color: '#fff',
-                                fontSize: miniScreen ? 12 : 14,
-                                offset: [0, 2]
+                                fontSize: miniScreen ? 11 : 12,
+                                offset: [10, 1]
                             }
                         }
                     }]
@@ -134,7 +135,7 @@
                 } else {
                     options = {
                         grid: { top: 0, left: 3, right: 16, bottom: 5 },
-                        series: [{ data: values, barWidth: 18, label: { normal: { fontSize: miniScreen ? 12 : 14 } } }],
+                        series: [{ data: values, barWidth: 18, label: { normal: { fontSize: miniScreen ? 11 : 12 } } }],
                         yAxis: [{ data: titles, axisLabel: { margin: 8, fontSize: 12 } }],
                         xAxis: { axisLabel: { margin: 8, fontSize: 12 } }
                     }

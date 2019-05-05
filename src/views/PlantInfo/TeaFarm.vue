@@ -2,9 +2,10 @@
 <template>
     <Plane class="tea-farm-wrap" :full="teaFarmFullState">
         <PlaneTitle>种植品质</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <div class="chart-title"><h4>种植比例</h4><div>{{ farmTotalArea }}<span>亩</span></div></div>
-        <PlaneTools :full="teaFarmFullState" @change="doFullStateChange"></PlaneTools>
+        <div class="plane-content" ref="container" :class="{ hide: !teaFarmTypeDatas.length }"></div>
+        <div class="chart-title" v-show="teaFarmTypeDatas.length"><h4>种植比例</h4><div>{{ farmTotalArea }}<span>亩</span></div></div>
+        <PlaneTools v-show="teaFarmTypeDatas.length" :full="teaFarmFullState" @change="doFullStateChange"></PlaneTools>
+        <div v-show="!teaFarmTypeDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -24,7 +25,7 @@
     export default {
         name: 'plant-tea-farm',
         computed: {
-            ...thisMapState(['farmTotalArea', fullProp]),
+            ...thisMapState(['farmTotalArea', fullProp, dataProp]),
             miniScreen () {
                 return this.$store.state.winWidth < 1300
             }

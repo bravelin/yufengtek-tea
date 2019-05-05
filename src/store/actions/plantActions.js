@@ -20,17 +20,24 @@ export default {
                 tempData[2].data = repData.yield == null ? 0 : repData.yield.toFixed(2)
                 state.totalData = tempData
                 // 树龄分布
-                state.treeAgeDistributeDatas = repData.treeAge
+                state.treeAgeDistributeDatas = repData.treeAge || []
                 // 茶树种植面积
-                state.varietiesDatas = repData.treeVarieties
-                const varietiesTotalData = repData.treeVarieties.reduce((total, currItem) => total + currItem.area, 0)
+                state.varietiesDatas = repData.treeVarieties || []
+                const varietiesTotalData = state.varietiesDatas.reduce((total, currItem) => total + currItem.area, 0)
                 state.varietiesTotalData = varietiesTotalData.toFixed(2)
                 // 种植排行
-                state.amountRankDatas = repData.plantRanking
+                state.amountRankDatas = repData.plantRanking || []
                 // 种植品质
-                state.teaFarmTypeDatas = repData.plantQuality
-                const farmTotalArea = repData.plantQuality.reduce((total, currItem) => total + currItem.area, 0)
+                state.teaFarmTypeDatas = repData.plantQuality || []
+                const farmTotalArea = state.teaFarmTypeDatas.reduce((total, currItem) => total + currItem.area, 0)
                 state.farmTotalArea = farmTotalArea.toFixed(2)
+            } else {
+                state.treeAgeDistributeDatas = []
+                state.varietiesDatas = []
+                state.varietiesTotalData = '-'
+                state.amountRankDatas = []
+                state.teaFarmTypeDatas = []
+                state.farmTotalArea = '-'
             }
         })
     },

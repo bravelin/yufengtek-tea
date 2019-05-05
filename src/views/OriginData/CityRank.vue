@@ -1,8 +1,9 @@
 <template>
     <Plane class="city-rank-wrap" :full="cityRankFullState">
         <PlaneTitle>溯源城市排行</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="cityRankFullState" @change="doFullStateChange"></PlaneTools>
+        <div class="plane-content" ref="container" :class="{ hide: !cityDatas.length }"></div>
+        <PlaneTools :full="cityRankFullState" @change="doFullStateChange" v-show="cityDatas.length"></PlaneTools>
+        <div v-show="!cityDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -23,7 +24,7 @@
     export default {
         name: 'origin-city-rank',
         computed: {
-            ...thisMapState([fullProp]),
+            ...thisMapState([fullProp, dataProp]),
             miniScreen () {
                 return this.$store.state.winWidth < 1300
             }

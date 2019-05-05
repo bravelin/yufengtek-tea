@@ -1,9 +1,10 @@
 <!--茶树排行-->
 <template>
     <Plane class="amount-rank-wrap" :full="amountRankFullState">
-        <PlaneTitle>茶树排行<div class="unit">单位：亩</div></PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="amountRankFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTitle>茶树排行<div class="unit" v-show="amountRankDatas.length">单位：亩</div></PlaneTitle>
+        <div :class="{ hide: !amountRankDatas.length }" class="plane-content" ref="container"></div>
+        <PlaneTools v-show="amountRankDatas.length" :full="amountRankFullState" @change="doFullStateChange"></PlaneTools>
+        <div v-show="!amountRankDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -24,7 +25,7 @@
     export default {
         name: 'home-amount-rank',
         computed: {
-            ...thisMapState(['amountRankUnit', fullProp, 'amountRankDatas'])
+            ...thisMapState(['amountRankUnit', fullProp, dataProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -96,7 +97,7 @@
                         axisTick: { show: false },
                         axisLabel: {
                             color: '#fff',
-                            fontSize: 12,
+                            fontSize: 11,
                             margin: 5,
                             formatter (params) { return params.split('').join('\n') }
                         }
@@ -132,7 +133,7 @@
                 } else {
                     options = {
                         grid: { top: 14, left: 5, right: 10, bottom: 0 },
-                        xAxis: { axisLabel: { margin: 5, fontSize: 12 }, data: titles },
+                        xAxis: { axisLabel: { margin: 5, fontSize: 11 }, data: titles },
                         yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } },
                         series: [{ barWidth: 10, data: values }]

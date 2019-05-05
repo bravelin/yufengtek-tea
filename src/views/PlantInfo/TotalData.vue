@@ -2,8 +2,9 @@
 <template>
     <Plane class="total-data-wrap" :full="totalDataFullState">
         <PlaneTitle>统计数据</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="totalDataFullState" @change="doFullStateChange"></PlaneTools>
+        <div class="plane-content" ref="container" :class="{ hide: !totalData.length }"></div>
+        <PlaneTools v-show="totalData.length" :full="totalDataFullState" @change="doFullStateChange"></PlaneTools>
+        <div v-show="!totalData.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -84,7 +85,7 @@
                 let textColor = '#87d0f6'
                 const centerXArr = ['17%', '50%', '83%']
                 let fontSizeArr = [15, 21]
-                let paddingArr = [40, 5, 50]
+                let paddingArr = [48, 1, 50]
                 if (!miniScreen) {
                     if (that[fullProp]) {
                         fontSizeArr = [32, 48]
@@ -98,7 +99,7 @@
                     }
                 }
                 let containerHeight = parseInt(window.getComputedStyle(that.$refs.container, null)['height'])
-                let pieRadiusArr = ['53%', '60%']
+                let pieRadiusArr = ['54%', '62%']
                 if (!isNaN(containerHeight)) {
                     if (containerHeight > 223 || that[fullProp]) {
                         pieRadiusArr = ['49%', '56%']
@@ -106,6 +107,7 @@
                         pieRadiusArr = ['60%', '67%']
                     }
                 }
+                console.log('paddingArr...', paddingArr)
                 datas.forEach((item, index) => {
                     centerX = centerXArr[index]
                     series.push({

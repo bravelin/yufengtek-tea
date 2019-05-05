@@ -1,9 +1,10 @@
 <!--历史入库对比-->
 <template>
     <Plane class="in-constrast-wrap" :full="inConstrastFullState">
-        <PlaneTitle>历史入库对比<div class="unit">单位：吨</div></PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="inConstrastFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTitle>历史入库对比<div class="unit" v-show="historyInDatas.length">单位：吨</div></PlaneTitle>
+        <div class="plane-content" ref="container" :class="{ hide: !historyInDatas.length }"></div>
+        <PlaneTools :full="inConstrastFullState" @change="doFullStateChange" v-show="historyInDatas.length"></PlaneTools>
+        <div v-show="!historyInDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -24,7 +25,7 @@
     export default {
         name: 'warehouse-in-constrast',
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp, dataProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -173,15 +174,12 @@
                 let dataItem = null
                 let lineObj = null
                 const legends = []
-                var titles = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+                let titles = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
                 if (datas[0].list.length != 12) {
-                    var ss = datas[0].list[0].label
+                    let ss = datas[0].list[0].label
                     for (var j = 1; j < ss; j++) {
                         datas[0].list.unshift({ label: j, value: 0 })
                     }
-                    // for( var k = ss; k < 12; k++) {
-                    //     datas[0].list.unshift({ label: k, value: 0 })
-                    // }
                 }
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
@@ -194,7 +192,6 @@
                     }
                     lineDatas.push(lineObj)
                 }
-                // const titles = Object.keys(titleObjs)
                 return { titles, lineDatas, legends }
             },
             // full state change

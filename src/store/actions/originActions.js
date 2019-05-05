@@ -8,10 +8,14 @@ export default {
             if (res.code == 200) {
                 const resData = res.repData
                 state.cityDatas = resData.originCity.map(item => { return { value: item.count, name: item.city } })
-                state.countStatDatas = resData.originCount
+                state.countStatDatas = resData.originCount || []
                 let value = []
                 resData.originCity.forEach((item, index) => { value[index] = [item.latitude, item.longitude] })
                 state.mapDatas = resData.originCity.map((item, index) => { return { value: value[index].concat(item.count), name: item.city } })
+            } else {
+                state.cityDatas = []
+                state.countStatDatas = []
+                state.mapDatas = []
             }
         })
     },

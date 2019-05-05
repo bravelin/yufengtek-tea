@@ -17,7 +17,7 @@ export default {
         amountRankDatas: [], // 茶树排行
         warehouseUnit: '吨',
         // 入库出库数据
-        warehouseDatas: [],
+        warehouseDatas: { in: [], out: [] },
         cityDatas: [],
         currSelectedRegion: '', // 当前所选的区域，空值为全市
 

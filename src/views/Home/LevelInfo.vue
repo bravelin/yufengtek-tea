@@ -2,8 +2,9 @@
 <template>
     <Plane class="level-info-wrap" :full="levelInfoFullState">
         <PlaneTitle>制茶工艺</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="levelInfoFullState" @change="doFullStateChange"></PlaneTools>
+        <div class="plane-content" ref="container" :class="{ hide: !levelDatas.length }"></div>
+        <PlaneTools :full="levelInfoFullState" @change="doFullStateChange" v-show="levelDatas.length"></PlaneTools>
+        <div v-show="!levelDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -23,7 +24,7 @@
     export default {
         name: 'home-level-info',
         computed: {
-            ...thisMapState(['teaTotalAmount', fullProp]),
+            ...thisMapState(['teaTotalAmount', fullProp, dataProp]),
             miniScreen () {
                 return this.$store.state.winWidth < 1300
             }

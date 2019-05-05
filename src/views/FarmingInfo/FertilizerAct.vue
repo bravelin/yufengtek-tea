@@ -1,12 +1,13 @@
 <!--施肥活动-->
 <template>
     <Plane class="fertilizer-act-wrap act-wrap" :full="fertilizerFullState">
-        <PlaneTitle>施肥活动<div class="unit">单位：吨</div></PlaneTitle>
-        <div class="plane-content">
+        <PlaneTitle>施肥活动<div class="unit" v-show="fertilizerActLineDatas.length && fertilizerActPieDatas.length">单位：吨</div></PlaneTitle>
+        <div class="plane-content" :class="{ hide: !fertilizerActLineDatas.length || !fertilizerActPieDatas.length }">
             <FertilizerActPie></FertilizerActPie>
             <FertilizerActLine></FertilizerActLine>
         </div>
-        <PlaneTools :full="fertilizerFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTools :full="fertilizerFullState" @change="doFullStateChange" v-show="fertilizerActLineDatas.length && fertilizerActPieDatas.length"></PlaneTools>
+        <div v-show="!fertilizerActLineDatas.length || !fertilizerActPieDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -19,11 +20,13 @@
     const moduleNameSpace = ns.FARMING
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const fullProp = 'fertilizerFullState'
+    const dataProp1 = 'fertilizerActLineDatas'
+    const dataProp2 = 'fertilizerActPieDatas'
 
     export default {
         name: 'farming-fertilizer-act',
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp, dataProp1, dataProp2])
         },
         components: {
             FertilizerActPie, FertilizerActLine

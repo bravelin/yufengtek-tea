@@ -1,9 +1,10 @@
 <!--入库信息-->
 <template>
     <Plane class="in-line-wrap" :full="inLineChartFullState">
-        <PlaneTitle>今年入库信息<div class="unit">单位：吨</div></PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="inLineChartFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTitle>今年入库信息<div class="unit" v-show="thisYearInDatas.length">单位：吨</div></PlaneTitle>
+        <div class="plane-content" ref="container" :class="{ hide: !thisYearInDatas.length }"></div>
+        <PlaneTools :full="inLineChartFullState" @change="doFullStateChange" v-show="thisYearInDatas.length"></PlaneTools>
+        <div v-show="!thisYearInDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -24,7 +25,7 @@
     export default {
         name: 'warehouse-in-line',
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp, dataProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表

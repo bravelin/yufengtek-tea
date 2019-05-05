@@ -1,8 +1,9 @@
 <template>
     <Plane class="count-stat-wrap" :full="countStateFullState">
-        <PlaneTitle>溯源次数统计<div class="unit">单位：次</div></PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="countStateFullState" @change="doFullStateChange"></PlaneTools>
+        <PlaneTitle>溯源次数统计<div class="unit" v-show="countStatDatas.length">单位：次</div></PlaneTitle>
+        <div class="plane-content" ref="container" :class="{ hide: !countStatDatas.length }"></div>
+        <PlaneTools :full="countStateFullState" @change="doFullStateChange" v-show="countStatDatas.length"></PlaneTools>
+        <div v-show="!countStatDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -10,6 +11,7 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+    import { computedChartDataInterval } from '@/lib/util'
 
     const moduleNameSpace = ns.ORIGIN
     const dataProp = 'countStatDatas'
@@ -22,7 +24,7 @@
     export default {
         name: 'origin-count-stat',
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp, dataProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -66,6 +68,7 @@
                 const that = this
                 const container = that.container
                 const { titles, lineDatas } = that.handleChartData(datas)
+                const { min, max, interval } = computedChartDataInterval(lineDatas, 5)
                 const options = {
                     grid: { top: 13, left: 0, right: 10, bottom: 0, containLabel: true },
                     tooltip: {
@@ -87,6 +90,9 @@
                     }],
                     yAxis: [{
                         show: true,
+                        min,
+                        max,
+                        interval,
                         splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.3)' } },
                         axisTick: { show: true },
                         axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
@@ -116,18 +122,20 @@
                 const { titles, lineDatas } = that.handleChartData(datas)
                 let options = null
                 if (that[fullProp]) {
+                    const { min, max, interval } = computedChartDataInterval(lineDatas, 8)
                     options = {
                         grid: { top: 25, left: 20, right: 20, bottom: 20 },
                         xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
-                        yAxis: [{ axisLabel: { margin: 12, fontSize: 15 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
                         tooltip: { textStyle: { fontSize: 18 } },
                         series: [{ data: lineDatas }]
                     }
                 } else {
+                    const { min, max, interval } = computedChartDataInterval(lineDatas, 5)
                     options = {
                         grid: { top: 13, left: 0, right: 10, bottom: 0 },
                         xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
-                        yAxis: [{ axisLabel: { margin: 8, fontSize: 12 } }],
+                        yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
                         tooltip: { textStyle: { fontSize: 14 } },
                         series: [{ data: lineDatas }]
                     }

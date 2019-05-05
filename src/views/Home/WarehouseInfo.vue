@@ -1,9 +1,10 @@
 <!--入库出库-->
 <template>
-    <Plane class="warehouse-info-wrap" :full="warehouseFullState">
-        <PlaneTitle>入库出库<div class="unit">单位：吨</div></PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="warehouseFullState" @change="doFullStateChange"></PlaneTools>
+    <Plane class="warehouse-info-wrap">
+        <PlaneTitle>入库出库<div class="unit" v-show="warehouseDatas.in.length">单位：吨</div></PlaneTitle>
+        <div  class="plane-content" ref="container" :class="{ hide: !warehouseDatas.in.length }"></div>
+        <PlaneTools v-show="warehouseDatas.in.length" :full="warehouseFullState" @change="doFullStateChange"></PlaneTools>
+        <div v-show="!warehouseDatas.in.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
@@ -24,7 +25,7 @@
     export default {
         name: 'home-warehouse',
         computed: {
-            ...thisMapState(['warehouseUnit', fullProp]),
+            ...thisMapState(['warehouseUnit', fullProp, dataProp]),
             miniScreen () {
                 return this.$store.state.winWidth < 1300
             }
@@ -52,7 +53,7 @@
             that.$nextTick(() => {
                 that.container = that.$refs.container
                 const datas = that.$store.state[moduleNameSpace][dataProp]
-                if (datas.length && !that.chart) {
+                if (datas) {
                     that.init(datas)
                 }
             })
