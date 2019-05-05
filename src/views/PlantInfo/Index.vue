@@ -37,7 +37,6 @@
         created () {
             const that = this
             const store = that.$store
-            store.commit(types.SWITCH_SCREEN_FULL, true)
             store.commit(types.SWITCH_LOADING, false)
             store.dispatch(moduleNameSpace + '/' + types.PLANT_GET_STAT_DATA)
         },

@@ -5,7 +5,7 @@ export default {
     [types.WAREHOUSE_GET_TODAY_DATA] (context, payload) {
         const data = payload ? { addr: payload || '' } : ''
         const state = context.state
-        ajax({ url: '/bigdata/warehouse/detail', method: 'post', data: data }).then(res => {
+        ajax({ url: '/bigdata/warehouse/detail', method: 'post', data }).then(res => {
             if (res.code == 200) {
                 const repData = res.repData
                 // 今日出入库信息
@@ -21,23 +21,10 @@ export default {
                 // 历史出入库对比
                 const historyInDatas = []
                 const historyOutDatas = []
-                const tempData = [
-                    { omonth: '1月', weight: 0 },
-                    { omonth: '2月', weight: 0 },
-                    { omonth: '3月', weight: 0 },
-                    { omonth: '4月', weight: 0 },
-                    { omonth: '5月', weight: 0 },
-                    { omonth: '6月', weight: 0 },
-                    { omonth: '7月', weight: 0 },
-                    { omonth: '8月', weight: 0 },
-                    { omonth: '9月', weight: 0 },
-                    { omonth: '10月', weight: 0 },
-                    { omonth: '11月', weight: 0 },
-                    { omonth: '12月', weight: 0 }
-                ]
+                const tempData = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].map(item => { return { omonth: `${item}月`, weight: 0 } })
                 let year = new Date().getFullYear()
                 historyInDatas.push({ year: year - 1, list: tempData })
-                historyInDatas.push({ year: year, list: repData.thisYearInStock })
+                historyInDatas.push({ year, list: repData.thisYearInStock })
                 state.historyInDatas = historyInDatas.map(item => {
                     return {
                         year: item.year.toString(),
@@ -45,7 +32,7 @@ export default {
                     }
                 })
                 historyOutDatas.push({ year: year - 1, list: tempData })
-                historyOutDatas.push({ year: year, list: repData.thisYearOutStock })
+                historyOutDatas.push({ year, list: repData.thisYearOutStock })
                 state.historyOutDatas = historyOutDatas.map(item => {
                     return {
                         year: item.year.toString(),

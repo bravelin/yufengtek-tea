@@ -31,9 +31,8 @@
         created () {
             const that = this
             const store = that.$store
-            store.commit(types.SWITCH_SCREEN_FULL, true)
+            store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_ACT_DATA)
             store.commit(types.SWITCH_LOADING, false)
-            store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PLANT_ACT_DATA)
         },
         beforeDestroy () {
             const that = this

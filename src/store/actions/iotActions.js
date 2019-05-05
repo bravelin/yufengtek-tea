@@ -18,7 +18,7 @@ export default {
             if (cameraObj) {
                 context.state.camera = cameraObj
                 context.commit(types.CHANGE_ACTIVE_MARKER, { index, type: types.IOT_TYPE_GUN })
-                context.dispatch(types.GET_GUN_DATA, cameraObj)
+                context.commit(types.GET_GUN_DATA, cameraObj)
             }
         } else {
             if (iotDatas.length) {
@@ -50,20 +50,20 @@ export default {
                     item.isActive = false
                 })
                 let iotDatas = []
-                let id = 0
+                let findIndex = 0
                 if (payload) {
                     if (payload == 'camera') {
                         iotDatas = resData.cameraVos
                         iotDatas.map((item, index) => { item.index = index })
                         for (let i = 0; i < iotDatas.length; i++) {
                             if (iotDatas[i].camera_type == '1') {
-                                id = i
+                                findIndex = i
                                 break
                             }
                         }
-                        context.state.camera = resData.cameraVos[id]
-                        context.commit(types.CHANGE_ACTIVE_MARKER, { index: id, type: types.IOT_TYPE_GUN })
-                        context.dispatch(types.GET_GUN_DATA, resData.cameraVos[id])
+                        context.state.camera = resData.cameraVos[findIndex]
+                        context.commit(types.CHANGE_ACTIVE_MARKER, { index: findIndex, type: types.IOT_TYPE_GUN })
+                        context.commit(types.GET_GUN_DATA, resData.cameraVos[findIndex])
                     } else {
                         iotDatas = resData.Fm1.concat(resData.emVos).concat(resData.Fm2)
                         iotDatas.forEach((item, index) => { item.index = index })
@@ -75,7 +75,7 @@ export default {
                     iotDatas.forEach((item, index) => { item.index = index })
                     context.dispatch(types.GET_FM1_DATA, iotDatas[0].sno)
                 }
-                iotDatas[id].isActive = true
+                iotDatas[findIndex].isActive = true
                 state.cameraAmount = resData.cameraVos.length
                 state.monitorAmount = resData.Fm1.length + resData.Fm2.length + resData.emVos.length
                 state.iotDatas = iotDatas
@@ -223,16 +223,6 @@ export default {
             const url = res.repData[11].replace(/http/, 'https')
             state.photoViewUrl = url || state.photoViewUrl // 防止未返回数据
         })
-    },
-    [types.GET_GUN_DATA] (context, payload) {
-        const state = context.state
-        state.camera = payload
-        state.videoUrl = state.camera.camera_url
-    },
-    [types.GET_360_DATA] (context, payload) {
-        const state = context.state
-        state.camera = payload
-        state.videoUrl360 = state.camera.camera_url
     },
     [types.CHANGE_GUN_DIRECTION] (context, payload) {
         const sno = context.state.camera.camera_sno

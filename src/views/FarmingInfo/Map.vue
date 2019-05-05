@@ -28,7 +28,7 @@
                 const that = this
                 const store = that.$store
                 store.commit(moduleNameSpace + '/' + types.FARMING_CHANGE_CURR_REGION, place)
-                store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_PLANT_ACT_DATA, place)
+                store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_ACT_DATA, place)
             },
             doFullStateChange (payload) {
                 const that = this

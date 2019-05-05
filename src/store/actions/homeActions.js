@@ -31,5 +31,5 @@ export default {
                 state.levelDatas = resData.craft
             }
         })
-    },
+    }
 }

@@ -30,9 +30,7 @@ const types = [
     'IOT_TYPE_360', // 全景
     // ***************************************************************农事活动
     'FARMING_CHANGE_CURR_REGION', // 切换当前选中的地图区域
-    'FARMING_GET_PLANT_ACT_DATA',
-    'FARMING_GET_FERTILIZER_ACT_DATA',
-    'FARMING_GET_PROTECTION_ACT_DATA',
+    'FARMING_GET_ACT_DATA',
     'FARMING_CHANGE_FULL_STATE',
     // ***************************************************************出库入库
     'WAREHOUSE_CHANGE_CURR_REGION', // 切换当前选中的地图区域

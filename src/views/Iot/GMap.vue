@@ -131,7 +131,7 @@
                         store.dispatch(moduleNameSpace + '/' + types.CHANGE_PHOTO_VIEW_URL, iotObj.em_devid)
                     } else if (type == types.IOT_TYPE_360) { // 360视频
                         store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, { fullStateName: 'camera360FullState', state: true })
-                        store.dispatch(moduleNameSpace + '/' + types.GET_360_DATA, iotObj)
+                        store.commit(moduleNameSpace + '/' + types.GET_360_DATA, iotObj)
                     } else {
                         // 其他类型标记切换active和normal状态
                         const oldIndex = that.currActive.index
@@ -152,7 +152,7 @@
                         } else if (iotObj.type == types.IOT_TYPE_FM2) {
                             store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, iotObj.sno)
                         } else if (iotObj.type == types.IOT_TYPE_GUN) {
-                            store.dispatch(moduleNameSpace + '/' + types.GET_GUN_DATA, iotObj)
+                            store.commit(moduleNameSpace + '/' + types.GET_GUN_DATA, iotObj)
                         }
                     }
                 }

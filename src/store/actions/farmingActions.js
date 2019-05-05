@@ -2,8 +2,8 @@ import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
 
 export default {
-    [types.FARMING_GET_PLANT_ACT_DATA] (context, payload) {
-        const data = payload ? { address_country: '', address_town: payload || '' } : { address_country: '', address_town: '' }
+    [types.FARMING_GET_ACT_DATA] (context, payload) {
+        const data = { address_country: '', address_town: payload || '' }
         const state = context.state
         ajax({ url: '/data/farm/getData', method: 'post', data }).then(res => {
             if (res.code == 200) {

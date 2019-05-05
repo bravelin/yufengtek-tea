@@ -19,16 +19,11 @@
         components: {
             Spinner, NavMenu, Sky
         },
-        data () {
-            return {
-            }
-        },
         computed: {
             ...mapState(['loading', 'winHeight', 'screenFullState']),
             pageHeight () {
                 const state = this.$store.state
                 let h = state.winHeight - 105
-                // return h
                 return h > 540 ? h : 540
             }
         },

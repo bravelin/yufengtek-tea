@@ -67,5 +67,13 @@ export default {
         } else {
             state[payload.fullStateName] = payload.state
         }
-    }
+    },
+    [types.GET_GUN_DATA] (state, payload) {
+        state.camera = payload
+        state.videoUrl = state.camera.camera_url
+    },
+    [types.GET_360_DATA] (state, payload) {
+        state.camera = payload
+        state.videoUrl360 = state.camera.camera_url
+    },
 }
