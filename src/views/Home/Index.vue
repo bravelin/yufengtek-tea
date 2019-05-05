@@ -6,7 +6,7 @@
             <PickInfo></PickInfo>
         </div>
         <div>
-            <PlantInfo></PlantInfo>
+            <Map></Map>
             <WarehouseInfo></WarehouseInfo>
         </div>
         <div>
@@ -23,7 +23,7 @@
     import FarmingInfo from './FarmingInfo'
     import Iot from './Iot'
     import OriginData from './OriginData'
-    import PlantInfo from './PlantInfo'
+    import Map from './Map'
     import WarehouseInfo from './WarehouseInfo'
     import AmountRank from './AmountRank'
     import PickInfo from './PickInfo'
@@ -35,13 +35,13 @@
     export default {
         name: 'home-index',
         components: {
-            FarmingInfo, Iot, OriginData, PlantInfo, WarehouseInfo, AmountRank, PickInfo, LevelInfo
+            FarmingInfo, Iot, OriginData, Map, WarehouseInfo, AmountRank, PickInfo, LevelInfo
         },
         created () {
             const that = this
             const store = that.$store
             store.commit(types.SWITCH_LOADING, false)
-            store.dispatch(moduleNameSpace + '/' + types.HOME_GET_AMOUNT_RANK_DATA)
+            store.dispatch(moduleNameSpace + '/' + types.HOME_GET_DATA)
         },
         beforeDestroy () {
             const that = this

@@ -52,7 +52,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace][dataProp]
+                const datas = that[dataProp]
                 if (datas) {
                     that.init(datas)
                 }
@@ -61,7 +61,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace][dataProp]
+                const datas = that[dataProp]
                 if (datas) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)

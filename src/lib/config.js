@@ -31,9 +31,10 @@ export default {
     proxyUrl: 'https://proxy.yufengtek.com/',
     // 生产环境
     // baseUrl: 'http://192.168.0.148:8080/tea_IIS_Web_war',
-    // baseUrl: 'https://tea.yufengtek.com/tea-IIS-Web',
-    socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
-    // 'wss://192.168.2.113:8080/myHandler'
+    // baseUrl: 'http://tea.yufengtek.com/tea-IIS-Web',
+    originDataSocketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
+    refreshDataSocketUrl: 'wss://192.168.2.113:8080/myHandler',
+    mapAutoChangeTime: 5000,
 
     // 开发环境下
     baseUrl: '',

@@ -2,10 +2,10 @@ import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
 
 export default {
-    // 获取茶树排行数据
-    [types.HOME_GET_AMOUNT_RANK_DATA] (context, payload) {
-        const data = payload ? { addr: payload || '' } : ''
+    // 获取首页数据
+    [types.HOME_GET_DATA] (context) {
         const state = context.state
+        const data = state.currSelectedRegion ? { addr: state.currSelectedRegion } : {}
         ajax({ url: '/bigdata/home/detail', method: 'post', data }).then(res => {
             if (res.code == 200) {
                 const resData = res.repData
@@ -14,7 +14,7 @@ export default {
                 // 获取施肥比例数据
                 state.farmingActdatas = resData.fertiliz.map(item => { return { label: item.month, value: item.weight } })
                 // 获取采摘数据
-                state.pickDatas = res.repData.picking.map(item => { return { label: item.classify, value: item.amount } })
+                state.pickDatas = resData.picking.map(item => { return { label: item.classify, value: item.amount } })
                 state.teaTotalAmount = (resData.totalPicking == null || resData.totalPicking.length == 0) ? state.teaTotalAmount : resData.totalPicking
                 // 获取出库入库数据
                 let warehouseDatas = {}

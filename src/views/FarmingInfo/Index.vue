@@ -31,7 +31,7 @@
         created () {
             const that = this
             const store = that.$store
-            store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_ACT_DATA)
+            store.dispatch(moduleNameSpace + '/' + types.FARMING_GET_DATA)
             store.commit(types.SWITCH_LOADING, false)
         },
         beforeDestroy () {

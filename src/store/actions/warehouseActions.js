@@ -2,9 +2,9 @@ import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
 
 export default {
-    [types.WAREHOUSE_GET_TODAY_DATA] (context, payload) {
-        const data = payload ? { addr: payload || '' } : ''
+    [types.WAREHOUSE_GET_DATA] (context) {
         const state = context.state
+        const data = state.currSelectedRegion ? { addr: state.currSelectedRegion } : {}
         ajax({ url: '/bigdata/warehouse/detail', method: 'post', data }).then(res => {
             if (res.code == 200) {
                 const repData = res.repData
@@ -48,5 +48,5 @@ export default {
                 state.historyOutDatas = []
             }
         })
-    },
+    }
 }

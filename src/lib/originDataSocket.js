@@ -3,7 +3,7 @@ import store from '@/store/index'
 import ns from '@/store/constants/ns'
 import types from '@/store/constants/types'
 
-const socket = new WebSocket(config.socketUrl)
+const socket = new WebSocket(config.originDataSocketUrl)
 socket.onopen = function (e) {
     console.log('web socket open...')
 }

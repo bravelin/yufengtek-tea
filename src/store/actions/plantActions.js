@@ -2,10 +2,10 @@ import types from '@/store/constants/types'
 import ajax from '@/lib/ajax'
 
 export default {
-    // 获取统计数据
-    [types.PLANT_GET_STAT_DATA] (context, payload) {
+    // 获取数据
+    [types.PLANT_GET_DATA] (context) {
         const state = context.state
-        const data = payload ? { addr: payload || '' } : ''
+        const data = state.currSelectedRegion ? { addr: state.currSelectedRegion } : {}
         const tempData = [
             { label: '山场总数', data: '-', unit: '家' },
             { label: '种植面积', data: '-', unit: '亩' },

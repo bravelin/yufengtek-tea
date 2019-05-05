@@ -37,7 +37,7 @@
             const that = this
             const store = that.$store
             store.commit(types.SWITCH_LOADING, false)
-            store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_TODAY_DATA)
+            store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_DATA)
         },
         beforeDestroy () {
             const that = this

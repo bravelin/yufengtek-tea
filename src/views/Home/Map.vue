@@ -16,7 +16,7 @@
     const fullProp = 'mapFullState'
 
     export default {
-        name: 'home-plant-info',
+        name: 'home-map',
         components: {
             WuyishanMap
         },
@@ -28,7 +28,7 @@
                 const that = this
                 const store = that.$store
                 store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_CURR_REGION, place)
-                store.dispatch(moduleNameSpace + '/' + types.HOME_GET_AMOUNT_RANK_DATA, place)
+                store.dispatch(moduleNameSpace + '/' + types.HOME_GET_DATA, place)
             },
             doFullStateChange (payload) {
                 const that = this

@@ -48,7 +48,7 @@
                 that.container = that.$refs.container
                 const datas = that.$store.state[moduleNameSpace][dataProp]
                 const copyDatas = [...datas]
-                if (datas.length && !that.chart) {
+                if (!that.chart) {
                     that.init(copyDatas)
                 }
             })
@@ -57,7 +57,7 @@
             doInitOrRefreshChart () {
                 const that = this
                 const datas = that.$store.state[moduleNameSpace][dataProp]
-                if (datas && datas.length) {
+                if (datas) {
                     if (that.container) {
                         const copyDatas = [...datas]
                         that.chart ? that.refresh(copyDatas) : that.init(copyDatas)

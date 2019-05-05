@@ -17,7 +17,6 @@ function maxOrbit (x, y) {
     let diameter = Math.round(Math.sqrt(max * max + max * max))
     return diameter / 2
 }
-
 export default class {
     constructor (w, h, ctx, ctx2, canvas2) {
         this.ctx = ctx
@@ -37,12 +36,6 @@ export default class {
     draw () {
         let x = Math.sin(this.timePassed) * this.orbitRadius + this.orbitX
         let y = Math.cos(this.timePassed) * this.orbitRadius + this.orbitY
-        // let twinkle = random(10)
-        // if (twinkle === 1 && this.alpha > 0) {
-        //     this.alpha -= 0.05
-        // } else if (twinkle === 2 && this.alpha < 1) {
-        //     this.alpha += 0.05
-        // }
         this.ctx.globalAlpha = this.alpha
         this.ctx.drawImage(this.canvas2, x - this.radius / 2, y - this.radius / 2, this.radius, this.radius)
         this.timePassed += this.speed

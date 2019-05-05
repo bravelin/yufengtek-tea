@@ -28,7 +28,7 @@
                 const that = this
                 const store = that.$store
                 store.commit(moduleNameSpace + '/' + types.WAREHOUSE_CHANGE_CURR_REGION, place)
-                store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_TODAY_DATA, place)
+                store.dispatch(moduleNameSpace + '/' + types.WAREHOUSE_GET_DATA, place)
             },
             doFullStateChange (payload) {
                 const that = this
