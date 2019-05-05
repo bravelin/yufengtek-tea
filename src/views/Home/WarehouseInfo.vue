@@ -121,7 +121,7 @@
                         axisLabel: { margin: 8, interval: 0, color: '#fff', fontSize: 12 },
                         splitLine: {
                             show: true,
-                            lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 }
+                            lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.15)', width: 0.5 }
                         }
                     }],
                     color: ['#91acd4', '#2663bc'],

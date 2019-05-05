@@ -86,7 +86,7 @@
                         min,
                         max,
                         interval,
-                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.3)' } },
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.15)' } },
                         axisTick: { show: true },
                         axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
                         axisLabel: { show: true, margin: 8, textStyle: { color: '#fff', fontSize: 12 } }

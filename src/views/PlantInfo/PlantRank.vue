@@ -76,7 +76,7 @@
                     grid: { top: 0, left: 3, right: 20, bottom: 5, containLabel: true },
                     xAxis: {
                         show: true,
-                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.2)', width: 0.5 } },
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.15)', width: 0.5 } },
                         axisLine: { lineStyle: { color: 'rgba(0,0,0,0)' } },
                         axisLabel: { margin: 8, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
                     },

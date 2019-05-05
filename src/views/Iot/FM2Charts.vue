@@ -23,8 +23,9 @@
             <li :class="{ active: fm2.time == 'HOUR' }" @click="switchFmTimeType('HOUR')">时刻数据</li>
             <li :class="{ active: fm2.time == 'WEEK' }" @click="switchFmTimeType('WEEK')">七天数据</li>
         </ul>
-        <div class="plane-content" ref="chart"></div>
-        <PlaneTools :full="fm2.curveChartFullState" @change="doFullStateChange"></PlaneTools>
+        <div class="plane-content" ref="chart" :class="{ hide: !fm2.chartDatas.length }"></div>
+        <div v-show="!fm2.chartDatas.length" class="iconfont null-data-tag">&#xe642;</div>
+        <PlaneTools :full="fm2.curveChartFullState" @change="doFullStateChange" v-show="fm2.chartDatas.length"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -129,7 +130,7 @@
                     }],
                     yAxis: [{
                         show: true,
-                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(38, 99, 188, 0.3)' } },
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.15)' } },
                         axisTick: { show: false },
                         axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
                         axisLabel: { show: true, color: '#fff' }
