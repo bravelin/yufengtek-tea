@@ -86,10 +86,7 @@
                                 },
                                 normal: {
                                     show: true,
-                                    textStyle: {
-                                        color: '#d0d0d0',
-                                        fontSize: 12
-                                    }
+                                    textStyle: { color: '#d0d0d0', fontSize: 12 }
                                 }
                             },
                             regions: that.mapRegions,
@@ -138,19 +135,21 @@
                         let options = null
                         if (that.full) {
                             options = {
-                                series: [{
+                                geo: {
                                     label: {
-                                        normal: { textStyle: { fontSize: 16 } }
+                                        normal: { textStyle: { fontSize: 16 } },
+                                        emphasis: { textStyle: { fontSize: 21 } }
                                     }
-                                }]
+                                }
                             }
                         } else {
                             options = {
-                                series: [{
+                                geo: {
                                     label: {
-                                        normal: { textStyle: { fontSize: 12 } }
+                                        normal: { textStyle: { fontSize: 12 } },
+                                        emphasis: { textStyle: { fontSize: 16 } }
                                     }
-                                }]
+                                }
                             }
                         }
                         chart.setOption(options)
