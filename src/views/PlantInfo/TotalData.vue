@@ -90,13 +90,13 @@
                 if (!miniScreen) {
                     if (that[fullProp]) {
                         fontSizeArr = [32, 48]
-                        paddingArr = [80, 5, 80]
+                        paddingArr = [130, 5, 130]
                     }
                 } else {
                     fontSizeArr = [12, 18]
                     if (that[fullProp]) {
                         fontSizeArr = [24, 38]
-                        paddingArr = [80, 5, 50]
+                        paddingArr = [100, 5, 80]
                     }
                 }
                 let containerHeight = parseInt(window.getComputedStyle(that.$refs.container, null)['height'])

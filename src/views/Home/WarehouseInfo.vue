@@ -1,6 +1,6 @@
 <!--入库出库-->
 <template>
-    <Plane class="warehouse-info-wrap">
+    <Plane class="warehouse-info-wrap" :full="warehouseFullState">
         <PlaneTitle>入库出库<div class="unit" v-show="warehouseDatas.in.length">单位：吨</div></PlaneTitle>
         <div  class="plane-content" ref="container" :class="{ hide: !warehouseDatas.in.length }"></div>
         <PlaneTools v-show="warehouseDatas.in.length" :full="warehouseFullState" @change="doFullStateChange"></PlaneTools>
@@ -81,13 +81,9 @@
                         formatter: `{b0}<br/>{a0}: {c0} ${that.warehouseUnit}<br/>{a1}: {c1} ${that.warehouseUnit}`,
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: {
-                            lineStyle: {
-                                color: 'rgba(238,238,238,0.4)'
-                            }
+                            lineStyle: { color: 'rgba(238,238,238,0.4)' }
                         },
-                        textStyle: {
-                            fontSize: 14
-                        }
+                        textStyle: { fontSize: 14 }
                     },
                     legend: {
                         show: true,
@@ -125,27 +121,22 @@
                         }
                     }],
                     color: ['#91acd4', '#2663bc'],
-                    series: [{
-                        name: '入库',
-                        type: 'bar',
-                        barWidth: miniScreen ? 8 : 10,
-                        itemStyle: {
-                            normal: {
-                                barBorderRadius: 5
-                            }
+                    series: [
+                        {
+                            name: '入库',
+                            type: 'bar',
+                            barWidth: miniScreen ? 8 : 10,
+                            itemStyle: { normal: { barBorderRadius: 5 } },
+                            data: values[0]
                         },
-                        data: values[0]
-                    }, {
-                        name: '出库',
-                        type: 'bar',
-                        barWidth: miniScreen ? 8 : 10,
-                        itemStyle: {
-                            normal: {
-                                barBorderRadius: 5
-                            }
-                        },
-                        data: values[1]
-                    }]
+                        {
+                            name: '出库',
+                            type: 'bar',
+                            barWidth: miniScreen ? 8 : 10,
+                            itemStyle: { normal: { barBorderRadius: 5 } },
+                            data: values[1]
+                        }
+                    ]
                 }
                 that.chart = echarts.init(container)
                 that.chart.setOption(options)

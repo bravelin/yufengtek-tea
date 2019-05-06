@@ -91,7 +91,7 @@
                 let fontSizeArr = [18, 25]
                 if (that[fullProp]) {
                     fontSizeArr = [32, 48]
-                    paddingArr = [130, 0, 130]
+                    paddingArr = [140, 0, 140]
                 } else if (miniScreen) {
                     paddingArr = [50, 0, 50]
                     fontSizeArr = [15, 21]
