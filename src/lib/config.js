@@ -38,6 +38,5 @@ export default {
     mapAutoChangeTime: 5000,
 
     // 开发环境下
-    baseUrl: '',
-    // socketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
+    baseUrl: ''
 }

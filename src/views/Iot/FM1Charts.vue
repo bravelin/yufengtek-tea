@@ -110,7 +110,7 @@
             // 初始化图表
             initChart () {
                 const that = this
-                const { titles, barDatas, lineDatas } = that.doHandlerData(that.fm1.chartDatas)
+                const { titles, lineDatas } = that.doHandlerData(that.fm1.chartDatas)
                 that.chart = echarts.init(that.container)
                 const option = {
                     grid: { top: 20, left: 22, right: 20, bottom: 12, containLabel: true },
@@ -158,7 +158,7 @@
             refreshChart () {
                 const that = this
                 const chart = that.chart
-                const { titles, barDatas, lineDatas } = that.doHandlerData(that.fm1.chartDatas)
+                const { titles, lineDatas } = that.doHandlerData(that.fm1.chartDatas)
                 const currOption = chart.getOption()
                 const series = currOption.series
                 const xAxis = currOption.xAxis
@@ -174,14 +174,12 @@
             // 处理折线图数据
             doHandlerData (list) {
                 const titles = []
-                const barDatas = []
                 const lineDatas = []
                 list.forEach(item => {
                     titles.push((item.title.length > 6) ? item.title.substr(5) : item.title)
-                    barDatas.push({ name: item.title, value: item.data })
                     lineDatas.push({ name: item.title, value: item.data })
                 })
-                return { titles, lineDatas, barDatas }
+                return { titles, lineDatas }
             },
             // full state change
             doFullStateChange (payload) {

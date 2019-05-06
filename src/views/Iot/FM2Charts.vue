@@ -107,7 +107,7 @@
             // 初始化图表
             initChart () {
                 const that = this
-                const { titles, barDatas, lineDatas } = that.doHandlerData(that.fm2.chartDatas)
+                const { titles, lineDatas } = that.doHandlerData(that.fm2.chartDatas)
                 that.chart = echarts.init(that.container)
                 const option = {
                     grid: { top: 20, left: 22, right: 20, bottom: 12, containLabel: true },
@@ -155,7 +155,7 @@
             refreshChart () {
                 const that = this
                 const chart = that.chart
-                const { titles, barDatas, lineDatas } = that.doHandlerData(that.fm2.chartDatas)
+                const { titles, lineDatas } = that.doHandlerData(that.fm2.chartDatas)
                 const currOption = chart.getOption()
                 const series = currOption.series
                 const xAxis = currOption.xAxis
@@ -178,19 +178,17 @@
             doHandlerData (list) {
                 const that = this
                 const titles = []
-                const barDatas = []
                 const lineDatas = []
                 let obj = null
                 list.forEach(item => {
                     titles.push((item.title.length > 6) ? item.title.substr(5) : item.title)
-                    barDatas.push({ name: item.title, value: item.data })
                     obj = { name: item.title, value: item.data }
                     if (that.fm2.type == 'wind') {
                         obj.symbolRotate = item.rotate // 风向旋转角度
                     }
                     lineDatas.push(obj)
                 })
-                return { titles, lineDatas, barDatas }
+                return { titles, lineDatas }
             },
             // full state change
             doFullStateChange (payload) {
