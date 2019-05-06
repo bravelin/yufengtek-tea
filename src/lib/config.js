@@ -33,7 +33,8 @@ export default {
     // baseUrl: 'http://192.168.0.148:8080/tea_IIS_Web_war',
     // baseUrl: 'http://tea.yufengtek.com/tea-IIS-Web',
     originDataSocketUrl: 'wss://tea.yufengtek.com/tea-IIS-Web/myHandler',
-    refreshDataSocketUrl: 'wss://192.168.2.113:8080/myHandler',
+    // refreshDataSocketUrl: 'wss://tea.yufengtek.com/tea-IPS-Web/myHandler',
+    refreshDataSocketUrl: 'ws://192.168.2.113:8080/myHandler',
     mapAutoChangeTime: 5000,
 
     // 开发环境下

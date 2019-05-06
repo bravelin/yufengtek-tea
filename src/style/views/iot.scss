@@ -390,6 +390,11 @@
             height: calc(100% - 270px);
             // border: 1px solid #f00;
         }
+        &.full-screen{
+            >ul.selector>li:nth-of-type(1){
+                margin-right: 235px;
+            }
+        }
     }
 
     .camera-video{

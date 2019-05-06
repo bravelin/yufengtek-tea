@@ -12,6 +12,7 @@
         <PlaneTools :full="camera360FullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
+
 <script>
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
@@ -86,9 +87,9 @@
         },
         methods: {
             doHandleKeyDown (e) {
-                e.preventDefault()
                 const that = this
                 const store = that.$store
+                e.preventDefault()
                 if (that.eE == '') {
                     that.eE = e.key
                     that.changeDirect(e)
@@ -114,12 +115,11 @@
                             if ((that.eE == 'ArrowUp' && e.key == 'ArrowRight') || (that.eE == 'ArrowRight' && e.key == 'ArrowUp')) { that.key1 = 6 }
                             if (that.key1 != '' && that.keyDown) {
                                 that.key = that.key1
-                                var p = new Promise(function (resolve, reject) {
+                                const p = new Promise((resolve, reject) => {
                                     store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
                                     resolve('ok')
                                 })
-                                p.then(function (e) {
-                                    console.log(e)
+                                p.then((e) => {
                                     store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, that.key)
                                 })
                             }
@@ -199,20 +199,20 @@
                 this.startY = e.touches[0].clientY
             },
             touchMove (e) {
-                var that = this
+                const that = this
                 e.preventDefault()
                 e.stopPropagation()
-                if ((e.touches[0].clientX - this.startX > 2 || e.touches[0].clientY - this.startY > 2) && !this.moveUp) {
-                    this.moveUp = true
+                if ((e.touches[0].clientX - that.startX > 2 || e.touches[0].clientY - that.startY > 2) && !that.moveUp) {
+                    that.moveUp = true
                     const endX = e.touches[0].clientX
                     const endY = e.touches[0].clientY
-                    that.upOrDown(this.startX, this.startY, endX, endY)
+                    that.upOrDown(that.startX, that.startY, endX, endY)
                 }
             },
             touchEnd () {
-                var that = this
+                const that = this
                 that.$store.dispatch(moduleNameSpace + '/' + types.CHANGE_GUN_DIRECTION, 'up')
-                this.moveUp = false
+                that.moveUp = false
             },
             upOrDown (startX, startY, endX, endY) {
                 const that = this
@@ -233,7 +233,7 @@
                         break
                     default:
                         break
-                    }
+                }
             },
             getSlideDirection (startX, startY, endX, endY) {
                 const that = this

@@ -43,8 +43,7 @@
         watch: {
             [addressDataProp] () {
                 const that = this
-                const data = that.$store.state[moduleNameSpace][addrList]
-                that.addr = data
+                that.addr = that[addrList]
                 that.$nextTick(() => {
                     that.ulHeight = that.$refs.ul.offsetHeight
                 })
@@ -60,7 +59,7 @@
                     },
                     bar: {
                         background: 'rgba(46, 115, 215, 0.8)'
-                    },
+                    }
                 },
                 ulHeight: '',
                 divHeight: '',

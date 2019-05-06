@@ -51,8 +51,7 @@
             }
         },
         beforeDestroy () {
-            const that = this
-            window.removeEventListener('resize', that.draw)
+            window.removeEventListener('resize', this.draw)
         }
     }
 </script>

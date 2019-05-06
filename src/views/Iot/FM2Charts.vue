@@ -68,7 +68,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.chart
-                if (that['fm2'][dataProp].length) {
+                if (that.fm2[dataProp].length) {
                     that.initChart()
                 }
             })
@@ -76,7 +76,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace]['fm2'][dataProp]
+                const datas = that.fm2[dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refreshChart(datas) : that.initChart(datas)
@@ -89,7 +89,7 @@
                 if (that.currFm == value) {
                     return
                 }
-                const sno = store.state[moduleNameSpace]['fm2'].sno
+                const sno = that.fm2.sno
                 store.commit(moduleNameSpace + '/' + types.SWITCH_FM2_TYPE, { value, name })
                 store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, sno)
             },
@@ -100,7 +100,7 @@
                 if (that.fm2.time == val) {
                     return
                 }
-                const sno = store.state[moduleNameSpace]['fm2'].sno
+                const sno = that.fm2.sno
                 store.commit(moduleNameSpace + '/' + types.SWITCH_FM2_TIME_TYPE, val)
                 store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, sno)
             },

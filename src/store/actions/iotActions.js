@@ -159,7 +159,7 @@ export default {
         const type = state.fm2.type
         state.fm2.sno = payload || state.fm2.sno
 
-        ajax({ url: '/data/monitor/getFmbData?sno=' + context.state.fm2.sno, method: 'post' }).then(res => {
+        ajax({ url: '/data/monitor/getFmbData?sno=' + state.fm2.sno, method: 'post' }).then(res => {
             if (res.code == 200) {
                 const resData = res.repData
                 const todayData = resData.todayData || []

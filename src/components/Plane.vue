@@ -82,15 +82,7 @@
                     ctx.lineTo(0.5, h - radius - 0.5 - len)
                     ctx.stroke()
                 }
-            },
-            // doMouseEnter () {
-            //     this.colorType = 1
-            //     this.draw()
-            // },
-            // doMouseOut () {
-            //     this.colorType = 0
-            //     this.draw()
-            // }
+            }
         },
         beforeDestroy () {
             const that = this

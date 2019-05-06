@@ -16,7 +16,6 @@
             }
         },
         created () {
-            console.log(win.requestAnimationFrame)
             win.requestAnimationFrame = win.requestAnimationFrame || win.webkitRequestAnimationFrame || win.mozRequestAnimationFrame || win.msRequestAnimationFrame
             win.cancelAnimationFrame = win.cancelAnimationFrame || win.webkitCancelAnimationFrame || win.mozCancelAnimationFrame || win.msCancelAnimationFrame
         },

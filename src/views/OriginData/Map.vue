@@ -23,7 +23,7 @@
     export default {
         name: 'origin-map',
         computed: {
-            ...thisMapState([fullProp])
+            ...thisMapState([fullProp, dataProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -46,7 +46,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace][dataProp]
+                const datas = that[dataProp]
                 const copyDatas = [...datas]
                 if (!that.chart) {
                     that.init(copyDatas)
@@ -56,7 +56,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace][dataProp]
+                const datas = that[dataProp]
                 if (datas) {
                     if (that.container) {
                         const copyDatas = [...datas]

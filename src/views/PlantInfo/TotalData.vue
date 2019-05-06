@@ -15,7 +15,8 @@
 
     const moduleNameSpace = ns.PLANT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.totalData`
+    const dataProp = 'totalData'
+    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'totalDataFullState'
     const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
@@ -23,7 +24,7 @@
     export default {
         name: 'plant-total-data',
         computed: {
-            ...thisMapState(['totalData', fullProp]),
+            ...thisMapState([dataProp, fullProp]),
             miniScreen () {
                 return this.$store.state.winWidth < 1380
             }
@@ -49,7 +50,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that.$store.state[moduleNameSpace].totalData
+                const datas = that[dataProp]
                 if (datas.length && !that.chart) {
                     that.init(datas)
                 }
@@ -58,7 +59,7 @@
         methods: {
             doInitOrRefreshChart () {
                 const that = this
-                const datas = that.$store.state[moduleNameSpace].totalData
+                const datas = that[dataProp]
                 if (datas && datas.length) {
                     if (that.container) {
                         that.chart ? that.refresh(datas) : that.init(datas)
@@ -107,7 +108,6 @@
                         pieRadiusArr = ['60%', '67%']
                     }
                 }
-                console.log('paddingArr...', paddingArr)
                 datas.forEach((item, index) => {
                     centerX = centerXArr[index]
                     series.push({
