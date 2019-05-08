@@ -68,7 +68,7 @@
                 const that = this
                 const container = that.container
                 const { titles, lineDatas } = that.handleChartData(datas)
-                const { min, max, interval } = computedChartDataInterval(lineDatas, 5)
+                const { min, max, interval } = computedChartDataInterval(lineDatas, 4)
                 const options = {
                     grid: { top: 13, left: 0, right: 10, bottom: 0, containLabel: true },
                     tooltip: {
@@ -131,7 +131,7 @@
                         series: [{ data: lineDatas }]
                     }
                 } else {
-                    const { min, max, interval } = computedChartDataInterval(lineDatas, 5)
+                    const { min, max, interval } = computedChartDataInterval(lineDatas, 4)
                     options = {
                         grid: { top: 13, left: 0, right: 10, bottom: 0 },
                         xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],

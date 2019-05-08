@@ -69,7 +69,7 @@
                 const that = this
                 const container = that.container
                 const { titles, lineDatas, legends } = that.handleChartData(datas)
-                const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 5)
+                const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 4)
                 const options = {
                     grid: { top: 45, left: 0, right: 5, bottom: 0, containLabel: true },
                     legend: {
@@ -140,10 +140,10 @@
                 const that = this
                 const chart = that.chart
                 const { titles, lineDatas, legends } = that.handleChartData(datas)
-                const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 5)
                 const series = that.getSeries(lineDatas)
                 let options = null
                 if (that[fullProp]) {
+                    const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 8)
                     options = {
                         grid: { top: 70, left: 20, right: 20, bottom: 20 },
                         xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
@@ -153,6 +153,7 @@
                         legend: { data: legends, top: 21, right: 90, textStyle: { fontSize: 15, padding: [5, 0, 0, 5] } }
                     }
                 } else {
+                    const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 4)
                     options = {
                         grid: { top: 45, left: 0, right: 5, bottom: 0 },
                         xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],

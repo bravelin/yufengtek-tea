@@ -69,7 +69,7 @@
                 const that = this
                 const container = that.container
                 const { titles, lineDatas } = that.handleChartData(datas)
-                const { min, max, interval } = computedChartDataInterval(lineDatas, 5)
+                const { min, max, interval } = computedChartDataInterval(lineDatas, 4)
                 const options = {
                     grid: { top: 12, left: 0, right: 5, bottom: 0, containLabel: true },
                     tooltip: {
@@ -121,9 +121,9 @@
                 const that = this
                 const chart = that.chart
                 const { titles, lineDatas } = that.handleChartData(datas)
-                const { min, max, interval } = computedChartDataInterval(lineDatas, 5)
                 let options = null
                 if (that[fullProp]) {
+                    const { min, max, interval } = computedChartDataInterval(lineDatas, 8)
                     options = {
                         grid: { top: 25, left: 20, right: 20, bottom: 20 },
                         xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
@@ -132,6 +132,7 @@
                         series: [{ barWidth: 20, data: lineDatas }]
                     }
                 } else {
+                    const { min, max, interval } = computedChartDataInterval(lineDatas, 4)
                     options = {
                         grid: { top: 12, left: 5, right: 10, bottom: 0 },
                         xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
