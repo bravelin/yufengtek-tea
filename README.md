@@ -27,3 +27,8 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+sftp://39.108.98.48
+webfront       yfzn@123
+/usr/local/src/tomcat-teabigdata/webapps/ROOT   ---https
+/usr/local/src/tomcat-teabigdata/webapps/yfbigdata ----http
