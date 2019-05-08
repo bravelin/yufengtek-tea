@@ -3,6 +3,8 @@ const types = [
     'SWITCH_SCREEN_FULL', // 更改全屏状态
     'GET_WINDOW_SIZE', // 获取窗口宽高
     'SET_CURR_ROUTER', // 设置当前路由
+    'UPDATE_USER_INFO',
+    'CLEAR_USER_INFO',
     // ***************************************************************物联监控
     'GET_IOT_DATA', // 获取monitor设备信息
     'CHANGE_ACTIVE_IOT_TYPE', // 更改当前active状态的iot设备

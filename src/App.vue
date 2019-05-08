@@ -1,7 +1,7 @@
 <template>
     <div id="app" :style="{ height: winHeight + 'px' }">
         <Sky></Sky>
-        <NavMenu></NavMenu>
+        <NavMenu v-show="!isLogin"></NavMenu>
         <router-view :style="{ height: pageHeight + 'px' }"/>
         <Spinner v-show="loading"></Spinner>
     </div>
@@ -25,6 +25,9 @@
                 const state = this.$store.state
                 let h = state.winHeight - 105
                 return h > 540 ? h : 540
+            },
+            isLogin () {
+                return this.$store.state.currRouter.to === 'login'
             }
         },
         created () {

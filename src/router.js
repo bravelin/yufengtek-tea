@@ -10,6 +10,11 @@ const router = new Router({
     linkActiveClass: 'active',
     routes: [
         {
+            path: '/login',
+            name: 'login', // 登录
+            component: () => import('./views/Login/Index.vue')
+        },
+        {
             path: '/home',
             name: 'home', // 首页
             component: () => import('./views/Home/Index.vue')

@@ -1,11 +1,13 @@
 /** ajax 基于axios */
 import axios from 'axios'
 import config from '@/lib/config'
-const Qs = require('qs')
+import store from '@/store/index'
 
+const Qs = require('qs')
 axios.defaults.baseURL = ''
 // 请求发送之前的拦截器
 axios.interceptors.request.use(config => {
+    config.headers['valToken'] = store.state.userToken
     return config
 }, error => {
     return Promise.reject(error)
@@ -30,7 +32,11 @@ export default function (options) {
     }
     return new Promise((resolve, reject) => {
         axios.request(options).then(res => {
-            resolve(res.data)
+            if (res.data.code == 'w1005') {
+                store.state.currRouter.instance.push({ name: 'login' })
+            } else {
+                resolve(res.data)
+            }
         }, error => {
             reject(error)
         })
