@@ -54,13 +54,19 @@ export default {
                 const todayData = resData.todayData || []
                 const sevenData = resData.sevenData || []
                 // 最近最新数据
-                const len = todayData.length - 1
-                const dataObj = todayData[len]
-                fm1Data.temperature = dataObj.flddata_temp.toFixed(2)
-                fm1Data.humidity = dataObj.flddata_humid.toFixed(2)
-                fm1Data.light = dataObj.flddata_sunlux.toFixed(2)
-                fm1Data.pressure = dataObj.flddata_pa.toFixed(2)
-
+                if (todayData.length) {
+                    const len = todayData.length - 1
+                    const dataObj = todayData[len]
+                    fm1Data.temperature = dataObj.flddata_temp.toFixed(2)
+                    fm1Data.humidity = dataObj.flddata_humid.toFixed(2)
+                    fm1Data.light = dataObj.flddata_sunlux.toFixed(2)
+                    fm1Data.pressure = dataObj.flddata_pa.toFixed(2)
+                } else {
+                    fm1Data.temperature = '-'
+                    fm1Data.humidity = '-'
+                    fm1Data.light = '-'
+                    fm1Data.pressure = '-'
+                }
                 if (timeType == 'HOUR') {
                     if (type == 'temperature') {
                         fm1.chartDatas = todayData.map(item => {
@@ -122,12 +128,19 @@ export default {
                 const todayData = resData.todayData || []
                 const sevenData = resData.sevenData || []
                 // 当前的最新数据
-                const len = todayData.length - 1
-                const dataObj = todayData[len]
-                fm2Data.temperature = dataObj.soiltemp.toString()
-                fm2Data.humidity = parseInt(dataObj.soilmture).toFixed(2)
-                fm2Data.wind = parseInt(dataObj.windspd).toFixed(2)
-                fm2Data.rain = parseInt(dataObj.rain).toFixed(2)
+                if (todayData.length) {
+                    const len = todayData.length - 1
+                    const dataObj = todayData[len]
+                    fm2Data.temperature = dataObj.soiltemp.toString()
+                    fm2Data.humidity = parseInt(dataObj.soilmture).toFixed(2)
+                    fm2Data.wind = parseInt(dataObj.windspd).toFixed(2)
+                    fm2Data.rain = parseInt(dataObj.rain).toFixed(2)
+                } else {
+                    fm2Data.temperature = '-'
+                    fm2Data.humidity = '-'
+                    fm2Data.wind = '-'
+                    fm2Data.rain = '-'
+                }
                 if (timeType == 'HOUR') {
                     if (type == 'temperature') {
                         fm2.chartDatas = todayData.map(item => {
