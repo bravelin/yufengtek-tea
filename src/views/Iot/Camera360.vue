@@ -277,7 +277,7 @@
                 }
                 const videoWrap = that.videoWrap
                 const proxyVideoWrap = that.proxyVideoWrap
-                const url = (reg.ios.test(navigator.userAgent)) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
+                const url = reg.ios.test(navigator.userAgent) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
                 const proxyUrl = that.getProxyUrl(url)
                 const playerOptions = {
                     autoplay: true,
