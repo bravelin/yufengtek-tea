@@ -73,7 +73,7 @@
                 setTimeout(() => { that.inProcessing = false }, 300)
                 const videoWrap = that.$refs.videoPlayer
                 // ios下需要http协议的url才能播放
-                const url = (reg.ios.test(navigator.userAgent) || location.protocol == 'http:') ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
+                const url = (reg.ios.test(navigator.userAgent)) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
                 const playerOptions = {
                     autoplay: true,
                     preload: 'auto',
