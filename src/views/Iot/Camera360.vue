@@ -73,6 +73,7 @@
                 proxyVideoWrap: null,
                 player: null,
                 proxyPlayer: null,
+                showProxyVideo: true,
                 keyDown: false,
                 key: '',
                 moveUp: false,
@@ -80,7 +81,6 @@
                 startY: '',
                 endX: '',
                 endY: '',
-                showProxyVideo: true,
                 eE: '',
                 key1: ''
             }
@@ -277,8 +277,13 @@
                 }
                 const videoWrap = that.videoWrap
                 const proxyVideoWrap = that.proxyVideoWrap
-                const url = reg.ios.test(navigator.userAgent) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
+                let url = reg.ios.test(navigator.userAgent) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
                 const proxyUrl = that.getProxyUrl(url)
+                console.log('10...', url)
+                if (url.indexOf('.hd.') < 0) { // 切换成高清
+                    url = url.replace('.flv', '.hd.flv')
+                }
+                console.log('11...', url)
                 const playerOptions = {
                     autoplay: true,
                     techOrder: ['html5', 'flvjs'],
@@ -378,7 +383,13 @@
             },
             getProxyUrl (url) {
                 const pos = url.lastIndexOf('/')
-                return ((reg.ios.test(navigator.userAgent)) ? 'http' : 'https') + '://hls01open.ys7.com/openlive/' + url.slice(pos + 1, -4) + '.m3u8'
+                let str = (reg.ios.test(navigator.userAgent) ? 'http' : 'https') + '://hls01open.ys7.com/openlive/' + url.slice(pos + 1, -4) + '.m3u8'
+                console.log('01...', str)
+                if (str.indexOf('.hd.') < 0) {
+                    str = str.replace('.m3u8', '.hd.m3u8')
+                    console.log('02...', str)
+                }
+                return str
             }
         },
         beforeDestroy() {

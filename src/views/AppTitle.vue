@@ -1,5 +1,5 @@
 <template>
-    <div class="app-title">
+    <div class="app-title" @click="doFull()">
         <canvas ref="bg"></canvas>
         <h3>武夷山市智慧茗园数据平台</h3>
     </div>
@@ -47,6 +47,20 @@
                     ctx.moveTo(0, bottom - 1)
                     ctx.lineTo(6, bottom - 1)
                     ctx.stroke()
+                }
+            },
+            doFull () {
+                const state = this.$store.state
+                const screen = window.screen
+                const tag = (screen.width == state.winWidth && screen.height == state.winHeight)
+                if (!tag) {
+                    const doc = document.documentElement
+                    const requestFullScreen = doc.requestFullScreen || doc.webkitRequestFullScreen || doc.mozRequestFullScreen || doc.msRequestFullScreen
+                    requestFullScreen.call(doc)
+                } else {
+                    const doc = document
+                    const cancelFullScreen = doc.cancelFullScreen || doc.webkitCancelFullScreen || doc.mozCancelFullScreen || doc.exitFullscreen
+                    cancelFullScreen.call(doc)
                 }
             }
         },

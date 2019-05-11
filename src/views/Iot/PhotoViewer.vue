@@ -58,7 +58,7 @@
                         panorama: that.photoViewUrl,
                         container: that.container,
                         time_anim: false,
-                        navbar: ['autorotate', 'zoom', 'download', 'gyroscope', 'stereo', 'fullscreen'],
+                        navbar: ['autorotate', 'zoom', 'gyroscope', 'stereo', 'fullscreen'],
                         default_fov: 90,
                         anim_speed: '0.8rpm'
                     })

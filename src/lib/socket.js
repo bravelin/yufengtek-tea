@@ -2,6 +2,7 @@ import config from '@/lib/config'
 import store from '@/store/index'
 import ns from '@/store/constants/ns'
 import types from '@/store/constants/types'
+import { formatTime } from '@/lib/util'
 
 const pageKeyMap = {
     camera: [ns.HOME, ns.IOT], // 摄像头
@@ -15,14 +16,28 @@ const pageKeyMap = {
 }
 let nextRefreshTimer = null
 let nextRefreshName = ''
+let connTimer = null
+let socket = new WebSocket(config.socketUrl)
 
-const socket = new WebSocket(config.socketUrl)
-socket.onopen = function (e) {
-    console.log('origin web socket open...')
+function initSocket () {
+    socket.onopen = onSocketOpen
+    socket.onmessage = onSocketMessage
+    socket.onerror = onSocketError
+    socket.onclose = onSocketClose
+    socket.send = onSocketSend
 }
-socket.onmessage = function (e) {
+
+function onSocketOpen (e) {
+    console.log('origin web socket open...', formatTime(new Date()))
+    if (connTimer) {
+        clearInterval(connTimer)
+    }
+}
+
+function onSocketMessage (e) {
     const socketData = e.data
     const currPageName = store.state.currRouter.to
+    console.log('socket data....', socketData)
     if (socketData.startsWith('change:')) { // 数据变动
         const changeKeys = socketData.slice(8, -1).split(',')
         const pageSet = new Set([])
@@ -89,15 +104,24 @@ function doRefreshPageData (pageName) {
     nextRefreshName = ''
 }
 
-socket.onerror = function (e) {
-    console.log('socket error....', e)
+function onSocketError (e) {
+    console.log('socket error....', formatTime(new Date()), e)
 }
 
-socket.onclose = function (e) {
-    console.log('socket close....', e)
+function onSocketClose (e) {
+    console.log('socket close....', formatTime(new Date()))
+    console.log('close socket event...', e)
+    console.log('reconnect socket...')
+    if (connTimer) clearInterval(connTimer)
+    connTimer = setInterval(() => {
+        socket = new WebSocket(config.socketUrl)
+        initSocket()
+    }, 20000)
 }
 
-socket.send = function (e) {
+function onSocketSend (e) {
     console.log('send successful...', e)
 }
+
+initSocket()
 export default socket
