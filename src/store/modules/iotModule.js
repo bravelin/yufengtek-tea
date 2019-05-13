@@ -14,6 +14,7 @@ export default {
         fm1List: [],
         fm2List: [],
         photoViewUrl: '',
+        currVisibleIotType: '', // Camera Monitor
         currActive: { type: types.IOT_TYPE_FM1, index: 0 },
         fm1: {
             type: 'temperature', // temperature humidity light pressure

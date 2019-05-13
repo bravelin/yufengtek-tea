@@ -27,6 +27,17 @@ export default {
     [types.SWITCH_FM1_TIME_TYPE] (state, val) {
         state.fm1.time = val // val为 HOUR WEEK
     },
+    [types.CHANGE_VISIBLE_IOT_TYPE] (state, type) {
+        state.currVisibleIotType = type
+        state.iotDatas = state.iotDatas.map(item => {
+            if (item.type == types.IOT_TYPE_GUN || item.type == types.IOT_TYPE_360 || item.type == types.IOT_TYPE_SPHERE) {
+                item.show = (type == '' || type == 'camera')
+            } else {
+                item.show = (type == '' || type == 'monitor')
+            }
+            return item
+        })
+    },
     [types.SWITCH_FM2_TYPE] (state, payload) {
         const fm2 = state.fm2
         fm2.type = payload.value

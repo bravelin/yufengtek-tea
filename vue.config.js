@@ -22,18 +22,18 @@ module.exports = {
         disableHostCheck: true,
         proxy: {
             '/bigdata': {
-                target: 'http://192.168.2.114:10013/bigdata/',
+                // target: 'http://192.168.2.114:10013/bigdata/',
                 // target: 'http://192.168.2.119:8080/tea_IIS_Web_war/bigdata/',
-                // target: 'https://tea.yufengtek.com/tea-IIS-Web/bigdata/',
+                target: 'https://tea.yufengtek.com/tea-IIS-Web/bigdata/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/bigdata': ''
                 }
             },
             '/data': {
-                target: 'http://192.168.2.114:10013/data/',
+                // target: 'http://192.168.2.114:10013/data/',
                 // target: 'http://192.168.2.119:8080/tea_IIS_Web_war/data/',
-                // target: 'https://tea.yufengtek.com/tea-IIS-Web/data/',
+                target: 'https://tea.yufengtek.com/tea-IIS-Web/data/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/data': ''

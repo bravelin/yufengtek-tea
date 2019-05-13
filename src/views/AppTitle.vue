@@ -1,5 +1,5 @@
 <template>
-    <div class="app-title" @click="doFull()">
+    <div class="app-title" @dblclick="doFull()">
         <canvas ref="bg"></canvas>
         <h3>武夷山市智慧茗园数据平台</h3>
     </div>

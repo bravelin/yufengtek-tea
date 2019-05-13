@@ -73,6 +73,7 @@
                     fullStateName: item.state, state: false, subModuleName: item.subModuleName
                 })
             })
+            store.commit(moduleNameSpace + '/' + types.CHANGE_VISIBLE_IOT_TYPE, '')
             store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, { index: 0, type: types.IOT_TYPE_FM1 })
             that.timer && clearInterval(that.timer)
         }

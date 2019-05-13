@@ -11,23 +11,29 @@ export default {
                 resData.cameraVos.forEach((item) => {
                     item.type = item.camera_type == '1' ? types.IOT_TYPE_GUN : types.IOT_TYPE_360
                     item.isActive = false
+                    item.show = state.currVisibleIotType == '' || state.currVisibleIotType == 'camera'
                 })
                 resData.emVos.forEach(item => {
                     item.type = types.IOT_TYPE_SPHERE
                     item.isActive = false
+                    item.show = state.currVisibleIotType == '' || state.currVisibleIotType == 'camera'
                 })
                 resData.Fm1.forEach(item => {
                     item.type = types.IOT_TYPE_FM1
                     item.isActive = false
+                    item.show = state.currVisibleIotType == '' || state.currVisibleIotType == 'monitor'
                 })
                 resData.Fm2.forEach(item => {
                     item.type = types.IOT_TYPE_FM2
                     item.isActive = false
+                    item.show = state.currVisibleIotType == '' || state.currVisibleIotType == 'monitor'
                 })
                 let iotDatas = []
                 iotDatas = resData.Fm1.concat(resData.emVos).concat(resData.Fm2).concat(resData.cameraVos)
                 if (state.iotDatas.length != iotDatas.length) {
-                    iotDatas.forEach((item, index) => { item.index = index })
+                    iotDatas.forEach((item, index) => {
+                        item.index = index
+                    })
                     state.currActive.type = types.IOT_TYPE_FM1
                     state.currActive.index = 0
                     iotDatas[0].isActive = true
@@ -205,11 +211,13 @@ export default {
                 context.state.camera = cameraObj
                 context.commit(types.CHANGE_ACTIVE_MARKER, { index, type: types.IOT_TYPE_GUN })
                 context.commit(types.GET_GUN_DATA, cameraObj)
+                context.commit(types.CHANGE_VISIBLE_IOT_TYPE, payload)
             }
         } else {
             if (iotDatas.length) {
                 context.dispatch(types.GET_FM1_DATA, iotDatas[0].sno)
                 context.commit(types.CHANGE_ACTIVE_MARKER, { index: 0, type: types.IOT_TYPE_FM1 })
+                context.commit(types.CHANGE_VISIBLE_IOT_TYPE, payload)
             }
         }
     },
@@ -219,13 +227,5 @@ export default {
             const url = res.repData[11].replace(/http/, 'https')
             state.photoViewUrl = url || state.photoViewUrl // 防止未返回数据
         })
-    },
-    [types.CHANGE_GUN_DIRECTION] (context, payload) {
-        const sno = context.state.camera.camera_sno
-        if (payload == 'up') {
-            ajax({ url: '/data/momitor/CameraStop?sno=' + sno, method: 'post' })
-        } else {
-            ajax({ url: '/data/momitor/CameraRun?sno=' + sno + '&direction=' + parseInt(payload), method: 'post' })
-        }
     }
 }

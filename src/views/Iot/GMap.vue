@@ -15,6 +15,7 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const modulePrefix = `$store.state.${moduleNameSpace}`
     const dataProp = `${modulePrefix}.iotDatas`
+
     const iotTypeObj = {
         [types.IOT_TYPE_SPHERE]: '全景摄像头',
         [types.IOT_TYPE_FM1]: 'FM1监控设备',
@@ -34,7 +35,13 @@
             }
         },
         computed: {
-            ...thisMapState(['iotDatas', 'currActive'])
+            ...thisMapState(['currVisibleIotType', 'currActive']),
+            iotDatas () {
+                const that = this
+                const list = that.$store.state[moduleNameSpace].iotDatas.filter(item => item.show)
+                console.log('list...', list)
+                return list
+            }
         },
         watch: {
             [dataProp] () {
@@ -105,9 +112,10 @@
                 const lng = marker.address_gislong
                 const isActive = marker.isActive
                 const icon = that.getMarkerIcon(markerType, isActive)
+                console.log('marker.show...', marker.show)
                 const mapMarker = new google.maps.Marker({
                     position: { lat, lng },
-                    map: that.map,
+                    map: marker.show ? that.map : null,
                     icon,
                     title: markerType
                 })
