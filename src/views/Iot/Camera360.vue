@@ -22,8 +22,9 @@
     const fullProp = 'camera360FullState'
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const dataVideo = `$store.state.${moduleNameSpace}.videoUrl360`
-    const showProp = `$store.state.${moduleNameSpace}.camera360FullState`
+    const modulePrefix = `$store.state.${moduleNameSpace}`
+    const dataVideo = `${modulePrefix}.videoUrl360`
+    const showProp = `${modulePrefix}.camera360FullState`
 
     export default {
         name: 'Iot360Video',
@@ -277,13 +278,7 @@
                 }
                 const videoWrap = that.videoWrap
                 const proxyVideoWrap = that.proxyVideoWrap
-                let url = reg.ios.test(navigator.userAgent) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
-                const proxyUrl = that.getProxyUrl(url)
-                console.log('10...', url)
-                if (url.indexOf('.hd.') < 0) { // 切换成高清
-                    url = url.replace('.flv', '.hd.flv')
-                }
-                console.log('11...', url)
+                const { hls, flv } = that.getVideoUrl(videoUrl)
                 const playerOptions = {
                     autoplay: true,
                     techOrder: ['html5', 'flvjs'],
@@ -296,7 +291,7 @@
                     },
                     preload: 'auto',
                     language: 'zh-CN',
-                    sources: [{ type: 'video/mp4', src: url }],
+                    sources: [{ type: 'video/mp4', src: flv }],
                     notSupportedMessage: '暂时无法播放',
                     html5: { hls: { withCredentials: false } },
                     controlBar: {
@@ -310,7 +305,7 @@
                     autoplay: true,
                     preload: 'auto',
                     language: 'zh-CN',
-                    sources: [{ type: 'application/x-mpegURL', src: proxyUrl }],
+                    sources: [{ type: 'application/x-mpegURL', src: hls }],
                     notSupportedMessage: '暂时无法播放',
                     html5: { hls: { withCredentials: false } },
                     controlBar: {
@@ -331,21 +326,21 @@
                 that.$nextTick(() => {
                     if (player) {
                         player.reset()
-                        player.src({ src: url, type: 'video/x-flv' })
+                        player.src({ src: flv, type: 'video/x-flv' })
                         player.load()
                         setTimeout(() => { player.play() }, 100)
                     } else {
                         player = that.player = videojs(videoWrap, playerOptions, () => {
                             player.on('error', () => {
-                                player.src({ src: url, type: 'video/x-flv' })
+                                player.src({ src: flv, type: 'video/x-flv' })
                                 player.ready(() => {
                                     player.load()
                                     setTimeout(() => { player.play() }, 100)
                                     setTimeout(() => {
                                         if (!reg.ios.test(navigator.userAgent)) {
                                             console.log('切换成flv.........')
-                                            that.showProxyVideo = false
-                                            that.proxyPlayer && that.proxyPlayer.dispose()
+                                            // that.showProxyVideo = false
+                                            // that.proxyPlayer && that.proxyPlayer.dispose()
                                         }
                                     }, 2000)
                                 })
@@ -355,7 +350,7 @@
                     }
                     // hls格式的视频
                     if (that.proxyPlayer) {
-                        that.proxyPlayer.src(proxyUrl)
+                        that.proxyPlayer.src(hls)
                         that.proxyPlayer.load()
                     } else {
                         that.proxyPlayer = videojs(proxyVideoWrap, proxyPlayerOptions)
@@ -381,15 +376,15 @@
                     state: payload
                 })
             },
-            getProxyUrl (url) {
+            getVideoUrl (url) {
                 const pos = url.lastIndexOf('/')
-                let str = (reg.ios.test(navigator.userAgent) ? 'http' : 'https') + '://hls01open.ys7.com/openlive/' + url.slice(pos + 1, -4) + '.m3u8'
-                console.log('01...', str)
-                if (str.indexOf('.hd.') < 0) {
-                    str = str.replace('.m3u8', '.hd.m3u8')
-                    console.log('02...', str)
-                }
-                return str
+                const equipSno = url.substr(pos + 1, 32)
+                const prefix = (reg.ios.test(navigator.userAgent) ? 'http' : 'https')
+                let hls = `${prefix}://hls01open.ys7.com/openlive/${equipSno}.hd.m3u8`
+                console.log('getVideoUrl 01...', hls)
+                let flv = `${prefix}://flvopen.ys7.com:9188/openlive/${equipSno}.flv`
+                console.log('getVideoUrl 02...', flv)
+                return { hls, flv }
             }
         },
         beforeDestroy() {
