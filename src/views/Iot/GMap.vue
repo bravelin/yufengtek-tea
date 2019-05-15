@@ -39,7 +39,6 @@
             iotDatas () {
                 const that = this
                 const list = that.$store.state[moduleNameSpace].iotDatas.filter(item => item.show)
-                console.log('list...', list)
                 return list
             }
         },
@@ -62,7 +61,7 @@
                 that.map = new google.maps.Map(that.$refs.wrap, {
                     center: mapCenterPoint,
                     zoom: config.iotMonitorMap.zoom,
-                    maxZoom: 18,
+                    maxZoom: 20,
                     mapTypeId: 'hybrid',
                     gestureHandling: 'greedy',
                     keyboardShortcuts: false,
@@ -112,7 +111,6 @@
                 const lng = marker.address_gislong
                 const isActive = marker.isActive
                 const icon = that.getMarkerIcon(markerType, isActive)
-                console.log('marker.show...', marker.show)
                 const mapMarker = new google.maps.Marker({
                     position: { lat, lng },
                     map: marker.show ? that.map : null,

@@ -14,6 +14,7 @@ export default {
         fm1List: [],
         fm2List: [],
         photoViewUrl: '',
+        controlButtonIsActive: false,
         currVisibleIotType: '', // Camera Monitor
         currActive: { type: types.IOT_TYPE_FM1, index: 0 },
         fm1: {

@@ -36,6 +36,7 @@ const types = [
     'GET_360_DATA', // 球机摄像头数据
     'ORIGIN_REAL_TIME_DATA', // 实时扫码数据
     'CHANGE_VISIBLE_IOT_TYPE', // 在摄像头和监测站设备显示切换
+    'CHANGE_CONTROL_BUTTON_STATUS', // 修改摄像头控制按钮的状态
     // ***************************************************************农事活动
     'FARMING_CHANGE_CURR_REGION', // 切换当前选中的地图区域
     'FARMING_GET_DATA',

@@ -1,6 +1,6 @@
 <template>
     <Plane class="camera360" :full="camera360FullState">
-        <PlaneTitle>视频监控</PlaneTitle>
+        <PlaneTitle @click="doHideControlButton()">视频监控</PlaneTitle>
         <div class="plane-content" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
             <div class="video-container flv" ref="container">
                 <video class="video-js vjs-default-skin video-wrap" controls></video>
@@ -36,7 +36,7 @@
             ControlPanel
         },
         computed: {
-            ...thisMapState(['videoUrl360', 'camera', 'camera360FullState', ''])
+            ...thisMapState(['videoUrl360', 'camera', 'camera360FullState'])
         },
         created () {
             const that = this
@@ -63,6 +63,7 @@
                         that.videoWrap = refs.container.querySelector('video')
                         that.proxyVideoWrap = refs.proxyContainer.querySelector('video')
                     }, 50)
+                    that.$store.commit(moduleNameSpace + '/' + types.CHANGE_CONTROL_BUTTON_STATUS, false)
                 }
             },
             [resizeStateProp] () { // 监听当前窗口大小
@@ -146,6 +147,7 @@
                     notSupportedMessage: '暂时无法播放',
                     html5: { hls: { withCredentials: false } },
                     controlBar: {
+                        playToggle: false,
                         fullscreenToggle: true,
                         remainingTimeDisplay: false,
                         timeDivider: false,
@@ -160,6 +162,7 @@
                     notSupportedMessage: '暂时无法播放',
                     html5: { hls: { withCredentials: false } },
                     controlBar: {
+                        playToggle: false,
                         fullscreenToggle: true,
                         remainingTimeDisplay: false,
                         timeDivider: false,
@@ -233,9 +236,7 @@
                 const equipSno = url.substr(pos + 1, 32)
                 const prefix = (reg.ios.test(navigator.userAgent) ? 'http' : 'https')
                 let hls = `${prefix}://hls01open.ys7.com/openlive/${equipSno}.hd.m3u8`
-                console.log('getVideoUrl 01...', hls)
                 let flv = `https://flvopen.ys7.com:9188/openlive/${equipSno}.hd.flv`
-                console.log('getVideoUrl 02...', flv)
                 return { hls, flv }
             },
             doHandleKeyDown (e) {
@@ -279,6 +280,9 @@
                     that.currPressedKey = ''
                     that.changeKey = ''
                 }
+            },
+            doHideControlButton () {
+                this.$store.commit(moduleNameSpace + '/' + types.CHANGE_CONTROL_BUTTON_STATUS, false)
             },
             doControlPanelChange (type) {
                 const that = this
@@ -370,7 +374,7 @@
                     const directionCode = that.directionChangeReqList.shift()
                     let request = null
                     const sno = that.camera.camera_sno
-                    console.log('request control camera...', directionCode)
+                    // console.log('request control camera...', directionCode)
                     if (directionCode == 'stop') {
                         request = that.$ajax({ url: '/data/momitor/CameraStop?sno=' + sno, method: 'post' })
                     } else {

@@ -87,4 +87,7 @@ export default {
         state.camera = payload
         state.videoUrl360 = state.camera.camera_url
     },
+    [types.CHANGE_CONTROL_BUTTON_STATUS] (state, isActive) {
+        state.controlButtonIsActive = isActive
+    }
 }

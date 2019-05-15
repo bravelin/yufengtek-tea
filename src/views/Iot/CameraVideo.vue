@@ -16,8 +16,11 @@
 
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const dataVideo = `$store.state.${moduleNameSpace}.videoUrl`
-    const showProp = `$store.state.${moduleNameSpace}.currActive.type`
+    const modulePrefix = `$store.state.${moduleNameSpace}`
+    const dataVideo = `${modulePrefix}.videoUrl`
+    const showProp = `${modulePrefix}.currActive.type`
+    const photoViewerFullStateProp = `${modulePrefix}.photoViewerFullState`
+    const camera360FullStateProp = `${modulePrefix}.camera360FullState`
 
     export default {
         name: 'IotCameraVideo',
@@ -35,6 +38,12 @@
                 } else if (that.player) {
                     that.player.pause()
                 }
+            },
+            [photoViewerFullStateProp] (val) {
+                this.doPauseOrResume(val)
+            },
+            [camera360FullStateProp] (val) {
+                this.doPauseOrResume(val)
             }
         },
         mounted () {
@@ -87,6 +96,7 @@
                     notSupportedMessage: '暂时无法播放',
                     html5: { hls: { withCredentials: false } },
                     controlBar: {
+                        playToggle: false,
                         fullscreenToggle: true,
                         remainingTimeDisplay: false,
                         timeDivider: false,
@@ -107,6 +117,12 @@
                         that.player = videojs(videoWrap, playerOptions)
                     }
                 })
+            },
+            doPauseOrResume (val) {
+                const that = this
+                if (that.player) {
+                    val ? that.player.pause() : that.player.play()
+                }
             },
             getSize () {
                 const that = this
