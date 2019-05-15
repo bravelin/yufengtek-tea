@@ -87,7 +87,7 @@
                                 userToken: resData.tokenKey,
                                 userId: '',
                                 userName: that.loginName.trim(),
-                                userRole: '',
+                                userRole: resData.user_type == 'DT' ? '1' : '0',
                                 password: that.password.trim()
                             })
                             setTimeout(() => { that.$router.push({ name: 'home' }) }, 500)

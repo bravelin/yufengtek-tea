@@ -227,7 +227,25 @@
             display: block;
             width: 130px;
             height: 51px;
-            background: url('./assets/images/logo.png');
+            background-image: url('./assets/images/logo.png');
+            background-size: 100% 100%;
+        }
+        &.spec{
+            margin-right: 20px;
+            position: relative;
+            width: 130px;
+            &:before{
+                position: absolute;
+                top: -25px;
+                left: 0;
+                height: 105px;
+                width: 130px;
+                // border: 1px solid #f00;
+                background-image: url('./assets/images/logo-3.png');
+            }
+            >div{
+                display: none;
+            }
         }
         div{
             font-size: 12px;

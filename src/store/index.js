@@ -25,7 +25,7 @@ export default new Vuex.Store({
         userToken: ls.getItem(StorageTags.userToken) || '', // 用户token
         userId: ls.getItem(StorageTags.userId) || '', // 用户ID
         userName: ls.getItem(StorageTags.userName) || '', // 登录名
-        userRole: ls.getItem(StorageTags.userRole) || '0', // 角色 0-可以查看全部内容 1-部分内容
+        userRole: ls.getItem(StorageTags.userRole) || '0', // 角色 0-可以查看全部内容 1-智慧茗园
     },
     mutations,
     modules

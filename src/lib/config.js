@@ -30,10 +30,10 @@ export default {
     },
     proxyUrl: 'https://proxy.yufengtek.com/',
     // 生产环境
-    // baseUrl: 'http://tea.yufengtek.com/tea-Web-Bigdata',
+    baseUrl: 'http://tea.yufengtek.com/tea-Web-Bigdata',
     socketUrl: 'ws://tea.yufengtek.com/tea-Web-Bigdata/myHandler',
     mapAutoChangeTime: 5000,
 
     // 开发环境下
-    baseUrl: ''
+    // baseUrl: ''
 }

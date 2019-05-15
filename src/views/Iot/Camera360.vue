@@ -190,13 +190,13 @@
                                 player.ready(() => {
                                     player.load()
                                     setTimeout(() => { player.play() }, 100)
-                                    setTimeout(() => {
-                                        if (!reg.ios.test(navigator.userAgent)) {
-                                            // console.log('切换成flv.........')
-                                            // that.showProxyVideo = false
-                                            // that.proxyPlayer && that.proxyPlayer.dispose()
-                                        }
-                                    }, 2000)
+                                    // setTimeout(() => {
+                                    //     if (!reg.ios.test(navigator.userAgent)) {
+                                    //         console.log('切换成flv.........')
+                                    //         that.showProxyVideo = false
+                                    //         that.proxyPlayer && that.proxyPlayer.dispose()
+                                    //     }
+                                    // }, 2000)
                                 })
                             })
                         })

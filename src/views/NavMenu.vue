@@ -1,6 +1,6 @@
 <template>
     <div class="nav-menu">
-        <div class="logo" @dblclick="doLogout()"><div>智所未见&nbsp;尽在未来</div></div>
+        <div class="logo" @dblclick="doLogout()" :class="{ spec: userRole == '1' }"><div>智所未见&nbsp;尽在未来</div></div>
         <ul class="menu">
             <router-link tag="li" :to="{ name: 'home' }">智慧全息</router-link>
             <router-link tag="li" :to="{ name: 'iot' }">物联监控</router-link>
@@ -15,11 +15,15 @@
 <script>
     import AppTitle from './AppTitle'
     import types from '@/store/constants/types'
+    import { mapState } from 'vuex'
 
     export default {
         name: 'NavMenu',
         components: {
             AppTitle
+        },
+        computed: {
+            ...mapState(['userRole'])
         },
         methods: {
             doLogout () {
