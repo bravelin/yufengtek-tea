@@ -231,20 +231,25 @@
             background-size: 100% 100%;
         }
         &.spec{
-            margin-right: 20px;
+            margin-right: 12px;
             position: relative;
-            width: 130px;
+            width: 158px;
             &:before{
                 position: absolute;
-                top: -25px;
+                top: -10px;
                 left: 0;
-                height: 105px;
-                width: 130px;
+                height: 60px;
+                width: 152px;
                 // border: 1px solid #f00;
                 background-image: url('./assets/images/logo-3.png');
             }
             >div{
-                display: none;
+                position: absolute;
+                left: 12px;
+                bottom: 0;
+                white-space: nowrap;
+                transform: scale(0.83, 0.83);
+                letter-spacing: 9px;
             }
         }
         div{

@@ -184,23 +184,23 @@
                         player.load()
                         setTimeout(() => { player.play() }, 100)
                     } else {
-                        player = that.player = videojs(videoWrap, playerOptions, () => {
-                            player.on('error', () => {
-                                player.src({ src: flv, type: 'video/x-flv' })
-                                player.ready(() => {
-                                    player.load()
-                                    setTimeout(() => { player.play() }, 100)
-                                    // setTimeout(() => {
-                                    //     if (!reg.ios.test(navigator.userAgent)) {
-                                    //         console.log('切换成flv.........')
-                                    //         that.showProxyVideo = false
-                                    //         that.proxyPlayer && that.proxyPlayer.dispose()
-                                    //     }
-                                    // }, 2000)
-                                })
-                            })
-                        })
-                        setTimeout(() => { player.play() }, 50)
+                        // player = that.player = videojs(videoWrap, playerOptions, () => {
+                        //     player.on('error', () => {
+                        //         player.src({ src: flv, type: 'video/x-flv' })
+                        //         player.ready(() => {
+                        //             player.load()
+                        //             setTimeout(() => { player.play() }, 100)
+                        //             setTimeout(() => {
+                        //                 if (!reg.ios.test(navigator.userAgent)) {
+                        //                     console.log('切换成flv.........')
+                        //                     that.showProxyVideo = false
+                        //                     that.proxyPlayer && that.proxyPlayer.dispose()
+                        //                 }
+                        //             }, 2000)
+                        //         })
+                        //     })
+                        // })
+                        // setTimeout(() => { player.play() }, 50)
                     }
                     // hls格式的视频
                     if (that.proxyPlayer) {

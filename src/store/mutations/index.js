@@ -46,12 +46,9 @@ export default {
     [types.CLEAR_USER_INFO] (state) {
         state.userToken = ''
         state.userId = ''
-        state.userName = ''
         state.userRole = ''
         ls.removeItem(StorageTags.userToken)
         ls.removeItem(StorageTags.userId)
-        ls.removeItem(StorageTags.userName)
         ls.removeItem(StorageTags.userRole)
-        ls.removeItem(StorageTags.password)
     }
 }
