@@ -178,12 +178,12 @@
                 let player = that.player
                 let proxyPlayer = that.proxyPlayer
                 that.$nextTick(() => {
-                    if (player) {
-                        player.reset()
-                        player.src({ src: flv, type: 'video/x-flv' })
-                        player.load()
-                        setTimeout(() => { player.play() }, 100)
-                    } else {
+                    // if (player) {
+                    //     player.reset()
+                    //     player.src({ src: flv, type: 'video/x-flv' })
+                    //     player.load()
+                    //     setTimeout(() => { player.play() }, 100)
+                    // } else {
                         // player = that.player = videojs(videoWrap, playerOptions, () => {
                         //     player.on('error', () => {
                         //         player.src({ src: flv, type: 'video/x-flv' })
@@ -201,7 +201,7 @@
                         //     })
                         // })
                         // setTimeout(() => { player.play() }, 50)
-                    }
+                    // }
                     // hls格式的视频
                     if (that.proxyPlayer) {
                         that.proxyPlayer.src(hls)
