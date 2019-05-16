@@ -36,11 +36,21 @@ export default {
         state.userId = payload.userId
         state.userName = payload.userName
         state.userRole = payload.userRole
-        ls.setItem(StorageTags.userToken, state.userToken)
-        ls.setItem(StorageTags.userId, state.userId)
-        ls.setItem(StorageTags.userName, state.userName)
-        ls.setItem(StorageTags.userRole, state.userRole)
-        ls.setItem(StorageTags.password, payload.password)
+        state.loginRemember = payload.loginRemember
+        ls.setItem(StorageTags.loginRemember, payload.loginRemember ? '1' : '0')
+        if (payload.loginRemember) { // 记住用户信息
+            ls.setItem(StorageTags.userToken, state.userToken)
+            ls.setItem(StorageTags.userId, state.userId)
+            ls.setItem(StorageTags.userName, state.userName)
+            ls.setItem(StorageTags.userRole, state.userRole)
+            ls.setItem(StorageTags.password, payload.password)
+        } else {
+            ls.removeItem(StorageTags.userToken)
+            ls.removeItem(StorageTags.userId)
+            ls.removeItem(StorageTags.userName)
+            ls.removeItem(StorageTags.userRole)
+            ls.removeItem(StorageTags.password)
+        }
     },
     // 清除用户信息
     [types.CLEAR_USER_INFO] (state) {
@@ -50,5 +60,10 @@ export default {
         ls.removeItem(StorageTags.userToken)
         ls.removeItem(StorageTags.userId)
         ls.removeItem(StorageTags.userRole)
+        if (ls.getItem(StorageTags.loginRemember) == '0') {
+            state.userName = ''
+            ls.removeItem(StorageTags.userName)
+            ls.removeItem(StorageTags.password)
+        }
     }
 }

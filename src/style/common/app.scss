@@ -11,6 +11,17 @@
     box-sizing: border-box;
     padding: 15px 0px 10px;
 }
+.logout-btn{
+    position: absolute;
+    width: 30px;
+    height: 60px;
+    background: rgba(53, 121, 255, 0.99);
+    top: 0;
+    right: 0;
+    color: #fff;
+    border: none;
+    opacity: 0;
+}
 .app-bg{
     position: fixed;
     top: 0;

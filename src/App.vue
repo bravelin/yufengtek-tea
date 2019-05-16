@@ -4,6 +4,7 @@
         <NavMenu v-show="!isLogin"></NavMenu>
         <router-view :style="{ height: pageHeight + 'px' }"/>
         <Spinner v-show="loading"></Spinner>
+        <button class="logout-btn" @dblclick="doLogout()">logout</button>
     </div>
 </template>
 
@@ -40,6 +41,15 @@
                 store.commit(types.GET_WINDOW_SIZE)
             })
             store.commit(types.GET_WINDOW_SIZE)
+        },
+        methods: {
+            doLogout () {
+                const that = this
+                const store = that.$store
+                that.$ajax({ url: '/data/user/loginOut' })
+                store.commit(types.CLEAR_USER_INFO)
+                that.$router.push({ name: 'login' })
+            }
         }
     }
 </script>
