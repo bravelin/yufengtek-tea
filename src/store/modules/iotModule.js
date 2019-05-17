@@ -49,7 +49,9 @@ export default {
         photoViewerFullState: false, // 全景的全屏状态
         camera360FullState: false, // 360摄像头的全屏状态
         videoUrl: '', // 监控录像地址
+        videoName: '',
         videoUrl360: '', // 球机摄像头地址
+        video360Name: '',
     },
     actions,
     mutations

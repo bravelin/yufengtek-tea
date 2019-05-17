@@ -1,6 +1,6 @@
 <template>
     <Plane class="iot-container camera-video">
-        <PlaneTitle>视频监控</PlaneTitle>
+        <PlaneTitle>视频监控<span v-show="videoName">（{{ videoName }}）</span></PlaneTitle>
         <div class="plane-content">
             <div class="video-container" ref="container" :style="{ height: containerHeight + 'px' }">
                 <video ref="videoPlayer" class="video-js vjs-default-skin video-wrap" controls></video>
@@ -25,7 +25,7 @@
     export default {
         name: 'IotCameraVideo',
         computed: {
-            ...thisMapState(['videoUrl'])
+            ...thisMapState(['videoUrl', 'videoName'])
         },
         watch: {
             [dataVideo] (val) {

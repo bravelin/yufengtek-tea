@@ -24,6 +24,7 @@
 <script>
     import StorageTags from '@/lib/storageTags'
     import types from '@/store/constants/types'
+    import initSocket from '@/lib/socket'
 
     const ls = localStorage
     export default {
@@ -121,6 +122,7 @@
                                 loginRemember: that.loginRemember,
                             })
                             setTimeout(() => { that.$router.push({ name: 'home' }) }, 500)
+                            initSocket()
                         }
                         setTimeout(() => { that.isProcessing = false }, 100)
                     })

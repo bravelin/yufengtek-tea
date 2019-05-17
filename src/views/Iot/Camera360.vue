@@ -1,6 +1,6 @@
 <template>
     <Plane class="camera360" :full="camera360FullState">
-        <PlaneTitle @click="doHideControlButton()">视频监控</PlaneTitle>
+        <PlaneTitle @click="doHideControlButton()">视频监控<span v-show="video360Name">（{{ video360Name }}）</span></PlaneTitle>
         <div class="plane-content" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
             <div class="video-container flv" ref="container">
                 <video class="video-js vjs-default-skin video-wrap" controls></video>
@@ -36,7 +36,7 @@
             ControlPanel
         },
         computed: {
-            ...thisMapState(['videoUrl360', 'camera', 'camera360FullState'])
+            ...thisMapState(['videoUrl360', 'video360Name', 'camera', 'camera360FullState'])
         },
         created () {
             const that = this

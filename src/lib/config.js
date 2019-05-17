@@ -32,6 +32,7 @@ export default {
     // 生产环境
     baseUrl: 'http://tea.yufengtek.com/tea-Web-Bigdata',
     socketUrl: 'ws://tea.yufengtek.com/tea-Web-Bigdata/myHandler',
+    // socketUrl: 'ws://192.168.2.117:8080/tea_Web_Bigdata_war/myHandler',
     mapAutoChangeTime: 5000,
 
     // 开发环境下

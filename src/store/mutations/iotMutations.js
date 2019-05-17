@@ -80,12 +80,13 @@ export default {
         }
     },
     [types.GET_GUN_DATA] (state, payload) {
-        state.camera = payload
-        state.videoUrl = state.camera.camera_url
+        state.videoUrl = payload.camera_url
+        state.videoName = payload.camera_name
     },
     [types.GET_360_DATA] (state, payload) {
         state.camera = payload
-        state.videoUrl360 = state.camera.camera_url
+        state.videoUrl360 = payload.camera_url
+        state.video360Name = payload.camera_name
     },
     [types.CHANGE_CONTROL_BUTTON_STATUS] (state, isActive) {
         state.controlButtonIsActive = isActive

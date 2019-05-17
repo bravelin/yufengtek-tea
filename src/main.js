@@ -10,11 +10,9 @@ import 'photo-sphere-viewer/dist/photo-sphere-viewer.min.css'
 import Plane from '@/components/Plane'
 import PlaneTitle from '@/components/PlaneTitle'
 import PlaneTools from '@/components/PlaneTools'
-import socket from '@/lib/socket'
 
 Vue.config.productionTip = false
 Vue.prototype.$ajax = ajax
-Vue.prototype.$socket = socket
 Vue.use(vuescroll)
 Vue.component('Plane', Plane)
 Vue.component('PlaneTitle', PlaneTitle)

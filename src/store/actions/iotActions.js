@@ -11,6 +11,7 @@ export default {
                 resData.cameraVos.forEach((item) => {
                     item.type = item.camera_type == '1' ? types.IOT_TYPE_GUN : types.IOT_TYPE_360
                     item.isActive = false
+                    item.name = item.camera_name || ''
                     item.show = state.currVisibleIotType == '' || state.currVisibleIotType == 'camera'
                 })
                 resData.emVos.forEach(item => {

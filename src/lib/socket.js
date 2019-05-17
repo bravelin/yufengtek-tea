@@ -17,9 +17,13 @@ const pageKeyMap = {
 let nextRefreshTimer = null
 let nextRefreshName = ''
 let connTimer = null
-let socket = new WebSocket(config.socketUrl)
+let socket = null
 
 function initSocket () {
+    if (socket) {
+        socket.close()
+    }
+    socket = new WebSocket(config.socketUrl + '?token=' + store.state.userToken)
     socket.onopen = onSocketOpen
     socket.onmessage = onSocketMessage
     socket.onerror = onSocketError
@@ -112,9 +116,9 @@ function onSocketClose (e) {
     console.log('socket close....', formatTime(new Date()))
     console.log('close socket event...', e)
     console.log('reconnect socket...')
+    socket = null
     if (connTimer) clearInterval(connTimer)
     connTimer = setInterval(() => {
-        socket = new WebSocket(config.socketUrl)
         initSocket()
     }, 20000)
 }
@@ -124,4 +128,4 @@ function onSocketSend (e) {
 }
 
 initSocket()
-export default socket
+export default initSocket

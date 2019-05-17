@@ -14,6 +14,7 @@
     import types from '@/store/constants/types'
     import NavMenu from '@/views/NavMenu'
     import Sky from '@/components/Sky'
+    import initSocket from '@/lib/socket'
 
     export default {
         name: 'app',
@@ -41,6 +42,11 @@
                 store.commit(types.GET_WINDOW_SIZE)
             })
             store.commit(types.GET_WINDOW_SIZE)
+            setTimeout(() => {
+                if (store.state.userToken) {
+                    initSocket()
+                }
+            }, 1000)
         },
         methods: {
             doLogout () {
