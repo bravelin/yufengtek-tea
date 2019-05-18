@@ -113,11 +113,14 @@
                         } else {
                             that.showMessage('登录成功！')
                             const resData = res.repData
+                            const userType = {
+                                'BS+': '2', 'DT': '1'
+                            }
                             store.commit(types.UPDATE_USER_INFO, {
                                 userToken: resData.tokenKey,
                                 userId: '',
                                 userName: that.loginName.trim(),
-                                userRole: resData.user_type == 'DT' ? '1' : '0',
+                                userRole: userType[resData.user_type] || '0',
                                 password: that.password.trim(),
                                 loginRemember: that.loginRemember,
                             })

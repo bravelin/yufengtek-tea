@@ -6,7 +6,7 @@
     </div>
 </template>
 <script>
-    import { createNamespacedHelpers } from 'vuex'
+    import { createNamespacedHelpers, mapState } from 'vuex'
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
     import config from '@/lib/config'
@@ -36,6 +36,7 @@
         },
         computed: {
             ...thisMapState(['currVisibleIotType', 'currActive']),
+            ...mapState(['userRole']),
             iotDatas () {
                 const that = this
                 const list = that.$store.state[moduleNameSpace].iotDatas.filter(item => item.show)
@@ -113,6 +114,7 @@
                 const icon = that.getMarkerIcon(markerType, isActive)
                 const mapMarker = new google.maps.Marker({
                     position: { lat, lng },
+                    draggable: that.userRole == '2',
                     map: marker.show ? that.map : null,
                     icon,
                     title: markerType
@@ -124,6 +126,24 @@
                         that.doHandlerClickMarker(marker)
                     }
                 })
+                // 拖动，改变位置
+                if (that.userRole == '2') {
+                    mapMarker.addListener('dragend', (e) => {
+                        // console.log('drag end....', marker, e.latLng.lat(), e.latLng.lng())
+                        const sno = marker.sno || marker.camera_sno || marker.em_devid
+                        if (sno) {
+                            that.$ajax({
+                                url: '/data/momitor/camera/updateLocation',
+                                method: 'post',
+                                data: { sno, address_gislong: e.latLng.lng(), address_gislatd: e.latLng.lat() }
+                            }).then(res => {
+                                if (res.code == 200) {
+                                    that.$store.commit(types.SWITCH_MESSAGE_TIP, true)
+                                }
+                            })
+                        }
+                    })
+                }
                 return mapMarker
             },
             // 处理点击标记事件
@@ -161,6 +181,7 @@
                             store.commit(moduleNameSpace + '/' + types.GET_GUN_DATA, iotObj)
                         }
                     }
+                    that.doRefreshTips()
                 }
             },
             // 获取标记的

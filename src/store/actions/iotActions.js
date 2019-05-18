@@ -17,7 +17,7 @@ export default {
                 resData.emVos.forEach(item => {
                     item.type = types.IOT_TYPE_SPHERE
                     item.isActive = false
-                    item.show = state.currVisibleIotType == '' || state.currVisibleIotType == 'camera'
+                    item.show = state.currVisibleIotType == '' || state.currVisibleIotType == 'monitor'
                 })
                 resData.Fm1.forEach(item => {
                     item.type = types.IOT_TYPE_FM1

@@ -30,7 +30,7 @@ export default {
     [types.CHANGE_VISIBLE_IOT_TYPE] (state, type) {
         state.currVisibleIotType = type
         state.iotDatas = state.iotDatas.map(item => {
-            if (item.type == types.IOT_TYPE_GUN || item.type == types.IOT_TYPE_360 || item.type == types.IOT_TYPE_SPHERE) {
+            if (item.type == types.IOT_TYPE_GUN || item.type == types.IOT_TYPE_360) {
                 item.show = (type == '' || type == 'camera')
             } else {
                 item.show = (type == '' || type == 'monitor')

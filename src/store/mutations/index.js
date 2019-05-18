@@ -65,5 +65,9 @@ export default {
             ls.removeItem(StorageTags.userName)
             ls.removeItem(StorageTags.password)
         }
+    },
+    // 控制NoResult提示的显示
+    [types.SWITCH_MESSAGE_TIP] (state, payload) {
+        state.showMessageTip = payload
     }
 }

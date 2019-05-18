@@ -5,6 +5,7 @@ const types = [
     'SET_CURR_ROUTER', // 设置当前路由
     'UPDATE_USER_INFO',
     'CLEAR_USER_INFO',
+    'SWITCH_MESSAGE_TIP',
     // ***************************************************************物联监控
     'GET_IOT_DATA', // 获取monitor设备信息
     'CHANGE_ACTIVE_IOT_TYPE', // 更改当前active状态的iot设备

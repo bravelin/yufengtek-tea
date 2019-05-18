@@ -6,6 +6,6 @@ export default {
     userRole: `${prefixTag}-userrole`,
     userName: `${prefixTag}-username`,
     password: `${prefixTag}-password`,
-    remember: `${prefixTag}-remember`,
+    loginRemember: `${prefixTag}-remember`,
     version: `${prefixTag}-version`
 }

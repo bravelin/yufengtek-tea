@@ -10,6 +10,7 @@
         <GMap></GMap>
         <PhotoViewer v-show="photoViewerFullState"></PhotoViewer>
         <Camera360 v-show="camera360FullState"></Camera360>
+        <Message></Message>
     </div>
 </template>
 <script>
@@ -24,6 +25,7 @@
     import Camera360 from './Camera360'
     import GMap from './GMap'
     import PhotoViewer from './PhotoViewer'
+    import Message from '@/components/Message'
 
     const moduleNameSpace = ns.IOT
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -34,7 +36,7 @@
             ...thisMapState(['currActive', 'photoViewerFullState', 'camera360FullState', 'fm1', 'fm2'])
         },
         components: {
-            FM1Charts, FM2Charts, WFCharts, GMap, CameraVideo, Amount, PhotoViewer, Camera360
+            FM1Charts, FM2Charts, WFCharts, GMap, CameraVideo, Amount, PhotoViewer, Camera360, Message
         },
         data () {
             return {
