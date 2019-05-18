@@ -1092,12 +1092,14 @@ ClusterIcon.prototype.onAdd = function() {
     this.div_.style.cssText = this.createCss(pos);
     const countObj = {}
     let tempObj = null
+    let title = ''
     this.cluster_.markers_.forEach(m => {
-        tempObj = countObj[m.title]
+        title = m.title.split(' ')[0]
+        tempObj = countObj[title]
         if (tempObj == undefined) {
-            countObj[m.title] = { num: 1, iotIndex: m.iot_index }
+            countObj[title] = { num: 1, iotIndex: m.iot_index }
         } else {
-            countObj[m.title].num++
+            countObj[title].num++
         }
     })
     const typeList = Object.keys(countObj).map(key => {

@@ -112,12 +112,13 @@
                 const lng = marker.address_gislong
                 const isActive = marker.isActive
                 const icon = that.getMarkerIcon(markerType, isActive)
+                const iotName = marker.camera_name || ''
                 const mapMarker = new google.maps.Marker({
                     position: { lat, lng },
                     draggable: that.userRole == '2',
                     map: marker.show ? that.map : null,
                     icon,
-                    title: markerType
+                    title: markerType + (iotName ? ` ${iotName}` : '')
                 })
                 mapMarker.iot_index = marker.index
                 // 点击响应
@@ -131,11 +132,21 @@
                     mapMarker.addListener('dragend', (e) => {
                         // console.log('drag end....', marker, e.latLng.lat(), e.latLng.lng())
                         const sno = marker.sno || marker.camera_sno || marker.em_devid
-                        if (sno) {
+                        let type = ''
+                        if (marker.type == types.IOT_TYPE_GUN || marker.type == types.IOT_TYPE_360) {
+                            type = 'camera'
+                        } else if (marker.type == types.IOT_TYPE_SPHERE) {
+                            type = 'em'
+                        } else if (marker.type == types.IOT_TYPE_FM1) {
+                            type = 'fm1'
+                        } else if (marker.type == types.IOT_TYPE_FM2) {
+                            type = 'fm2'
+                        }
+                        if (sno && type) {
                             that.$ajax({
-                                url: '/data/momitor/camera/updateLocation',
+                                url: '/data/momitor/updateLocation',
                                 method: 'post',
-                                data: { sno, address_gislong: e.latLng.lng(), address_gislatd: e.latLng.lat() }
+                                data: { sno, type, address_gislong: e.latLng.lng(), address_gislatd: e.latLng.lat() }
                             }).then(res => {
                                 if (res.code == 200) {
                                     that.$store.commit(types.SWITCH_MESSAGE_TIP, true)
@@ -213,15 +224,21 @@
                 const markerDivs = [...document.querySelectorAll('div[data-title^=IOT]'), ...document.querySelectorAll('div[title^=IOT]')]
                 let div = null
                 let type = ''
+                let titleStr = ''
                 markerDivs.forEach(dom => {
                     if (!dom.querySelector('div')) { // 创建tip DOM
-                        type = dom.getAttribute('title')
+                        titleStr = dom.getAttribute('title').split(' ')
+                        type = titleStr[0]
                         dom.style.overflow = 'visible'
                         dom.setAttribute('data-title', type)
                         const div = document.createElement('div')
                         div.style.background = 'rgba(12, 24, 56, 0.9)'
                         div.style.position = 'absolute'
-                        div.innerHTML = '查看该' + iotTypeObj[type]
+                        if (titleStr.length > 1) {
+                            div.innerHTML = titleStr[1] + `(${iotTypeObj[type]})`
+                        } else {
+                            div.innerHTML = '查看该' + iotTypeObj[type]
+                        }
                         dom.appendChild(div)
                         dom.removeAttribute('title')
                     } else {
