@@ -2,15 +2,16 @@
     <div class="page login-custom-page">
         <div class="dialog">
             <h2>用户登录</h2>
+            <input type="password" style="display:none" name="password"/>
+            <input type="text" style="display:none" name="loginName"/>
             <div class="input-item account">
-                <input ref="loginNameInput" :disabled="isProcessing" v-model="loginName" type="text" disableautocomplete autocomplete="off" maxlength="50" tabindex="1"/>
+                <input ref="loginNameInput" :disabled="isProcessing" v-model="loginName" type="text" name="loginName" disableautocomplete autocomplete="off" maxlength="50" tabindex="1"/>
                 <i></i><i></i><i></i><i></i>
             </div>
             <div class="input-item password">
-                <input ref="passwordInput" :disabled="isProcessing" v-model="password" type="password" disableautocomplete autocomplete="off" maxlength="50" tabindex="2"/>
+                <input ref="passwordInput" :disabled="isProcessing" v-model="password" type="password" name="password" disableautocomplete autocomplete="new-password" maxlength="50" tabindex="2"/>
                 <i></i><i></i><i></i><i></i>
             </div>
-            <input type="password" autocomplete="off" style="display:none"/>
             <div class="remember" :class="{ active: loginRemember }" @click="switchLoginRemember()"><i class="iconfont">&#xe641;</i><div></div>记住密码</div>
             <div class="login-button"><button @click="doLogin()">登录</button></div>
             <div class="login-tip" :class="{ active: showTip }">{{ tipStr }}</div>

@@ -32,6 +32,7 @@
                 markers: [], // 标记对象
                 markerCluster: null, // 聚合对象
                 showResetBtn: false, // 控制复位按钮的显示
+                centerPosition: [0, 0]
             }
         },
         computed: {
@@ -39,8 +40,7 @@
             ...mapState(['userRole']),
             iotDatas () {
                 const that = this
-                const list = that.$store.state[moduleNameSpace].iotDatas.filter(item => item.show)
-                return list
+                return that.$store.state[moduleNameSpace].iotDatas.filter(item => item.show)
             }
         },
         watch: {
@@ -96,9 +96,19 @@
                     that.markerCluster.clearMarkers()
                 }
                 that.deleteAllMarkers()
+                // 计算中心点
+                let totalX = 0
+                let totalY = 0
                 that.iotDatas.forEach(item => {
+                    totalX += item.address_gislong
+                    totalY += item.address_gislatd
                     that.markers.push(that.createMarker(item))
                 })
+                if (that.centerPosition[0] == 0) {
+                    that.centerPosition[0] = totalX / that.iotDatas.length
+                    that.centerPosition[1] = totalY / that.iotDatas.length
+                    that.doResetMap()
+                }
                 that.markerCluster = new MarkerClusterer(that.map, that.markers, {
                     gridSize: 30, maxZoom: 16
                 })
@@ -262,7 +272,9 @@
             doResetMap () {
                 const that = this
                 if (that.map) {
-                    const mapCenterPoint = new google.maps.LatLng(config.iotMonitorMap.center[1], config.iotMonitorMap.center[0]) // 中心点
+                    let x = that.centerPosition[0] || config.iotMonitorMap.center[0]
+                    let y = that.centerPosition[1] || config.iotMonitorMap.center[1]
+                    const mapCenterPoint = new google.maps.LatLng(y, x) // 中心点
                     that.map.setOptions({
                         center: mapCenterPoint,
                         zoom: config.iotMonitorMap.zoom

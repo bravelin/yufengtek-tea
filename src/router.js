@@ -46,7 +46,7 @@ const router = new Router({
         },
         {
             path: '*',
-            redirect: { name: 'home' }
+            redirect: { name: 'login' }
         }
     ]
 })

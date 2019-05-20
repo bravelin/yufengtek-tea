@@ -26,7 +26,7 @@ export default {
     },
     iotMonitorMap: {
         center: [117.9289366, 27.659368], // 物联监控地图中心点，武夷山市
-        zoom: 13
+        zoom: 12
     },
     proxyUrl: 'https://proxy.yufengtek.com/',
     // 生产环境
