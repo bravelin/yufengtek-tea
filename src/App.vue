@@ -37,6 +37,7 @@
             const store = that.$store
             const win = window
 
+            win.useFlash = location.hash.indexOf('?flash=true') > 0
             // 监听窗口大小的改变
             win.addEventListener('resize', () => {
                 store.commit(types.GET_WINDOW_SIZE)

@@ -27,7 +27,11 @@
         },
         methods: {
             doRefreshPage () {
-                location.reload(true)
+                if (window.useFlash && location.hash.indexOf('?flash=true') < 0) {
+                    location.href = location.href + '?flash=true'
+                } else {
+                    location.reload(true)
+                }
             }
         }
     }

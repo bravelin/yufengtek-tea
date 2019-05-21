@@ -40,6 +40,7 @@ module.exports = {
         BMapLib: true,
         google: true,
         MarkerClusterer: true,
+        EZUIKit: true
     },
     parserOptions: {
         parser: 'babel-eslint'

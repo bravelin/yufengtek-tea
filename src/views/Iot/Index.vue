@@ -9,7 +9,8 @@
         </div>
         <GMap></GMap>
         <PhotoViewer v-show="photoViewerFullState"></PhotoViewer>
-        <Camera360 v-show="camera360FullState"></Camera360>
+        <Camera360 v-show="camera360FullState" v-if="!useFlash"></Camera360>
+        <Camera360Flash v-show="camera360FullState" v-if="useFlash"></Camera360Flash>
         <Message></Message>
     </div>
 </template>
@@ -23,6 +24,7 @@
     import WFCharts from './WFCharts'
     import CameraVideo from './CameraVideo'
     import Camera360 from './Camera360'
+    import Camera360Flash from './Camera360Flash'
     import GMap from './GMap'
     import PhotoViewer from './PhotoViewer'
     import Message from '@/components/Message'
@@ -36,12 +38,13 @@
             ...thisMapState(['currActive', 'photoViewerFullState', 'camera360FullState', 'fm1', 'fm2'])
         },
         components: {
-            FM1Charts, FM2Charts, WFCharts, GMap, CameraVideo, Amount, PhotoViewer, Camera360, Message
+            FM1Charts, FM2Charts, WFCharts, GMap, CameraVideo, Amount, PhotoViewer, Camera360, Message, Camera360Flash
         },
         data () {
             return {
                 types,
-                timer: null
+                timer: null,
+                useFlash: !!window.useFlash
             }
         },
         created () {
