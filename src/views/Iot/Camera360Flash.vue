@@ -5,6 +5,9 @@
             <div class="video-container flv" ref="container">
                 <video id="camera-360-flash" playsInline webkit-playsinline autoplay></video>
             </div>
+            <div class="video-container loading" v-show="showLoading">
+                <Loading></Loading>
+            </div>
         </div>
         <PlaneTools :full="camera360FullState" @change="doFullStateChange"></PlaneTools>
         <ControlPanel @change="doControlPanelChange"></ControlPanel>
@@ -17,6 +20,7 @@
     import { createNamespacedHelpers, mapState } from 'vuex'
     import { reg } from '@/lib/util'
     import ControlPanel from './ControlPanel'
+    import Loading from '@/components/Loading'
 
     const fullProp = 'camera360FullState'
     const moduleNameSpace = ns.IOT
@@ -30,7 +34,7 @@
     export default {
         name: 'Iot360Video',
         components: {
-            ControlPanel
+            ControlPanel, Loading
         },
         computed: {
             ...thisMapState(['videoUrl360', 'video360Name', 'camera', 'camera360FullState'])
@@ -50,6 +54,7 @@
                     if (that.player) {
                         that.player.stop()
                     }
+                    that.showLoading = true
                     that.player = null
                     const refs = that.$refs
                     refs.container.innerHTML = `<video id="camera-360-flash" controls playsInline webkit-playsinline autoplay></video>`
@@ -93,7 +98,8 @@
                 currPressedKeyCode: '', // 键值
                 changeKey: '',
                 directionChangeReqList: [], // 摄像头转动请求列表
-                reqListProcessing: false
+                reqListProcessing: false,
+                showLoading: true, // 视频加载的loading效果
             }
         },
         methods: {
@@ -125,6 +131,7 @@
                     player = that.player = new EZUIKit.EZUIPlayer({
                         id: 'camera-360-flash'
                     })
+                    setTimeout(() => { that.showLoading = false }, 3500)
                 })
             },
             getSize () {
