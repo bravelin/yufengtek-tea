@@ -68,6 +68,7 @@ export default {
     },
     // 控制NoResult提示的显示
     [types.SWITCH_MESSAGE_TIP] (state, payload) {
-        state.showMessageTip = payload
+        state.showMessageTip = payload.show
+        state.tip = payload.tip
     }
 }

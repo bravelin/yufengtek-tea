@@ -9,10 +9,9 @@
     const showProp = `$store.state.showMessageTip`
     export default {
         name: 'NoResult',
-        props: {
-            tip: {
-                type: String,
-                default: '设备位置修改成功！'
+        computed: {
+            tip () {
+                return this.$store.state.tip
             }
         },
         watch: {
@@ -24,7 +23,7 @@
                     setTimeout(() => {
                         el && el.classList.remove('active')
                         setTimeout(() => { el && el.classList.remove('show') }, 100)
-                        this.$store.commit(types.SWITCH_MESSAGE_TIP, false)
+                        this.$store.commit(types.SWITCH_MESSAGE_TIP, { show: false })
                     }, 3000)
                 }
             }

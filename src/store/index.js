@@ -11,6 +11,7 @@ export default new Vuex.Store({
         winHeight: 0, // 当前窗口高度
         winWidth: 0, // 窗口宽度
         showMessageTip: false,
+        tip: '',
         currRouter: { // 当前页面路由信息
             from: '',
             to: '',

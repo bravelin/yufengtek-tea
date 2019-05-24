@@ -224,9 +224,14 @@ export default {
     },
     [types.CHANGE_PHOTO_VIEW_URL] (context, payload) {
         const state = context.state
+        const that = this
         ajax({ url: '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {
-            const url = res.repData[11].replace(/http/, 'https')
-            state.photoViewUrl = url || state.photoViewUrl // 防止未返回数据
+            if (res && res.repData && res.repData[11]) {
+                const url = res.repData[11].replace(/http/, 'https')
+                state.photoViewUrl = url || state.photoViewUrl // 防止未返回数据
+            } else {
+                that.commit(types.SWITCH_MESSAGE_TIP, { tip: '未能获取到全景图！', show: true })
+            }
         })
     }
 }

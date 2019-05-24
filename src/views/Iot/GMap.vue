@@ -159,7 +159,7 @@
                                 data: { sno, type, address_gislong: e.latLng.lng(), address_gislatd: e.latLng.lat() }
                             }).then(res => {
                                 if (res.code == 200) {
-                                    that.$store.commit(types.SWITCH_MESSAGE_TIP, true)
+                                    that.$store.commit(types.SWITCH_MESSAGE_TIP, { tip: '设备位置修改成功！', show: true })
                                 }
                             })
                         }

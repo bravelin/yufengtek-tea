@@ -22,7 +22,7 @@ module.exports = {
         disableHostCheck: true,
         proxy: {
             '/bigdata': {
-                // target: 'http://192.168.2.117:8080/tea_Web_Bigdata_war/bigdata/',
+                // target: 'http://192.168.2.117:10013/bigdata/',
                 target: 'http://tea.yufengtek.com/tea-Web-Bigdata/bigdata/',
                 // target: 'http://192.168.2.114:10013/bigdata/',
                 changeOrigin: true,
@@ -31,7 +31,7 @@ module.exports = {
                 }
             },
             '/data': {
-                // target: 'http://192.168.2.117:8080/tea_Web_Bigdata_war/data/',
+                // target: 'http://192.168.2.117:10013/data/',
                 target: 'http://tea.yufengtek.com/tea-Web-Bigdata/data/',
                 // target: 'http://192.168.2.114:10013/data/',
                 changeOrigin: true,
