@@ -57,6 +57,9 @@
     left: 50% !important;
     transform: translate(-50%, -50%);
 }
+.vjs-tech {
+    pointer-events: none;
+}
 .vjs-error .vjs-error-display:before{
     content: '暂无法播放...' !important;
     font-size: 18px !important;

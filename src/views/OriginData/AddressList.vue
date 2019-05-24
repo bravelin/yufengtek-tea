@@ -10,7 +10,7 @@
                     <li v-for="(item, index) in addressList" :key="index" :id="'item' + index">
                         <div class="item-title">{{ item.date }}</div>
                         <ul>
-                            <li class="sub-item" v-for="(subItem, subIndex) in item.list" :key="subIndex">
+                            <li class="sub-item" v-for="(subItem, subIndex) in item.list" :key="subIndex" v-show="subItem.addr">
                                 <div>{{ subItem.time }}</div>
                                 <div>{{ subItem.addr }}</div>
                             </li>

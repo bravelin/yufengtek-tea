@@ -28,13 +28,12 @@ export default {
         center: [117.9289366, 27.659368], // 物联监控地图中心点，武夷山市
         zoom: 12
     },
-    proxyUrl: 'https://proxy.yufengtek.com/',
     // 生产环境
-    // baseUrl: `${location.origin}/tea-Web-Bigdata`,
+    baseUrl: `${location.origin}/tea-Web-Bigdata`,
     socketUrl: `ws://${location.host}/tea-Web-Bigdata/myHandler`,
     // socketUrl: 'ws://192.168.2.117:8080/tea_Web_Bigdata_war/myHandler',
     mapAutoChangeTime: 5000,
 
     // 开发环境下
-    baseUrl: ''
+    // baseUrl: ''
 }
