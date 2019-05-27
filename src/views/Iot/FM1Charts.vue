@@ -1,6 +1,6 @@
 <template>
     <Plane class="iot-container" :full="fm1.curveChartFullState">
-        <PlaneTitle>FM1实时环境</PlaneTitle>
+        <PlaneTitle>FM1实时环境<span v-show="fm1.iotName">({{ fm1.iotName }})</span></PlaneTitle>
         <ul class="data-list">
             <li class="temperature" :class="{ active: fm1.type == 'temperature' }" @click="switchFm('temperature', '温度')">
                 <div>{{ fm1.data.temperature }}°C</div>
@@ -39,9 +39,10 @@
     const dataProp = 'chartDatas'
     const typeProp = 'data'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const typeDataProp = `$store.state.${moduleNameSpace}.fm1.${typeProp}`
-    const chartDataProp = `$store.state.${moduleNameSpace}.fm1.${dataProp}`
-    const fullStateProp = `$store.state.${moduleNameSpace}.fm1.${fullProp}`
+    const prefix = `$store.state.${moduleNameSpace}.fm1`
+    const typeDataProp = `${prefix}.${typeProp}`
+    const chartDataProp = `${prefix}.${dataProp}`
+    const fullStateProp = `${prefix}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {

@@ -99,7 +99,13 @@
                 // 计算中心点
                 let totalX = 0
                 let totalY = 0
+                let tempValue = 0
                 that.iotDatas.forEach(item => {
+                    if (item.address_gislong < item.address_gislatd) {
+                        tempValue = item.address_gislatd
+                        item.address_gislatd = item.address_gislong
+                        item.address_gislong = tempValue
+                    }
                     totalX += item.address_gislong
                     totalY += item.address_gislatd
                     that.markers.push(that.createMarker(item))
@@ -122,7 +128,7 @@
                 const lng = marker.address_gislong
                 const isActive = marker.isActive
                 const icon = that.getMarkerIcon(markerType, isActive)
-                const iotName = marker.camera_name || ''
+                const iotName = marker.camera_name || marker.name || ''
                 const mapMarker = new google.maps.Marker({
                     position: { lat, lng },
                     draggable: that.userRole == '2',
@@ -195,9 +201,9 @@
                         }
                         store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, { index: iotObj.index, type })
                         if (type == types.IOT_TYPE_FM1) {
-                            store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, iotObj.sno)
+                            store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, { sno: iotObj.sno, iotName: iotObj.name })
                         } else if (iotObj.type == types.IOT_TYPE_FM2) {
-                            store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, iotObj.sno)
+                            store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, { sno: iotObj.sno, iotName: iotObj.name })
                         } else if (iotObj.type == types.IOT_TYPE_GUN) {
                             store.commit(moduleNameSpace + '/' + types.GET_GUN_DATA, iotObj)
                         }

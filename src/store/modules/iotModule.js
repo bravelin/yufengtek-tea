@@ -18,6 +18,7 @@ export default {
         currVisibleIotType: '', // Camera Monitor
         currActive: { type: types.IOT_TYPE_FM1, index: 0 },
         fm1: {
+            iotName: '',
             type: 'temperature', // temperature humidity light pressure
             name: '温度',
             chartUnit: '℃',
@@ -28,6 +29,7 @@ export default {
             curveChartFullState: false, // 控制全屏状态
         },
         fm2: {
+            iotName: '',
             type: 'wind', // wind rain temperature humidity
             name: '风速',
             chartUnit: 'm/s',

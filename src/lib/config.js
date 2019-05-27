@@ -29,11 +29,11 @@ export default {
         zoom: 12
     },
     // 生产环境
-    baseUrl: `${location.origin}/tea-Web-Bigdata`,
-    socketUrl: `ws://${location.host}/tea-Web-Bigdata/myHandler`,
-    // socketUrl: 'ws://192.168.2.117:8080/tea_Web_Bigdata_war/myHandler',
+    // baseUrl: `${location.origin}/tea-Web-Bigdata`,
+    // socketUrl: `ws://${location.host}/tea-Web-Bigdata/myHandler`,
+    socketUrl: 'ws://192.168.2.117:8080/myHandler',
     mapAutoChangeTime: 5000,
 
     // 开发环境下
-    // baseUrl: ''
+    baseUrl: ''
 }

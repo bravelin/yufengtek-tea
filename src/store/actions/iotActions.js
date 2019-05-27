@@ -47,13 +47,14 @@ export default {
         })
     },
     // 获取FM1的数据
-    [types.GET_FM1_DATA] (context, payload) {
+    [types.GET_FM1_DATA] (context, { sno, iotName }) {
         const state = context.state
         const fm1 = state.fm1
         const fm1Data = fm1.data
         const timeType = state.fm1.time
         const type = state.fm1.type
-        state.fm1.sno = payload || state.fm1.sno
+        state.fm1.sno = sno || state.fm1.sno
+        state.fm1.iotName = iotName || ''
 
         ajax({ url: '/data/monitor/getflddata?sno=' + state.fm1.sno, method: 'post' }).then(res => {
             if (res.code == 200) {
@@ -64,10 +65,10 @@ export default {
                 if (todayData.length) {
                     const len = todayData.length - 1
                     const dataObj = todayData[len]
-                    fm1Data.temperature = dataObj.flddata_temp.toFixed(2)
-                    fm1Data.humidity = dataObj.flddata_humid.toFixed(2)
-                    fm1Data.light = dataObj.flddata_sunlux.toFixed(2)
-                    fm1Data.pressure = dataObj.flddata_pa.toFixed(2)
+                    fm1Data.temperature = dataObj.temp.toFixed(2)
+                    fm1Data.humidity = dataObj.humid.toFixed(2)
+                    fm1Data.light = dataObj.sunlux.toFixed(2)
+                    fm1Data.pressure = dataObj.pa.toFixed(2)
                 } else {
                     fm1Data.temperature = '-'
                     fm1Data.humidity = '-'
@@ -77,37 +78,37 @@ export default {
                 if (timeType == 'HOUR') {
                     if (type == 'temperature') {
                         fm1.chartDatas = todayData.map(item => {
-                            return { title: item.flddata_txtime, data: item.flddata_temp.toFixed(2) }
+                            return { title: item.txtime, data: item.temp.toFixed(2) }
                         })
                     } else if (type == 'humidity') {
                         fm1.chartDatas = todayData.map(item => {
-                            return { title: item.flddata_txtime, data: item.flddata_humid.toFixed(2) }
+                            return { title: item.txtime, data: item.humid.toFixed(2) }
                         })
                     } else if (type == 'light') {
                         fm1.chartDatas = todayData.map(item => {
-                            return { title: item.flddata_txtime, data: item.flddata_sunlux.toFixed(2) }
+                            return { title: item.txtime, data: item.sunlux.toFixed(2) }
                         })
                     } else if (type == 'pressure') {
                         fm1.chartDatas = todayData.map(item => {
-                            return { title: item.flddata_txtime, data: item.flddata_pa.toFixed(2) }
+                            return { title: item.txtime, data: item.pa.toFixed(2) }
                         })
                     }
                 } else if (timeType == 'WEEK') {
                     if (type == 'temperature') {
                         fm1.chartDatas = sevenData.map(item => {
-                            return { title: item.days, data: item.flddata_temp.toFixed(2) }
+                            return { title: item.day, data: item.temp.toFixed(2) }
                         })
                     } else if (type == 'humidity') {
                         fm1.chartDatas = sevenData.map(item => {
-                            return { title: item.days, data: item.flddata_humid.toFixed(2) }
+                            return { title: item.day, data: item.humid.toFixed(2) }
                         })
                     } else if (type == 'light') {
                         fm1.chartDatas = sevenData.map(item => {
-                            return { title: item.days, data: item.flddata_sunlux.toFixed(2) }
+                            return { title: item.day, data: item.sunlux.toFixed(2) }
                         })
                     } else if (type == 'pressure') {
                         fm1.chartDatas = sevenData.map(item => {
-                            return { title: item.days, data: item.flddata_pa.toFixed(2) }
+                            return { title: item.day, data: item.pa.toFixed(2) }
                         })
                     }
                 }
@@ -121,13 +122,14 @@ export default {
         })
     },
     // 获取FM2的数据
-    [types.GET_FM2_DATA] (context, payload) {
+    [types.GET_FM2_DATA] (context, { sno, iotName }) {
         const state = context.state
         const fm2 = state.fm2
         const fm2Data = fm2.data
         const timeType = state.fm2.time
         const type = state.fm2.type
-        state.fm2.sno = payload || state.fm2.sno
+        state.fm2.sno = sno || state.fm2.sno
+        state.fm2.iotName = iotName || ''
 
         ajax({ url: '/data/monitor/getFmbData?sno=' + state.fm2.sno, method: 'post' }).then(res => {
             if (res.code == 200) {
@@ -223,8 +225,8 @@ export default {
         }
     },
     [types.CHANGE_PHOTO_VIEW_URL] (context, payload) {
-        const state = context.state
         const that = this
+        const state = context.state
         ajax({ url: '/data/monitor/getemdata?em_devid=' + payload, method: 'post' }).then(res => {
             if (res && res.repData && res.repData[11]) {
                 const url = res.repData[11].replace(/http/, 'https')
