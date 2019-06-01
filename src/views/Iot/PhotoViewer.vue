@@ -1,6 +1,6 @@
 <template>
     <Plane class="photo-viewer" :full="photoViewerFullState">
-        <PlaneTitle>全景图</PlaneTitle>
+        <PlaneTitle>{{ photoViewName || '全景图'}}<span v-show="photoViewTime">拍摄时间：{{photoViewTime}}</span></PlaneTitle>
         <div class="plane-content" ref="container"></div>
         <PlaneTools :full="photoViewerFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
@@ -19,7 +19,7 @@
     export default {
         name: 'iot-photo-viewer',
         computed: {
-            ...thisMapState(['photoViewerFullState', 'photoViewUrl', 'currActive'])
+            ...thisMapState(['photoViewerFullState', 'photoViewUrl', 'currActive', 'photoViewName', 'photoViewTime'])
         },
         watch: {
             [viewUrlProp] (val, oldval) {

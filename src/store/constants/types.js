@@ -24,7 +24,6 @@ const types = [
     'SWITCH_WF_TIME_TYPE', // 更改WF的数据类型，时刻数据/七天数据
 
     'IOT_CHANGE_FULL_STATE', // 曲线图表全屏状态
-    'CHANGE_PHOTO_VIEW_URL',
     'IOT_TYPE_FM1', // fm1
     'IOT_TYPE_FM2', // fm2
     'IOT_TYPE_GUN', // 枪机

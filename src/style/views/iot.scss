@@ -551,6 +551,15 @@
     .photo-viewer .plane-content{
         overflow: hidden;
     }
+    .photo-viewer{
+        h2.plane-title>span{
+            margin-left: 12px;
+            line-height: 40px;
+            letter-spacing: 0;
+            font-weight: normal;
+            font-size: 14px;
+        }
+    }
 
     .control-panel{
         display: flex;

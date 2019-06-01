@@ -115,8 +115,16 @@
                     that.centerPosition[1] = totalY / that.iotDatas.length
                     that.doResetMap()
                 }
-                that.markerCluster = new MarkerClusterer(that.map, that.markers, {
+                const map = that.map
+                that.markerCluster = new MarkerClusterer(map, that.markers, {
                     gridSize: 30, maxZoom: 16
+                })
+                map.addListener('clusterclick', () => {
+                    setTimeout(() => {
+                        if (map.getZoom() < 20) {
+                            map.setZoom(20)
+                        }
+                    }, 500)
                 })
                 setTimeout(() => { that.refreshMarkerTips() }, 3000)
             },
@@ -128,7 +136,7 @@
                 const lng = marker.address_gislong
                 const isActive = marker.isActive
                 const icon = that.getMarkerIcon(markerType, isActive)
-                const iotName = marker.camera_name || marker.name || ''
+                const iotName = marker.camera_name || marker.name || marker.em_name || ''
                 const mapMarker = new google.maps.Marker({
                     position: { lat, lng },
                     draggable: that.userRole == '2',
@@ -181,7 +189,7 @@
                     const type = iotObj.type
                     if (type == types.IOT_TYPE_SPHERE) { // 弹出全景,展示图片
                         store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, { fullStateName: 'photoViewerFullState', state: true })
-                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_PHOTO_VIEW_URL, iotObj.em_devid)
+                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_PHOTO_VIEW_URL, { id: iotObj.em_devid, name: iotObj.em_name })
                     } else if (type == types.IOT_TYPE_360) { // 360视频
                         store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, { fullStateName: 'camera360FullState', state: true })
                         store.commit(moduleNameSpace + '/' + types.GET_360_DATA, iotObj)
@@ -201,9 +209,9 @@
                         }
                         store.commit(moduleNameSpace + '/' + types.CHANGE_ACTIVE_MARKER, { index: iotObj.index, type })
                         if (type == types.IOT_TYPE_FM1) {
-                            store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, { sno: iotObj.sno, iotName: iotObj.name })
+                            store.dispatch(moduleNameSpace + '/' + types.GET_FM1_DATA, iotObj.sno)
                         } else if (iotObj.type == types.IOT_TYPE_FM2) {
-                            store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, { sno: iotObj.sno, iotName: iotObj.name })
+                            store.dispatch(moduleNameSpace + '/' + types.GET_FM2_DATA, iotObj.sno)
                         } else if (iotObj.type == types.IOT_TYPE_GUN) {
                             store.commit(moduleNameSpace + '/' + types.GET_GUN_DATA, iotObj)
                         }

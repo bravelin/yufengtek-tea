@@ -1,6 +1,6 @@
 <template>
     <Plane class="iot-container" :full="fm2.curveChartFullState">
-        <PlaneTitle>FM2实时环境<span v-show="fm2.iotName">({{ fm2.iotName }})</span></PlaneTitle>
+        <PlaneTitle>{{ fm2.iotName || 'FM2'}}实时环境</PlaneTitle>
         <ul class="data-list">
             <li class="wind" :class="{ active: fm2.type == 'wind' }" @click="switchFm('wind', '风速')">
                 <div>{{ fm2.data.wind }}m/s</div>
