@@ -85,7 +85,7 @@ export default {
     },
     [types.GET_360_DATA] (state, payload) {
         state.camera = payload
-        state.videoUrl360 = payload.camera_url
+        state.videoUrl360 = payload.camera_url || payload.camera_hlsurl
         state.video360Name = payload.camera_name
     },
     [types.CHANGE_CONTROL_BUTTON_STATUS] (state, isActive) {
