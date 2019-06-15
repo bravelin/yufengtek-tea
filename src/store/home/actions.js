@@ -10,7 +10,7 @@ export default {
             if (res.code == 200) {
                 const resData = res.repData
                 // 茶树排行
-                const arr = resData.planting.sort((a, b) => { return a.area > b.area ? 1 : -1 })
+                const arr = resData.planting.sort((a, b) => { return a.area > b.area ? -1 : 1 })
                 state.amountRankDatas = arr
                 if (!state.currSelectedRegion) {
                     let tempList = []

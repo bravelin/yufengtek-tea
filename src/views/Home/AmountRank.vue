@@ -2,11 +2,8 @@
 <template>
     <Plane class="amount-rank-wrap" :full="amountRankFullState">
         <PlaneTitle>茶树排行</PlaneTitle>
-        <div class="chart-unit">单位：亩</div>
-        <div :class="{ hide: !amountRankDatas.length }" class="plane-content">
-            <ul class="rank-list"><li v-for="(item, index) in dataList" :key="index">{{ item.title}}（<span>{{ item.data }}</span>）</li></ul>
-            <div ref="container" class="map-chart"></div>
-        </div>
+        <div class="chart-unit">单位：{{ amountRankUnit }}</div>
+        <div class="plane-content" ref="container" :class="{ hide: !amountRankDatas.length }"></div>
         <PlaneTools v-show="amountRankDatas.length" :full="amountRankFullState" @change="doFullStateChange"></PlaneTools>
         <div v-show="!amountRankDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
@@ -16,7 +13,7 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
-    import geo from '@/lib/geo'
+    import { computedChartDataInterval } from '@/lib/util'
 
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
@@ -30,35 +27,31 @@
     export default {
         name: 'HomeAmountRank',
         computed: {
-            ...thisMapState(['amountRankUnit', fullProp, dataProp, 'amountRankMainDatas', 'currSelectedRegion']),
+            ...thisMapState(['amountRankUnit', fullProp, dataProp]),
             ...mapState(['smallScreen', 'miniScreen'])
         },
         watch: {
-            [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
+            [chartDataProp] () { // 监听store中图表数据的改变，以刷新图表
                 this.doInitOrRefreshChart()
             },
-            [fullStateProp] () { // 监听全屏状态
+            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             },
-            [resizeStateProp] () { // 监听当前窗口大小
+            [resizeStateProp] () {
                 this.doInitOrRefreshChart()
             }
         },
         data () {
             return {
                 container: null,
-                chart: null, // 图表实例
-                dataList: []
+                chart: null
             }
         },
         mounted () {
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that[dataProp]
-                if (datas.length && !that.chart) {
-                    that.init(datas)
-                }
+                that.doInitOrRefreshChart()
             })
         },
         methods: {
@@ -66,181 +59,166 @@
                 const that = this
                 const datas = that[dataProp]
                 if (datas && datas.length) {
-                    if (that.container) {
-                        that.chart ? that.refresh(datas) : that.init(datas)
+                    const container = that.container
+                    if (container) {
+                        const { titles, values, serialData } = that.handleChartData(datas)
+                        const options = that.getBaseOptions(datas, titles, values, serialData)
+                        that.fixOptions(options, datas, titles, values)
+                        if (that.chart) { // 刷新
+                            setTimeout(() => {
+                                that.chart.resize()
+                                that.chart.setOption(options)
+                                that.chart.resize()
+                            }, 200)
+                        } else { // 初始化
+                            that.chart = echarts.init(container)
+                            that.chart.setOption(options)
+                        }
                     }
                 }
             },
-            // 创建图表
-            init (datas) {
-                const that = this
-                that.getRankListData(datas)
-                if (!echarts.getMap('wuyishan')) {
-                    that.$ajax({ url: './map.json' }).then(res => {
-                        echarts.registerMap('wuyishan', res)
-                        that.doRenderMap()
-                    })
-                } else {
-                    that.doRenderMap()
-                }
-            },
-            doRenderMap () {
-                const that = this
-                const container = that.container
-                that.chart = echarts.init(container)
-                const seriesData = that.getMapData()
-                that.chart.setOption({
-                    backgroundColor: 'transparent',
-                    geo: {
-                        map: 'wuyishan',
-                        itemStyle: { color: 'rgba(0,0,0,0)', opacity: 1, borderWidth: 0.5, borderColor: '#07376a' },
-                        zoom: 1.16,
-                        roam: false,
-                        emphasis: {
-                            label: { show: false },
-                            itemStyle: { color: 'rgba(0,0,0,0)' }
-                        }
-                    },
+            // 图表配置项
+            getBaseOptions (datas, titles, values, serialData) {
+                const { min, max, interval } = computedChartDataInterval(values, 6)
+                const colors = ['#ff5f6c', '#fac720', '#1cd782']
+                return {
+                    grid: { top: 8, left: 10, right: 30, bottom: 3, containLabel: true },
                     tooltip: {
+                        trigger: 'axis',
                         formatter (params) {
-                            return params.name + '：' + params.data.area + '亩'
+                            return datas[params[0].dataIndex].town + '：' + params[0].data + '亩'
                         },
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: { lineStyle: { color: 'rgba(238, 238, 238, 0.4)' } },
                         textStyle: { fontSize: 14 }
                     },
-                    series: [{
-                        type: 'effectScatter',
-                        coordinateSystem: 'geo',
-                        label: { show: true, position: 'inside', offset: [0, 0] },
-                        symbol: 'circle',
-                        symbolSize: 40,
-                        itemStyle: { color: '#01195a', shadowColor: 'rgba(255,255,255,0.4)', shadowBlur: 5 },
-                        rippleEffect: { period: 1000000, scale: 1 },
-                        data: seriesData,
-                        emphasis: {
-                            itemStyle: {
-                                borderWidth: 0.5,
-                                borderColor: 'rgba(255,255,255,0.5)'
+                    xAxis: {
+                        show: true,
+                        min,
+                        max,
+                        interval,
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(255, 255, 255, 0.2)', width: 0.5 } },
+                        axisLine: { show: false },
+                        axisLabel: { margin: 2, textStyle: { color: '#fff', fontSize: 11 } }
+                    },
+                    yAxis: {
+                        show: true,
+                        data: titles,
+                        inverse: true,
+                        axisLine: { show: false },
+                        splitLine: { show: false },
+                        axisTick: { show: false },
+                        axisLabel: { color (item, index) { return colors[index] || '#fff' }, textStyle: { fontSize: 11 }, margin: 8 }
+                    },
+                    series: [
+                        {
+                            type: 'bar',
+                            barGap: '-100%',
+                            data: datas.map(item => max),
+                            barWidth: 9,
+                            silent: true,
+                            itemStyle: { normal: { barBorderRadius: 30, color: '#0a3189' } }
+                        },
+                        {
+                            type: 'bar',
+                            yAxisIndex: 0,
+                            data: serialData,
+                            barWidth: 9,
+                            itemStyle: { normal: { barBorderRadius: 30, color: '#1b99f0' } },
+                            label: {
+                                normal: {
+                                    show: false,
+                                    position: 'insideLeft',
+                                    formatter (item) { return `${item.value} 亩` },
+                                    color: '#fff',
+                                    fontSize: 12,
+                                    offset: [10, 1]
+                                }
                             }
                         }
-                    }]
-                })
-            },
-            // 刷新图表
-            refresh (datas) {
-                const that = this
-                const chart = that.chart
-                that.getRankListData(datas)
-                const seriesData = that.getMapData()
-                chart.setOption({ series: { data: seriesData }, tooltip: { textStyle: { fontSize: that[fullProp] ? 18 : 14 } }, geo: { itemStyle: { borderColor: that[fullProp] ? 'rgba(255,255,255,0.12)' : '#07376a' } } })
-                setTimeout(() => { chart.resize() }, 100)
-            },
-            // 地图数据
-            getMapData () {
-                const that = this
-                const amountRankMainDatas = that.amountRankMainDatas // 确保已从大到小排序
-                const areaDatas = amountRankMainDatas.filter(item => that.currSelectedRegion == '' || that.currSelectedRegion == item.town)
-                // 最大值
-                const maxData = Math.max(...areaDatas.map(item => item.area))
-                const listData = []
-                let dataItem = null
-                let symbolSize = 0
-                const colors = ['#ff5f6c', '#1cd782', '#fac720']
-                let color = ''
-                let area = ''
-                let fontSizeOfName = 10
-                let fontSizeOfNum = 14
-                let MAX_SYMBOL_SIZE = 80
-                let MIN_SYMBOL_SIZE = 24
-                let MAX_NUM_FONT_SIZE = 16
-                let MAX_NAME_FONT_SIZE = 14
-                if (that[fullProp]) {
-                    MAX_SYMBOL_SIZE = 150
-                    MIN_SYMBOL_SIZE = 60
-                    MAX_NUM_FONT_SIZE = 26
-                    MAX_NAME_FONT_SIZE = 19
-                } else if (that.smallScreen) {
-                    MAX_SYMBOL_SIZE = 60
-                    MIN_SYMBOL_SIZE = 20
-                    MAX_NUM_FONT_SIZE = 14
-                    MAX_NAME_FONT_SIZE = 12
-                } else if (that.miniScreen) {
-                    MAX_SYMBOL_SIZE = 50
-                    MIN_SYMBOL_SIZE = 15
-                    MAX_NUM_FONT_SIZE = 12
-                    MAX_NAME_FONT_SIZE = 9
+                    ]
                 }
-                let padding = 0
-                areaDatas.forEach((item, index) => {
-                    dataItem = { name: item.town, value: geo[item.town], area: item.area, label: {}, itemStyle: { } }
-                    // 如果只有一项数据，兴田镇往上便宜
-                    if (areaDatas.length == 1) {
-                        if (item.town == '兴田镇') {
-                            dataItem.value = [117.9790244200, 27.5798720185]
-                        } else if (item.town == '岚谷乡') {
-                            dataItem.value = [118.2430244200, 27.9098720185]
-                        }
-                    }
-                    // 计算symbolSize
-                    symbolSize = MAX_SYMBOL_SIZE * item.area / maxData
-                    if (symbolSize < MIN_SYMBOL_SIZE) {
-                        symbolSize = MIN_SYMBOL_SIZE
-                    }
-                    dataItem.symbolSize = symbolSize
-                    area = item.area.toFixed(0)
-                    dataItem.label.formatter = `{a|${item.town}}\n{b|${area}}`
-                    color = colors[index] || '#ffffff'
-                    fontSizeOfName = symbolSize * 0.27
-                    if (fontSizeOfName < 6) {
-                        fontSizeOfName = 6
-                    } else if (fontSizeOfName > MAX_NAME_FONT_SIZE) {
-                        fontSizeOfName = MAX_NAME_FONT_SIZE
-                    }
-                    fontSizeOfNum = symbolSize * 0.32
-                    if (fontSizeOfNum < 7) {
-                        fontSizeOfNum = 7
-                    } else if (fontSizeOfNum > MAX_NUM_FONT_SIZE) {
-                        fontSizeOfNum = MAX_NUM_FONT_SIZE
-                    }
-                    if (symbolSize > 80) {
-                        padding = 6
-                    } else if (symbolSize > 60) {
-                        padding = 5
-                    } else if (symbolSize > 40) {
-                        padding = 3
-                    } else if (symbolSize > 35) {
-                        padding = 2
-                    } else {
-                        padding = 0
-                    }
-                    dataItem.label.rich = {
-                        a: { fontSize: fontSizeOfName, color, align: 'center', padding: [padding, 0, 0, 0] },
-                        b: { fontSize: fontSizeOfNum, color, align: 'center', fontWeight: 'normal' }
-                    }
-                    if (index == 0) {
-                        dataItem.itemStyle = { shadowColor: 'rgba(255,255,255,0.5)', shadowBlur: 10 }
-                    }
-                    listData.push(dataItem)
-                })
-                return listData.reverse()
             },
-            getRankListData (datas) {
+            // 响应式修正options
+            fixOptions (options, datas, titles, values) {
                 const that = this
-                const dataList = []
-                let title = ''
-                datas.forEach((item, index) => {
-                    if (index < 10) {
-                        if (that.amountRankFullState || item.town.length < 7) {
-                            title = item.town
-                        } else {
-                            title = item.town.substring(0, 6) + '...'
-                        }
-                        dataList.push({ title, data: item.area })
+                if (that[fullProp]) {
+                    if (!that.smallScreen && !that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval(values, 10)
+                        options.grid = { top: 18, left: 20, right: 45, bottom: 18, containLabel: true }
+                        options.series[0].barWidth = 18
+                        options.series[0].data = datas.map(item => max)
+                        options.series[1].barWidth = 18
+                        options.series[1].label.normal.fontSize = 16
+                        options.yAxis.axisLabel.margin = 12
+                        options.yAxis.axisLabel.textStyle.fontSize = 15
+                        options.xAxis.min = min
+                        options.xAxis.max = max
+                        options.xAxis.interval = interval
+                        options.xAxis.axisLabel.margin = 12
+                        options.xAxis.axisLabel.textStyle.fontSize = 15
+                        options.tooltip.textStyle.fontSize = 18
+                    } else {
+                        options.grid = { top: 25, left: 20, right: 50, bottom: 20, containLabel: true }
+                        const { min, max, interval } = computedChartDataInterval(values, 8)
+                        options.xAxis.min = min
+                        options.xAxis.max = max
+                        options.xAxis.interval = interval
+                        options.series[0].data = datas.map(item => max)
                     }
+                } else {
+                    if (that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval(values, 3)
+                        options.grid = { top: 2, left: 0, right: 18, bottom: 0, containLabel: true }
+                        options.series[0].barWidth = 6
+                        options.series[0].data = datas.map(item => max)
+                        options.series[1].barWidth = 6
+                        options.series[1].label.normal.fontSize = 7
+                        options.yAxis.axisLabel.margin = 2
+                        options.yAxis.axisLabel.textStyle.fontSize = 8
+                        options.xAxis.min = min
+                        options.xAxis.max = max
+                        options.xAxis.interval = interval
+                        options.xAxis.axisLabel.margin = 0
+                        options.xAxis.axisLabel.textStyle.fontSize = 8
+                        options.tooltip.textStyle.fontSize = 10
+                    } else if (that.smallScreen) {
+                        const { min, max, interval } = computedChartDataInterval(values, 4, 0.1)
+                        options.grid = { top: 5, left: 0, right: 20, bottom: 0, containLabel: true }
+                        options.series[0].barWidth = 8
+                        options.series[0].data = datas.map(item => max)
+                        options.series[1].barWidth = 8
+                        options.series[1].label.normal.fontSize = 8
+                        options.yAxis.axisLabel.margin = 2
+                        options.yAxis.axisLabel.textStyle.fontSize = 8
+                        options.xAxis.min = min
+                        options.xAxis.max = max
+                        options.xAxis.interval = interval
+                        options.xAxis.axisLabel.margin = 2
+                        options.xAxis.axisLabel.textStyle.fontSize = 8
+                        options.tooltip.textStyle.fontSize = 12
+                    }
+                }
+            },
+            // 数据加工
+            handleChartData (datas) {
+                const titles = []
+                const values = []
+                const serialData = []
+                const colors = ['#ff5f6c', '#fac720', '#1cd782']
+                datas.forEach((item, index) => {
+                    if (item.town.length <= 4) {
+                        titles.push(item.town)
+                    } else {
+                        titles.push(item.town.slice(0, 4) + '...')
+                    }
+                    values.push(item.area)
+                    serialData.push({
+                        value: item.area,
+                        itemStyle: { color: colors[index] || '#1b99f0' }
+                    })
                 })
-                dataList.sort((a, b) => a.data > b.data ? -1 : 1)
-                that.dataList = dataList
+                return { titles, values, serialData }
             },
             // full state change
             doFullStateChange (payload) {

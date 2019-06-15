@@ -4,7 +4,8 @@
         <div ref="container"></div>
         <div class="curr-region-data">
             <div>
-                <h3>{{ curr || '武夷山' }}</h3>
+                <h3 v-show="curr==''">武夷山</h3>
+                <h3 v-show="curr!=''"><div @click="doClickMap('')">武夷山</div><div class="point"></div>{{ curr }}</h3>
                 <div><div>茶园</div>：{{ gardenTotal }}家</div>
                 <div><div>总面积</div>：{{ gardenArea }}亩</div>
             </div>

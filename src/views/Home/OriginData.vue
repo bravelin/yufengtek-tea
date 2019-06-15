@@ -2,10 +2,14 @@
 <template>
     <Plane class="origin-wrap" :full="originDataFullState">
         <PlaneTitle>溯源排行</PlaneTitle>
+        <div class="chart-unit">单位：次</div>
         <div class="plane-content" ref="container" :class="{ hide: !cityDatas.length }"></div>
-        <PlaneTools v-show="cityDatas.length" :full="originDataFullState" @change="doFullStateChange"></PlaneTools>
+        <!-- <PlaneTools v-show="cityDatas.length" :full="originDataFullState" @change="doFullStateChange"></PlaneTools> -->
         <div v-show="!cityDatas.length" class="iconfont null-data-tag">&#xe642;</div>
-        <div class="pop-tip" :style="{ left: tip.x, top: tip.y }" :class="{ active: tip.isShow }">{{ tip.content }}</div>
+        <ul class="data-list">
+            <li v-for="item in dataList" :key="item.name">{{ item.name }}（<span>{{ item.value }}</span>）</li>
+        </ul>
+        <div class="pop-tip" :style="{ left: tip.x, top: tip.y }" :class="{ active: tip.isShow }">{{ tip.content }}次</div>
     </Plane>
 </template>
 <script>
@@ -49,6 +53,7 @@
                     content: ''
                 },
                 container: null,
+                dataList: [],
                 chart: null // 图表实例
             }
         },
@@ -76,6 +81,14 @@
                         that.chart ? that.refresh(datas) : that.init(datas)
                     }
                 }
+                const dataList = []
+                for (let i = 0; dataList.length < 9 && i < datas.length; i++) {
+                    if (datas[i].name) {
+                        dataList.push(datas[i])
+                    }
+                }
+                console.log('refresh...', dataList)
+                that.dataList = dataList
             },
             // 创建图表
             init (datas) {
@@ -99,8 +112,8 @@
             doShowTip (event) {
                 const { x, y, text } = event.payload
                 const tip = this.tip
-                tip.x = (x - 20) + 'px'
-                tip.y = (y - 20) + 'px'
+                tip.x = (x - 0) + 'px'
+                tip.y = (y - 0) + 'px'
                 tip.content = text
                 tip.isShow = true
             },

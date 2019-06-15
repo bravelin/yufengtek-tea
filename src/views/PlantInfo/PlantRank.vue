@@ -34,7 +34,6 @@
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
-                console.log('fullStateProp...')
                 this.doInitOrRefreshChart()
             },
             [resizeStateProp] () {
@@ -63,7 +62,6 @@
                     if (container) {
                         const { titles, values, serialData } = that.handleChartData(datas)
                         const options = that.getBaseOptions(datas, titles, values, serialData)
-                        console.log('options.....', options)
                         that.fixOptions(options, datas, titles, values)
                         if (that.chart) { // 刷新
                             that.chart.setOption(options)
@@ -77,13 +75,15 @@
             },
             // 图表配置项
             getBaseOptions (datas, titles, values, serialData) {
-                const { min, max, interval } = computedChartDataInterval(values, 6, 0.1)
+                const { min, max, interval } = computedChartDataInterval(values, 6)
                 const colors = ['#ff5f6c', '#fac720', '#1cd782']
-                console.log('min, max, interval...', min, max, interval)
                 return {
                     grid: { top: 10, left: 10, right: 30, bottom: 5, containLabel: true },
                     xAxis: {
                         show: true,
+                        min,
+                        max,
+                        interval,
                         splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(255, 255, 255, 0.2)', width: 0.5 } },
                         axisLine: { show: false },
                         axisLabel: { margin: 12, textStyle: { color: '#fff', fontSize: 12 } }
@@ -131,7 +131,7 @@
                 const that = this
                 if (that[fullProp]) {
                     if (!that.smallScreen && !that.miniScreen) {
-                        const { min, max, interval } = computedChartDataInterval(values, 10, 0.1)
+                        const { min, max, interval } = computedChartDataInterval(values, 10)
                         options.grid = { top: 25, left: 25, right: 50, bottom: 20, containLabel: true }
                         options.series[0].barWidth = 25
                         options.series[0].data = datas.map(item => max)
@@ -154,7 +154,7 @@
                     }
                 } else {
                     if (that.miniScreen) {
-                        const { min, max, interval } = computedChartDataInterval(values, 3, 0.1)
+                        const { min, max, interval } = computedChartDataInterval(values, 3)
                         options.grid = { top: 5, left: 0, right: 18, bottom: 2, containLabel: true }
                         options.series[0].barWidth = 11
                         options.series[0].data = datas.map(item => max)
@@ -168,7 +168,7 @@
                         options.xAxis.axisLabel.margin = 7
                         options.xAxis.axisLabel.textStyle.fontSize = 9
                     } else if (that.smallScreen) {
-                        const { min, max, interval } = computedChartDataInterval(values, 4, 0.1)
+                        const { min, max, interval } = computedChartDataInterval(values, 4)
                         options.grid = { top: 8, left: 4, right: 25, bottom: 2, containLabel: true }
                         options.series[0].barWidth = 12
                         options.series[0].data = datas.map(item => max)
