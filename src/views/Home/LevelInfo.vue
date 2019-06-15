@@ -3,6 +3,9 @@
     <Plane class="level-info-wrap" :full="levelInfoFullState">
         <PlaneTitle>制茶工艺</PlaneTitle>
         <div class="plane-content" ref="container" :class="{ hide: !levelDatas.length }"></div>
+        <ul class="legend-list">
+            <li v-for="item in legendData" :key="item.name"><div>{{ item.ratio }}</div><div>{{ item.name }}</div><div>{{ item.value }}吨</div></li>
+        </ul>
         <PlaneTools :full="levelInfoFullState" @change="doFullStateChange" v-show="levelDatas.length"></PlaneTools>
         <div v-show="!levelDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
@@ -17,17 +20,16 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'levelDatas'
     const fullProp = 'levelInfoFullState'
-    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const prefix = `$store.state.${moduleNameSpace}`
+    const chartDataProp = `${prefix}.${dataProp}`
+    const fullStateProp = `${prefix}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'home-level-info',
+        name: 'HomeLevelInfo',
         computed: {
             ...thisMapState(['teaTotalAmount', fullProp, dataProp]),
-            miniScreen () {
-                return this.$store.state.winWidth < 1300
-            }
+            ...mapState(['smallScreen', 'miniScreen'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -43,17 +45,15 @@
         data () {
             return {
                 container: null,
-                chart: null // 图表实例
+                chart: null, // 图表实例
+                legendData: []
             }
         },
         mounted () {
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that[dataProp]
-                if (datas.length && !that.chart) {
-                    that.init(datas)
-                }
+                that.doInitOrRefreshChart()
             })
         },
         methods: {
@@ -61,84 +61,52 @@
                 const that = this
                 const datas = that[dataProp]
                 if (datas && datas.length) {
-                    if (that.container) {
-                        that.chart ? that.refresh(datas) : that.init(datas)
+                    const container = that.container
+                    if (container) {
+                        const { seriesData, legendData } = that.handleChartData(datas)
+                        const options = that.getBaseOptions(seriesData)
+                        that.fixOptions(options, seriesData)
+                        that.legendData = legendData
+                        if (that.chart) { // 刷新
+                            that.chart.setOption(options)
+                            setTimeout(() => { that.chart.resize() }, 200)
+                        } else { // 初始化
+                            that.chart = echarts.init(container)
+                            that.chart.setOption(options)
+                        }
                     }
                 }
             },
-            // 创建图表
-            init (datas) {
-                const that = this
-                const container = that.container
-                const { seriesData, legendData } = that.handleChartData(datas)
-                const miniScreen = that.miniScreen
-                const options = {
+            // 图表配置项
+            getBaseOptions (seriesData) {
+                return {
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}吨 ({d}%)',
+                        formatter: '{b}：{c}吨',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         textStyle: { fontSize: 14 }
                     },
-                    legend: {
-                        show: true,
-                        data: legendData,
-                        orient: 'vertical',
-                        right: miniScreen ? 0 : '3%',
-                        top: 10,
-                        itemGap: miniScreen ? 5 : 15,
-                        textStyle: {
-                            color: '#d0d0d0',
-                            fontSize: miniScreen ? 12 : 14,
-                            padding: [2, 0, 0, miniScreen ? 0 : 4]
-                        }
-                    },
+                    legend: { show: false },
                     series: [{
                         type: 'pie',
-                        radius: ['45%', miniScreen ? '80%' : '88%'],
-                        center: [miniScreen ? '38%' : '44%', '50%'],
-                        label: {
-                            show: true,
-                            position: 'inside',
-                            formatter: '{d}%',
-                            fontSize: 12
-                        },
-                        color: ['#43517c', '#87d0f6', '#4775b7', '#91acd4', '#15467d'],
+                        radius: ['51%', '75%'],
+                        center: ['28%', '50%'],
+                        label: { show: false },
+                        color: ['#ff5f6c', '#fac720', '#1cd782', '#407fff', '#a682e6', '#00cccd'],
                         data: seriesData,
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
+                        itemStyle: { normal: { shadowColor: 'rgba(0, 0, 0, 0.5)', shadowBlur: 12 } }
                     }]
                 }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
             },
-            // 刷新图表
-            refresh (datas) {
+            // 响应式修正options
+            fixOptions (options, seriesData) {
                 const that = this
-                const chart = that.chart
-                const { seriesData, legendData } = that.handleChartData(datas)
-                let options = null
-                const miniScreen = that.miniScreen
                 if (that[fullProp]) {
-                    options = {
-                        tooltip: { textStyle: { fontSize: 18 } },
-                        series: [{ center: [miniScreen ? '38%' : '44%', '50%'], radius: ['45%', '88%'], data: seriesData, label: { fontSize: 16 } }],
-                        legend: { data: legendData, right: '4%', top: 20, itemGap: 20, textStyle: { fontSize: 16 } }
-                    }
-                } else {
-                    options = {
-                        tooltip: { textStyle: { fontSize: 14 } },
-                        series: [{ center: [miniScreen ? '38%' : '44%', '50%'], radius: ['45%', miniScreen ? '80%' : '88%'], data: seriesData, label: { fontSize: 12 } }],
-                        legend: { data: legendData, right: miniScreen ? 0 : '3%', itemGap: miniScreen ? 5 : 15, top: 10, textStyle: { fontSize: miniScreen ? 12 : 14, padding: [2, 0, 0, miniScreen ? 0 : 4] } },
+                    if (!that.smallScreen && !that.miniScreen) {
+                        options.tooltip.textStyle.fontSize = 18
                     }
                 }
-                chart.setOption(options)
-                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {
@@ -146,11 +114,21 @@
                 const legendData = []
                 const seriesData = []
                 let item = null
+                let value = 0
+                let legendValue = 0
+                const totalData = datas.reduce((total, currItem) => total + (currItem.gravity ? currItem.gravity - 0 : 0), 0)
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
-                    seriesData.push({ name: item.grade, value: item.gravity })
-                    legendData.push(item.grade)
+                    value = item.gravity ? item.gravity.toFixed(2) : 0
+                    seriesData.push({ name: item.grade, value: value - 0 })
+                    legendValue = value - 0
+                    if (legendValue >= 10000) {
+                        legendValue = (legendValue / 10000).toFixed(1) + '万'
+                    }
+                    legendData.push({ name: item.grade, ratio: (((value - 0) / totalData) * 100).toFixed(2) + '%', value: legendValue, realValue: value - 0 })
                 }
+                seriesData.sort((a, b) => a.value > b.value ? -1 : 1)
+                legendData.sort((a, b) => a.realValue > b.realValue ? -1 : 1)
                 return { legendData, seriesData }
             },
             // full state change

@@ -1,0 +1,61 @@
+import types from '@/store/constants/types'
+import ajax from '@/lib/ajax'
+
+export default {
+    [types.WAREHOUSE_GET_DATA] (context) {
+        const state = context.state
+        const data = state.currSelectedRegion ? { addr: state.currSelectedRegion } : {}
+        ajax({ url: '/bigdata/warehouse/detail', method: 'post', data }).then(res => {
+            if (res.code == 200) {
+                const repData = res.repData
+                // 今日出入库信息
+                state.toDayInAmount = repData.inStock ? repData.inStock.weight : 0
+                state.toDayOutAmount = repData.outStock ? repData.outStock.weight : 0
+                let stockWeight = (repData.stockWeight || 0).toFixed(0)
+                state.stockWeight = stockWeight
+                // 今年出入库信息
+                state.thisYearInDatas = repData.thisYearInStock.map(item => {
+                    return { label: item.omonth, value: item.weight }
+                })
+                state.thisYearOutDatas = repData.thisYearOutStock.map(item => {
+                    return { label: item.omonth, value: item.weight }
+                })
+                // 历史出入库对比
+                const historyInDatas = []
+                const historyOutDatas = []
+                const tempData = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'].map(item => { return { omonth: `${item}月`, weight: 0 } })
+                let year = new Date().getFullYear()
+                historyInDatas.push({ year: year - 1, list: tempData })
+                historyInDatas.push({ year, list: repData.thisYearInStock })
+                state.historyInDatas = historyInDatas.map(item => {
+                    return {
+                        year: item.year.toString(),
+                        list: item.list.map(dataItem => { return { label: dataItem.omonth, value: dataItem.weight } })
+                    }
+                })
+                historyOutDatas.push({ year: year - 1, list: tempData })
+                historyOutDatas.push({ year, list: repData.thisYearOutStock })
+                state.historyOutDatas = historyOutDatas.map(item => {
+                    return {
+                        year: item.year.toString(),
+                        list: item.list.map(dataItem => { return { label: dataItem.omonth, value: dataItem.weight } })
+                    }
+                })
+
+                // 地图上的茶园信息
+                const rootState = this.state
+                rootState.gardenArea = repData.gardenArea
+                rootState.gardenTotal = repData.gardenTotal
+                rootState.plantArea = repData.plantArea || []
+            } else {
+                state.toDayInAmount = '-'
+                state.toDayOutAmount = '-'
+                state.stockWeight = '-'
+                state.thisYearInDatas = []
+                state.thisYearOutDatas = []
+                state.historyInDatas = []
+                state.historyOutDatas = []
+            }
+        })
+    }
+}

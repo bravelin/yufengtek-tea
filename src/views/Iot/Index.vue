@@ -33,7 +33,7 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
 
     export default {
-        name: 'iot-index',
+        name: 'IotIndex',
         computed: {
             ...thisMapState(['currActive', 'photoViewerFullState', 'camera360FullState', 'fm1', 'fm2'])
         },

@@ -5,6 +5,7 @@
         <div class="plane-content" ref="container" :class="{ hide: !cityDatas.length }"></div>
         <PlaneTools v-show="cityDatas.length" :full="originDataFullState" @change="doFullStateChange"></PlaneTools>
         <div v-show="!cityDatas.length" class="iconfont null-data-tag">&#xe642;</div>
+        <div class="pop-tip" :style="{ left: tip.x, top: tip.y }" :class="{ active: tip.isShow }">{{ tip.content }}</div>
     </Plane>
 </template>
 <script>
@@ -12,8 +13,8 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+    import Bubble from './bubble'
 
-    require('echarts-wordcloud')
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'cityDatas'
@@ -23,12 +24,10 @@
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'home-origin-data',
+        name: 'HomeOriginData',
         computed: {
             ...thisMapState([fullProp, dataProp]),
-            miniScreen () {
-                return this.$store.state.winWidth < 1300
-            }
+            ...mapState(['smallScreen', 'miniScreen'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -43,9 +42,20 @@
         },
         data () {
             return {
+                tip: {
+                    x: '0',
+                    y: '0',
+                    isShow: false,
+                    content: ''
+                },
                 container: null,
                 chart: null // 图表实例
             }
+        },
+        created () {
+            const that = this
+            document.addEventListener('showTip', that.doShowTip)
+            document.addEventListener('hideTip', that.doHideTip)
         },
         mounted () {
             const that = this
@@ -70,61 +80,14 @@
             // 创建图表
             init (datas) {
                 const that = this
-                const container = that.container
-                const miniScreen = that.miniScreen
-                const options = {
-                    tooltip: {
-                        trigger: 'item',
-                        show: true,
-                        formatter: '{b}：{c}',
-                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
-                        textStyle: { fontSize: 14 }
-                    },
-                    series: [{
-                        type: 'wordCloud',
-                        gridSize: 10,
-                        sizeRange: miniScreen ? [12, 22] : [14, 30],
-                        rotationRange: [0, 0],
-                        shape: 'circle',
-                        autoSize: { enable: true, minSize: 12 },
-                        data: datas,
-                        textStyle: {
-                            normal: {
-                                color: function () {
-                                    return 'hsla(' + [
-                                        207 + Math.round(Math.random() * 10),
-                                        (75 + Math.round(Math.random() * 12)) + '%',
-                                        (60 + Math.round(Math.random() * 10)) + '%',
-                                        0.2 + Math.random()
-                                    ].join(',') + ')'
-                                }
-                            },
-                            emphasis: { shadowBlur: 10, shadowColor: '#333' }
-                        }
-                    }]
-                }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
+                that.chart = new Bubble(that.container)
+                that.chart.draw(datas)
             },
             // 刷新图表
             refresh (datas) {
-                const that = this
-                const chart = that.chart
-                const miniScreen = that.miniScreen
-                let options = null
-                if (that[fullProp]) {
-                    options = {
-                        series: [{ data: datas, gridSize: 20, sizeRange: [14, 50] }],
-                        tooltip: { textStyle: { fontSize: 18 } }
-                    }
-                } else {
-                    options = {
-                        series: [{ data: datas, gridSize: 10, sizeRange: miniScreen ? [12, 22] : [14, 30] }],
-                        tooltip: { textStyle: { fontSize: 14 } }
-                    }
-                }
-                chart.setOption(options)
-                setTimeout(() => { chart.resize() }, 200)
+                setTimeout(() => {
+                    this.chart.refresh(datas)
+                }, 300)
             },
             // full state change
             doFullStateChange (payload) {
@@ -132,7 +95,24 @@
                 that.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
                     fullStateName: fullProp, state: payload
                 })
+            },
+            doShowTip (event) {
+                const { x, y, text } = event.payload
+                const tip = this.tip
+                tip.x = (x - 20) + 'px'
+                tip.y = (y - 20) + 'px'
+                tip.content = text
+                tip.isShow = true
+            },
+            doHideTip (event) {
+                const tip = this.tip
+                tip.isShow = false
             }
+        },
+        beforeDestroy () {
+            const that = this
+            document.removeEventListener('showTip', that.doShowTip)
+            document.removeEventListener('hideTip', that.doHideTip)
         }
     }
 </script>

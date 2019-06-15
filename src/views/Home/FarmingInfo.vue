@@ -1,14 +1,15 @@
 <!--农事信息-->
 <template>
     <Plane class="farming-info-wrap" :full="farmingInfoFullState">
-        <PlaneTitle>施肥信息<div class="unit" v-show="farmingActdatas.length">单位：kg</div></PlaneTitle>
+        <PlaneTitle>施肥信息</PlaneTitle>
+        <div class="chart-unit">单位：kg</div>
         <div :class="{ hide: !farmingActdatas.length }" class="plane-content" ref="container"></div>
         <PlaneTools v-show="farmingActdatas.length" :full="farmingInfoFullState" @change="doFullStateChange"></PlaneTools>
         <div v-show="!farmingActdatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
-    import { createNamespacedHelpers } from 'vuex'
+    import { createNamespacedHelpers, mapState } from 'vuex'
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
@@ -18,17 +19,16 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'farmingActdatas'
     const fullProp = 'farmingInfoFullState'
-    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const prefix = `$store.state.${moduleNameSpace}`
+    const chartDataProp = `${prefix}.${dataProp}`
+    const fullStateProp = `${prefix}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'app-farming-info',
+        name: 'HomeFarmingInfo',
         computed: {
             ...thisMapState([fullProp, dataProp]),
-            miniScreen () {
-                return this.$store.state.winWidth < 1300
-            }
+            ...mapState(['smallScreen', 'miniScreen'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -51,10 +51,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that[dataProp]
-                if (datas.length && !that.chart) {
-                    that.init(datas)
-                }
+                that.doInitOrRefreshChart()
             })
         },
         methods: {
@@ -62,21 +59,26 @@
                 const that = this
                 const datas = that[dataProp]
                 if (datas && datas.length) {
-                    if (that.container) {
-                        that.chart ? that.refresh(datas) : that.init(datas)
+                    const container = that.container
+                    if (container) {
+                        const { values, titles } = that.handleChartData(datas)
+                        const options = that.getBaseOptions(values, titles)
+                        that.fixOptions(options, titles, values)
+                        if (that.chart) { // 刷新
+                            that.chart.setOption(options)
+                            setTimeout(() => { that.chart.resize() }, 200)
+                        } else { // 初始化
+                            that.chart = echarts.init(container)
+                            that.chart.setOption(options)
+                        }
                     }
                 }
             },
-            // 创建图表
-            init (datas) {
-                const that = this
-                const container = that.container
-                const { values, titles } = that.handleChartData(datas)
-                const miniScreen = that.miniScreen
-                // 求得 min、max、interval,4个间隔
+            // 图表配置项
+            getBaseOptions (values, titles) {
                 const { min, max, interval } = computedChartDataInterval(values, 4, 0.5)
-                const options = {
-                    grid: { top: 15, left: 8, right: 8, bottom: 2, containLabel: true },
+                return {
+                    grid: { top: 18, left: 12, right: 12, bottom: 3, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
                         formatter: '{b}：{c}' + 'kg',
@@ -84,95 +86,89 @@
                         axisPointer: { lineStyle: { color: 'rgba(238, 238, 238, 0.4)' } },
                         textStyle: { fontSize: 14 }
                     },
-                    xAxis: [{
+                    xAxis: {
                         type: 'category',
                         data: titles,
                         boundaryGap: true,
-                        axisTick: { show: true },
-                        axisLine: { lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
+                        axisTick: { show: false },
+                        axisLine: { show: false },
                         axisLabel: { margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
-                    }],
-                    yAxis: [{
+                    },
+                    yAxis: {
                         show: true,
                         min,
                         max,
                         interval,
-                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.15)' } },
-                        axisTick: { show: true },
-                        axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(255, 255, 255, 0.2)', width: 0.5 } },
+                        axisTick: { show: false },
+                        axisLine: { show: false },
                         axisLabel: { show: true, margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
-                    }],
-                    color: ['#4775b7'],
-                    series: [
-                    {
+                    },
+                    series: [{
                         smooth: true,
                         type: 'line',
-                        symbolSize: 45,
-                        symbol: 'pin',
-                        itemStyle: {
-                            normal: {
-                                color: 'rgba(0, 159, 253, 0.3)',
-                                barBorderRadius: 0,
-                                label: { show: true, position: 'inside', fontSize: 9 }
-                            }
-                        },
+                        symbolSize: 10,
+                        symbol: 'circle',
+                        itemStyle: { normal: { color: '#02b9e1', label: { show: true, position: 'outside', fontSize: 12, color: '#ffffff' } } },
                         data: values,
-                        lineStyle: { type: 'dotted', width: 1, color: 'rgba(0, 159, 253, 0.65)' },
+                        lineStyle: { width: 2, color: 'rgb(153, 227, 253)' },
+                        areaStyle: { normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(153, 228, 253, 0.6)' }, { offset: 1, color: 'rgba(45, 80, 131, 0.1)' }], false) } }
                     }]
                 }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
             },
-            // 刷新图表
-            refresh (datas) {
+            // 响应式修正options
+            fixOptions (options, titles, values) {
                 const that = this
-                const chart = that.chart
-                const { titles, values } = that.handleChartData(datas)
-                const { min, max, interval } = computedChartDataInterval(values, 4, 0.5)
-                let options = null
                 if (that[fullProp]) {
-                    options = {
-                        grid: { top: 32, left: 20, right: 20, bottom: 20 },
-                        series: [
-                            {
-                                data: values,
-                                symbolSize: 60,
-                                itemStyle: {
-                                    normal: {
-                                        label: {
-                                            fontSize: 12
-                                        }
-                                    }
-                                }
-                            }
-                        ],
-                        xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
-                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
-                        tooltip: { textStyle: { fontSize: 18 } },
+                    if (!that.smallScreen && !that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval(values, 6, 0.5)
+                        options.grid = { top: 30, left: 25, right: 25, bottom: 20, containLabel: true }
+                        options.series[0].symbolSize = 14
+                        options.series[0].itemStyle.normal.label.fontSize = 14
+                        options.xAxis.axisLabel.margin = 12
+                        options.xAxis.axisLabel.textStyle.fontSize = 15
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 12
+                        options.yAxis.axisLabel.textStyle.fontSize = 15
+                        options.tooltip.textStyle.fontSize = 18
+                    } else {
+                        options.grid = { top: 25, left: 25, right: 25, bottom: 20, containLabel: true }
                     }
                 } else {
-                    options = {
-                        grid: { top: 15, left: 8, right: 8, bottom: 2 },
-                        series: [
-                            {
-                                data: values,
-                                symbolSize: 45,
-                                itemStyle: {
-                                    normal: { label: { fontSize: 9 } }
-                                }
-                            }
-                        ],
-                        xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
-                        yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
-                        tooltip: { textStyle: { fontSize: 14 } }
+                    if (that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval(values, 3, 0.5)
+                        options.grid = { top: 14, left: 2, right: 8, bottom: 3, containLabel: true }
+                        options.series[0].symbolSize = 6
+                        options.series[0].itemStyle.normal.label.fontSize = 10
+                        options.series[0].lineStyle.width = 1
+                        options.xAxis.axisLabel.margin = 7
+                        options.xAxis.axisLabel.textStyle.fontSize = 9
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 7
+                        options.yAxis.axisLabel.textStyle.fontSize = 9
+                        options.tooltip.textStyle.fontSize = 10
+                    } else if (that.smallScreen) {
+                        const { min, max, interval } = computedChartDataInterval(values, 3, 0.5)
+                        options.grid = { top: 16, left: 6, right: 8, bottom: 3, containLabel: true }
+                        options.series[0].symbolSize = 9
+                        options.series[0].itemStyle.normal.label.fontSize = 11
+                        options.xAxis.axisLabel.margin = 9
+                        options.xAxis.axisLabel.textStyle.fontSize = 11
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 9
+                        options.yAxis.axisLabel.textStyle.fontSize = 11
+                        options.tooltip.textStyle.fontSize = 12
                     }
                 }
-                chart.setOption(options)
-                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {
-                const that = this
                 const titles = []
                 const values = []
                 datas.forEach(item => {
@@ -183,8 +179,7 @@
             },
             // full state change
             doFullStateChange (payload) {
-                const that = this
-                that.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
+                this.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
                     fullStateName: fullProp,
                     state: payload
                 })

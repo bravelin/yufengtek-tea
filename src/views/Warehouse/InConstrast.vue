@@ -1,7 +1,8 @@
 <!--历史入库对比-->
 <template>
     <Plane class="in-constrast-wrap" :full="inConstrastFullState">
-        <PlaneTitle>历史入库对比<div class="unit" v-show="historyInDatas.length">单位：吨</div></PlaneTitle>
+        <PlaneTitle>历史入库对比</PlaneTitle>
+        <div class="chart-unit" v-show="historyInDatas.length">单位：吨</div>
         <div class="plane-content" ref="container" :class="{ hide: !historyInDatas.length }"></div>
         <PlaneTools :full="inConstrastFullState" @change="doFullStateChange" v-show="historyInDatas.length"></PlaneTools>
         <div v-show="!historyInDatas.length" class="iconfont null-data-tag">&#xe642;</div>
@@ -18,14 +19,16 @@
     const dataProp = 'historyInDatas'
     const fullProp = 'inConstrastFullState'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const prefix = `$store.state.${moduleNameSpace}`
+    const chartDataProp = `${prefix}.${dataProp}`
+    const fullStateProp = `${prefix}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'warehouse-in-constrast',
+        name: 'WarehouseInConstrast',
         computed: {
-            ...thisMapState([fullProp, dataProp])
+            ...thisMapState([fullProp, dataProp]),
+            ...mapState(['smallScreen', 'miniScreen'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -48,10 +51,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that[dataProp]
-                if (datas.length && !that.chart) {
-                    that.init(datas)
-                }
+                that.doInitOrRefreshChart()
             })
         },
         methods: {
@@ -59,59 +59,66 @@
                 const that = this
                 const datas = that[dataProp]
                 if (datas && datas.length) {
-                    if (that.container) {
-                        that.chart ? that.refresh(datas) : that.init(datas)
+                    const container = that.container
+                    if (container) {
+                        const { titles, lineDatas, legends } = that.handleChartData(datas)
+                        const options = that.getBaseOptions(titles, lineDatas, legends)
+                        that.fixOptions(options, titles, lineDatas, legends)
+                        if (that.chart) { // 刷新
+                            that.chart.setOption(options)
+                            setTimeout(() => { that.chart.resize() }, 200)
+                        } else { // 初始化
+                            that.chart = echarts.init(container)
+                            that.chart.setOption(options)
+                        }
                     }
                 }
             },
-            // 创建图表
-            init (datas) {
+            // 图表配置项
+            getBaseOptions (titles, lineDatas, legends) {
                 const that = this
-                const container = that.container
-                const { titles, lineDatas, legends } = that.handleChartData(datas)
                 const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 4)
-                const options = {
-                    grid: { top: 45, left: 0, right: 5, bottom: 0, containLabel: true },
+                return {
+                    grid: { top: 25, left: 12, right: 10, bottom: 0, containLabel: true },
                     legend: {
                         data: legends,
-                        right: 60,
-                        top: 16,
+                        right: 4,
+                        top: 0,
                         itemGap: 10,
-                        textStyle: { color: '#d0d0d0', fontSize: 12, padding: [2, 0, 0, 2] }
+                        itemWidth: 9,
+                        textStyle: { color: '#ffffff', fontSize: 11, padding: [2, 0, 0, 2] }
                     },
                     tooltip: {
                         trigger: 'axis',
                         formatter (params) {
                             return params.map((item, index) => {
-                                return legends[index] + '年' + item.name + '：' + item.value + '吨'
+                                return legends[index].name + '年' + item.name + '：' + item.value + '吨'
                             }).join('<br/>')
                         },
+                        textStyle: { fontSize: 14 },
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         axisPointer: { lineStyle: { color: 'rgba(238,238,238,0.4)' } }
                     },
-                    xAxis: [{
+                    xAxis: {
                         type: 'category',
                         data: titles,
                         boundaryGap: true,
-                        axisTick: { show: true },
-                        axisLine: { lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
+                        axisTick: { show: false },
+                        axisLine: { show: false },
                         axisLabel: { margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
-                    }],
-                    color: ['rgb(4, 165, 252)', '#91acd4'],
-                    yAxis: [{
+                    },
+                    yAxis: {
                         show: true,
                         min,
                         max,
                         interval,
-                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.15)' } },
-                        axisTick: { show: true },
-                        axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(255, 255, 255,0.2)' } },
+                        axisTick: { show: false },
+                        axisLine: { show: false },
                         axisLabel: { margin: 8, show: true, textStyle: { color: '#fff', fontSize: 12 } }
-                    }],
+                    },
                     series: that.getSeries(lineDatas)
                 }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
             },
             getSeries (lineDatas) {
                 return lineDatas.map((item, index) => {
@@ -121,50 +128,84 @@
                         type: 'line',
                         smooth: true,
                         symbol: 'circle',
-                        symbolSize: 6,
+                        symbolSize: 10,
                         showSymbol: true,
+                        itemStyle: { normal: { color: index == 1 ? '#02b9e1' : '#fac720', label: { show: false } } },
+                        lineStyle: { width: 2, color: index == 1 ? 'rgb(153, 227, 253)' : '#dbb32f' },
                         areaStyle: index == 0 ? {
                             normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(4, 165, 252, 0.3)' }, { offset: 1, color: 'rgba(4, 165, 252, 0.1)' }], false)
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(91, 96, 87, 0.6)' }, { offset: 1, color: 'rgba(91, 96, 87, 0.1)' }], false)
                             }
                         } : {
                             normal: {
-                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(145,172,212, 0.3)' }, { offset: 1, color: 'rgba(145,172,212, 0.1)' }], false)
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(153, 228, 253, 0.6)' }, { offset: 1, color: 'rgba(45, 80, 131, 0.1)' }], false)
                             }
                         }
                     }
                 })
             },
-            // 刷新图表
-            refresh (datas) {
+            // 响应式修正options
+            fixOptions(options, titles, lineDatas, legends) {
                 const that = this
-                const chart = that.chart
-                const { titles, lineDatas, legends } = that.handleChartData(datas)
-                const series = that.getSeries(lineDatas)
-                let options = null
                 if (that[fullProp]) {
-                    const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 8)
-                    options = {
-                        grid: { top: 70, left: 20, right: 20, bottom: 20 },
-                        xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
-                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
-                        tooltip: { textStyle: { fontSize: 18 } },
-                        series,
-                        legend: { data: legends, top: 21, right: 90, textStyle: { fontSize: 15, padding: [5, 0, 0, 5] } }
+                    if (!that.smallScreen && !that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 8)
+                        options.grid = { top: 40, left: 20, right: 20, bottom: 20, containLabel: true }
+                        options.xAxis.axisLabel.margin = 12
+                        options.xAxis.axisLabel.textStyle.fontSize = 15
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 12
+                        options.yAxis.axisLabel.textStyle.fontSize = 15
+                        options.tooltip.textStyle.fontSize = 18
+                        options.legend.top = 8
+                        options.legend.right = 20
+                        options.legend.itemWidth = 12
+                        options.legend.textStyle.fontSize = 15
+                        options.legend.textStyle.padding = [5, 0, 0, 5]
+                    } else {
+                        options.grid = { top: 40, left: 20, right: 20, bottom: 20, containLabel: true }
+                        options.legend.top = 12
+                        options.legend.right = 24
                     }
                 } else {
-                    const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 4)
-                    options = {
-                        grid: { top: 45, left: 0, right: 5, bottom: 0 },
-                        xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
-                        yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
-                        tooltip: { textStyle: { fontSize: 14 } },
-                        series,
-                        legend: { data: legends, top: 16, right: 60, textStyle: { fontSize: 12, padding: [2, 0, 0, 2] } }
+                    if (that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 3)
+                        options.grid = { top: 22, left: 6, right: 8, bottom: 3, containLabel: true }
+                        options.xAxis.axisLabel.margin = 7
+                        options.xAxis.axisLabel.textStyle.fontSize = 9
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 7
+                        options.yAxis.axisLabel.textStyle.fontSize = 9
+                        options.tooltip.textStyle.fontSize = 12
+                        options.legend.itemWidth = 6
+                        options.legend.textStyle.fontSize = 9
+                        options.series[0].symbolSize = 6
+                        options.series[0].lineStyle.width = 1
+                        options.series[1].symbolSize = 6
+                        options.series[1].lineStyle.width = 1
+                    } else if (that.smallScreen) {
+                        const { min, max, interval } = computedChartDataInterval([...lineDatas[0].list, ...lineDatas[1].list], 3)
+                        options.grid = { top: 22, left: 6, right: 8, bottom: 3, containLabel: true }
+                        options.xAxis.axisLabel.margin = 9
+                        options.xAxis.axisLabel.textStyle.fontSize = 11
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 9
+                        options.yAxis.axisLabel.textStyle.fontSize = 11
+                        options.tooltip.textStyle.fontSize = 12
+                        options.legend.itemWidth = 7
+                        options.legend.textStyle.fontSize = 10
+                        options.series[0].symbolSize = 9
+                        options.series[0].lineStyle.width = 1
+                        options.series[1].symbolSize = 9
+                        options.series[1].lineStyle.width = 1
                     }
                 }
-                chart.setOption(options)
-                setTimeout(() => { chart.resize() }, 200)
             },
             // 数据加工
             handleChartData (datas) {
@@ -185,7 +226,7 @@
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
                     lineObj = { year: item.year, list: [] }
-                    legends.push(item.year)
+                    legends.push({ name: item.year, icon: 'circle' })
                     for (let j = 0; j < item.list.length; j++) {
                         dataItem = item.list[j]
                         titleObjs[dataItem.label] = true

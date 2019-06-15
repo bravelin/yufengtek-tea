@@ -82,11 +82,8 @@
                 setTimeout(() => { that.inProcessing = false }, 300)
                 const videoWrap = that.$refs.videoPlayer
                 // ios下需要http协议的url才能播放
-                console.log('videoUrl...', videoUrl)
-                const pos = videoUrl.lastIndexOf('/')
-                const equipSno = videoUrl.substr(pos + 1, 32)
-                const prefix = (reg.ios.test(navigator.userAgent) ? 'http' : 'https')
-                let url = `${prefix}://hls01open.ys7.com/openlive/${equipSno}.hd.m3u8`
+                let url = reg.ios.test(navigator.userAgent) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
+                console.log('1...', url)
                 if (url.indexOf('.hd.') < 0) { // 切换成高清的
                     url = url.replace('.m3u8', '.hd.m3u8')
                     console.log('2...', url)
@@ -107,8 +104,8 @@
                     }
                 }
                 that.containerHeight = h
-                let width = w - 10
-                let height = h - 10
+                let width = w
+                let height = h
                 videoWrap.style.width = width + 'px'
                 videoWrap.style.height = height + 'px'
                 videoWrap.style.objectFit = 'fill'

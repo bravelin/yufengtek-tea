@@ -1,8 +1,7 @@
 <!--种植分布-->
 <template>
-    <Plane class="plant-distribute-wrap" :full="mapFullState">
+    <Plane class="plant-distribute-wrap no-border" :full="mapFullState">
         <WuyishanMap @change="doMapChange" :curr="currSelectedRegion" :full="mapFullState"></WuyishanMap>
-        <PlaneTools :full="mapFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
 <script>
@@ -16,7 +15,7 @@
     const fullProp = 'mapFullState'
 
     export default {
-        name: 'home-map',
+        name: 'HomeMap',
         components: {
             WuyishanMap
         },

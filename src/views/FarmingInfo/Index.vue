@@ -21,7 +21,7 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
 
     export default {
-        name: 'farming-info-index',
+        name: 'FarmingInfoIndex',
         components: {
             Map, PlantAct, FertilizerAct, ProtectionAct
         },

@@ -3,23 +3,163 @@
      flex-direction: row;
      >div{
           &:nth-of-type(1){
-               width: calc(40% - 10px);
-               margin-right: 10px;
+               width: calc(50% - 14px);
+               margin-right: 14px;
           }
           &:nth-of-type(2){
-               width: 60%;
+               width: 50%;
+               height: 100%;
           }
      }
      .plant-act-wrap{
-          height: calc(33.3% - 6px);
-          margin-bottom: 10px;
+          height: calc(33.3% - 9px);
+          margin-bottom: 14px;
+          >h2.plane-title:before{
+            background-image: url('../../assets/images/3/10.png');
+        }
      }
      .fertilizer-act-wrap{
-          height: calc(33.3% - 7px);
-          margin-bottom: 10px;
+          height: calc(33.3% - 10px);
+          margin-bottom: 14px;
+          >h2.plane-title:before{
+            background-image: url('../../assets/images/3/8.png');
+        }
      }
      .protection-act-wrap{
-          height: calc(33.4% - 7px);
+          height: calc(33.4% - 9px);
+          >h2.plane-title:before{
+            background-image: url('../../assets/images/3/9.png');
+        }
+     }
+     .legend-list{
+         display: flex;
+         flex-direction: column;
+         justify-content: center;
+         position: absolute;
+         top: 10px;
+         bottom: 10px;
+         right: 15px;
+         width: 130px;
+         font-size: 14px;
+         // border: 1px solid #f00;
+         >li{
+             display: flex;
+             flex-direction: row;
+             margin-bottom: 14px;
+             align-items: center;
+             &:before{
+                 content: "";
+                 width: 12px;
+                 height: 12px;
+                 border-radius: 50%;
+                 margin-right: 8px;
+                 flex: none;
+                 box-shadow: 0 0 10px 1px rgba(255,255,255,0.5);
+             }
+             >div{
+                &:nth-of-type(1){
+                    flex: none;
+                    width: 60px;
+                }
+                &:nth-of-type(2){
+                   color: #408fe3;
+                }
+             }
+             &:nth-of-type(1){
+                 &:before{
+                     background-color:#ff5f6c;
+                 }
+             }
+             &:nth-of-type(2){
+                &:before{
+                    background-color:#1cd782;
+                }
+            }
+            &:nth-of-type(3){
+                &:before{
+                    background-color:#fac720;
+                }
+            }
+            &:nth-of-type(4){
+                &:before{
+                    background-color:#294dd8;
+                }
+            }
+            &:nth-of-type(5){
+                &:before{
+                    background-color:#15467d;
+                }
+            }
+             &:last-child{
+                 margin-bottom: 0;
+             }
+         }
+     }
+     .total-data{
+         position: absolute;
+         left: 0;
+         width: 100%;
+         top: 50%;
+         height: 40px;
+         line-height: 40px;
+         margin-top: -20px;
+         display: flex;
+         text-align: center;
+         justify-content: center;
+         margin-left: -18%;
+         // border: 1px solid #f00;
+         >h3{
+             font-size: 22px;
+         }
+         >span{
+             font-size: 14px;
+             margin-left: 4px;
+         }
+     }
+     .plant-act-wrap, .fertilizer-act-wrap, .protection-act-wrap{
+        &.full-screen{
+            .legend-list{
+                left: 10px;
+                bottom: 25px;
+                right: 15px;
+                width: calc(100% - 25px);
+                height: 90px;
+                top: auto;
+                // border: 1px solid #f00;
+                flex-direction: row;
+                align-items: center;
+                justify-content: center;
+                flex-wrap: wrap;
+                >li{
+                    margin-right: 40px;
+                    font-size: 15px;
+                    &:before{
+                        width: 12px;
+                        height: 12px;
+                        margin-right: 12px;
+                    }
+                    &:last-child{
+                        margin-bottom: 14px;
+                        margin-right: 0;
+                    }
+                }
+            }
+            .total-data{
+                top: 42%;
+                line-height: 80px;
+                height: 80px;
+                margin-left: 0;
+                // border: 1px solid #f00;
+                margin-top: -40px;
+                >h3{
+                    font-size: 42px;
+                }
+                >span{
+                    font-size: 20px;
+                    margin-left: 20px;
+                }
+            }
+        }
      }
      .act-wrap .plane-content{
           display: flex;
@@ -27,8 +167,22 @@
           >div{
                //border: 1px solid #f00;
                &:nth-of-type(1){
-                    flex: 1;
-                    margin-right: 10px;
+                   position: relative;
+                    flex: 1.4;
+                    margin-right: 14px;
+                    >div:nth-of-type(1){
+                        width: 100%;
+                        height: 100%;
+                    }
+                    &:after{
+                        content: "";
+                        position: absolute;
+                        width: 1px;
+                        top: 10px;
+                        bottom: 10px;
+                        right: 4px;
+                        background: linear-gradient(to bottom, #0c205a 0%, #0fb1e1 50%, #0c205a 100%);
+                    }
                }
                &:nth-of-type(2){
                     flex: 2;
@@ -36,34 +190,121 @@
           }
      }
 }
-@media screen and (max-width: 1490px){
-     .farming-info-page{
-          >div{
-               &:nth-of-type(1){
-                    width: calc(45% - 10px);
-               }
-               &:nth-of-type(2){
-                    width: 55%;
-               }
-          }
-          .act-wrap .plane-content > div:nth-of-type(1){
-               flex: 1.2;
-          }
-     }
+
+@media screen and (max-width: 1400px) {
+    .farming-info-page{
+        >div{
+            &:nth-of-type(1){
+                width: calc(46% - 8px);
+                margin-right: 8px;
+            }
+            &:nth-of-type(2){
+                width: 54%;
+            }
+        }
+        .act-wrap .plane-content{
+            >div{
+                &:nth-of-type(1){
+                    margin-right: 5px;
+                }
+            }
+        }
+        .plant-act-wrap{
+            height: calc(33.4% - 5px);
+            margin-bottom: 8px;
+        }
+        .fertilizer-act-wrap{
+            height: calc(33.3% - 6px);
+            margin-bottom: 8px;
+        }
+        .protection-act-wrap{
+            height: calc(33.4% - 5px);
+        }
+        .legend-list{
+            font-size: 12px;
+            width: 115px;
+            right: 8px;
+            >li{
+                margin-bottom: 9px;
+                font-size: 12px;
+                &:before{
+                    width: 10px;
+                    height: 10px;
+                }
+                >div:nth-of-type(1){
+                    width: 50px;
+                }
+            }
+        }
+
+        .total-data{
+            margin-left: -22%;
+            >h3{
+                font-size: 16px;
+            }
+            >span{
+                font-size: 12px;
+            }
+        }
+
+        .plant-act-wrap, .fertilizer-act-wrap, .protection-act-wrap{
+            &.full-screen{
+                .legend-list{
+                    >li{
+                        >div{
+                            &:nth-of-type(1){
+                                width: 60px;
+                            }
+                        }
+                        &:nth-of-type(3n){
+                            margin-right: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
-@media screen and (max-width: 1300px){
-     .farming-info-page{
-          >div{
-               &:nth-of-type(1){
-                    width: calc(39% - 6px);
-                    margin-right: 6px;
-               }
-               &:nth-of-type(2){
-                    width: 61%;
-               }
-          }
-          .act-wrap .plane-content > div:nth-of-type(1){
-               flex: 1.5;
-          }
-     }
+
+@media screen and (max-width: 1200px) {
+    .farming-info-page{
+        .act-wrap .plane-content{
+            >div{
+                &:nth-of-type(1){
+                    flex: 1.8;
+                    margin-right: 0px;
+                }
+            }
+        }
+        .legend-list{
+            font-size: 12px;
+            width: 100px;
+            right: 3px;
+            >li{
+                margin-bottom: 9px;
+                font-size: 12px;
+                &:before{
+                    width: 8px;
+                    height: 8px;
+                    margin-right: 2px;
+                }
+                >div{
+                    transform: scale(0.9, 0.9);
+                    transform-origin: center center;
+                }
+                >div:nth-of-type(1){
+                    width: 43px;
+                }
+            }
+        }
+        .total-data{
+            >h3{
+                font-size: 14px;
+            }
+            >span{
+                font-size: 12px;
+                margin-left: 2px;
+            }
+        }
+    }
 }

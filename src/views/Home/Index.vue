@@ -33,7 +33,7 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
 
     export default {
-        name: 'home-index',
+        name: 'HomeIndex',
         components: {
             FarmingInfo, Iot, OriginData, Map, WarehouseInfo, AmountRank, PickInfo, LevelInfo
         },

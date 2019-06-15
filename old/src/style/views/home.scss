@@ -1,0 +1,250 @@
+.home-page{
+    display: flex;
+    // border: 1px solid #f00;
+    box-sizing: border-box;
+    flex-direction: row;
+    padding: 0;
+    >div{
+        &:nth-of-type(1){
+            width: calc(26% - 5px);
+            margin-right: 10px;
+        }
+        &:nth-of-type(2){
+            width: calc(48% - 10px);
+        }
+        &:nth-of-type(3){
+            width: calc(26% - 5px);
+            margin-left: 10px;
+        }
+        >div{
+            box-sizing: border-box;
+            // border: 1px solid #ff0;
+        }
+    }
+    .amount-rank-wrap, .origin-wrap{
+        height: calc(36.33% - 5px);
+    }
+    .farming-info-wrap, .iot-wrap{
+        height: calc(28.83% - 10px);
+        margin-top: 10px;
+    }
+    .pick-info-wrap, .level-info-wrap{
+        height: calc(34.84% - 5px);
+        margin-top: 10px;
+    }
+    .plant-distribute-wrap{
+        height: calc(65.16% - 5px);
+        .plane-content{
+            height: 100%;
+            // border: 1px solid #f00;
+        }
+        .wuyishan-map-container .curr-region{
+            top: 20px;
+            left: 10px;
+        }
+    }
+    .warehouse-info-wrap{
+        height: calc(34.84% - 5px);
+        margin-top: 10px;
+        >div.plane-content{
+            width: 100%;
+            height: 100%;
+            margin-top: -35px;
+            // border: 1px solid #f00;
+        }
+    }
+    .pick-info-wrap{
+        position: relative;
+        .chart-title{
+            position: absolute;
+            text-align: center;
+            left: -6%;
+            right: 0;
+            width: 100%;
+            top: 45%;
+            color: #f0f0f0;
+            >h4{
+                font-size: 14px;
+                line-height: 1.8;
+                letter-spacing: 1px;
+            }
+            >div{
+                font-size: 20px;
+                // font-weight: bold;
+                >span{
+                    font-size: 14px;
+                }
+            }
+        }
+        &.full-screen{
+            .chart-title{
+                >h4{
+                    font-size: 20px;
+                    letter-spacing: 2px;
+                }
+                >div{
+                    font-size: 26px;
+                    // font-weight: bold;
+                    >span{
+                        font-size: 18px;
+                        margin-left: 6px;
+                    }
+                }
+            }
+        }
+    }
+    .iot-wrap{
+        .plane-container{
+            padding: 0px;
+            height: calc(100% - 36px);
+            // border: 1px solid #f00;
+            >div{
+                height: calc(50% - 4px);
+            }
+            >div:not(:first-child){
+                margin-top: 6px;
+            }
+        }
+        .iot-item{
+            display: flex;
+            background: rgba(15, 71, 130, 0.2);
+            border-radius: 6px;
+            flex-direction: row;
+            padding: 8px;
+            box-sizing: border-box;
+            cursor: pointer;
+            // border: 1px solid #0f0;
+            >div{
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                &:nth-of-type(1){
+                    flex: 1.5;
+                    color: rgba(26, 116, 215, 1);
+                    >i{
+                        font-size: 28px;
+                        margin-right: 12px;
+                    }
+                    >div{
+                        width: 60px;
+                        margin-top: 2px;
+                        letter-spacing: 1px;
+                        // border: 1px solid #f00;
+                    }
+                }
+                &:nth-of-type(2){
+                    display: flex;
+                    flex: 1;
+                    font-size: 28px;
+                    letter-spacing: 2px;
+                    color: #d0d0d0;
+                    align-items: center;
+                    justify-content: center;
+                    border-left: 1px dotted rgba(255, 255, 255, 0.1);
+                }
+            }
+        }
+        .plane-title .unit{
+            top: 8px;
+        }
+    }
+    .pick-info-wrap{
+        div.chart-container{
+            width: 100%;
+            height: 100%;
+        }
+    }
+}
+@media screen and (max-width: 1490px){
+    .home-page{
+        .iot-wrap{
+            .plane-container{
+                padding: 5px;
+                height: calc(100% - 42px);
+            }
+        }
+        .pick-info-wrap{
+            .chart-title{
+                >h4{
+                    font-size: 12px;
+                }
+                >div{
+                    font-size: 18px;
+                }
+            }
+            &.full-screen{
+                .chart-title{
+                    >h4{
+                        font-size: 18px;
+                        letter-spacing: 2px;
+                    }
+                    >div{
+                        font-size: 24px;
+                        // font-weight: bold;
+                        >span{
+                            font-size: 16px;
+                            margin-left: 4px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 1300px) {
+    .home-page{
+        >div{
+            &:nth-of-type(1){
+                width: calc(26% - 3px);
+                margin-right: 6px;
+            }
+            &:nth-of-type(2){
+                width: calc(48% - 6px);
+            }
+            &:nth-of-type(3){
+                width: calc(26% - 3px);
+                margin-left: 6px;
+            }
+        }
+        .iot-wrap{
+            .plane-container{
+                padding: 5px;
+                height: calc(100% - 30px);
+            }
+            .iot-item>div:nth-of-type(2){
+                font-size: 24px;
+            }
+        }
+        .amount-rank-wrap, .origin-wrap{
+            height: calc(36.33% - 3px);
+        }
+        .farming-info-wrap, .iot-wrap{
+            height: calc(28.83% - 6px);
+            margin-top: 6px;
+        }
+        .pick-info-wrap, .level-info-wrap{
+            height: calc(34.84% - 3px);
+            margin-top: 6px;
+        }
+        .plant-distribute-wrap{
+            height: calc(65.16% - 3px);
+        }
+        .warehouse-info-wrap{
+            height: calc(34.84% - 3px);
+            margin-top: 6px;
+        }
+        .farming-info-wrap, .pick-info-wrap{
+            .chart-title{
+                left: -12%;
+            }
+        }
+        .warehouse-info-wrap{
+            >div.plane-content{
+                // border: 1px solid #f00;
+                margin-top: -22px;
+            }
+        }
+    }
+}

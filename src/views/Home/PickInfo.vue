@@ -4,7 +4,15 @@
         <PlaneTitle>采摘信息</PlaneTitle>
         <div class="plane-content" :class="{ hide: !pickDatas.length }">
             <div ref="container" class="chart-container"></div>
-            <div class="chart-title" v-show="pickDatas.length"><h4>茶叶总产量</h4><div>{{ teaTotalAmount }}<span>吨</span></div></div>
+            <div class="chart-title" v-show="pickDatas.length"><div>{{ teaTotalAmount }}<span>{{ pickDataUnit }}</span></div><h4>总产量</h4></div>
+            <ul class="rank-list" :class="{ gap: rankDataList.length <= 4 }">
+                <li v-for="(item, index) in rankDataList" :key="index">
+                    <div><span>{{ index + 1}}</span><i class="iconfont">&#xe630;</i></div>
+                    <div>{{ item.name }}</div>
+                    <div><div :style="{ width: item.ratio }"></div></div>
+                    <div>{{ item.ratio }}</div>
+                </li>
+            </ul>
         </div>
         <PlaneTools v-show="pickDatas.length" :full="pickInfoFullState" @change="doFullStateChange"></PlaneTools>
         <div v-show="!pickDatas.length" class="iconfont null-data-tag">&#xe642;</div>
@@ -18,19 +26,34 @@
 
     const moduleNameSpace = ns.HOME
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
-    const dataProp = 'pickDatas'
-    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
+    const dataProp = 'pickPieDatas'
     const fullProp = 'pickInfoFullState'
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const prefix = `$store.state.${moduleNameSpace}`
+    const chartDataProp = `${prefix}.${dataProp}`
+    const fullStateProp = `${prefix}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'home-pick-info',
+        name: 'HomePickInfo',
         computed: {
-            ...thisMapState(['teaTotalAmount', fullProp, dataProp]),
-            miniScreen () {
-                return this.$store.state.winWidth < 1300
-            }
+            ...thisMapState(['teaTotalAmount', fullProp, dataProp, 'pickDataUnit', 'pickDatas']),
+            rankDataList () {
+                const that = this
+                const dataList = that.$store.state[moduleNameSpace]['pickDatas']
+                // 前六种类型
+                const totalData = dataList.reduce((total, item) => total + item.value, 0)
+                let list = []
+                dataList.forEach((item, index) => {
+                    if (index < 6) {
+                        list.push({
+                            name: item.label,
+                            ratio: ((item.value / totalData) * 100).toFixed(1) + '%'
+                        })
+                    }
+                })
+                return list
+            },
+            ...mapState(['smallScreen', 'miniScreen'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -53,10 +76,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that[dataProp]
-                if (datas.length && !that.chart) {
-                    that.init(datas)
-                }
+                that.doInitOrRefreshChart()
             })
         },
         methods: {
@@ -64,61 +84,73 @@
                 const that = this
                 const datas = that[dataProp]
                 if (datas && datas.length) {
-                    if (that.container) {
-                        that.chart ? that.refresh(datas) : that.init(datas)
+                    const container = that.container
+                    if (container) {
+                        const { seriesData, legendData } = that.handleChartData(datas)
+                        const options = that.getBaseOptions(seriesData, legendData)
+                        that.fixOptions(options, seriesData, legendData)
+                        if (that.chart) { // 刷新
+                            that.chart.setOption(options)
+                            setTimeout(() => { that.chart.resize() }, 200)
+                        } else { // 初始化
+                            that.chart = echarts.init(container)
+                            that.chart.setOption(options)
+                        }
                     }
                 }
             },
-            // 创建图表
-            init (datas) {
-                const that = this
-                const container = that.container
-                const miniScreen = that.miniScreen
-                const { seriesData, legendData } = that.handleChartData(datas)
-                const options = {
+            // 图表配置项
+            getBaseOptions (seriesData, legendData) {
+                return {
                     tooltip: {
                         trigger: 'item',
                         show: true,
-                        formatter: '{b}：{c}吨 ({d}%)',
+                        formatter: '{b}：{c}吨',
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         textStyle: { fontSize: 14 }
                     },
                     legend: {
                         show: true,
                         data: legendData,
-                        orient: 'vertical',
-                        right: miniScreen ? 0 : '3%',
-                        top: 10,
-                        itemGap: miniScreen ? 5 : 15,
-                        textStyle: {
-                            color: '#d0d0d0',
-                            fontSize: miniScreen ? 12 : 14,
-                            padding: [2, 0, 0, miniScreen ? 0 : 4]
-                        }
+                        orient: 'horizontal',
+                        right: '3%',
+                        bottom: 0,
+                        itemGap: 8,
+                        itemWidth: 8,
+                        textStyle: { color: '#e0e0e0', fontSize: 12, padding: [2, 0, 0, 0] }
                     },
                     series: [{
                         type: 'pie',
-                        radius: ['45%', miniScreen ? '80%' : '88%'],
-                        center: [miniScreen ? '38%' : '44%', '50%'],
-                        label: {
-                            show: true,
-                            position: 'inside',
-                            formatter: '{d}%',
-                            fontSize: 12
-                        },
-                        color: ['#43517c', '#87d0f6', '#4775b7', '#91acd4', '#15467d'],
+                        radius: ['52%', '74%'],
+                        center: ['76%', '46%'],
+                        label: { show: false },
+                        color: ['#ff5f6c', '#1cd782', '#fac720', '#294dd8', '#15467d'],
                         data: seriesData,
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 10,
-                                shadowOffsetX: 0,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
-                        }
+                        itemStyle: { emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } }
                     }]
                 }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
+            },
+            // 响应式修正options
+            fixOptions (options, seriesData, legendData) {
+                const that = this
+                if (that[fullProp]) {
+                    if (!that.smallScreen && !that.miniScreen) {
+                        options.tooltip.textStyle.fontSize = 18
+                        options.legend.bottom = '4.5%'
+                        options.legend.right = '14.5%'
+                        options.legend.textStyle.fontSize = 15
+                        options.legend.itemWidth = 14
+                        options.legend.itemGap = 25
+                        options.legend.textStyle.padding = [2, 0, 0, 5]
+                    }
+                } else {
+                    if (that.miniScreen) {
+                        options.series[0].center[0] = '60%'
+                        options.legend.textStyle.fontSize = 10
+                    } else if (that.smallScreen) {
+                        options.legend.textStyle.fontSize = 11
+                    }
+                }
             },
             // 刷新图表
             refresh (datas) {
@@ -130,14 +162,14 @@
                 if (that[fullProp]) {
                     options = {
                         tooltip: { textStyle: { fontSize: 18 } },
-                        series: [{ center: [miniScreen ? '38%' : '44%', '50%'], radius: ['45%', '88%'], data: seriesData, label: { fontSize: 16 } }],
-                        legend: { data: legendData, right: '3.5%', itemGap: 20, top: 20, textStyle: { fontSize: 16 } },
+                        series: [{ center: [miniScreen ? '38%' : '76%', '46%'], radius: ['51%', '75%'], data: seriesData }],
+                        legend: { data: legendData, right: '15%', itemGap: 20, bottom: 20, textStyle: { fontSize: 16 } },
                     }
                 } else {
                     options = {
                         tooltip: { textStyle: { fontSize: 14 } },
-                        series: [{ center: [miniScreen ? '38%' : '44%', '50%'], radius: ['45%', miniScreen ? '80%' : '88%'], data: seriesData, label: { fontSize: 12 } }],
-                        legend: { data: legendData, right: miniScreen ? 0 : '3%', itemGap: miniScreen ? 5 : 15, top: 10, textStyle: { fontSize: miniScreen ? 12 : 14, padding: [2, 0, 0, miniScreen ? 0 : 4] } },
+                        series: [{ center: [miniScreen ? '38%' : '76%', '46%'], radius: ['51%', miniScreen ? '80%' : '75%'], data: seriesData }],
+                        legend: { data: legendData, right: miniScreen ? 0 : '3%', itemGap: miniScreen ? 5 : 8, bottom: 0, textStyle: { fontSize: 12, padding: [2, 0, 0, 0] } },
                     }
                 }
                 chart.setOption(options)
@@ -152,7 +184,7 @@
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
                     seriesData.push({ name: item.label, value: item.value })
-                    legendData.push(item.label)
+                    legendData.push({ name: item.label, icon: 'circle' })
                 }
                 return { legendData, seriesData }
             },

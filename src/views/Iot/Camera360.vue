@@ -1,5 +1,5 @@
 <template>
-    <Plane class="camera360" :full="camera360FullState">
+    <Plane class="camera360 no-shadow" :full="camera360FullState">
         <PlaneTitle @click="doHideControlButton()">视频监控<span v-show="video360Name">（{{ video360Name }}）</span></PlaneTitle>
         <div class="plane-content" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
             <div class="video-container flv" ref="container">
@@ -69,8 +69,8 @@
             [resizeStateProp] () { // 监听当前窗口大小
                 const that = this
                 const { w, h } = that.getSize()
-                const width = w - 10
-                const height = h - 10
+                const width = w
+                const height = h
                 const videoWrap = that.videoWrap
                 const proxyVideoWrap = that.proxyVideoWrap
                 if (that.player && that.videoWrap) {
@@ -169,8 +169,8 @@
                         durationDisplay: false
                     }
                 }
-                const width = w - 10
-                const height = h - 10
+                const width = w
+                const height = h
                 videoWrap.style.width = width + 'px'
                 videoWrap.style.height = height + 'px'
                 proxyVideoWrap.style.width = width + 'px'

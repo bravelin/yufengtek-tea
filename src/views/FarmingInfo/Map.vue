@@ -1,8 +1,7 @@
 <!--武夷地图-->
 <template>
-    <Plane class="map-wrap" :full="mapFullState">
-        <WuyishanMap @change="doMapChange" :curr="currSelectedRegion" :full="mapFullState"></WuyishanMap>
-        <PlaneTools :full="mapFullState" @change="doFullStateChange"></PlaneTools>
+    <Plane class="map-wrap no-border" :full="mapFullState">
+        <WuyishanMap class="normal" @change="doMapChange" :curr="currSelectedRegion" :full="mapFullState"></WuyishanMap>
     </Plane>
 </template>
 <script>
@@ -16,7 +15,7 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
 
     export default {
-        name: 'PlantMap',
+        name: 'FarmingInfoMap',
         components: {
             WuyishanMap
         },

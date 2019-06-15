@@ -1,19 +1,18 @@
 <!--物联监控-->
 <template>
-    <div class="iotList">
-        <Plane class="iot-wrap">
-            <div class="iot-item" :class="{ activeItem: currVisibleIotType == 'camera' }" @click="changeIotDatas('camera')">
-                <div><i class="iconfont">&#xe62e;</i><div>摄像头</div></div>
-                <div>{{ cameraAmount }}</div>
-            </div>
-        </Plane>
-        <Plane class="iot-wrap">
-            <div class="iot-item" :class="{ activeItem: currVisibleIotType == 'monitor' }" @click="changeIotDatas('monitor')">
-                <div><i class="iconfont">&#xe61b;</i><div>监测站</div></div>
+    <Plane class="iot-wrap">
+        <PlaneTitle>设备数量</PlaneTitle>
+        <div class="plane-content">
+            <div class="iot-item" :class="{ active: currVisibleIotType == 'monitor' }" @click="changeIotDatas('monitor')">
+                <div>监测站设备</div>
                 <div>{{ monitorAmount }}</div>
             </div>
-        </Plane>
-    </div>
+            <div class="iot-item" :class="{ active: currVisibleIotType == 'camera' }" @click="changeIotDatas('camera')">
+                <div>摄像头设备</div>
+                <div>{{ cameraAmount }}</div>
+            </div>
+        </div>
+    </Plane>
 </template>
 <script>
     import { createNamespacedHelpers, mapState } from 'vuex'

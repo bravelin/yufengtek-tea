@@ -15,6 +15,7 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const modulePrefix = `$store.state.${moduleNameSpace}`
     const dataProp = `${modulePrefix}.iotDatas`
+    const tempCenter = { lng: 0, lat: 0 }
 
     const iotTypeObj = {
         [types.IOT_TYPE_SPHERE]: '全景摄像头',
@@ -25,7 +26,7 @@
     }
 
     export default {
-        name: 'ProductionMonitorGMap',
+        name: 'GMap',
         data () {
             return {
                 map: null,
@@ -116,13 +117,16 @@
                     that.doResetMap()
                 }
                 const map = that.map
-                that.markerCluster = new MarkerClusterer(map, that.markers, {
-                    gridSize: 30, maxZoom: 16
-                })
+                that.markerCluster = new MarkerClusterer(map, that.markers, { gridSize: 30, maxZoom: 16 })
                 map.addListener('clusterclick', () => {
                     setTimeout(() => {
                         if (map.getZoom() < 20) {
                             map.setZoom(20)
+                        }
+                        if (tempCenter.lng && tempCenter.lat) {
+                            map.setCenter(tempCenter)
+                            tempCenter.lng = 0
+                            tempCenter.lat = 0
                         }
                     }, 500)
                 })
@@ -154,7 +158,6 @@
                 // 拖动，改变位置
                 if (that.userRole == '2') {
                     mapMarker.addListener('dragend', (e) => {
-                        // console.log('drag end....', marker, e.latLng.lat(), e.latLng.lng())
                         const sno = marker.sno || marker.camera_sno || marker.em_devid
                         let type = ''
                         if (marker.type == types.IOT_TYPE_GUN || marker.type == types.IOT_TYPE_360) {
@@ -278,6 +281,8 @@
                     let iotIndex = target.getAttribute('data-iot-index')
                     if (iotIndex != undefined && iotIndex != null) {
                         const clickMarkerData = that.iotDatas[iotIndex - 0]
+                        tempCenter.lat = clickMarkerData.address_gislatd
+                        tempCenter.lng = clickMarkerData.address_gislong
                         clickMarkerData && that.doHandlerClickMarker(clickMarkerData)
                     }
                 }

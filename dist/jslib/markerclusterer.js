@@ -124,6 +124,7 @@ function MarkerClusterer(map, opt_markers, opt_options) {
    * @private
    */
   this.maxZoom_ = options['maxZoom'] || null;
+
   this.styles_ = options['styles'] || [];
 
   /**
@@ -1087,7 +1088,8 @@ ClusterIcon.prototype.onAdd = function() {
   this.div_ = document.createElement('DIV');
   if (this.visible_) {
     var pos = this.getPosFromLatLng_(this.center_);
-    this.div_.className = 'google-map-cluster';
+    const clusterType = this.url_.slice(-6, -4)
+    this.div_.className = 'google-map-cluster ' + clusterType;
     this.div_.style.cssText = this.createCss(pos);
     const countObj = {}
     let tempObj = null
@@ -1105,7 +1107,7 @@ ClusterIcon.prototype.onAdd = function() {
         return { label: IotTypeObj[key], num: countObj[key].num, type: key, iotIndex: countObj[key].iotIndex }
     })
     const tipHtmlStr = `<div>查看该区域设备：</div><ul>`+ typeList.map(item => { return `<li class='icon-${item.type} google-cluster-tip' data-iot-index='${item.iotIndex}'>${item.label}(${item.num})</li>`}).join('') +`</ul>` 
-    this.div_.innerHTML = this.sums_.text + `<div>${tipHtmlStr}</div>`;
+    this.div_.innerHTML = this.sums_.text + `<div><div class='w1'></div><div class='w2'></div><div class='w3'></div></div>` + `<div>${tipHtmlStr}</div>`;
   }
 
   var panes = this.getPanes();
@@ -1246,9 +1248,9 @@ ClusterIcon.prototype.setCenter = function(center) {
  */
 ClusterIcon.prototype.createCss = function(pos) {
   var style = [];
-  style.push('background-image:url(' + this.url_ + ');');
-  var backgroundPosition = this.backgroundPosition_ ? this.backgroundPosition_ : '0 0';
-  style.push('background-position:' + backgroundPosition + ';');
+  // style.push('background-image:url(' + this.url_ + ');');
+  // var backgroundPosition = this.backgroundPosition_ ? this.backgroundPosition_ : '0 0';
+  // style.push('background-position:' + backgroundPosition + ';');
 
   if (typeof this.anchor_ === 'object') {
     if (typeof this.anchor_[0] === 'number' && this.anchor_[0] > 0 &&

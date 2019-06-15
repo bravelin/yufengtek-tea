@@ -27,7 +27,7 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
 
     export default {
-        name: 'iot-index',
+        name: 'PlantIndex',
         components: {
             Map, PlantRank, TeaFarm, TeaVarieties, TotalData, TreeAge
         },

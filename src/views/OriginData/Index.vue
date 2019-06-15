@@ -24,7 +24,7 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
 
     export default {
-        name: 'origin-index',
+        name: 'OriginIndex',
         components: {
             Map, AddressList, CityRank, CountStat
         },

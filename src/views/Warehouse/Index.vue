@@ -2,14 +2,15 @@
     <div class="page warehouse-page">
         <Map></Map>
         <div>
-            <InCircle></InCircle>
-            <InLine></InLine>
-            <InConstrast></InConstrast>
-        </div>
-        <div>
-            <OutCircle></OutCircle>
-            <OutLine></OutLine>
-            <OutConstrast></OutConstrast>
+            <InOutCircle></InOutCircle>
+            <div>
+                <InLine></InLine>
+                <OutLine></OutLine>
+            </div>
+            <div>
+                <InConstrast></InConstrast>
+                <OutConstrast></OutConstrast>
+            </div>
         </div>
     </div>
 </template>
@@ -19,19 +20,18 @@
     import ns from '@/store/constants/ns'
     import Map from './Map'
     import InLine from './InLine'
-    import InCircle from './InCircle'
+    import InOutCircle from './InOutCircle'
     import InConstrast from './InConstrast'
     import OutLine from './OutLine'
-    import OutCircle from './OutCircle'
     import OutConstrast from './OutConstrast'
 
     const moduleNameSpace = ns.WAREHOUSE
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
 
     export default {
-        name: 'warehouse-index',
+        name: 'WarehouseIndex',
         components: {
-            Map, InLine, InCircle, InConstrast, OutLine, OutCircle, OutConstrast
+            Map, InLine, InOutCircle, InConstrast, OutLine, OutConstrast
         },
         created () {
             const that = this

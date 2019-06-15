@@ -1,5 +1,11 @@
 <template>
-    <div ref="container"></div>
+    <div>
+        <div ref="container"></div>
+        <ul class="legend-list">
+            <li v-for="item in legendData" :key="item.name"><div>{{ item.ratio }}</div><div>{{ item.name }}</div></li>
+        </ul>
+        <div class="total-data"><h3>{{ total }}</h3><span>{{ unit }}</span></div>
+    </div>
 </template>
 <script>
     import { createNamespacedHelpers, mapState } from 'vuex'
@@ -10,15 +16,17 @@
     const moduleNameSpace = ns.FARMING
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'protectionActPieDatas'
-    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'protectionFullState'
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const prefix = `$store.state.${moduleNameSpace}`
+    const chartDataProp = `${prefix}.${dataProp}`
+    const fullStateProp = `${prefix}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'farming-fertilizer-act-pie',
+        name: 'FarmingFertilizerActPie',
         computed: {
-            ...thisMapState([fullProp, dataProp])
+            ...thisMapState([fullProp, dataProp]),
+            ...mapState(['smallScreen', 'miniScreen'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -29,25 +37,22 @@
             },
             [resizeStateProp] () {
                 this.doInitOrRefreshChart()
-            },
-            miniScreen () {
-                return this.$store.state.winWidth < 1300
             }
         },
         data () {
             return {
                 container: null,
-                chart: null // 图表实例
+                chart: null, // 图表实例
+                legendData: [],
+                total: 0,
+                unit: '亩'
             }
         },
         mounted () {
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that[dataProp]
-                if (datas.length && !that.chart) {
-                    that.init(datas)
-                }
+                that.doInitOrRefreshChart()
             })
         },
         methods: {
@@ -55,18 +60,28 @@
                 const that = this
                 const datas = that[dataProp]
                 if (datas && datas.length) {
-                    if (that.container) {
-                        that.chart ? that.refresh(datas) : that.init(datas)
+                    const container = that.container
+                    if (container) {
+                        const { seriesData, legendData } = that.handleChartData(datas)
+                        const options = that.getBaseOptions(datas, seriesData)
+                        that.fixOptions(options, datas, seriesData)
+                        that.legendData = legendData
+                        if (that.chart) { // 刷新
+                            that.chart.setOption(options)
+                            let resizeCount = 6
+                            const timer = setInterval(() => {
+                                --resizeCount > 0 ? that.chart.resize() : window.clearInterval(timer)
+                            }, 150)
+                        } else { // 初始化
+                            that.chart = echarts.init(container)
+                            that.chart.setOption(options)
+                        }
                     }
                 }
             },
-            // 创建图表
-            init (datas) {
-                const that = this
-                const container = that.container
-                const { seriesData, legendData } = that.handleChartData(datas)
-                const miniScreen = that.miniScreen
-                const options = {
+            // 图表配置项
+            getBaseOptions (datas, seriesData) {
+                return {
                     tooltip: {
                         trigger: 'item',
                         show: true,
@@ -74,53 +89,39 @@
                         backgroundColor: 'rgba(0, 159, 253, 0.9)',
                         textStyle: { fontSize: 14 }
                     },
-                    legend: {
-                        show: true,
-                        data: legendData,
-                        orient: 'vertical',
-                        right: 0,
-                        top: 0,
-                        itemGap: miniScreen ? 5 : 10,
-                        textStyle: { color: '#d0d0d0', fontSize: 12, padding: [2, 0, 0, 2] }
-                    },
+                    legend: { show: false },
                     series: [{
                         type: 'pie',
-                        radius: ['40%', '80%'],
-                        center: ['36%', '50%'],
-                        label: { show: true, position: 'inside', formatter: '{d}%', fontSize: 12 },
-                        color: ['#4775b7', '#91acd4', '#2663bc'],
+                        radius: ['45%', '72%'],
+                        center: ['32%', '50%'],
+                        minAngle: 5,
+                        minShowLabelAngle: 720,
+                        avoidLabelOverlap: false,
+                        label: { show: false },
+                        color: ['#ff5f6c', '#1cd782', '#fac720', '#294dd8', '#15467d'],
                         data: seriesData,
                         itemStyle: { emphasis: { shadowBlur: 10, shadowOffsetX: 0, shadowColor: 'rgba(0, 0, 0, 0.5)' } }
                     }]
                 }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
             },
-            // 刷新图表
-            refresh (datas) {
+            // 响应式修正options
+            fixOptions (options, datas, seriesData) {
                 const that = this
-                const chart = that.chart
-                const { seriesData, legendData } = that.handleChartData(datas)
-                let options = null
-                const miniScreen = that.miniScreen
                 if (that[fullProp]) {
-                    options = {
-                        tooltip: { textStyle: { fontSize: 18 } },
-                        series: [{ center: ['47%', '50%'], data: seriesData, label: { fontSize: 18 } }],
-                        legend: { data: legendData, right: 15, itemGap: 20, top: 15, textStyle: { fontSize: 15 } },
+                    if (!that.smallScreen && !that.miniScreen) {
+                        options.tooltip.textStyle.fontSize = 18
                     }
+                    options.series[0].center = ['50%', '42%']
                 } else {
-                    options = {
-                        tooltip: { textStyle: { fontSize: 14 } },
-                        series: [{ center: ['36%', '50%'], data: seriesData, label: { fontSize: 12 } }],
-                        legend: { data: legendData, right: 0, itemGap: miniScreen ? 5 : 10, top: 0, textStyle: { fontSize: 12 } },
+                    if (that.miniScreen) {
+                        options.series[0].center[0] = '27.7%'
+                        options.series[0].radius = ['50%', '71%']
+                        options.tooltip.textStyle.fontSize = 10
+                    } else if (that.smallScreen) {
+                        options.series[0].center[0] = '28%'
+                        options.tooltip.textStyle.fontSize = 12
                     }
                 }
-                chart.setOption(options)
-                let resizeCount = 6
-                const timer = setInterval(() => {
-                    --resizeCount > 0 ? chart.resize() : window.clearInterval(timer)
-                }, 150)
             },
             // 数据加工
             handleChartData (datas) {
@@ -128,10 +129,17 @@
                 const legendData = []
                 const seriesData = []
                 let item = null
+                const totalData = datas.reduce((total, currItem) => total + currItem.weight, 0)
+                that.total = totalData
+                that.unit = '亩'
+                if (that.total > 10000) {
+                    that.total = (totalData / 10000).toFixed(2)
+                    that.unit = '万亩'
+                }
                 for (let i = 0; i < datas.length; i++) {
                     item = datas[i]
                     seriesData.push({ name: item.farm_model, value: item.weight })
-                    legendData.push(item.farm_model)
+                    legendData.push({ name: item.farm_model, ratio: ((item.weight / totalData) * 100).toFixed(2) + '%', value: item.weight })
                 }
                 return { legendData, seriesData }
             }

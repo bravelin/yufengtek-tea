@@ -1,7 +1,8 @@
 <!--植保活动-->
 <template>
     <Plane class="protection-act-wrap act-wrap" :full="protectionFullState">
-        <PlaneTitle>植保活动<div class="unit" v-show="protectionActLineDatas.length && protectionActPieDatas.length">单位：亩</div></PlaneTitle>
+        <PlaneTitle>植保活动</PlaneTitle>
+        <div class="chart-unit" v-show="protectionActLineDatas.length && protectionActPieDatas.length">单位：亩</div>
         <div class="plane-content" :class="{ hide: !protectionActLineDatas.length || !protectionActPieDatas.length }">
             <ProtectionActPie></ProtectionActPie>
             <ProtectionActLine></ProtectionActLine>
@@ -24,7 +25,7 @@
     const dataProp2 = 'protectionActPieDatas'
 
     export default {
-        name: 'farming-fertilizer-act',
+        name: 'FarmingFertilizerAct',
         components: {
             ProtectionActPie, ProtectionActLine
         },

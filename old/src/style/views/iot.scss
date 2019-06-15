@@ -1,0 +1,828 @@
+.iot-page{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    .iot-container{
+        h3{
+            padding-top: 30px;
+            text-align: center;
+            color: #93bcf7;
+            line-height: 2;
+            font-size: 20px;
+            letter-spacing: 2px;
+        }
+        .null-data-tag{
+            top: 280px;
+            bottom: 50px;
+        }
+    }
+
+    .left-container{
+        width: calc(32% - 8px);
+        border-radius: 4px;
+    }
+
+    .map-container{
+        width: calc(68% - 8px);
+        margin-left: 16px;
+        >div.map-wrap{
+            width: 100%;
+            height: 100%;
+        }
+    }
+    .map-ul{
+        display: flex;
+        flex-wrap: wrap;
+        padding-top:10px;
+        font-size: 12px;
+        .map-li{
+            width: 100px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 6px;
+            .map-image{
+                margin-right: 4px;
+                height: 15px;
+                width: 15px;
+                display: block;
+            }
+        }
+    }
+    .activeLabel{
+        font-weight: bold;
+        color: #548fce;
+        font-size: 12.5px;
+    }
+    .boxStri{
+        // background:rgba(15, 71, 130, 1);
+        left: 100px;
+        bottom: -10px;
+        //top: 107px;
+        width: 34px;
+        height: 30px;
+        overflow: hidden;
+        position: absolute;
+        z-index: 1;
+        box-sizing: content-box;
+    }
+    .boxContent{
+        color:white;
+        background:rgba(15, 71, 130, 1);
+        border-radius:5px;
+        padding:10px;
+        box-shadow:0 0 5px rgba(255, 255, 255, 1)
+    }
+    .boxStri:after{
+        position: absolute;
+        left: 5px;
+        top: 5px;
+        content: '';
+        width: 0;
+        height: 0;
+        border: 10px solid;
+        border-color: rgba(15, 71, 130, 1) rgba(15, 71, 130, 1) transparent transparent;
+        transform: rotate(135deg);
+        box-shadow: 1px -1px 1px rgba(255, 255, 255, 0.7);
+    }
+    .resetMap{
+        height: 50px;
+        width: 50px;
+        border-radius:50%;
+        background:white;
+        color:red;
+        position:fixed;
+        bottom:60px;
+        right:50px;
+        display: none;
+    }
+    .resetMapB{
+        display: block
+    }
+    .infoBox{
+        img{
+            display: none
+        }
+    }
+    .search-wrap{
+        position: absolute;
+        top: 20px;
+        right: 40px;
+        z-index: 3;
+        .search-input{
+            position: relative;
+            display: flex;
+            align-items: center;
+            i{
+                position: absolute;
+                color: #395374;
+                left: 12px;
+                top: 10px;
+                font-size: 16px;
+            }
+            input{
+                flex: none;
+                background: #d5dbe2;
+                width: 290px;
+                height: 32px;
+                color: #395374;
+                border: 4px solid rgba(#395374, 0.9);
+                padding: 0 8px 0 35px;
+                font-size: 16px;
+                &::placeholder{
+                    font-style: italic;
+                    letter-spacing: 1px;
+                }
+            }
+            button{
+                width: 65px;
+                height: 40px;
+                color: #fff;
+                background: #3479df;
+                border: none;
+                font-size: 16px;
+                letter-spacing: 2px;
+            }
+        }
+        .search-list{
+            background: rgba(#395374, 0.9);
+            width: 340px;
+            padding: 8px 8px 10px;
+            box-sizing: border-box;
+            display: none;
+            &.active{
+                display: block;
+            }
+        }
+        div.search-type{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            >div{
+                display: flex;
+                align-items: center;
+                color: #9e9e9e;
+                cursor: pointer;
+                transition: all 0.3s ease-out;
+                font-size: 18px;
+                &:first-child{
+                    margin-right: 50px;
+                }
+                img{
+                    margin-right: 10px;
+                    opacity: 0.3;
+                }
+                &.active{
+                    color: #fff;
+                    img{
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+
+        ul.search-history{
+            margin-top: 8px;
+            padding: 5px 0;
+            border-top: 1px solid #bbb;
+            border-bottom: 1px solid #bbb;
+            color: #9e9e9e;
+            line-height: 1.8;
+            li{
+                cursor: pointer;
+                transition: color 0.3s ease-out;
+                &:hover{
+                    color: #fff;
+                }
+            }
+        }
+        
+        div.search-history-delete{
+            display: flex;
+            justify-content: flex-end;
+            padding-top: 6px;
+            color: #9e9e9e;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: color 0.3s ease-out;
+            &:hover{
+                color: #fff;
+            }
+        }
+    }
+
+    .iot-container{
+        >ul.data-list{
+            display: flex;
+            flex-direction: row;
+            padding: 15px 8px 30px;
+            li{
+                flex: 1;
+                cursor: pointer;
+                &:before{
+                    content: "";
+                    display: block;
+                    width: 71px;
+                    height: 64px;
+                    background-repeat: no-repeat;
+                    background-position: center center;
+                    margin: 0 auto 15px;
+                }
+                >div{
+                    text-align: center;
+                    &:nth-of-type(1){
+                        color: #93bcf7;
+                        font-size: 20px;
+                        line-height: 2.5;
+                        margin-bottom: 5px;
+                    }
+                    &:nth-of-type(2){
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: center;
+                        color: #fff;
+                        font-size: 15px;
+                        cursor: pointer;
+                        &:before{
+                            content: "";
+                            display: block;
+                            width: 10px;
+                            height: 10px;
+                            border: 1px solid #2663bc;
+                            border-radius: 50%;
+                            margin-right: 8px;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+                &.active{
+                    >div:nth-of-type(2){
+                        &:before{
+                            border-color: #2663bc;
+                            background: radial-gradient(at center, #fff 0%, #2663bc 60%, #2663bc 100%);
+                        }
+                    }
+                }
+            }
+            li:not(:first-child){
+                border-left: 1px solid rgba(#2663bc, 0.35);
+            }
+        }
+        li.temperature{
+            &:before{
+                background-image: url('../../assets/images/4/8.png');
+            }
+        }
+        li.humidity{
+            &:before{
+                background-image: url('../../assets/images/4/7.png');
+            }
+        }
+        li.light{
+            &:before{
+                background-image: url('../../assets/images/4/5.png');
+            }
+        }
+        li.pressure{
+            &:before{
+                background-image: url('../../assets/images/4/6.png');
+            }
+        }
+        li.wind{
+            &:before{
+                background-image: url('../../assets/images/4/11.png');
+            }
+        }
+        li.rain{
+            &:before{
+                background-image: url('../../assets/images/4/12.png');
+            }
+        }
+        li.soil-temperature{
+            &:before{
+                background-image: url('../../assets/images/4/13.png');
+            }
+        }
+        li.soil-humidity{
+            &:before{
+                background-image: url('../../assets/images/4/14.png');
+            }
+        }
+        li.ec{
+            &:before{
+                background-image: url('../../assets/images/4/15.png');
+            }
+        }
+        li.ph{
+            &:before{
+                background-image: url('../../assets/images/4/16.png');
+            }
+        }
+        li.water{
+            &:before{
+                background-image: url('../../assets/images/4/17.png');
+            }
+        }
+        li.fertilizer{
+            &:before{
+                background-image: url('../../assets/images/4/18.png');
+            }
+        }
+    }
+
+    .iot-container{
+        height: calc(100% - 100px);
+        >ul.selector{
+            display: flex;
+            flex-direction: row;
+            font-size: 14px;
+            color: #fff;
+            justify-content: center;
+            padding-top: 8px;
+            >li{
+                position: relative;
+                display: flex;
+                flex-direction: row;
+                letter-spacing: 1px;
+                align-items: center;
+                cursor: pointer;
+                transition: all 0.3s ease-out;
+                color: #43517c;
+                font-size: 15px;
+                padding-left: 20px;
+                &:nth-of-type(1){
+                    margin-right: 35px;
+                }
+                &:after{
+                    position: absolute;
+                    content: "";
+                    display: block;
+                    top: 5px;
+                    left: -5px;
+                    width: 12px;
+                    height: 12px;
+                    border-radius: 50%;
+                    background: #43517c;
+                    transition: all 0.3s ease-out;
+                }
+                &:before{
+                    position: absolute;
+                    content: "";
+                    display: block;
+                    width: 22px;
+                    height: 1px;
+                    background: #43517c;
+                    left: -10px;
+                    top: 10px;
+                    transition: all 0.3s ease-out;
+                }
+                &.active{
+                    color: #87d0f6;
+                    font-weight: bold;
+                    font-size: 15px;
+                    &:before, &:after{
+                        background: #87d0f6;
+                    }
+                }
+            }
+        }
+        >div.plane-content{
+            height: calc(100% - 270px);
+            // border: 1px solid #f00;
+        }
+        &.full-screen{
+            >ul.selector>li:nth-of-type(1){
+                margin-right: 235px;
+            }
+        }
+    }
+
+    .camera-video{
+        >div.plane-content{
+            display: flex;
+            align-items: center;
+            height: calc(100% - 45px);
+            // border: 1px solid #f00;
+            .video-container{
+                width: 100%;
+                // border: 1px solid #ff0;
+            }
+        }
+    }
+    .cameraCenter{
+        display: flex;
+        align-items: center;
+        justify-content: center
+    }
+    .video-container{
+        border: 5px solid rgba(15, 71, 130, 0.6);
+        border-radius: 6px;
+        height: 100%;
+        // margin-top: 40px;
+        box-sizing: border-box;
+        background: #000;
+    }
+    .iotList{
+        display: flex;
+        justify-content: space-between;
+        >div:not(:first-child){
+            margin-left: 8px;
+        }
+        .iot-wrap{
+            flex:1;
+            .iot-item{
+                height: 100%;
+            }
+        }
+    }
+    .iot-wrap{
+        height: 90px;
+        margin-bottom: 10px;
+        padding: 0;
+        >canvas{
+            display: none;
+        }
+        .plane-container{
+            display: flex;
+            // padding: 10px;
+            height: 100%;
+            >div{
+                // height: calc(50% - 4px);
+                flex: 1;
+            }
+            >div:not(:first-child){
+                margin-left: 8px;
+            }
+        }
+        .iot-item{
+            display: flex;
+            background: rgba(15, 71, 130, 0.5);
+            border-radius: 6px;
+            flex-direction: row;
+            padding: 8px;
+            box-sizing: border-box;
+            >div{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                &:nth-of-type(1){
+                    flex: 1;
+                    color: rgba(26, 116, 215, 1);
+                    >i{
+                        font-size: 28px;
+                    }
+                    >div{
+                        margin-top: 2px;
+                        letter-spacing: 1px;
+                    }
+                }
+                &:nth-of-type(2){
+                    flex: 1;
+                    font-size: 28px;
+                    letter-spacing: 2px;
+                    color: #d0d0d0;
+                    border-left: 1px dotted rgba(53, 121, 255, 0.25);
+                }
+            }
+        }
+        .activeItem{
+            background: rgba(15, 71, 130, 0.8);
+            box-shadow: 0 0 5px rgba(255, 255, 255,.9);
+        }
+    }
+    .anchorBL{
+        display: none;
+    }
+    .panel-tools{
+        .download-icon{
+            display: none;
+        }
+    }
+
+    .camera360{
+        .plane-content{
+            position: relative;
+            .video-container{
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                right: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                >div>video{
+                    object-fit: fill;
+                }
+            }
+        }
+    }
+
+    .map-reset-btn{
+        position: absolute;
+        top: 12px;
+        right: 10px;
+        cursor: pointer;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        width: 40px;
+        border-radius: 2px;;
+        background-color: rgba(255, 255, 255, 0.6);
+        color: rgba(#4d4d4d, 0.8);
+        font-size: 20px;
+        transition: all 0.3s ease-out;
+        &:hover{
+            color: #000;
+        }
+    }
+
+    .map-info-tip{
+        color: white;
+        background: rgba(15, 71, 130, 0.8);
+        border-radius: 4px;
+        padding: 10px;
+        font-size: 14px;
+        width: 114px !important;
+        text-align: center;
+        box-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+    }
+
+    .photo-viewer .plane-content{
+        overflow: hidden;
+    }
+    .photo-viewer{
+        h2.plane-title>span{
+            margin-left: 12px;
+            line-height: 40px;
+            letter-spacing: 0;
+            font-weight: normal;
+            font-size: 14px;
+        }
+    }
+
+    .control-panel{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        background: rgba(32, 72, 151, 0.95);
+        width: 210px;
+        height: 210px;
+        box-shadow: 0 0 60px rgba(200, 200, 200, 0.99);
+        border-radius: 50%;
+        z-index: 9999999;
+        overflow: hidden;
+        right: 25px;
+        bottom: 20px;
+        transform: scale(0.3, 0.25) translateX(400px);
+        transform-origin: center center;
+        transition: all 0.35s ease-out;
+        cursor: pointer;
+        >div{
+            display: none;
+        }
+        &.active{
+            transform: scale(1, 1) translateX(0px);
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
+            >div.control-button{
+                display: block;
+            }
+            .inner-control-panel{
+                display: flex;
+            }
+        }
+        .inner-control-panel{
+            width: 120px;
+            height: 120px;
+            background: #43517c;
+            border-radius: 50%;
+        }
+        div.control-button{
+            position: absolute;
+            // border: 1px solid #f00;
+            cursor: pointer;
+            &:hover{
+                background: rgba(#43517c, 0.15);
+                i{
+                    color: #fff;
+                }
+            }
+        }
+        i{
+            display: block;
+            color: #999;
+            font-size: 26px;
+            transition: all 0.3s ease-out;
+            outline: none;
+            background: transparent;
+        }
+        .control-panel-top{
+            top: 0;
+            left: 50%;
+            padding: 8px 70px;
+            transform: translateX(-50%);
+            i{
+                transform: rotate(-90deg);
+            }
+        }
+        .control-panel-bottom{
+            bottom: 0;
+            left: 50%;
+            padding: 8px 70px;
+            transform: translateX(-50%);
+            i{
+                transform: rotate(90deg);
+            }
+        }
+        .control-panel-left{
+            left: 0;
+            padding: 70px 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            i{
+                transform: rotate(180deg);
+            }
+        }
+        .control-panel-right{
+            right: 0;
+            padding: 70px 8px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    }
+    .inner-control-panel{
+        display: flex;
+        overflow: hidden;
+        >div{
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            transition: all 0.3s ease-out;
+            ::selection{
+                background: transparent;
+            }
+            &:nth-of-type(1), &:nth-of-type(3){
+                flex: 1;
+                font-size: 16px;
+                &:hover{
+                    background: rgba(#3479df, 0.25);
+                }
+            }
+            &:nth-of-type(2){
+                border-left: 1px solid rgba(#fff, 0.05);
+                border-right: 1px solid rgba(#fff, 0.05);
+                width: 48px;
+                background: rgba(#ff9999, 0.15);
+                &:hover{
+                    background: rgba(#ff9999, 0.25);
+                }
+            }
+            &:hover{
+                color: #fff;
+            }
+        }
+    }
+}
+
+/* google map marker styles */
+div.google-map-cluster{
+    >div{
+        display: none;
+        position: absolute;
+        background: rgba(12, 24, 56, 0.9);
+        color: #ccc;
+        line-height: 1.8;
+        padding: 8px 12px 8px;
+        border-radius: 4px;
+        width: 250px;
+        text-align: left;
+        letter-spacing: 1px;
+        z-index: 999;
+        >div{
+            line-height: 1.6;
+            font-size: 15px;
+            border-bottom: 1px dotted rgba(#aaa, 0.4);
+            margin-bottom: 7px;
+        }
+        >ul{
+            display: flex;
+            flex-wrap: wrap;
+            >li{
+                width: 50%;
+                flex: none;
+                display: flex;
+                align-items: center;
+                transition: all 0.3s ease-out;
+                cursor: pointer;
+                &:hover{
+                    color: #f99;
+                    text-decoration: underline;
+                }
+                &:before{
+                    content: "";
+                    display: block;
+                    width: 12px;
+                    height: 12px;
+                    background-size: 100% 100%;
+                    margin-right: 5px;
+                    margin-top: -1px;
+                }
+                &.icon-IOT_TYPE_FM1::before{
+                    background-image: url('../../assets/images/icon-FM1.png');
+                }
+                &.icon-IOT_TYPE_FM2::before{
+                    background-image: url('../../assets/images/icon-FM2.png');
+                }
+                &.icon-IOT_TYPE_GUN::before{
+                    background-image: url('../../assets/images/icon-gun.png');
+                }
+                &.icon-IOT_TYPE_360::before{
+                    background-image: url('../../assets/images/icon-360.png');
+                }
+                &.icon-IOT_TYPE_SPHERE::before{
+                    background-image: url('../../assets/images/icon-sphere.png');
+                }
+            }
+        }
+    }
+    &:hover{
+        >div{
+            display: block;
+        }
+    }
+}
+div[data-title^="IOT"]{
+    opacity: 1 !important;
+    div{
+        display: none;
+        position: absolute;
+        width: auto;
+        white-space: nowrap;
+        padding: 0 8px;
+        height: 35px;
+        top: -40px;
+        transform: translateX(-50%);
+        left: 50%;
+        line-height: 35px;
+        opacity: 1;
+        letter-spacing: 1px;
+        border-radius: 4px;
+        opacity: 0;
+        color: #ccc;
+        transition: all 0.3s ease-out;
+    }
+    &:hover{
+        div{
+            display: block;
+            opacity: 1;
+        }
+    }
+}
+
+@media screen and (max-width: 1490px) {
+    .iot-page{
+        .iot-container > ul.data-list{
+            padding: 15px 5px 30px;
+            li>div:nth-of-type(1){
+                font-size: 18px;
+            }
+            li>div:nth-of-type(2){
+                font-size: 14px;
+            }
+        }
+    }
+}
+@media screen and (max-width: 1300px){
+    .iot-page{
+        .left-container{
+            width: calc(39% - 4px);
+        }
+        .map-container{
+            position: relative;
+            margin-left: 8px;
+            width: calc(61% - 4px);
+        }
+        .iot-container{
+            height: calc(100% - 96px);
+        }
+        .iot-container > ul.data-list{
+            padding: 15px 0px 30px;
+            li>div:nth-of-type(1){
+                font-size: 16px;
+            }
+        }
+        .iot-wrap{
+            margin-bottom: 6px;
+            .plane-container > div:not(:first-child) {
+                margin-left: 4px;
+            }
+            .iot-item>div:nth-of-type(2){
+                font-size: 18px;
+                flex: 0.6;
+            }
+        }
+    }
+}

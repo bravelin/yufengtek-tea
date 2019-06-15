@@ -1,5 +1,5 @@
 <template>
-    <Plane class="camera360" :full="camera360FullState">
+    <Plane class="camera360 no-shadow" :full="camera360FullState">
         <PlaneTitle @click="doHideControlButton()">视频监控<span v-show="video360Name">（{{ video360Name }}）</span></PlaneTitle>
         <div class="plane-content" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
             <div class="video-container flv" ref="container">
@@ -32,7 +32,7 @@
     const mapCodeObj = { 'ArrowUp': 0, 'ArrowDown': 1, 'ArrowLeft': 2, 'ArrowRight': 3, 'ZoomIn': 8, 'ZoomOut': 9, 'Stop': 'stop' }
 
     export default {
-        name: 'Iot360Video',
+        name: 'Iot360FlashVideo',
         components: {
             ControlPanel, Loading
         },
@@ -67,8 +67,8 @@
             [resizeStateProp] () { // 监听当前窗口大小
                 const that = this
                 const { w, h } = that.getSize()
-                const width = w - 10
-                const height = h - 10
+                const width = w
+                const height = h
                 const videoWrap = that.videoWrap
                 if (that.player && that.videoWrap) {
                     videoWrap.style.width = width + 'px'
@@ -121,8 +121,8 @@
                 const videoWrap = that.videoWrap
                 const flash = that.getVideoUrl(videoUrl)
                 console.log('播放地址...', flash)
-                const width = w - 10
-                const height = h - 10
+                const width = w
+                const height = h
                 videoWrap.style.width = width + 'px'
                 videoWrap.style.height = height + 'px'
                 videoWrap.innerHTML = `<source src="${flash}" type="rtmp/flv" />`
@@ -216,6 +216,7 @@
                 }
             },
             getKeyCode (e) {
+                console.log('key...', e.key)
                 let k = ''
                 switch (e.key) {
                     case '1':

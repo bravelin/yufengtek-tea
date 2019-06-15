@@ -11,15 +11,17 @@
     const moduleNameSpace = ns.FARMING
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'fertilizerActLineDatas'
-    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'fertilizerFullState'
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const prefix = `$store.state.${moduleNameSpace}`
+    const chartDataProp = `${prefix}.${dataProp}`
+    const fullStateProp = `${prefix}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'farming-fertilizer-act-line',
+        name: 'FarmingFertilizerActLine',
         computed: {
-            ...thisMapState([fullProp, dataProp])
+            ...thisMapState([fullProp, dataProp]),
+            ...mapState(['smallScreen', 'miniScreen'])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
@@ -42,10 +44,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that[dataProp]
-                if (datas.length && !that.chart) {
-                    that.init(datas)
-                }
+                that.doInitOrRefreshChart()
             })
         },
         methods: {
@@ -53,19 +52,29 @@
                 const that = this
                 const datas = that[dataProp]
                 if (datas && datas.length) {
-                    if (that.container) {
-                        that.chart ? that.refresh(datas) : that.init(datas)
+                    const container = that.container
+                    if (container) {
+                        const { titles, lineDatas } = that.handleChartData(datas)
+                        const options = that.getBaseOptions(titles, lineDatas)
+                        that.fixOptions(options, titles, lineDatas)
+                        if (that.chart) { // 刷新
+                            that.chart.setOption(options)
+                            let resizeCount = 6
+                            const timer = setInterval(() => {
+                                --resizeCount > 0 ? that.chart.resize() : window.clearInterval(timer)
+                            }, 150)
+                        } else { // 初始化
+                            that.chart = echarts.init(container)
+                            that.chart.setOption(options)
+                        }
                     }
                 }
             },
-            // 创建图表
-            init (datas) {
-                const that = this
-                const container = that.container
-                const { titles, lineDatas } = that.handleChartData(datas)
+            // 图表配置项
+            getBaseOptions (titles, lineDatas) {
                 const { min, max, interval } = computedChartDataInterval(lineDatas, 4)
-                const options = {
-                    grid: { top: 10, left: 0, right: 0, bottom: 0, containLabel: true },
+                return {
+                    grid: { top: 25, left: 0, right: 12, bottom: 5, containLabel: true },
                     tooltip: {
                         trigger: 'axis',
                         formatter: '{b}：{c}' + '吨',
@@ -73,69 +82,82 @@
                         axisPointer: { lineStyle: { color: 'rgba(238,238,238,0.4)' } },
                         textStyle: { fontSize: 14 }
                     },
-                    xAxis: [{
+                    xAxis: {
                         type: 'category',
                         data: titles,
                         boundaryGap: true,
-                        axisTick: { show: true },
-                        axisLine: { lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
-                        axisLabel: { margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
-                    }],
-                    yAxis: [{
+                        axisTick: { show: false },
+                        axisLine: { show: false },
+                        axisLabel: { margin: 8, textStyle: { color: '#3c89dc', fontSize: 12 } }
+                    },
+                    yAxis: {
                         show: true,
                         min,
                         max,
                         interval,
-                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.15)' } },
-                        axisTick: { show: true },
-                        axisLine: { show: true, lineStyle: { color: 'rgba(38, 99, 188, 0.5)' } },
-                        axisLabel: { margin: 8, show: true, textStyle: { color: '#fff', fontSize: 12 } }
-                    }],
-                    color: ['rgb(67,81,124)'],
-                    series: [
-                    {
-                        smooth: true,
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(255, 255, 255, 0.2)' } },
+                        axisTick: { show: false },
+                        axisLine: { show: false },
+                        axisLabel: { show: true, margin: 8, textStyle: { color: '#3c89dc', fontSize: 12 } }
+                    },
+                    color: ['#00e0fe'],
+                    series: [{
                         symbol: 'circle',
                         symbolSize: 6,
                         showSymbol: true,
                         type: 'line',
                         data: lineDatas,
+                        lineStyle: { width: 2 },
                         areaStyle: { normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(67, 81, 124, 0.3)' }, { offset: 0.85, color: 'rgba(67, 81, 124, 0.1)' }], false) } }
                     }]
                 }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
             },
-            // 刷新图表
-            refresh (datas) {
+            // 响应式修正options
+            fixOptions (options, titles, lineDatas) {
                 const that = this
-                const chart = that.chart
-                const { titles, lineDatas } = that.handleChartData(datas)
-                let options = null
                 if (that[fullProp]) {
-                    const { min, max, interval } = computedChartDataInterval(lineDatas, 8)
-                    options = {
-                        grid: { top: 32, left: 20, right: 20, bottom: 20 },
-                        series: [{ data: lineDatas }],
-                        xAxis: [{ axisLabel: { margin: 12, fontSize: 15 }, data: titles }],
-                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
-                        tooltip: { textStyle: { fontSize: 18 } },
+                    if (!that.smallScreen && !that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval(lineDatas, 8)
+                        options.grid = { top: 32, left: 20, right: 20, bottom: 20, containLabel: true }
+                        options.xAxis.axisLabel.margin = 12
+                        options.xAxis.axisLabel.textStyle.fontSize = 15
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 12
+                        options.yAxis.axisLabel.textStyle.fontSize = 15
+                        options.tooltip.textStyle.fontSize = 18
+                    } else {
+                        options.grid = { top: 30, left: 25, right: 25, bottom: 20, containLabel: true }
                     }
                 } else {
-                    const { min, max, interval } = computedChartDataInterval(lineDatas, 4)
-                    options = {
-                        grid: { top: 10, left: 0, right: 0, bottom: 0 },
-                        series: [{ data: lineDatas }],
-                        xAxis: [{ axisLabel: { margin: 8, fontSize: 12 }, data: titles }],
-                        yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
-                        tooltip: { textStyle: { fontSize: 14 } }
+                    if (that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval(lineDatas, 3)
+                        options.grid = { top: 15, left: 0, right: 8, bottom: 3, containLabel: true }
+                        options.series[0].symbolSize = 6
+                        options.series[0].lineStyle.width = 1
+                        options.xAxis.axisLabel.margin = 7
+                        options.xAxis.axisLabel.textStyle.fontSize = 9
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 7
+                        options.yAxis.axisLabel.textStyle.fontSize = 9
+                        options.tooltip.textStyle.fontSize = 10
+                    } else if (that.smallScreen) {
+                        const { min, max, interval } = computedChartDataInterval(lineDatas, 3)
+                        options.grid = { top: 18, left: 0, right: 8, bottom: 4, containLabel: true }
+                        options.series[0].symbolSize = 9
+                        options.xAxis.axisLabel.margin = 9
+                        options.xAxis.axisLabel.textStyle.fontSize = 11
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 9
+                        options.yAxis.axisLabel.textStyle.fontSize = 11
+                        options.tooltip.textStyle.fontSize = 12
                     }
                 }
-                chart.setOption(options)
-                let resizeCount = 6
-                const timer = setInterval(() => {
-                    --resizeCount > 0 ? chart.resize() : window.clearInterval(timer)
-                }, 150)
             },
             // 数据加工
             handleChartData (datas) {

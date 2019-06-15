@@ -32,7 +32,7 @@ export default function (options) {
     }
     return new Promise((resolve, reject) => {
         axios.request(options).then(res => {
-            if (res.data.code == 'w1005') {
+            if (res.data.code == 'w1005' || res.data.msg == 'token过期') {
                 store.state.currRouter.instance.push({ name: 'login' })
             } else {
                 resolve(res.data)

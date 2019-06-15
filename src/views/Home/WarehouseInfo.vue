@@ -1,14 +1,19 @@
 <!--入库出库-->
 <template>
     <Plane class="warehouse-info-wrap" :full="warehouseFullState">
-        <PlaneTitle>入库出库<div class="unit" v-show="warehouseDatas.in.length">单位：吨</div></PlaneTitle>
-        <div  class="plane-content" ref="container" :class="{ hide: !warehouseDatas.in.length }"></div>
+        <PlaneTitle>入库出库</PlaneTitle>
+        <div class="chart-unit">单位：{{ warehouseUnit }}</div>
+        <ul class="total-data">
+            <li><i></i><i></i><div>{{ outStockWeight }}</div><div>总出库</div></li>
+            <li><i></i><i></i><div>{{ inStockWeight }}</div><div>总入库</div></li>
+        </ul>
+        <div class="plane-content" ref="container" :class="{ hide: !warehouseDatas.in.length }"></div>
         <PlaneTools v-show="warehouseDatas.in.length" :full="warehouseFullState" @change="doFullStateChange"></PlaneTools>
         <div v-show="!warehouseDatas.in.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
 </template>
 <script>
-    import { createNamespacedHelpers } from 'vuex'
+    import { createNamespacedHelpers, mapState } from 'vuex'
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
@@ -18,21 +23,19 @@
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'warehouseDatas'
     const fullProp = 'warehouseFullState'
-    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const prefix = `$store.state.${moduleNameSpace}`
+    const chartDataProp = `${prefix}.${dataProp}`
+    const fullStateProp = `${prefix}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'home-warehouse',
+        name: 'HomeWarehouse',
         computed: {
-            ...thisMapState(['warehouseUnit', fullProp, dataProp]),
-            miniScreen () {
-                return this.$store.state.winWidth < 1300
-            }
+            ...thisMapState(['warehouseUnit', fullProp, dataProp, 'inStockWeight', 'outStockWeight']),
+            ...mapState(['smallScreen', 'miniScreen'])
         },
         watch: {
             [chartDataProp] () {
-                // 监听store中图表数据的改变，刷新图表
                 this.doInitOrRefreshChart()
             },
             [fullStateProp] () {
@@ -52,10 +55,7 @@
             const that = this
             that.$nextTick(() => {
                 that.container = that.$refs.container
-                const datas = that[dataProp]
-                if (datas) {
-                    that.init(datas)
-                }
+                that.doInitOrRefreshChart()
             })
         },
         methods: {
@@ -63,113 +63,128 @@
                 const that = this
                 const datas = that[dataProp]
                 if (datas) {
-                    if (that.container) {
-                        that.chart ? that.refresh(datas) : that.init(datas)
+                    const container = that.container
+                    if (container) {
+                        const { values, titles } = that.handleChartData(datas)
+                        const options = that.getBaseOptions(values, titles)
+                        that.fixOptions(options, titles, values)
+                        if (that.chart) { // 刷新
+                            that.chart.setOption(options)
+                            setTimeout(() => { that.chart.resize() }, 200)
+                        } else { // 初始化
+                            that.chart = echarts.init(container)
+                            that.chart.setOption(options)
+                        }
                     }
                 }
             },
-            // 创建图表
-            init (datas) {
-                const that = this
-                const container = that.container
-                const { titles, values } = that.handleChartData(datas)
-                const { min, max, interval } = computedChartDataInterval([...values[0], ...values[1]], 5)
-                const miniScreen = that.miniScreen
-                const options = {
+            // 图表配置项
+            getBaseOptions (values, titles) {
+                const unit = this.warehouseUnit
+                const { min, max, interval } = computedChartDataInterval([...values[0], ...values[1]], 4, 0.2)
+                return {
                     tooltip: {
                         trigger: 'axis',
-                        formatter: `{b0}<br/>{a0}: {c0} ${that.warehouseUnit}<br/>{a1}: {c1} ${that.warehouseUnit}`,
-                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
-                        axisPointer: {
-                            lineStyle: { color: 'rgba(238,238,238,0.4)' }
+                        formatter (params) {
+                            return params.map(item => item.name + item.seriesName + '：' + item.value + unit).join('<br/>')
                         },
+                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
+                        axisPointer: { lineStyle: { color: 'rgba(238,238,238,0.4)' } },
                         textStyle: { fontSize: 14 }
                     },
-                    legend: {
-                        show: true,
-                        data: ['入库', '出库'],
-                        right: 67,
-                        top: 19,
-                        itemGap: miniScreen ? 5 : 15,
-                        textStyle: {
-                            color: '#d0d0d0',
-                            fontSize: miniScreen ? 12 : 14,
-                            padding: [2, 0, 0, miniScreen ? 0 : 2]
-                        }
-                    },
-                    grid: {
-                        top: 50,
-                        bottom: 2,
-                        left: 5,
-                        right: 5,
-                        containLabel: true
-                    },
+                    grid: { top: 60, bottom: 10, left: 160, right: 12, containLabel: true },
                     xAxis: {
                         data: titles,
-                        axisLine: { lineStyle: { color: '#0c3b71' } },
-                        axisLabel: { margin: 8, interval: 0, rotate: 0, color: '#fff', fontSize: 12 }
+                        axisTick: { show: false },
+                        axisLine: { show: false },
+                        axisLabel: { margin: 8, textStyle: { color: '#fff', fontSize: 12 } }
                     },
-                    yAxis: [{
+                    yAxis: {
                         min,
                         max,
                         interval,
-                        axisLine: { lineStyle: { color: '#0c3b71' } },
-                        axisLabel: { margin: 8, interval: 0, color: '#fff', fontSize: 12 },
-                        splitLine: {
-                            show: true,
-                            lineStyle: { type: 'dosh', color: 'rgba(238, 238, 238, 0.15)', width: 0.5 }
-                        }
-                    }],
-                    color: ['#91acd4', '#2663bc'],
-                    series: [
-                        {
-                            name: '入库',
-                            type: 'bar',
-                            barWidth: miniScreen ? 8 : 10,
-                            itemStyle: { normal: { barBorderRadius: 5 } },
-                            data: values[0]
-                        },
-                        {
-                            name: '出库',
-                            type: 'bar',
-                            barWidth: miniScreen ? 8 : 10,
-                            itemStyle: { normal: { barBorderRadius: 5 } },
-                            data: values[1]
-                        }
-                    ]
+                        axisLine: { show: false },
+                        axisTick: { show: false },
+                        axisLabel: { margin: 8, textStyle: { color: '#fff', fontSize: 12 } },
+                        splitLine: { show: true, lineStyle: { type: 'dosh', color: 'rgba(255, 255, 255, 0.2)', width: 0.5 } }
+                    },
+                    color: ['#00e0ef', '#e2b53d'],
+                    series: [{
+                        name: '入库',
+                        type: 'line',
+                        symbolSize: 10,
+                        symbol: 'circle',
+                        data: values[0],
+                        lineStyle: { width: 2 },
+                        itemStyle: { normal: { label: { color: '#fff', show: true, position: 'outside', fontSize: 11 } } },
+                        areaStyle: { normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(0, 224, 239, 0.6)' }, { offset: 1, color: 'rgba(0, 224, 239, 0.1)' }], false) } }
+                    }, {
+                        name: '出库',
+                        type: 'line',
+                        symbolSize: 10,
+                        symbol: 'circle',
+                        data: values[1],
+                        lineStyle: { width: 2 },
+                        itemStyle: { normal: { label: { color: '#fff', show: true, position: 'outside', fontSize: 11, offset: [0, 28] } } },
+                        areaStyle: { normal: { color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{ offset: 0, color: 'rgba(226, 181, 61, 0.6)' }, { offset: 1, color: 'rgba(226, 181, 61, 0.1)' }], false) } }
+                    }]
                 }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
             },
-            // 刷新图表
-            refresh (datas) {
+            // 响应式修正options
+            fixOptions (options, titles, values) {
                 const that = this
-                const chart = that.chart
-                const miniScreen = that.miniScreen
-                const { titles, values } = that.handleChartData(datas)
-                const { min, max, interval } = computedChartDataInterval([...values[0], ...values[1]], 5)
-                let config = null
                 if (that[fullProp]) {
-                    config = {
-                        tooltip: { textStyle: { fontSize: 18 } },
-                        xAxis: [{ data: titles, axisLabel: { margin: 12, fontSize: 15 } }],
-                        yAxis: [{ min, max, interval, axisLabel: { margin: 12, fontSize: 15 } }],
-                        grid: { top: 58, bottom: 20, left: 25, right: 25 },
-                        series: [{ barWidth: 20, data: values[0] }, { barWidth: 20, data: values[1] }],
-                        legend: { itemGap: 15, right: 90, top: 28, textStyle: { fontSize: 15, padding: [2, 0, 0, 2] } }
+                    if (!that.smallScreen && !that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval([...values[0], ...values[1]], 8, 0.2)
+                        options.grid = { top: 65, bottom: 20, left: 260, right: 25, containLabel: true }
+                        options.tooltip.textStyle.fontSize = 18
+                        options.xAxis.axisLabel.margin = 12
+                        options.xAxis.axisLabel.textStyle.fontSize = 15
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 12
+                        options.yAxis.axisLabel.textStyle.fontSize = 15
+                        options.series[0].itemStyle.normal.label.fontSize = 14
+                        options.series[1].itemStyle.normal.label.fontSize = 14
+                    } else {
+                        options.grid = { top: 65, bottom: 20, left: 260, right: 25, containLabel: true }
                     }
                 } else {
-                    config = {
-                        tooltip: { textStyle: { fontSize: 14 } },
-                        xAxis: [{ data: titles, axisLabel: { margin: 8, fontSize: 12 } }],
-                        yAxis: [{ min, max, interval, axisLabel: { margin: 8, fontSize: 12 } }],
-                        grid: { top: 50, bottom: 2, left: 5, right: 5 },
-                        series: [{ barWidth: miniScreen ? 8 : 10, data: values[0] }, { barWidth: 10, data: values[1] }],
-                        legend: { itemGap: miniScreen ? 5 : 15, right: 67, top: 19, textStyle: { fontSize: miniScreen ? 12 : 14, padding: [2, 0, 0, miniScreen ? 0 : 2] } }
+                    if (that.miniScreen) {
+                        const { min, max, interval } = computedChartDataInterval([...values[0], ...values[1]], 3, 0.2)
+                        options.grid = { top: 60, bottom: 0, left: 115, right: 8, containLabel: true }
+                        options.tooltip.textStyle.fontSize = 10
+                        options.xAxis.axisLabel.margin = 7
+                        options.xAxis.axisLabel.textStyle.fontSize = 9
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 7
+                        options.yAxis.axisLabel.textStyle.fontSize = 9
+                        options.series[0].itemStyle.normal.label.show = false
+                        options.series[1].itemStyle.normal.label.show = false
+                        options.series[0].symbolSize = 6
+                        options.series[1].symbolSize = 6
+                        options.series[0].lineStyle.width = 1
+                        options.series[1].lineStyle.width = 1
+                    } else if (that.smallScreen) {
+                        const { min, max, interval } = computedChartDataInterval([...values[0], ...values[1]], 3, 0.2)
+                        options.grid = { top: 55, bottom: 0, left: 120, right: 8, containLabel: true }
+                        options.tooltip.textStyle.fontSize = 12
+                        options.xAxis.axisLabel.margin = 9
+                        options.xAxis.axisLabel.textStyle.fontSize = 11
+                        options.yAxis.min = min
+                        options.yAxis.max = max
+                        options.yAxis.interval = interval
+                        options.yAxis.axisLabel.margin = 9
+                        options.yAxis.axisLabel.textStyle.fontSize = 11
+                        options.series[0].itemStyle.normal.label.show = false
+                        options.series[1].itemStyle.normal.label.show = false
+                        options.series[0].symbolSize = 9
+                        options.series[1].symbolSize = 9
                     }
                 }
-                chart.setOption(config)
-                setTimeout(() => { chart.resize() }, 100)
             },
             // 数据加工
             handleChartData (datas) {
@@ -177,17 +192,16 @@
                 const values = [[], []]
                 datas.in.forEach(item => {
                     titles.push(item.omonth + '月')
-                    values[0].push(item.weight)
+                    values[0].push(item.weight ? item.weight.toFixed(2) - 0 : 0)
                 })
                 datas.out.forEach(item => {
-                    values[1].push(item.weight)
+                    values[1].push(item.weight ? item.weight.toFixed(2) - 0 : 0)
                 })
                 return { titles, values }
             },
             // full state change
             doFullStateChange (payload) {
-                const that = this
-                that.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
+                this.$store.commit(moduleNameSpace + '/' + types.HOME_CHANGE_FULL_STATE, {
                     fullStateName: fullProp, state: payload
                 })
             }

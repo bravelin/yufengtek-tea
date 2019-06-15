@@ -1,7 +1,8 @@
 <!--施肥活动-->
 <template>
     <Plane class="fertilizer-act-wrap act-wrap" :full="fertilizerFullState">
-        <PlaneTitle>施肥活动<div class="unit" v-show="fertilizerActLineDatas.length && fertilizerActPieDatas.length">单位：吨</div></PlaneTitle>
+        <PlaneTitle>施肥活动</PlaneTitle>
+        <div class="chart-unit" v-show="fertilizerActLineDatas.length && fertilizerActPieDatas.length">单位：吨</div>
         <div class="plane-content" :class="{ hide: !fertilizerActLineDatas.length || !fertilizerActPieDatas.length }">
             <FertilizerActPie></FertilizerActPie>
             <FertilizerActLine></FertilizerActLine>
@@ -24,7 +25,7 @@
     const dataProp2 = 'fertilizerActPieDatas'
 
     export default {
-        name: 'farming-fertilizer-act',
+        name: 'FarmingFertilizerAct',
         computed: {
             ...thisMapState([fullProp, dataProp1, dataProp2])
         },

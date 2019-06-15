@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import mutations from '@/store/mutations/index'
-import modules from '@/store/modules/index'
+import mutations from './mutations'
+import modules from './modules'
 import StorageTags from '@/lib/storageTags'
 
 Vue.use(Vuex)
@@ -22,6 +22,12 @@ export default new Vuex.Store({
         loading: false, // loading的状态
         screenFullState: false, // 全屏状态
         windowResizeState: 0,
+        smallScreen: false, // 屏幕宽度<1400 -- 匹配1366
+        miniScreen: false, // 屏幕宽度小于 1200 -- 匹配1024
+
+        gardenArea: 0, // 茶园总面积
+        gardenTotal: 0, // 茶园数量
+        plantArea: [], // 品种
 
         // 与当前登录用户的相关状态
         userToken: ls.getItem(StorageTags.userToken) || '', // 用户token

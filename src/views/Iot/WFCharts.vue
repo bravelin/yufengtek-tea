@@ -41,7 +41,7 @@
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'iot-wf-charts',
+        name: 'IotWfCharts',
         computed: {
             ...thisMapState(['wf'])
         },

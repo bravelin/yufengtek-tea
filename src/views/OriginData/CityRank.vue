@@ -1,7 +1,18 @@
 <template>
     <Plane class="city-rank-wrap" :full="cityRankFullState">
         <PlaneTitle>溯源城市排行</PlaneTitle>
-        <div class="plane-content" ref="container" :class="{ hide: !cityDatas.length }"></div>
+        <div class="plane-content" :class="{ hide: !cityDatas.length }">
+            <vue-scroll :ops="scrollOptions">
+                <ul class="data-list">
+                    <li v-for="(item, index) in rankList" :key="item.name">
+                        <div><span>{{ index + 1}}</span><i v-if="index<3" class="iconfont">&#xe630;</i></div>
+                        <div>{{ item.name }}</div>
+                        <div><div :style="{ width: item.ratio }"></div></div>
+                        <div>{{ item.value }}次</div>
+                    </li>
+                </ul>
+            </vue-scroll>
+        </div>
         <PlaneTools :full="cityRankFullState" @change="doFullStateChange" v-show="cityDatas.length"></PlaneTools>
         <div v-show="!cityDatas.length" class="iconfont null-data-tag">&#xe642;</div>
     </Plane>
@@ -11,18 +22,19 @@
     import ns from '@/store/constants/ns'
     import echarts from '@/lib/echarts'
     import types from '@/store/constants/types'
+    import { computedChartDataInterval } from '@/lib/util'
 
-    require('echarts-wordcloud')
     const moduleNameSpace = ns.ORIGIN
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const dataProp = 'cityDatas'
-    const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
     const fullProp = 'cityRankFullState'
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
+    const prefix = `$store.state.${moduleNameSpace}`
+    const chartDataProp = `${prefix}.${dataProp}`
+    const fullStateProp = `${prefix}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'origin-city-rank',
+        name: 'OriginCityRank',
         computed: {
             ...thisMapState([fullProp, dataProp]),
             miniScreen () {
@@ -31,99 +43,49 @@
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
-                this.doInitOrRefreshChart()
+                this.getRankList()
             },
             [fullStateProp] () {
-                this.doInitOrRefreshChart()
+                this.getRankList()
             },
             [resizeStateProp] () {
-                this.doInitOrRefreshChart()
+                this.getRankList()
             }
         },
         data () {
             return {
-                container: null,
-                chart: null // 图表实例
+                rankList: [],
+                scrollOptions: {
+                    vuescroll: {
+                        mode: 'native',
+                        zooming: false,
+                    },
+                    bar: {
+                        background: 'rgba(46, 115, 215, 0.8)'
+                    }
+                }
             }
         },
-        mounted () {
-            const that = this
-            that.$nextTick(() => {
-                that.container = that.$refs.container
-                const datas = that[dataProp]
-                if (datas.length && !that.chart) {
-                    that.init(datas)
-                }
-            })
+        created () {
+            this.getRankList()
         },
         methods: {
-            doInitOrRefreshChart () {
+            getRankList () {
                 const that = this
-                const datas = that[dataProp]
-                if (datas && datas.length) {
-                    if (that.container) {
-                        that.chart ? that.refresh(datas) : that.init(datas)
-                    }
-                }
-            },
-            // 创建图表
-            init (datas) {
-                const that = this
-                const container = that.container
                 const miniScreen = that.miniScreen
-                const options = {
-                    tooltip: {
-                        trigger: 'item',
-                        show: true,
-                        formatter: '{b}：{c}',
-                        backgroundColor: 'rgba(0, 159, 253, 0.9)',
-                        textStyle: { fontSize: 14 }
-                    },
-                    series: [{
-                        type: 'wordCloud',
-                        gridSize: 10,
-                        sizeRange: miniScreen ? [12, 24] : [14, 40],
-                        rotationRange: [0, 0],
-                        shape: 'circle',
-                        autoSize: { enable: true, minSize: 12 },
-                        data: datas,
-                        textStyle: {
-                            normal: {
-                                color: function () {
-                                    return 'hsla(' + [
-                                        207 + Math.round(Math.random() * 10),
-                                        (75 + Math.round(Math.random() * 12)) + '%',
-                                        (60 + Math.round(Math.random() * 10)) + '%',
-                                        0.2 + Math.random()
-                                    ].join(',') + ')'
-                                }
-                            },
-                            emphasis: { shadowBlur: 10, shadowColor: '#333' }
-                        }
-                    }]
+                const list = []
+                const datas = []
+                let item = null
+                for (let i = 0; i < that[dataProp].length; i++) {
+                    item = that[dataProp][i]
+                    list.push({ name: item.name, value: item.value, ratio: 0 })
+                    datas.push(item.value)
                 }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
-            },
-            // 刷新图表
-            refresh (datas) {
-                const that = this
-                const chart = that.chart
-                let options = null
-                const miniScreen = that.miniScreen
-                if (that[fullProp]) {
-                    options = {
-                        series: [{ data: datas, gridSize: 20, sizeRange: [14, 50] }],
-                        tooltip: { textStyle: { fontSize: 18 } }
-                    }
-                } else {
-                    options = {
-                        series: [{ data: datas, gridSize: 10, sizeRange: miniScreen ? [12, 24] : [14, 30] }],
-                        tooltip: { textStyle: { fontSize: 14 } }
-                    }
-                }
-                chart.setOption(options)
-                setTimeout(() => { chart.resize() }, 200)
+                const { max } = computedChartDataInterval(datas, 10, 0.1)
+                list.forEach(item => {
+                    item.ratio = (item.value / max * 100).toFixed(1) + '%'
+                })
+                that.rankList = list
             },
             doFullStateChange (payload) {
                 const that = this

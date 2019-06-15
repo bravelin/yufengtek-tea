@@ -1,17 +1,44 @@
 <template>
     <div class="page login-page">
-        <Plane>
-            <h2>武夷山市智慧茗园数据平台登录</h2>
-            <div class="input-item account"><input ref="loginNameInput" :disabled="isProcessing" v-model="loginName" type="text" autocomplete="off" placeholder="请输入您的账号名称" maxlength="50" tabindex="1"/></div>
-            <div class="input-item password"><input ref="passwordInput" :disabled="isProcessing" v-model="password" type="password" autocomplete="off" placeholder="请输入您的登录密码" maxlength="50" tabindex="2"/></div>
-            <div class="login-button"><button @click="doLogin()">立即登录</button></div>
+        <div class="dialog">
+            <h2>用户登录</h2>
+            <input type="password" style="display:none" name="password"/>
+            <input type="text" style="display:none" name="loginName"/>
+            <div class="input-item account">
+                <input ref="loginNameInput" :disabled="isProcessing" v-model="loginName" type="text" name="loginName" disableautocomplete autocomplete="off" maxlength="50" tabindex="1"/>
+                <i></i><i></i><i></i><i></i>
+            </div>
+            <div class="input-item password">
+                <input ref="passwordInput" :disabled="isProcessing" v-model="password" type="password" name="password" disableautocomplete autocomplete="new-password" maxlength="50" tabindex="2"/>
+                <i></i><i></i><i></i><i></i>
+            </div>
+            <div class="remember" :class="{ active: loginRemember }" @click="switchLoginRemember()"><i class="iconfont">&#xe641;</i><div></div>记住密码</div>
+            <div class="login-button"><button @click="doLogin()">登录</button></div>
             <div class="login-tip" :class="{ active: showTip }">{{ tipStr }}</div>
-        </Plane>
+        </div>
+        <div class="title">
+            <h1 :class="{ active: showMainTitle }">
+                <span>武</span>
+                <span>夷</span>
+                <span>山</span>
+                <span>市</span>
+                <span>智</span>
+                <span>慧</span>
+                <span>茗</span>
+                <span>园</span>
+                <span>数</span>
+                <span>据</span>
+                <span>平</span>
+                <span>台</span>
+            </h1>
+            <h4 :class="{ active: showSubTitle }">基于物联网监控的大数据服务，为茶叶质量保驾护航</h4>
+        </div>
     </div>
 </template>
 <script>
     import StorageTags from '@/lib/storageTags'
     import types from '@/store/constants/types'
+    import initSocket from '@/lib/socket'
 
     const ls = localStorage
     export default {
@@ -23,7 +50,10 @@
                 isProcessing: false,
                 tipStr: '',
                 showTip: false,
-                timer: null
+                timer: null,
+                showMainTitle: false,
+                showSubTitle: false,
+                loginRemember: !(ls.getItem(StorageTags.loginRemember) == '0')
             }
         },
         created () {
@@ -48,6 +78,9 @@
                         refs.passwordInput.focus()
                     }
                 }, 800)
+
+                setTimeout(() => { that.showMainTitle = true }, 1000)
+                setTimeout(() => { that.showSubTitle = true }, 3000)
             })
         },
         methods: {
@@ -61,6 +94,17 @@
                 that.timer = setTimeout(() => {
                     that.showTip = false
                 }, 3000)
+            },
+            switchLoginRemember () {
+                const that = this
+                that.loginRemember = !that.loginRemember
+                if (that.loginRemember) { // 存用户名密码至ls
+                    ls.setItem(StorageTags.userName, that.loginName)
+                    ls.setItem(StorageTags.password, that.password)
+                } else { // 从ls中清除用户名密码
+                    ls.removeItem(StorageTags.userName)
+                    ls.removeItem(StorageTags.password)
+                }
             },
             // 执行登录
             doLogin () {
@@ -83,14 +127,19 @@
                         } else {
                             that.showMessage('登录成功！')
                             const resData = res.repData
+                            const userType = {
+                                'BS+': '2', 'DT': '1'
+                            }
                             store.commit(types.UPDATE_USER_INFO, {
                                 userToken: resData.tokenKey,
                                 userId: '',
                                 userName: that.loginName.trim(),
-                                userRole: resData.user_type == 'DT' ? '1' : '0',
-                                password: that.password.trim()
+                                userRole: userType[resData.user_type] || '0',
+                                password: that.password.trim(),
+                                loginRemember: that.loginRemember,
                             })
                             setTimeout(() => { that.$router.push({ name: 'home' }) }, 500)
+                            initSocket()
                         }
                         setTimeout(() => { that.isProcessing = false }, 100)
                     })

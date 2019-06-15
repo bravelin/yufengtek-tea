@@ -1,9 +1,5 @@
 <template>
-    <Plane class="map-wrap" :full="mapFullState">
-        <PlaneTitle>溯源分布</PlaneTitle>
-        <div class="plane-content" ref="container"></div>
-        <PlaneTools :full="mapFullState" @change="doFullStateChange"></PlaneTools>
-    </Plane>
+    <div class="map-wrap" ref="container"></div>
 </template>
 <script>
     import { createNamespacedHelpers, mapState } from 'vuex'
@@ -16,20 +12,15 @@
     const dataProp = 'mapDatas'
     const thisMapState = createNamespacedHelpers(moduleNameSpace).mapState
     const chartDataProp = `$store.state.${moduleNameSpace}.${dataProp}`
-    const fullProp = 'mapFullState'
-    const fullStateProp = `$store.state.${moduleNameSpace}.${fullProp}`
     const resizeStateProp = `$store.state.windowResizeState`
 
     export default {
-        name: 'origin-map',
+        name: 'OriginMap',
         computed: {
-            ...thisMapState([fullProp, dataProp])
+            ...thisMapState([dataProp])
         },
         watch: {
             [chartDataProp] () { // 监听store中图表数据的改变，刷新图表
-                this.doInitOrRefreshChart()
-            },
-            [fullStateProp] () {
                 this.doInitOrRefreshChart()
             },
             [resizeStateProp] () {
@@ -47,9 +38,8 @@
             that.$nextTick(() => {
                 that.container = that.$refs.container
                 const datas = that[dataProp]
-                const copyDatas = [...datas]
                 if (!that.chart) {
-                    that.init(copyDatas)
+                    that.init(datas)
                 }
             })
         },
@@ -59,8 +49,7 @@
                 const datas = that[dataProp]
                 if (datas) {
                     if (that.container) {
-                        const copyDatas = [...datas]
-                        that.chart ? that.refresh(copyDatas) : that.init(copyDatas)
+                        that.chart ? that.refresh(datas) : that.init(datas)
                     }
                 }
             },
@@ -68,7 +57,53 @@
             init (datas) {
                 const that = this
                 const container = that.container
-                const options = {
+                const options = that.getBaseOptions(datas)
+                that.chart = echarts.init(container)
+                that.chart.setOption(options)
+            },
+            // 刷新图表
+            refresh (datas) {
+                const that = this
+                const chart = that.chart
+                const currOption = chart.getOption()
+                const series = currOption.series
+                const { scatterDatas, normalDatas } = that.doHandlerDatas(datas)
+                series[0].data = normalDatas
+                series[1].data = scatterDatas
+                chart.setOption({ series })
+                setTimeout(() => { chart.resize() }, 200)
+            },
+            doHandlerDatas (datas) {
+                const thisDatas = [...datas].filter(item => !!item.name)
+                thisDatas.sort((a, b) => { return b.value - a.value > 0 ? -1 : 1 })
+                const scatterDatas = []
+                const normalDatas = []
+                const colors = ['#ff5f6c', '#fac720', '#1cd782']
+                let itemValue = 0
+                thisDatas.forEach((item, index) => {
+                    if (index < 5) {
+                        scatterDatas.push(item)
+                        item.itemStyle = { normal: { color: colors[index] || 'rgba(255, 255, 255, 0.75)' } }
+                        itemValue = item.value[2]
+                        if (itemValue > 1000) {
+                            item.symbolSize = 24
+                        } else if (itemValue > 500) {
+                            item.symbolSize = 20
+                        } else if (itemValue > 100) {
+                            item.symbolSize = 16
+                        } else {
+                            item.symbolSize = 14
+                        }
+                    } else {
+                        normalDatas.push(item)
+                    }
+                })
+                return { scatterDatas, normalDatas }
+            },
+            // 图表配置项
+            getBaseOptions (datas) {
+                const { scatterDatas, normalDatas } = this.doHandlerDatas(datas)
+                return {
                     tooltip: {
                         trigger: 'item',
                         formatter (params) { return params.name + '：' + params.value[2] },
@@ -84,70 +119,28 @@
                         {
                             type: 'scatter',
                             coordinateSystem: 'bmap',
-                            data: datas,
-                            symbolSize (val) {
-                                let size = val[2] / 20
-                                if (size < 3) {
-                                    size = 4
-                                } else if (size > 18) {
-                                    size = 20
-                                }
-                                return size
-                            },
+                            data: normalDatas,
+                            symbolSize: 10,
                             label: {
                                 normal: { formatter: '{b}', position: 'right', show: false },
                                 emphasis: { show: true }
                             },
-                            itemStyle: {
-                                normal: { color: 'rgba(8, 175, 156, 0.75)' }
-                            }
+                            itemStyle: { normal: { color: 'rgba(255, 255, 255, 0.75)' } }
                         },
                         {
                             type: 'effectScatter',
                             coordinateSystem: 'bmap',
-                            data: datas.sort((a, b) => { return b.value - a.value }).slice(0, 5),
-                            symbolSize (val) {
-                                let size = val[2] / 20
-                                if (val[2] / 20 < 3) {
-                                    size = 5
-                                } else if (size > 18) {
-                                    size = 21
-                                }
-                                return size
-                            },
+                            data: scatterDatas,
+                            symbolSize: 14,
                             showEffectOn: 'render',
                             rippleEffect: { brushType: 'stroke' },
                             hoverAnimation: true,
-                            label: {
-                                normal: { formatter: '{b}', position: 'right', show: true }
-                            },
-                            itemStyle: {
-                                normal: { color: 'rgba(8, 175, 156, 0.75)', shadowBlur: 5, shadowColor: '#333' }
-                            },
+                            label: { normal: { formatter: '{b}', position: 'right', show: true } },
+                            itemStyle: { normal: { color: 'rgba(255, 255, 255, 0.75)', shadowBlur: 5, shadowColor: '#333' } },
                             zlevel: 1
                         }
                     ]
                 }
-                that.chart = echarts.init(container)
-                that.chart.setOption(options)
-            },
-            // 刷新图表
-            refresh (datas) {
-                const that = this
-                const chart = that.chart
-                const currOption = chart.getOption()
-                const series = currOption.series
-                series[0].data = datas
-                series[1].data = datas.sort((a, b) => { return b.value - a.value }).slice(0, 5)
-                chart.setOption({ series })
-                setTimeout(() => { chart.resize() }, 200)
-            },
-            doFullStateChange (payload) {
-                const that = this
-                that.$store.commit(moduleNameSpace + '/' + types.ORIGIN_CHANGE_FULL_STATE, {
-                    fullStateName: fullProp,
-                    state: payload
-                })
             }
         }
     }

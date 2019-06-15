@@ -1,10 +1,8 @@
 <template>
     <div id="app" :style="{ height: winHeight + 'px' }">
-        <Sky></Sky>
-        <NavMenu v-show="!isLogin"></NavMenu>
+        <NavMenu></NavMenu>
         <router-view :style="{ height: pageHeight + 'px' }"/>
         <Spinner v-show="loading"></Spinner>
-        <button class="logout-btn" @dblclick="doLogout()">logout</button>
     </div>
 </template>
 
@@ -13,19 +11,23 @@
     import { mapState } from 'vuex'
     import types from '@/store/constants/types'
     import NavMenu from '@/views/NavMenu'
-    import Sky from '@/components/Sky'
     import initSocket from '@/lib/socket'
 
     export default {
         name: 'app',
         components: {
-            Spinner, NavMenu, Sky
+            Spinner, NavMenu
         },
         computed: {
             ...mapState(['loading', 'winHeight', 'screenFullState']),
             pageHeight () {
                 const state = this.$store.state
-                let h = state.winHeight - 105
+                let h = state.winHeight - 133
+                if (state.winWidth <= 1200) {
+                    h += 29
+                } else if (state.winWidth <= 1400) {
+                    h += 25
+                }
                 return h > 540 ? h : 540
             },
             isLogin () {
@@ -48,15 +50,6 @@
                     initSocket()
                 }
             }, 1000)
-        },
-        methods: {
-            doLogout () {
-                const that = this
-                const store = that.$store
-                that.$ajax({ url: '/data/user/loginOut' })
-                store.commit(types.CLEAR_USER_INFO)
-                that.$router.push({ name: 'login' })
-            }
         }
     }
 </script>

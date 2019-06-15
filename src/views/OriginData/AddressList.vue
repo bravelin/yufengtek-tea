@@ -13,6 +13,7 @@
                             <li class="sub-item" v-for="(subItem, subIndex) in item.list" :key="subIndex" v-show="subItem.addr">
                                 <div>{{ subItem.time }}</div>
                                 <div>{{ subItem.addr }}</div>
+                                <div>{{ subItem.breed }} <div class="middle-point" v-show="subItem.sbreed!=subItem.breed"></div> {{ subItem.sbreed != subItem.breed ? subItem.sbreed : '' }}</div>
                             </li>
                         </ul>
                     </li>
@@ -35,7 +36,7 @@
     const addressDataProp = `$store.state.${moduleNameSpace}.addressList`
 
     export default {
-        name: 'origin-address-list',
+        name: 'OriginAddressList',
         components: { DatePicker },
         computed: {
             ...thisMapState(['addressList', 'currentPage', 'totalPage'])

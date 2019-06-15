@@ -12,7 +12,7 @@ const router = new Router({
         {
             path: '/login',
             name: 'login', // 登录
-            component: () => import('./views/Login/Login.vue')
+            component: () => import('./views/Login/Index.vue')
         },
         {
             path: '/home',
