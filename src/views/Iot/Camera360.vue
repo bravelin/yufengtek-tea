@@ -1,7 +1,7 @@
 <template>
     <Plane class="camera360 no-shadow" :full="camera360FullState">
         <PlaneTitle @click="doHideControlButton()">视频监控<span v-show="video360Name">（{{ video360Name }}）</span></PlaneTitle>
-        <div class="plane-content" @touchstart="touchStart" @touchmove='touchMove' @touchend='touchEnd'>
+        <div class="plane-content">
             <div class="video-container flv" ref="container">
                 <video class="video-js vjs-default-skin video-wrap" controls></video>
             </div>
@@ -99,15 +99,8 @@
                 player: null,
                 proxyPlayer: null,
                 showProxyVideo: true,
-                moveUp: false,
-                startX: '',
-                startY: '',
-                endX: '',
-                endY: '',
-                isKeyDown: false, // 是否已按键
                 currPressedKey: '', // 当前正在按下的键
                 currPressedKeyCode: '', // 键值
-                changeKey: '',
                 directionChangeReqList: [], // 摄像头转动请求列表
                 reqListProcessing: false
             }
@@ -241,44 +234,20 @@
             },
             doHandleKeyDown (e) {
                 const that = this
-                const store = that.$store
-                e.preventDefault()
-                if (that.currPressedKey == '') {
+                const keyCode = that.getKeyCode(e)
+                if (typeof keyCode == 'number' && that.camera360FullState) {
                     that.currPressedKey = e.key
-                    const keyCode = that.currPressedKeyCode = that.getKeyCode(e)
-                    if (typeof keyCode == 'number' && that.camera.camera_type == '2' && !that.keyDown) {
-                        that.isKeyDown = true
-                        that.rquestChange(keyCode)
-                    }
-                } else {
-                    if (that.currPressedKey != e.key && that.changeKey == '') {
-                        if ((that.currPressedKey == 2 && e.key == 4) || (that.currPressedKey == 4 && e.key == 2)) { that.changeKey = 5 }
-                        if ((that.currPressedKey == 2 && e.key == 6) || (that.currPressedKey == 6 && e.key == 2)) { that.changeKey = 7 }
-                        if ((that.currPressedKey == 8 && e.key == 4) || (that.currPressedKey == 4 && e.key == 8)) { that.changeKey = 4 }
-                        if ((that.currPressedKey == 8 && e.key == 6) || (that.currPressedKey == 6 && e.key == 8)) { that.changeKey = 6 }
-
-                        if ((that.currPressedKey == 'ArrowDown' && e.key == 'ArrowLeft') || (that.currPressedKey == 'ArrowLeft' && e.key == 'ArrowDown')) { that.changeKey = 5 }
-                        if ((that.currPressedKey == 'ArrowDown' && e.key == 'ArrowRight') || (that.currPressedKey == 'ArrowRight' && e.key == 'ArrowDown')) { that.changeKey = 7 }
-                        if ((that.currPressedKey == 'ArrowUp' && e.key == 'ArrowLeft') || (that.currPressedKey == 'ArrowLeft' && e.key == 'ArrowUp')) { that.changeKey = 4 }
-                        if ((that.currPressedKey == 'ArrowUp' && e.key == 'ArrowRight') || (that.currPressedKey == 'ArrowRight' && e.key == 'ArrowUp')) { that.changeKey = 6 }
-
-                        if (that.changeKey != '' && that.isKeyDown) {
-                            that.currPressedKeyCode = that.changeKey
-                            that.rquestChange('stop')
-                            that.rquestChange(that.changeKey)
-                        }
-                    }
+                    that.currPressedKeyCode = keyCode
+                    that.rquestChange(keyCode)
                 }
             },
             doHandleKeyUp (e) {
                 const that = this
                 let key = e.key
-                const store = that.$store
-                if (typeof that.currPressedKeyCode == 'number' && that.isKeyDown) {
+                if (typeof that.currPressedKeyCode == 'number' && that.camera360FullState) {
                     that.rquestChange('stop')
-                    that.isKeyDown = false
                     that.currPressedKey = ''
-                    that.changeKey = ''
+                    that.currPressedKeyCode = ''
                 }
             },
             doHideControlButton () {
@@ -386,60 +355,7 @@
                 } else {
                     that.reqListProcessing = false
                 }
-            },
-            touchStart (e) {
-                this.startX = e.touches[0].clientX
-                this.startY = e.touches[0].clientY
-            },
-            touchMove (e) {
-                const that = this
-                e.preventDefault()
-                e.stopPropagation()
-                if ((e.touches[0].clientX - that.startX > 2 || e.touches[0].clientY - that.startY > 2) && !that.moveUp) {
-                    that.moveUp = true
-                    const endX = e.touches[0].clientX
-                    const endY = e.touches[0].clientY
-                    that.upOrDown(that.startX, that.startY, endX, endY)
-                }
-            },
-            touchEnd () {
-                const that = this
-                that.rquestChange('stop')
-                that.moveUp = false
-            },
-            upOrDown (startX, startY, endX, endY) {
-                const that = this
-                const store = that.$store
-                let direction = that.getSlideDirection(startX, startY, endX, endY)
-                if (direction) {
-                    that.rquestChange(direction - 1)
-                }
-            },
-            getSlideDirection (startX, startY, endX, endY) {
-                const that = this
-                let dy = startY - endY
-                let dx = endX - startX
-                let result = 0
-                // 如果滑动距离太短
-                if (Math.abs(dx) < 2 && Math.abs(dy) < 2) {
-                    return result
-                }
-                let angle = that.getSlideAngle(dx, dy)
-                if (angle >= -45 && angle < 45) {
-                    result = 4
-                } else if (angle >= 45 && angle < 135) {
-                    result = 1
-                } else if (angle >= -135 && angle < -45) {
-                    result = 2
-                } else if ((angle >= 135 && angle <= 180) || (angle >= -180 && angle < -135)) {
-                    result = 3
-                }
-                return result
-            },
-            // 返回角度
-            getSlideAngle (dx, dy) {
-                return Math.atan2(dy, dx) * 180 / Math.PI
-            },
+            }
         },
         beforeDestroy() {
             const that = this

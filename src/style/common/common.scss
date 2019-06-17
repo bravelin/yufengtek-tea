@@ -740,6 +740,9 @@
     }
     .plane{
         &.full-screen{
+            .plane-content{
+                height: calc(100% - 31px);
+            }
             .panel-tools{
                 top: 2px;
             }
