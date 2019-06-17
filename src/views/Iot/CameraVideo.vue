@@ -83,8 +83,14 @@
                 const videoWrap = that.$refs.videoPlayer
                 // ios下需要http协议的url才能播放
                 let url = reg.ios.test(navigator.userAgent) ? videoUrl.replace(/https:/, 'http:') : videoUrl.replace(/http:/, 'https:')
-                if (url.indexOf('.hd.') < 0) { // 切换成高清的
-                    url = url.replace('.m3u8', '.hd.m3u8')
+                if (window.hd) {
+                    if (url.indexOf('.hd.') < 0) { // 切换成高清的
+                        url = url.replace('.m3u8', '.hd.m3u8')
+                    }
+                } else {
+                    if (url.indexOf('.hd.') > 0) { // 切换成标清的
+                        url = url.replace('.hd.m3u8', '.m3u8')
+                    }
                 }
                 const playerOptions = {
                     autoplay: true,

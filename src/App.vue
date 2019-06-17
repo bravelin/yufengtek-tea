@@ -12,6 +12,7 @@
     import types from '@/store/constants/types'
     import NavMenu from '@/views/NavMenu'
     import initSocket from '@/lib/socket'
+    import { getPageParams } from '@/lib/util'
 
     export default {
         name: 'app',
@@ -38,8 +39,9 @@
             const that = this
             const store = that.$store
             const win = window
-
-            win.useFlash = location.hash.indexOf('?flash=true') > 0
+            const pageParams = getPageParams()
+            win.useFlash = pageParams.flash == 'true' // 视频是否使用flash播放，默认使用h5格式
+            win.hd = !(pageParams.hd == 'false') // 视频是否使用高清，默认true
             // 监听窗口大小的改变
             win.addEventListener('resize', () => {
                 store.commit(types.GET_WINDOW_SIZE)

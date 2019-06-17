@@ -39,3 +39,27 @@ export function computedChartDataInterval (dataList, gapNum, ratio = 0) {
 export const reg = {
     ios: /\(i[^;]+;( U;)? CPU.+Mac OS X/ // 判定IOS浏览器的正则
 }
+
+export function getPageParams () {
+    const hashStr = location.hash
+    const posIndex = hashStr.indexOf('?')
+    if (posIndex > 0) {
+        const str = hashStr.slice(posIndex + 1)
+        if (str) {
+            const params = {}
+            const arr = str.split('&')
+            let list = null
+            arr.forEach(item => {
+                list = item.split('=')
+                if (list.length == 2) {
+                    params[list[0]] = decodeURIComponent(list[1])
+                }
+            })
+            return params
+        } else {
+            return {}
+        }
+    } else {
+        return {}
+    }
+}

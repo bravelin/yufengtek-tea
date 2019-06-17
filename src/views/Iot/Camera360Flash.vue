@@ -158,7 +158,7 @@
                 const pos = url.lastIndexOf('/')
                 const equipSno = url.substr(pos + 1, 32)
                 const prefix = (reg.ios.test(navigator.userAgent) ? 'http' : 'https')
-                return `rtmp://rtmp01open.ys7.com/openlive/${equipSno}.hd`
+                return `rtmp://rtmp01open.ys7.com/openlive/${equipSno}${window.hd ? '.hd' : ''}`
             },
             doHandleKeyDown (e) {
                 const that = this

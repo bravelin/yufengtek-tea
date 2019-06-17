@@ -235,8 +235,8 @@
                 const pos = url.lastIndexOf('/')
                 const equipSno = url.substr(pos + 1, 32)
                 const prefix = (reg.ios.test(navigator.userAgent) ? 'http' : 'https')
-                let hls = `${prefix}://hls01open.ys7.com/openlive/${equipSno}.hd.m3u8`
-                let flv = `https://flvopen.ys7.com:9188/openlive/${equipSno}.hd.flv`
+                let hls = `${prefix}://hls01open.ys7.com/openlive/${equipSno}${window.hd ? '.hd' : ''}.m3u8`
+                let flv = `https://flvopen.ys7.com:9188/openlive/${equipSno}${window.hd ? '.hd' : ''}.flv`
                 return { hls, flv }
             },
             doHandleKeyDown (e) {

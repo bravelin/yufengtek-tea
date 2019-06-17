@@ -14,6 +14,7 @@
         <div class="logout" @click="doLogout()"></div>
         <div class="logo spec" @dblclick="doRefreshPage()" v-show="userRole == '1'"></div>
         <div class="curr-time" v-show="userRole != '1'" @dblclick="doRefreshPage()">{{ currTime }}</div>
+        <div class="circle" @dblclick="doRefreshPage()"></div>
     </div>
 </template>
 <script>
@@ -45,11 +46,15 @@
                 that.$router.push({ name: 'login' })
             },
             doRefreshPage () {
-                if (window.useFlash && location.hash.indexOf('?flash=true') < 0) {
-                    location.href = location.href + '?flash=true'
-                } else {
-                    location.reload(true)
+                let params = []
+                if (window.useFlash) {
+                    params.push('flash=true')
                 }
+                if (!window.hd) {
+                    params.push('hd=false')
+                }
+                location.href = location.origin + '/#/' + this.$store.state.currRouter.to + (params.length ? '?' + params.join('&') : '')
+                location.reload()
             },
             doFull () {
                 const state = this.$store.state
