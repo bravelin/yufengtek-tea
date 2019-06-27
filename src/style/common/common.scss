@@ -754,3 +754,21 @@
         }
     }
 }
+
+@media screen and (max-width: 1100px) {
+    .page, .nav-menu{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+    .nav-menu .menu{
+        margin-right: 20px;
+    }
+    .nav-menu .logout{
+        right: 6px;
+    }
+    .plane.full-screen{
+        left: 9px;
+        right: 9px;
+        bottom: 4px;
+    }
+}

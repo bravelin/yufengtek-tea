@@ -149,7 +149,7 @@
                 } else {
                     if (that.miniScreen) {
                         const { min, max, interval } = computedChartDataInterval(values, 3, 0.1)
-                        options.grid = { top: 5, left: 0, right: 15, bottom: 2, containLabel: true }
+                        options.grid = { top: 5, left: 6, right: 15, bottom: 2, containLabel: true }
                         options.series[0].barWidth = 11
                         options.series[0].data = datas.map(item => max)
                         options.series[1].barWidth = 11

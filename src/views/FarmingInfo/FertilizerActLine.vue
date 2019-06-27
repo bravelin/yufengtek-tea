@@ -133,7 +133,7 @@
                 } else {
                     if (that.miniScreen) {
                         const { min, max, interval } = computedChartDataInterval(lineDatas, 3)
-                        options.grid = { top: 15, left: 0, right: 8, bottom: 3, containLabel: true }
+                        options.grid = { top: 15, left: 6, right: 8, bottom: 3, containLabel: true }
                         options.series[0].symbolSize = 6
                         options.series[0].lineStyle.width = 1
                         options.xAxis.axisLabel.margin = 7
@@ -146,7 +146,7 @@
                         options.tooltip.textStyle.fontSize = 10
                     } else if (that.smallScreen) {
                         const { min, max, interval } = computedChartDataInterval(lineDatas, 3)
-                        options.grid = { top: 18, left: 0, right: 8, bottom: 4, containLabel: true }
+                        options.grid = { top: 18, left: 6, right: 8, bottom: 4, containLabel: true }
                         options.series[0].symbolSize = 9
                         options.xAxis.axisLabel.margin = 9
                         options.xAxis.axisLabel.textStyle.fontSize = 11

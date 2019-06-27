@@ -6,6 +6,7 @@ const types = [
     'UPDATE_USER_INFO',
     'CLEAR_USER_INFO',
     'SWITCH_MESSAGE_TIP',
+    'GET_APP_VIDEO_TOKEN',
     // ***************************************************************物联监控
     'GET_IOT_DATA', // 获取monitor设备信息
     'CHANGE_ACTIVE_IOT_TYPE', // 更改当前active状态的iot设备

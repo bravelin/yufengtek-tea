@@ -981,3 +981,35 @@
         }
     }
 }
+
+@media screen and (max-width: 1000px) {
+    .home-page{
+        .pick-info-wrap{
+            .rank-list{
+                >li:nth-of-type(4){
+                    display: none;
+                }
+            }
+            .chart-title{
+                top: 45%;
+                > div{
+                    font-size: 12px;
+                }
+            }
+        }
+        .origin-wrap .data-list{
+            >li:nth-of-type(8), >li:nth-of-type(9){
+                display: none;
+            }
+        }
+        .iot-wrap .plane-content{
+            >ul>li{
+                flex: none;
+                height: 68px;
+                &:nth-of-type(1){
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+}

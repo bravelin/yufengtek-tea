@@ -61,6 +61,9 @@ export default {
             ls.removeItem(StorageTags.userRole)
             ls.removeItem(StorageTags.password)
         }
+        if (state.userName == 'teadata') {
+            document.title = '茶叶大数据科技交互平台'
+        }
     },
     // 清除用户信息
     [types.CLEAR_USER_INFO] (state) {

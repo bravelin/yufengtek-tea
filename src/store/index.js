@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations'
+import actions from './actions'
 import modules from './modules'
 import StorageTags from '@/lib/storageTags'
 
@@ -12,6 +13,8 @@ export default new Vuex.Store({
         winWidth: 0, // 窗口宽度
         showMessageTip: false,
         tip: '',
+        appVideoToken: '',
+        appVideoKey: '',
         currRouter: { // 当前页面路由信息
             from: '',
             to: '',
@@ -36,5 +39,6 @@ export default new Vuex.Store({
         userRole: ls.getItem(StorageTags.userRole) || '0', // 角色 0-可以查看全部内容 1-智慧茗园
     },
     mutations,
+    actions,
     modules
 })

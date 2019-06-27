@@ -194,8 +194,24 @@
                         store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, { fullStateName: 'photoViewerFullState', state: true })
                         store.dispatch(moduleNameSpace + '/' + types.CHANGE_PHOTO_VIEW_URL, { id: iotObj.em_devid, name: iotObj.em_name })
                     } else if (type == types.IOT_TYPE_360) { // 360视频
-                        store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, { fullStateName: 'camera360FullState', state: true })
-                        store.commit(moduleNameSpace + '/' + types.GET_360_DATA, iotObj)
+                        if (/yfkjtea/i.test(navigator.userAgent)) { // 平板app中
+                            const appParams = [
+                                { key: 'openAppVideo', value: '1' },
+                                { key: 'videoUrl', value: `ezopen://open.ys7.com/${iotObj.camera_sno}/1.hd.live` },
+                                { key: 'name', value: iotObj.camera_name },
+                                { key: 'token', value: store.state.appVideoToken },
+                                { key: 'sno', value: iotObj.camera_sno },
+                                { key: 'key', value: store.state.appVideoKey },
+                                { key: 'userToken', value: store.state.userToken }
+                            ]
+                            const appParamsStr = appParams.map(item => {
+                                return item.key + '=' + encodeURIComponent(item.value)
+                            }).join('&')
+                            location.href = 'openAppVideoWindow?' + appParamsStr
+                        } else {
+                            store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, { fullStateName: 'camera360FullState', state: true })
+                            store.commit(moduleNameSpace + '/' + types.GET_360_DATA, iotObj)
+                        }
                     } else {
                         // 其他类型标记切换active和normal状态
                         const oldIndex = that.currActive.index

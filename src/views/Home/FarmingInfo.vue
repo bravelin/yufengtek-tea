@@ -139,7 +139,7 @@
                 } else {
                     if (that.miniScreen) {
                         const { min, max, interval } = computedChartDataInterval(values, 3, 0.5)
-                        options.grid = { top: 14, left: 2, right: 8, bottom: 3, containLabel: true }
+                        options.grid = { top: 14, left: 6, right: 8, bottom: 3, containLabel: true }
                         options.series[0].symbolSize = 6
                         options.series[0].itemStyle.normal.label.fontSize = 10
                         options.series[0].lineStyle.width = 1

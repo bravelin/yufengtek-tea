@@ -140,6 +140,7 @@
                             })
                             setTimeout(() => { that.$router.push({ name: 'home' }) }, 500)
                             initSocket()
+                            store.dispatch(types.GET_APP_VIDEO_TOKEN)
                         }
                         setTimeout(() => { that.isProcessing = false }, 100)
                     })

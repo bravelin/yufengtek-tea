@@ -29,7 +29,7 @@
                 } else if (state.winWidth <= 1400) {
                     h += 25
                 }
-                return h > 540 ? h : 540
+                return h > 505 ? h : 505
             },
             isLogin () {
                 return this.$store.state.currRouter.to === 'login'

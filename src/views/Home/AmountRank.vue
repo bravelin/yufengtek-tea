@@ -169,7 +169,7 @@
                 } else {
                     if (that.miniScreen) {
                         const { min, max, interval } = computedChartDataInterval(values, 3)
-                        options.grid = { top: 2, left: 0, right: 18, bottom: 0, containLabel: true }
+                        options.grid = { top: 2, left: 6, right: 18, bottom: 0, containLabel: true }
                         options.series[0].barWidth = 6
                         options.series[0].data = datas.map(item => max)
                         options.series[1].barWidth = 6
@@ -184,7 +184,7 @@
                         options.tooltip.textStyle.fontSize = 10
                     } else if (that.smallScreen) {
                         const { min, max, interval } = computedChartDataInterval(values, 4, 0.1)
-                        options.grid = { top: 5, left: 0, right: 20, bottom: 0, containLabel: true }
+                        options.grid = { top: 5, left: 6, right: 20, bottom: 0, containLabel: true }
                         options.series[0].barWidth = 8
                         options.series[0].data = datas.map(item => max)
                         options.series[1].barWidth = 8

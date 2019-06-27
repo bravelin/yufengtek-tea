@@ -261,3 +261,21 @@
         }
     }
 }
+
+@media screen and (max-width: 1100px){
+    .login-page{
+        .title{
+            top: 9.5%;
+            left: 3.2%;
+            h1{
+                font-size: 28px;
+                margin-bottom: 12px;
+                letter-spacing: 4px;
+            }
+            h4{
+                font-size: 16px;
+                letter-spacing: 1px;
+            }
+        }
+    }
+}
