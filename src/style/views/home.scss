@@ -995,6 +995,9 @@
                 > div{
                     font-size: 12px;
                 }
+                > h4{
+                    font-weight: normal;
+                }
             }
         }
         .origin-wrap .data-list{
@@ -1003,6 +1006,12 @@
             }
         }
         .iot-wrap .plane-content{
+            >div>div:nth-of-type(1){
+                width: 104px;
+                height: 104px;
+                margin-left: -52px;
+                margin-top: -52px;
+            }
             >ul>li{
                 flex: none;
                 height: 68px;

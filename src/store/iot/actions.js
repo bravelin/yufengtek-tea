@@ -233,15 +233,18 @@ export default {
     [types.CHANGE_PHOTO_VIEW_URL] (context, { id, name }) {
         const that = this
         const state = context.state
-        ajax({ url: '/data/monitor/getemdata?em_devid=' + id, method: 'post' }).then(res => {
-            if (res && res.repData && res.repData[11]) {
-                const url = res.repData[11].replace(/http/, 'https')
-                state.photoViewUrl = url || state.photoViewUrl // 防止未返回数据
-                state.photoViewName = name || ''
-                state.photoViewTime = res.repData[0] ? formatTime(new Date(res.repData[0] * 1000), 'yyyy-MM-dd hh:mm:ss') : ''
-            } else {
-                that.commit(types.SWITCH_MESSAGE_TIP, { tip: '未能获取到全景图！', show: true })
-            }
+        return new Promise((resolve, reject) => {
+            ajax({ url: '/data/monitor/getemdata?em_devid=' + id, method: 'post' }).then(res => {
+                if (res && res.repData && res.repData[11]) {
+                    const url = res.repData[11].replace(/http/, 'https')
+                    state.photoViewUrl = url || state.photoViewUrl // 防止未返回数据
+                    state.photoViewName = name || ''
+                    state.photoViewTime = res.repData[0] ? formatTime(new Date(res.repData[0] * 1000), 'yyyy-MM-dd hh:mm:ss') : ''
+                    resolve({ url: state.photoViewUrl, title: state.photoViewName, time: state.photoViewTime })
+                } else {
+                    that.commit(types.SWITCH_MESSAGE_TIP, { tip: '未能获取到全景图！', show: true })
+                }
+            })
         })
     }
 }

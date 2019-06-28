@@ -191,8 +191,23 @@
                 if (!iotObj.isActive) {
                     const type = iotObj.type
                     if (type == types.IOT_TYPE_SPHERE) { // 弹出全景,展示图片
-                        store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, { fullStateName: 'photoViewerFullState', state: true })
-                        store.dispatch(moduleNameSpace + '/' + types.CHANGE_PHOTO_VIEW_URL, { id: iotObj.em_devid, name: iotObj.em_name })
+                        if (/yfkjtea/i.test(navigator.userAgent)) { // 平板app中
+                            store.dispatch(moduleNameSpace + '/' + types.CHANGE_PHOTO_VIEW_URL, { id: iotObj.em_devid, name: iotObj.em_name }).then(res => {
+                                const appParams = [
+                                    { key: 'openAppPhotoViewer', value: '1' },
+                                    { key: 'url', value: res.url },
+                                    { key: 'title', value: res.title },
+                                    { key: 'time', value: res.time }
+                                ]
+                                const appParamsStr = appParams.map(item => {
+                                    return item.key + '=' + encodeURIComponent(item.value)
+                                }).join('&')
+                                location.href = 'openAppPhotoWindow?' + appParamsStr
+                            })
+                        } else {
+                            store.commit(`${moduleNameSpace}/${types.IOT_CHANGE_FULL_STATE}`, { fullStateName: 'photoViewerFullState', state: true })
+                            store.dispatch(moduleNameSpace + '/' + types.CHANGE_PHOTO_VIEW_URL, { id: iotObj.em_devid, name: iotObj.em_name })
+                        }
                     } else if (type == types.IOT_TYPE_360) { // 360视频
                         if (/yfkjtea/i.test(navigator.userAgent)) { // 平板app中
                             const appParams = [
