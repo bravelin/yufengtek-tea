@@ -33,6 +33,7 @@
             </h1>
             <h4 :class="{ active: showSubTitle }">基于物联网监控的大数据服务，为茶叶质量保驾护航</h4>
         </div>
+        <div class="exit-app-btn" v-show="showExitApp" @click="doExitApp()"><i></i>退出</div>
     </div>
 </template>
 <script>
@@ -53,6 +54,7 @@
                 timer: null,
                 showMainTitle: false,
                 showSubTitle: false,
+                showExitApp: /yfkjtea/i.test(navigator.userAgent),
                 loginRemember: !(ls.getItem(StorageTags.loginRemember) == '0')
             }
         },
@@ -84,6 +86,9 @@
             })
         },
         methods: {
+            doExitApp () {
+                location.href = 'exitAppRequest?exitApp=1'
+            },
             showMessage (str) {
                 const that = this
                 that.tipStr = str

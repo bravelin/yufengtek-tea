@@ -1,6 +1,7 @@
 <template>
     <div class="nav-menu">
-        <h3 @dblclick="doFull()">{{ userName == 'teadata' ? '茶叶大数据科技交互平台' : '武夷山市智慧茗园数据平台' }}</h3>
+        <h3 @dblclick="doFull()" v-show="userName == 'teadata'">茶叶大数据科技交互平台</h3>
+        <h2 @dblclick="doFull()" v-show="userName != 'teadata'" class="title-logo" :class="{ spec: userRole == '1' }"><div></div></h2>
         <ul class="menu">
             <li :class="currRouter.to"></li>
             <router-link tag="li" :to="{ name: 'home' }">智慧全息</router-link>
@@ -12,8 +13,8 @@
         </ul>
         <div class="tag"></div>
         <div class="logout" @click="doLogout()"></div>
-        <div class="logo spec" @dblclick="doRefreshPage()" v-show="userRole == '1'"></div>
-        <div class="curr-time" v-show="userRole != '1'" @dblclick="doRefreshPage()">{{ currTime }}</div>
+        <!-- <div class="logo spec" @dblclick="doRefreshPage()" v-show="userRole == '1'"></div> -->
+        <div class="curr-time" @dblclick="doRefreshPage()">{{ currTime }}</div>
         <div class="circle" @dblclick="doRefreshPage()"></div>
     </div>
 </template>
@@ -40,10 +41,14 @@
         methods: {
             doLogout () {
                 const that = this
-                const store = that.$store
-                that.$ajax({ url: '/data/user/loginOut', method: 'post' })
-                store.commit(types.CLEAR_USER_INFO)
-                that.$router.push({ name: 'login' })
+                if (/yfkjtea/i.test(navigator.userAgent)) {
+                    location.href = 'exitAppRequest?exitApp=1'
+                } else {
+                    const store = that.$store
+                    that.$ajax({ url: '/data/user/loginOut', method: 'post' })
+                    store.commit(types.CLEAR_USER_INFO)
+                    that.$router.push({ name: 'login' })
+                }
             },
             doRefreshPage () {
                 let params = []

@@ -244,6 +244,24 @@
             }
         }
     }
+
+    .exit-app-btn{
+        position: absolute;
+        color: #fff;
+        display: flex;
+        top: 15px;
+        right: 13px;
+        font-size: 12px;
+        align-items: center;
+        >i{
+            display: block;
+            width: 18px;
+            height: 18px;
+            margin-right: 4px;
+            background-size: 100% 100%;
+            background-image: url('../../assets/images/exit.png');
+        }
+    }
 }
 
 @media screen and (max-width: 1200px){

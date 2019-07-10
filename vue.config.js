@@ -11,7 +11,7 @@ module.exports = {
             '/bigdata': {
                 // target: 'http://192.168.2.117:10013/bigdata/',
                 target: 'http://tea.yufengtek.com/tea-Web-Bigdata/bigdata/',
-                // target: 'http://192.168.2.114:10013/bigdata/',
+                // target: 'http://192.168.2.124/tea-Web-Bigdata/bigdata/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/bigdata': ''
@@ -20,7 +20,7 @@ module.exports = {
             '/data': {
                 // target: 'http://192.168.2.117:10013/data/',
                 target: 'http://tea.yufengtek.com/tea-Web-Bigdata/data/',
-                // target: 'http://192.168.2.114:10013/data/',
+                // target: 'http://192.168.2.124/tea-Web-Bigdata/data/',
                 changeOrigin: true,
                 pathRewrite: {
                     '^/data': ''

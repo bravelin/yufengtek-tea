@@ -189,6 +189,9 @@
                 const that = this
                 const store = that.$store
                 if (!iotObj.isActive) {
+                    if (iotObj.online == 'B') {
+                        return store.commit(types.SWITCH_MESSAGE_TIP, { tip: '设备不在线！', show: true })
+                    }
                     const type = iotObj.type
                     if (type == types.IOT_TYPE_SPHERE) { // 弹出全景,展示图片
                         if (/yfkjtea/i.test(navigator.userAgent)) { // 平板app中

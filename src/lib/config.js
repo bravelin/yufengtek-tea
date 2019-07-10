@@ -31,7 +31,7 @@ export default {
     // 生产环境
     baseUrl: `${location.origin}/tea-Web-Bigdata`,
     socketUrl: `ws://${location.host}/tea-Web-Bigdata/myHandler`,
-    // socketUrl: 'ws://192.168.2.117:8080/myHandler',
+    // socketUrl: 'ws://192.168.2.124/tea-Web-Bigdata/myHandler',
     mapAutoChangeTime: 5000,
 
     // 开发环境下
