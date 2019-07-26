@@ -1,7 +1,7 @@
 <template>
     <Plane class="photo-viewer no-shadow" :full="photoViewerFullState">
         <PlaneTitle class="no-icon">{{ photoViewName || '全景图'}}<span v-show="photoViewTime">拍摄时间：{{photoViewTime}}</span></PlaneTitle>
-        <div class="plane-content" ref="container"></div>
+        <div class="plane-content" id="container" ref="container"></div>
         <PlaneTools :full="photoViewerFullState" @change="doFullStateChange"></PlaneTools>
     </Plane>
 </template>
@@ -9,7 +9,6 @@
     import { createNamespacedHelpers } from 'vuex'
     import ns from '@/store/constants/ns'
     import types from '@/store/constants/types'
-    import PhotoSphereViewer from 'photo-sphere-viewer'
 
     const moduleNameSpace = ns.IOT
     const fullProp = 'photoViewerFullState'
@@ -23,12 +22,8 @@
         },
         watch: {
             [viewUrlProp] (val, oldval) {
-                if (oldval == '') {
-                    clearTimeout(this.timer)
-                    this.init()
-                } else {
-                    this.doRefresh()
-                }
+                clearTimeout(this.timer)
+                this.init()
             }
         },
         data () {
@@ -52,15 +47,17 @@
                 const w = parseInt(elStyle.width)
                 const h = parseInt(elStyle.height)
                 if (isNaN(w) || isNaN(h)) { // 未获取到尺寸，1s之后重新获取
-                    that.timer = setTimeout(() => { that.init() }, 1000)
+                    that.timer = setTimeout(() => { that.init() }, 200)
                 } else if (that.photoViewUrl) {
-                    that.viewer = new PhotoSphereViewer({
-                        panorama: that.photoViewUrl,
-                        container: that.container,
-                        time_anim: false,
-                        navbar: ['autorotate', 'fullscreen'],
-                        default_fov: 90,
-                        anim_speed: '0.8rpm'
+                    if(that.viewer) removepano('krpano')
+                    embedpano({
+                        xml:"./jslib/krpano.xml",
+                        target: "container", 
+                        id: 'krpano',
+                        initvars:{source: that.photoViewUrl}, 
+                        onready : function(krpano_interface) {
+                            that.viewer = krpano_interface
+                        }
                     })
                 }
             },
@@ -78,6 +75,9 @@
                     fullStateName: fullProp, state: payload
                 })
             }
-        }
+        },
+        beforeDestroy() {
+            if(this.viewer) removepano('krpano')
+        },
     }
 </script>

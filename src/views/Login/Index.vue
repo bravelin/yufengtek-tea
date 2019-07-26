@@ -141,7 +141,7 @@
                                 userName: that.loginName.trim(),
                                 userRole: userType[resData.user_type] || '0',
                                 password: that.password.trim(),
-                                loginRemember: that.loginRemember,
+                                loginRemember: that.loginRemember
                             })
                             setTimeout(() => { that.$router.push({ name: 'home' }) }, 500)
                             initSocket()

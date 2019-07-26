@@ -315,9 +315,9 @@
         &:before{
             content: "";
             display: block;
-            width: 56px;
+            width: 52px;
             height: 34px;
-            margin-right: 0;
+            margin-right: 3px;
             // border: 1px solid #f00;
             background-image: url("./assets/images/logo-2.png");
             background-repeat: no-repeat;
@@ -328,6 +328,7 @@
             &:before{
                 width: 60px;
                 height: 42px;
+                margin-right: 0px;
                 background-image: url("./assets/images/logo-1.png");
             }
         }
@@ -822,5 +823,15 @@
         left: 9px;
         right: 9px;
         bottom: 4px;
+    }
+}
+
+#krpano {
+    width: 100%;
+    height: 100%;
+    center {
+        >i {
+            display: none !important;
+        }
     }
 }

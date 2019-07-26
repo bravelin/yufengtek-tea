@@ -48,7 +48,7 @@
                 that.$nextTick(() => {
                     that.ulHeight = that.$refs.ul.offsetHeight
                 })
-            },
+            }
         },
         data () {
             return {
@@ -71,7 +71,7 @@
                 }
             }
         },
-        mounted() {
+        mounted () {
             const that = this
             that.$nextTick(() => {
                 that.divHeight = that.$refs.text.offsetHeight
